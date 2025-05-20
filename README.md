@@ -1,6 +1,12 @@
-# Website
+# Speechmatics docs
+
+Documentation for Speechmatics APIs, products and other software
 
 This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+
+This project has been started as part of ongoing work to revamp the existing docs (also built with Docusaurus, but on an older version).
+
+At the moment, this repo is private, and not deployed anywhere. It's just here to get the initial work going before we launch.
 
 ### Installation
 
