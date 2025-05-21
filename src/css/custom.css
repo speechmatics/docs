@@ -3,6 +3,7 @@
  * bundles Infima by default. Infima is a CSS framework designed to
  * work well for content-centric websites.
  */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Passion+One:wght@700&display=swap");
 
 /* You can override the default Infima variables here. */
 :root {
@@ -18,7 +19,10 @@
   --ifm-background-surface-color: var(--gray-1);
 }
 
-.radix-themes {
+.radix-themes > * {
+  /* TODO see if there's a neater way to set the global font */
+  --default-font-family: "DM Sans", sans-serif;
+  font-family: var(--default-font-family);
   --color-background: var(--gray-1);
 }
 
