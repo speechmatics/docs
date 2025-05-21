@@ -1,11 +1,11 @@
-import React from 'react';
-import AdmonitionTypeNote from '@theme/Admonition/Type/Note';
-import AdmonitionTypeTip from '@theme/Admonition/Type/Tip';
-import AdmonitionTypeInfo from '@theme/Admonition/Type/Info';
-import AdmonitionTypeWarning from '@theme/Admonition/Type/Warning';
-import AdmonitionTypeDanger from '@theme/Admonition/Type/Danger';
-import AdmonitionTypeCaution from '@theme/Admonition/Type/Caution';
-import type AdmonitionTypes from '@theme/Admonition/Types';
+import AdmonitionTypeCaution from "@theme/Admonition/Type/Caution";
+import AdmonitionTypeDanger from "@theme/Admonition/Type/Danger";
+import AdmonitionTypeInfo from "@theme/Admonition/Type/Info";
+import AdmonitionTypeNote from "@theme/Admonition/Type/Note";
+import AdmonitionTypeTip from "@theme/Admonition/Type/Tip";
+import AdmonitionTypeWarning from "@theme/Admonition/Type/Warning";
+import type AdmonitionTypes from "@theme/Admonition/Types";
+import React from "react";
 
 const admonitionTypes: typeof AdmonitionTypes = {
   note: AdmonitionTypeNote,

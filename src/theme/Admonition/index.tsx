@@ -1,13 +1,13 @@
-import React, { type ReactNode } from "react";
 import { processAdmonitionProps } from "@docusaurus/theme-common";
-import type { Props } from "@theme/Admonition";
 import { Box, Callout, Flex, Text } from "@radix-ui/themes";
+import type { Props } from "@theme/Admonition";
 import {
-  InfoIcon,
   AlertTriangleIcon,
   CircleAlertIcon,
+  InfoIcon,
   LightbulbIcon,
 } from "lucide-react";
+import React, { type ReactNode } from "react";
 import styles from "./index.module.css";
 
 const admonitionMap = {

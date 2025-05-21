@@ -71,6 +71,13 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+
+  scripts: [
+    {
+      src: "/js/color-theme.js",
+      async: true,
+    },
+  ],
 };
 
 export default config;
