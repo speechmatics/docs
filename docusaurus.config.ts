@@ -42,6 +42,7 @@ const config: Config = {
           //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
           routeBasePath: "/",
           sidebarItemsGenerator,
+          sidebarPath: "./sidebars.ts",
         },
         theme: {
           customCss: "./src/css/custom.css",
