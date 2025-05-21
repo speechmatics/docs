@@ -18,31 +18,37 @@ export const sidebarItemsGenerator: SidebarItemsGeneratorOption = async ({
     );
   }
 
-  return defaults
-    .filter((item) => item.type === "category")
-    .toSorted((a, b) => {
-      const aIndex = topLevelCategories.indexOf(a.label);
-      const bIndex = topLevelCategories.indexOf(b.label);
-      return aIndex - bIndex;
-    })
-    .map((category, i) => {
-      if (category.type !== "category") {
-        throw new Error("Category must be the second item in the sidebar");
-      }
+  console.log(defaults[1]);
 
-      const normalizedCategory = withNormalizedLabel(category);
+  return (
+    defaults
+      // Remove the Developer Resources category, configure that one manually to allow for external links
+      .filter((item) => item.type === "category")
+      .filter((item) => item.label !== "developer-resources")
+      .toSorted((a, b) => {
+        const aIndex = topLevelCategories.indexOf(a.label);
+        const bIndex = topLevelCategories.indexOf(b.label);
+        return aIndex - bIndex;
+      })
+      .map((category, i) => {
+        if (category.type !== "category") {
+          throw new Error("Category must be the second item in the sidebar");
+        }
 
-      return {
-        ...normalizedCategory,
-        // Top level categories are not collapsible
-        collapsed: false,
-        collapsible: false,
-        items:
-          i === 0
-            ? [index, ...normalizedCategory.items]
-            : normalizedCategory.items,
-      };
-    });
+        const normalizedCategory = withNormalizedLabel(category);
+
+        return {
+          ...normalizedCategory,
+          // Top level categories are not collapsible
+          collapsed: false,
+          collapsible: false,
+          items:
+            i === 0
+              ? [index, ...normalizedCategory.items]
+              : normalizedCategory.items,
+        };
+      })
+  );
 };
 
 // Capitalize the first letter of each word in the label, and replace hyphens with spaces
