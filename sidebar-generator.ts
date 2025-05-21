@@ -13,7 +13,6 @@ export const sidebarItemsGenerator: SidebarItemsGeneratorOption = async ({
 };
 
 // Capitalize the first letter of each word in the label, and replace hyphens with spaces
-// (this already happens automatically for 'doc' items, but not for intermediate categories)
 function withNormalizedLabel(item: NormalizedSidebarItem) {
   if (item.type === "category") {
     const normalizedLabel = item.label
@@ -21,8 +20,6 @@ function withNormalizedLabel(item: NormalizedSidebarItem) {
       .replace(/\b\w/g, (char) => char.toUpperCase());
 
     return {
-      // TODO at the moment categories at level 2 auto-expand, and anything deeper doesn't
-      // This seems reasonable, but if we want to change it, we can do it here
       ...item,
       label: normalizedLabel,
       items: item.items.map(withNormalizedLabel),
