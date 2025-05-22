@@ -85,7 +85,7 @@ const config: Config = {
         config: {
           jobs: {
             specPath: "spec/jobs-spec-final.yaml",
-            outputDir: "docs/jobs",
+            outputDir: "docs/jobs-api",
             sidebarOptions: {
               groupPathsBy: "tag",
             },
