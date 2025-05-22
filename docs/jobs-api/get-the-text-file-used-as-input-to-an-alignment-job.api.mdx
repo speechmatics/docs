@@ -1,0 +1,71 @@
+---
+id: get-the-text-file-used-as-input-to-an-alignment-job
+title: "Get the text file used as input to an alignment job."
+description: "Get the text file used as input to an alignment job."
+sidebar_label: "Get the text file used as input to an alignment job."
+hide_title: true
+hide_table_of_contents: true
+api: eJztWktv4zYQ/ivEnFpA8SNNDtWpade7TZvsBrYDFAiMYiSNZSYSqZCUEdfQfy+GkmzH9u4mPRQ+6BRpOJr3N0MHs4YCDebkyFgIH9agMCcI4VFHMoEApIIQCnQLCCAhGxtZOKmZeP1B6LlwCxKPOupBAIaeS2kogdCZkgKgF8yLjIXhMDqPf0ou6BICsPGCcoRwDW5V8Kl1RqoUqirYaL8q3UIb+Q96XY0VC8KEzIEdv5XW6ZyMuLq7Fk4/kTpiy1uU/nU2uT0bXY3Ppph+R+cITbYSV3FM1ooxZYSWRP3ZVvMcM/tN1TPmtoVWliyfnw8G/Oe1qi9/QgCxVo6U80LoxfWLDNm89VeFBzDXJkcHIURSoVmxp4BFkcnYB7X/aPW7JbCMi8Hw0Mh7hU3GKHmXuTp6pNi9CtsDxDohCICM0QZmARRGF2ScrKPkT7cSpHKUHknRdEHi9+n0TliHrrSCP+MqzaWSeZlDOBwMqlbJEe8PpXlWkZO1mHpRpFjOA/yKiRjTc0mWPfkoMxKjl8J7E8BHbSKZJL4qx2R1aWISNzp+ak9zdOKzdmJSFoU2zpOvlSOjMBMTMksyYuStDOAPHdVmNM9bNfx2rcSd0akhaxuKtEJp53G6KkhgJlOVc2aOHjuDaut0zcLnc12qVochThjtv4qkJOG0kGqJmUwElonU3+Hh0oAAbjHjSqNEmE0Mb6W1UqUixiyLMH7aISXo8O+5zGiHxpJa2mctMlRpiSkJS1lrLEf4mtsRu+8pd2Ry/l4r8YGU9LQmi5SIwuikjJ33H5coM4y8+OlujPypIUxWEMCNTgXbcPDJVujRtrHPfq8Ko5mD38VIOelWMKu4Ih3K7G21WvPatkP7muk1CH5TF+iA2QGzA+b/CMzNfcljqb0X8PMSs5K2ALsYDDfoOBKrqmrn9MXhnP68UzTdkO56QdcLTrIXdEO6A2YHzBME5juG9MV2SL+uhM2AHh75tf9JK+pmc9cCuhZwqi2gm80dMDtgniAw3z6bh4PtbN6r6daSmp5QRuzd3Ojca7NOG0xpO8PPfz6c4WN0JG5kLjkbVQCXx/6t/zUcdJO/azBdgznJBtNN/g6YHTBPEJhvnvyXg53Jf7weq3a07/0uJ+eVclbqiJSWEoFWSFWUjksA1bYW25WInNxCJxBCSlwCfo8ihP6jjmx/7Vcsqn5TMtZbUe9glIavIAvnChv2+2hNDwvZswVRvMjRydj2Yp33l+fAOwRSzbWPoHR+22KywyeuJmMxHk2mvB0BAbCK2qPz3qA3OBrn19+XTvvHhizGFOtUSV8qrWAGnY+H08KWUS6d18tuClQMgpjkknwEDdkyc7YnWJVt+wPz1oCV9jVmOd0eeT7sttfckTD2dyTK6+taI+iX/Rj5tYdCW5ejb9bNqsd/TOerWG1KdueeVgV17tZNqh94j4YbV9ju0/hszwJYaOv4fL2O0NK9yaqKyc8lmRWED7MAlmikhw9XRCI9dLZbJXumbK6N8MO4mTo/ioMNnaMGN0RUDPgGMAABPNFqswdUMVabXZj3mfONTZmj1tRa91ZxNlbxtk7NwRILt3O2K2a2g7xPoylU1b/NTrRk
+sidebar_class_name: "get api-method"
+info_path: jobs-api/speechmatics-asr-rest-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get the text file used as input to an alignment job."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/jobs/{jobid}/text"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get the text file used as input to an alignment job.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"jobid","in":"path","description":"ID of the job.","required":true,"example":"a1b2c3d4e5","schema":{"type":"string"}},{"name":"Authorization","in":"header","description":"Customer API token","required":true,"schema":{"type":"string"}},{"name":"X-SM-EAR-Tag","in":"header","description":"Early Access Release Tag","required":false,"schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"OK","content":{"text/plain":{"schema":{"type":"string","format":"binary"}},"application/json":{"schema":{"type":"string","format":"binary"}}}},"401":{"description":"Unauthorized","content":{"text/plain":{"schema":{"type":"object","required":["code","error"],"properties":{"code":{"type":"integer","description":"The HTTP status code.","minimum":100},"error":{"type":"string","description":"The error message.","enum":["Bad Request","File Expired","Forbidden","Resource Locked","Format Not Supported","Internal Server Error","Job error","Job Expired","Job In Progress","Job is not of type alignment","Job is not of type transcription","Job not found","Job rejected","Job rejected due to invalid audio","Job rejected due to invalid text","Malformed request","Missing callback","Missing data_file","Missing text_file","No language selected","Not Implemented","Permission Denied","Requested product not available","Transcription not ready","Log file not available","Requested Early Access Release not available","Unprocessable Entity"]},"detail":{"type":"string","description":"The details of the error."}}}},"application/json":{"schema":{"type":"object","required":["code","error"],"properties":{"code":{"type":"integer","description":"The HTTP status code.","minimum":100},"error":{"type":"string","description":"The error message.","enum":["Bad Request","File Expired","Forbidden","Resource Locked","Format Not Supported","Internal Server Error","Job error","Job Expired","Job In Progress","Job is not of type alignment","Job is not of type transcription","Job not found","Job rejected","Job rejected due to invalid audio","Job rejected due to invalid text","Malformed request","Missing callback","Missing data_file","Missing text_file","No language selected","Not Implemented","Permission Denied","Requested product not available","Transcription not ready","Log file not available","Requested Early Access Release not available","Unprocessable Entity"]},"detail":{"type":"string","description":"The details of the error."}}},"examples":{"response":{"value":{"code":401,"error":"Permission Denied"}}}}}},"404":{"description":"Not found","content":{"text/plain":{"schema":{"type":"object","required":["code","error"],"properties":{"code":{"type":"integer","description":"The HTTP status code.","minimum":100},"error":{"type":"string","description":"The error message.","enum":["Bad Request","File Expired","Forbidden","Resource Locked","Format Not Supported","Internal Server Error","Job error","Job Expired","Job In Progress","Job is not of type alignment","Job is not of type transcription","Job not found","Job rejected","Job rejected due to invalid audio","Job rejected due to invalid text","Malformed request","Missing callback","Missing data_file","Missing text_file","No language selected","Not Implemented","Permission Denied","Requested product not available","Transcription not ready","Log file not available","Requested Early Access Release not available","Unprocessable Entity"]},"detail":{"type":"string","description":"The details of the error."}}}},"application/json":{"schema":{"type":"object","required":["code","error"],"properties":{"code":{"type":"integer","description":"The HTTP status code.","minimum":100},"error":{"type":"string","description":"The error message.","enum":["Bad Request","File Expired","Forbidden","Resource Locked","Format Not Supported","Internal Server Error","Job error","Job Expired","Job In Progress","Job is not of type alignment","Job is not of type transcription","Job not found","Job rejected","Job rejected due to invalid audio","Job rejected due to invalid text","Malformed request","Missing callback","Missing data_file","Missing text_file","No language selected","Not Implemented","Permission Denied","Requested product not available","Transcription not ready","Log file not available","Requested Early Access Release not available","Unprocessable Entity"]},"detail":{"type":"string","description":"The details of the error."}}},"examples":{"response":{"value":{"code":404,"error":"Job not found"}}}}}},"410":{"description":"Gone","content":{"text/plain":{"schema":{"type":"object","required":["code","error"],"properties":{"code":{"type":"integer","description":"The HTTP status code.","minimum":100},"error":{"type":"string","description":"The error message.","enum":["Bad Request","File Expired","Forbidden","Resource Locked","Format Not Supported","Internal Server Error","Job error","Job Expired","Job In Progress","Job is not of type alignment","Job is not of type transcription","Job not found","Job rejected","Job rejected due to invalid audio","Job rejected due to invalid text","Malformed request","Missing callback","Missing data_file","Missing text_file","No language selected","Not Implemented","Permission Denied","Requested product not available","Transcription not ready","Log file not available","Requested Early Access Release not available","Unprocessable Entity"]},"detail":{"type":"string","description":"The details of the error."}}}},"application/json":{"schema":{"type":"object","required":["code","error"],"properties":{"code":{"type":"integer","description":"The HTTP status code.","minimum":100},"error":{"type":"string","description":"The error message.","enum":["Bad Request","File Expired","Forbidden","Resource Locked","Format Not Supported","Internal Server Error","Job error","Job Expired","Job In Progress","Job is not of type alignment","Job is not of type transcription","Job not found","Job rejected","Job rejected due to invalid audio","Job rejected due to invalid text","Malformed request","Missing callback","Missing data_file","Missing text_file","No language selected","Not Implemented","Permission Denied","Requested product not available","Transcription not ready","Log file not available","Requested Early Access Release not available","Unprocessable Entity"]},"detail":{"type":"string","description":"The details of the error."}}},"examples":{"response":{"value":{"code":410,"error":"File Expired","detail":"File deleted from the storage"}}}}}},"429":{"description":"Rate Limited"},"500":{"description":"Internal Server Error","content":{"text/plain":{"schema":{"type":"object","required":["code","error"],"properties":{"code":{"type":"integer","description":"The HTTP status code.","minimum":100},"error":{"type":"string","description":"The error message.","enum":["Bad Request","File Expired","Forbidden","Resource Locked","Format Not Supported","Internal Server Error","Job error","Job Expired","Job In Progress","Job is not of type alignment","Job is not of type transcription","Job not found","Job rejected","Job rejected due to invalid audio","Job rejected due to invalid text","Malformed request","Missing callback","Missing data_file","Missing text_file","No language selected","Not Implemented","Permission Denied","Requested product not available","Transcription not ready","Log file not available","Requested Early Access Release not available","Unprocessable Entity"]},"detail":{"type":"string","description":"The details of the error."}}}},"application/json":{"schema":{"type":"object","required":["code","error"],"properties":{"code":{"type":"integer","description":"The HTTP status code.","minimum":100},"error":{"type":"string","description":"The error message.","enum":["Bad Request","File Expired","Forbidden","Resource Locked","Format Not Supported","Internal Server Error","Job error","Job Expired","Job In Progress","Job is not of type alignment","Job is not of type transcription","Job not found","Job rejected","Job rejected due to invalid audio","Job rejected due to invalid text","Malformed request","Missing callback","Missing data_file","Missing text_file","No language selected","Not Implemented","Permission Denied","Requested product not available","Transcription not ready","Log file not available","Requested Early Access Release not available","Unprocessable Entity"]},"detail":{"type":"string","description":"The details of the error."}}},"examples":{"response":{"value":{"code":500,"error":"Internal Server Error"}}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

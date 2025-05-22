@@ -55,4 +55,18 @@ export default {
       ],
     },
   ],
+  openApiSidebar: [
+    {
+      type: "category",
+      collapsible: false,
+      collapsed: false,
+      label: "Jobs API",
+      link: {
+        type: "generated-index",
+        title: "Jobs API",
+        slug: "/category/jobs-api"
+      },
+      items: require("./docs/jobs-api/sidebar.js")
+    }
+  ]
 };
