@@ -1,8 +1,8 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
+import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import { themes as prismThemes } from "prism-react-renderer";
 import { sidebarItemsGenerator } from "./sidebar-generator";
-import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -78,7 +78,7 @@ const config: Config = {
 
   plugins: [
     [
-      'docusaurus-plugin-openapi-docs',
+      "docusaurus-plugin-openapi-docs",
       {
         id: "api", // plugin id
         docsPluginId: "classic", // configured for preset-classic
@@ -92,7 +92,7 @@ const config: Config = {
           } satisfies OpenApiPlugin.Options,
         },
       },
-    ]
+    ],
   ],
   themes: ["docusaurus-theme-openapi-docs"], // export theme components
 };

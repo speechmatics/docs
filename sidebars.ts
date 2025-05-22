@@ -64,9 +64,9 @@ export default {
       link: {
         type: "generated-index",
         title: "Jobs API",
-        slug: "/category/jobs-api"
+        slug: "/category/jobs-api",
       },
-      items: require("./docs/jobs-api/sidebar.js")
-    }
-  ]
+      items: require("./docs/jobs-api/sidebar.js"),
+    },
+  ],
 };

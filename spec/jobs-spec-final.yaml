@@ -121,6 +121,10 @@ paths:
                     audio="PATH_TO_FILE",
                 )
                 print(job_id)
+          x-docusaurus-variables:
+            API_KEY:
+              identifier: API_KEY
+
         - lang: cURL
           label: cURL
           source: >
@@ -133,6 +137,10 @@ paths:
                 -H "Authorization: Bearer ${API_KEY}" \
                 -F data_file=@${PATH_TO_FILE} \
                 -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'
+
+          x-docusaurus-variables:
+            API_KEY:
+              identifier: "${API_KEY}"
         - lang: CLI
           label: CLI
           source: speechmatics batch transcribe example.wav
