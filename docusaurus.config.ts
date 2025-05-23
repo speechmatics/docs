@@ -74,6 +74,11 @@ const config: Config = {
           label: "API reference",
           position: "left",
           items: [
+            {
+              type: "doc",
+              docId: "jobs-api/speechmatics-asr-rest-api",
+              label: "Jobs API",
+            },
             // TODO add these as docs later. For now link to the existing docs as placeholder
             {
               label: "Flow Conversational AI",
@@ -82,10 +87,6 @@ const config: Config = {
             {
               label: "Real-time transcription",
               href: "https://docs.speechmatics.com/flow-api-ref",
-            },
-            {
-              label: "Jobs API",
-              href: "https://docs.speechmatics.com/jobs-api",
             },
           ],
         },
@@ -114,6 +115,8 @@ const config: Config = {
             outputDir: "docs/jobs-api",
             sidebarOptions: {
               groupPathsBy: "tag",
+              sidebarCollapsed: false,
+              sidebarCollapsible: true,
             },
           } satisfies OpenApiPlugin.Options,
         },

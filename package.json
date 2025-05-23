@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start",
-    "build": "docusaurus build",
+    "start": "npm run build:apis && docusaurus start",
+    "build": "npm run build:apis && docusaurus build",
+    "build:apis": "npm run build:jobs-api",
+    "build:jobs-api": "rm -rf docs/jobs-api && docusaurus gen-api-docs jobs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
