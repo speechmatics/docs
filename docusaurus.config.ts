@@ -55,12 +55,38 @@ const config: Config = {
     // Replace with your project's social card
     image: "img/docusaurus-social-card.jpg",
     navbar: {
-      title: "Speechmatics Docs",
       logo: {
         alt: "Speechmatics Logo",
         src: "img/logo.svg",
       },
-      items: [],
+      items: [
+        {
+          type: "doc",
+          position: "left",
+          docId: "index",
+          label: "Docs",
+        },
+        {
+          type: "dropdown",
+          label: "API reference",
+          position: "left",
+          items: [
+            // TODO add these as docs later. For now link to the existing docs as placeholder
+            {
+              label: "Flow Conversational AI",
+              href: "https://docs.speechmatics.com/flow-api-ref",
+            },
+            {
+              label: "Real-time transcription",
+              href: "https://docs.speechmatics.com/flow-api-ref",
+            },
+            {
+              label: "Jobs API",
+              href: "https://docs.speechmatics.com/jobs-api",
+            },
+          ],
+        },
+      ],
     },
     footer: {
       style: "dark",
