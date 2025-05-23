@@ -41,3 +41,7 @@
 main {
   min-height: 100vh;
 }
+
+.navbar__logo {
+  color: red;
+}
