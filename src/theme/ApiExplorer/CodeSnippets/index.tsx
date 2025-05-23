@@ -1,26 +1,18 @@
 import React, { useState, useEffect, type JSX } from "react";
 
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+// import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import ApiCodeBlock from "@theme/ApiExplorer/ApiCodeBlock";
-import buildPostmanRequest from "@theme/ApiExplorer/buildPostmanRequest";
-import { useTypedSelector } from "@theme/ApiItem/hooks";
+// import buildPostmanRequest from "@theme/ApiExplorer/buildPostmanRequest";
+// import { useTypedSelector } from "@theme/ApiItem/hooks";
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-import cloneDeep from "lodash/cloneDeep";
-import codegen from "postman-code-generators";
+// import cloneDeep from "lodash/cloneDeep";
+// import codegen from "postman-code-generators";
 import type sdk from "postman-collection";
 
 import type { CodeSample, Language } from "./code-snippets-types";
-import {
-  generateLanguageSet,
-  getCodeSampleSourceFromLanguage,
-  mergeArraysbyLanguage,
-  mergeCodeSampleLanguage,
-} from "./languages";
-
-export const languageSet: Language[] = generateLanguageSet();
 
 export interface Props {
   postman: sdk.Request;
