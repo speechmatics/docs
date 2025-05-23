@@ -3,7 +3,7 @@
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
-    "lib": ["ES2024"],
+    "lib": ["ES2024", "DOM"],
     "target": "ES2024"
   },
   "exclude": [".docusaurus", "build"]
