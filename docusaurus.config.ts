@@ -57,7 +57,9 @@ const config: Config = {
     navbar: {
       logo: {
         alt: "Speechmatics Logo",
-        src: "img/logo.svg",
+        src: "img/logo-text.svg",
+        height: 23,
+        width: 150,
       },
       items: [
         {

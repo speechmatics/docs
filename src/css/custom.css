@@ -16,15 +16,18 @@
   --ifm-color-primary-lightest: var(--accent-7);
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  --ifm-background-surface-color: var(--gray-1);
   --ifm-font-family-base: var(--default-font-family);
+}
+
+.radix-themes {
+  --color-background: var(--gray-1);
 }
 
 .radix-themes > * {
   /* TODO see if there's a neater way to set the global font */
   --default-font-family: "DM Sans", sans-serif;
   font-family: var(--default-font-family);
-  --color-background: var(--gray-1);
+  --ifm-background-surface-color: var(--gray-1);
 }
 
 .theme-doc-sidebar-container {
