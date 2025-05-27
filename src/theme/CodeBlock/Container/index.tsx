@@ -1,19 +1,22 @@
 import { ThemeClassNames, usePrismTheme } from "@docusaurus/theme-common";
 import { getPrismCssVariables } from "@docusaurus/theme-common/internal";
+import { Slot } from "@radix-ui/themes";
 import clsx from "clsx";
 import React, { type ComponentProps, type ReactNode } from "react";
 import styles from "./styles.module.css";
 
-export default function CodeBlockContainer<T extends "div" | "pre">({
-  as: As,
+export default function CodeBlockContainer({
+  asChild,
   ...props
-}: { as: T } & ComponentProps<T>): ReactNode {
+}: { asChild?: true } & ComponentProps<"div">): ReactNode {
   const prismTheme = usePrismTheme();
   const prismCssVariables = getPrismCssVariables(prismTheme);
+
+  const Comp = asChild ? Slot : "div";
+
   return (
-    <As
-      // Polymorphic components are hard to type, without `oneOf` generics
-      {...(props as any)}
+    <Comp
+      {...props}
       style={prismCssVariables}
       className={clsx(
         props.className,

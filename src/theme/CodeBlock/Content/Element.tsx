@@ -1,7 +1,7 @@
-import Container from "@theme/CodeBlock/Container";
 import type { Props } from "@theme/CodeBlock/Content/Element";
 import clsx from "clsx";
 import React, { type ReactNode } from "react";
+import Container from "../Container";
 
 import styles from "./styles.module.css";
 
@@ -14,7 +14,7 @@ export default function CodeBlockJSX({
 }: Props): ReactNode {
   return (
     <Container
-      as="pre"
+      asChild
       tabIndex={0}
       className={clsx(styles.codeBlockStandalone, "thin-scrollbar", className)}
     >

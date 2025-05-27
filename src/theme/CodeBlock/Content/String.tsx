@@ -6,7 +6,6 @@ import {
   parseLines,
   useCodeWordWrap,
 } from "@docusaurus/theme-common/internal";
-import Container from "@theme/CodeBlock/Container";
 import type { Props } from "@theme/CodeBlock/Content/String";
 import CopyButton from "@theme/CodeBlock/CopyButton";
 import Line from "@theme/CodeBlock/Line";
@@ -14,6 +13,7 @@ import WordWrapButton from "@theme/CodeBlock/WordWrapButton";
 import clsx from "clsx";
 import { Highlight, type Language } from "prism-react-renderer";
 import React, { type ReactNode } from "react";
+import Container from "../Container";
 
 import styles from "./styles.module.css";
 
@@ -57,7 +57,7 @@ export default function CodeBlockString({
 
   return (
     <Container
-      as="div"
+      asChild
       className={clsx(
         blockClassName,
         language &&
@@ -65,50 +65,53 @@ export default function CodeBlockString({
           `language-${language}`,
       )}
     >
-      {title && <div className={styles.codeBlockTitle}>{title}</div>}
-      <div className={styles.codeBlockContent}>
-        <Highlight
-          theme={prismTheme}
-          code={code}
-          language={(language ?? "text") as Language}
-        >
-          {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <pre
-              /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */
-              tabIndex={0}
-              ref={wordWrap.codeBlockRef}
-              className={clsx(className, styles.codeBlock, "thin-scrollbar")}
-              style={style}
-            >
-              <code
-                className={clsx(
-                  styles.codeBlockLines,
-                  showLineNumbers && styles.codeBlockLinesWithNumbering,
-                )}
+      <div>
+        {title && <div className={styles.codeBlockTitle}>{title}</div>}
+        <div className={styles.codeBlockContent}>
+          <Highlight
+            theme={prismTheme}
+            code={code}
+            language={(language ?? "text") as Language}
+          >
+            {({ className, style, tokens, getLineProps, getTokenProps }) => (
+              <pre
+                // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
+                tabIndex={0}
+                ref={wordWrap.codeBlockRef}
+                className={clsx(className, styles.codeBlock, "thin-scrollbar")}
+                style={style}
               >
-                {tokens.map((line, i) => (
-                  <Line
-                    key={i}
-                    line={line}
-                    getLineProps={getLineProps}
-                    getTokenProps={getTokenProps}
-                    classNames={lineClassNames[i]}
-                    showLineNumbers={showLineNumbers}
-                  />
-                ))}
-              </code>
-            </pre>
-          )}
-        </Highlight>
-        <div className={styles.buttonGroup}>
-          {(wordWrap.isEnabled || wordWrap.isCodeScrollable) && (
-            <WordWrapButton
-              className={styles.codeButton}
-              onClick={() => wordWrap.toggle()}
-              isEnabled={wordWrap.isEnabled}
-            />
-          )}
-          <CopyButton className={styles.codeButton} code={code} />
+                <code
+                  className={clsx(
+                    styles.codeBlockLines,
+                    showLineNumbers && styles.codeBlockLinesWithNumbering,
+                  )}
+                >
+                  {tokens.map((line, i) => (
+                    <Line
+                      // biome-ignore lint/suspicious/noArrayIndexKey: this is static so it's fine
+                      key={i}
+                      line={line}
+                      getLineProps={getLineProps}
+                      getTokenProps={getTokenProps}
+                      classNames={lineClassNames[i]}
+                      showLineNumbers={showLineNumbers}
+                    />
+                  ))}
+                </code>
+              </pre>
+            )}
+          </Highlight>
+          <div className={styles.buttonGroup}>
+            {(wordWrap.isEnabled || wordWrap.isCodeScrollable) && (
+              <WordWrapButton
+                className={styles.codeButton}
+                onClick={() => wordWrap.toggle()}
+                isEnabled={wordWrap.isEnabled}
+              />
+            )}
+            <CopyButton className={styles.codeButton} code={code} />
+          </div>
         </div>
       </div>
     </Container>

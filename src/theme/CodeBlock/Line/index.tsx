@@ -11,8 +11,8 @@ export default function CodeBlockLine({
   getLineProps,
   getTokenProps,
 }: Props): ReactNode {
-  if (line.length === 1 && line[0]!.content === "\n") {
-    line[0]!.content = "";
+  if (line.length === 1 && line[0]?.content === "\n") {
+    line[0].content = "";
   }
 
   const lineProps = getLineProps({
@@ -21,6 +21,7 @@ export default function CodeBlockLine({
   });
 
   const lineTokens = line.map((token, key) => (
+    // biome-ignore lint/suspicious/noArrayIndexKey: this is static so it's fine
     <span key={key} {...getTokenProps({ token })} />
   ));
 
