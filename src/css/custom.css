@@ -89,11 +89,9 @@ html[data-theme="dark"] {
   --ifm-color-emphasis-1000: var(--ifm-color-gray-1000);
 
   --ifm-color-content: var(--ifm-color-emphasis-900);
-  --ifm-color-content-inverse: var(--ifm-color-emphasis-0);
   --ifm-color-content-secondary: var(--gray-11);
 
   --ifm-background-color: transparent;
-  --ifm-background-surface-color: var(--ifm-color-content-inverse);
   --ifm-menu-color: var(--gray-11);
   --ifm-footer-background-color: var(--gray-1);
 
@@ -116,6 +114,9 @@ html[data-theme="dark"] {
   --docusaurus-progress-bar-color: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-secondary-darkest);
   --ifm-menu-color-active: var(--ifm-color-secondary-darkest);
+
+  --ifm-color-content: var(--ifm-color-emphasis-900);
+  --ifm-color-content-inverse: var(--ifm-color-content);
 }
 
 html {
