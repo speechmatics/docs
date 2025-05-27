@@ -1,6 +1,6 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
-import { themes as prismThemes } from "prism-react-renderer";
+import { prismTheme } from "./prism-theme";
 import { sidebarItemsGenerator } from "./sidebar-generator";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -97,8 +97,8 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} Speechmatics. Built with Docusaurus.`,
     },
     prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      theme: prismTheme,
+      darkTheme: prismTheme,
     },
   } satisfies Preset.ThemeConfig,
 
