@@ -1,5 +1,5 @@
 import { Theme } from "@radix-ui/themes";
-import React, { useEffect, useRef, useSyncExternalStore } from "react";
+import React from "react";
 import "@radix-ui/themes/styles.css";
 
 // Default implementation, that you can customize
