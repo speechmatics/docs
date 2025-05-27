@@ -98,6 +98,8 @@ html[data-theme="dark"] {
   /* Use Radix styles for links, unset Docusaurus/Infima tokens */
   --ifm-link-color: unset;
   --ifm-link-hover-color: unset;
+  --ifm-code-background: unset;
+  --ifm-code-border-radius: unset;
 }
 
 .radix-themes {
