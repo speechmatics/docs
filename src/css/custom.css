@@ -12,21 +12,11 @@
 :root,
 html[data-theme="light"],
 html[data-theme="dark"] {
-  --ifm-color-primary: var(--accent-10);
   --ifm-color-secondary: var(--gray-10);
   --ifm-color-success: var(--green-10);
   --ifm-color-info: var(--blue-10);
   --ifm-color-warning: var(--amber-10);
   --ifm-color-danger: var(--red-10);
-
-  --ifm-color-primary-dark: var(--accent-10);
-  --ifm-color-primary-darker: var(--accent-11);
-  --ifm-color-primary-darkest: var(--accent-12);
-  --ifm-color-primary-light: var(--accent-9);
-  --ifm-color-primary-lighter: var(--accent-8);
-  --ifm-color-primary-lightest: var(--accent-7);
-  --ifm-color-primary-contrast-background: var(--accent-1);
-  --ifm-color-primary-contrast-foreground: var(--accent-10);
 
   --ifm-color-secondary-dark: var(--gray-10);
   --ifm-color-secondary-darker: var(--gray-11);
@@ -106,10 +96,26 @@ html[data-theme="dark"] {
   --ifm-background-surface-color: var(--ifm-color-content-inverse);
   --ifm-menu-color: var(--gray-11);
   --ifm-footer-background-color: var(--gray-1);
+
+  /* Use Radix styles for links, unset Docusaurus/Infima tokens */
+  --ifm-link-color: unset;
+  --ifm-link-hover-color: unset;
 }
 
 .radix-themes {
   --color-background: var(--gray-1);
+  --ifm-color-primary: var(--accent-10);
+  --ifm-color-primary-dark: var(--accent-10);
+  --ifm-color-primary-darker: var(--accent-11);
+  --ifm-color-primary-darkest: var(--accent-12);
+  --ifm-color-primary-light: var(--accent-9);
+  --ifm-color-primary-lighter: var(--accent-8);
+  --ifm-color-primary-lightest: var(--accent-7);
+
+  --ifm-breadcrumb-color-active: var(--ifm-color-primary);
+  --docusaurus-progress-bar-color: var(--ifm-color-primary);
+  --ifm-navbar-link-hover-color: var(--ifm-color-secondary-darkest);
+  --ifm-menu-color-active: var(--ifm-color-secondary-darkest);
 }
 
 html {
