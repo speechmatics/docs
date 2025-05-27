@@ -5,9 +5,14 @@
  */
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Passion+One:wght@700&display=swap");
 
-/* You can override the default Infima variables here. */
-:root {
-  --ifm-color-primary: var(--acent-10);
+/* 
+  You can override the default Infima variables here.
+  Here we're intentionally setting the same tokens for light and dark mode, since Radix handles this automatically.
+*/
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+  --ifm-color-primary: var(--accent-10);
   --ifm-color-secondary: var(--gray-10);
   --ifm-color-success: var(--green-10);
   --ifm-color-info: var(--blue-10);
@@ -127,4 +132,10 @@ main {
 
 .navbar__logo {
   color: red;
+}
+
+footer.footer,
+footer.footer--dark {
+  --ifm-footer-background-color: var(--gray-2);
+  border-top: 1px solid var(--ifm-toc-border-color);
 }
