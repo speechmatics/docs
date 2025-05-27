@@ -100,6 +100,9 @@ html[data-theme="dark"] {
   --ifm-link-hover-color: unset;
   --ifm-code-background: unset;
   --ifm-code-border-radius: unset;
+  --default-font-family: unset;
+  --ifm-heading-font-family: unset;
+  --ifm-font-family-base: unset;
 }
 
 .radix-themes {
@@ -119,6 +122,9 @@ html[data-theme="dark"] {
 
   --ifm-color-content: var(--ifm-color-emphasis-900);
   --ifm-color-content-inverse: var(--ifm-color-content);
+
+  --default-font-family: "DM Sans", sans-serif;
+  --ifm-font-family-base: var(--default-font-family);
 }
 
 html {
