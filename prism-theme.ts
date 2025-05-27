@@ -46,7 +46,7 @@ export const prismTheme = {
         "inserted",
       ],
       style: {
-        color: "var(--cyan-11)",
+        color: "var(--crimson-11)",
       },
     },
     {
@@ -58,7 +58,7 @@ export const prismTheme = {
     {
       types: ["function", "deleted", "tag"],
       style: {
-        color: "var(--crimson-11)",
+        color: "var(--cyan-11)",
       },
     },
     {
