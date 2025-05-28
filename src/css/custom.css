@@ -4,6 +4,7 @@
  * work well for content-centric websites.
  */
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Passion+One:wght@700&display=swap");
+@import "@radix-ui/themes/styles.css";
 
 /* 
   You can override the default Infima variables here.
@@ -100,8 +101,6 @@ html[data-theme="dark"] {
   --ifm-link-hover-color: unset;
   --ifm-code-background: unset;
   --ifm-code-border-radius: unset;
-  --default-font-family: unset;
-  --ifm-heading-font-family: unset;
   --ifm-font-family-base: unset;
 }
 
@@ -128,9 +127,7 @@ html[data-theme="dark"] {
 }
 
 html {
-  --default-font-family: "DM Sans", sans-serif;
-  font-family: var(--default-font-family);
-  --ifm-background-surface-color: var(--gray-1);
+  --ifm-font-family-base: unset;
 }
 
 .theme-doc-sidebar-container {
@@ -155,7 +152,14 @@ footer.footer--dark {
   border-top: 1px solid var(--ifm-toc-border-color);
 }
 
-.rt-Card {
-  --ifm-link-hover-decoration: none;
-  --ifm-link--decoration: none;
+/* Duplicating the Radix link styles, since Docusaurus imposes them at higher specificity */
+a.rt-Link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent-a6);
+  color: var(--accent-a11);
+}
+
+a.rt-Card {
+  text-decoration: none;
+  text-decoration-color: unset;
 }
