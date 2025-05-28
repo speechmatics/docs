@@ -8,7 +8,8 @@ import React, { type ReactNode } from "react";
 export default function CodeInline(props: Props): ReactNode {
   return (
     <Code variant="outline" color="gray" asChild>
-      <code {...props} style={{ border: "unset" }} />
+      {/* Unset the default Docusaurus `code` styles */}
+      <code {...props} style={{ border: "unset", verticalAlign: "unset" }} />
     </Code>
   );
 }

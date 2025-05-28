@@ -154,3 +154,8 @@ footer.footer--dark {
   --ifm-footer-background-color: var(--gray-2);
   border-top: 1px solid var(--ifm-toc-border-color);
 }
+
+.rt-Card {
+  --ifm-link-hover-decoration: none;
+  --ifm-link--decoration: none;
+}

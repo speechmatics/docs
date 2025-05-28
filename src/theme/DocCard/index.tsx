@@ -16,8 +16,7 @@ import type {
 import type { Props } from "@theme/DocCard";
 import Heading from "@theme/Heading";
 
-import { Card } from "@radix-ui/themes";
-import styles from "./styles.module.css";
+import { Card, Text } from "@radix-ui/themes";
 
 function useCategoryItemsPlural() {
   const { selectMessage } = usePluralForm();
@@ -36,23 +35,6 @@ function useCategoryItemsPlural() {
     );
 }
 
-function CardContainer({
-  href,
-  children,
-}: {
-  href: string;
-  children: ReactNode;
-}): ReactNode {
-  return (
-    <Link
-      href={href}
-      className={clsx("card padding--lg", styles.cardContainer)}
-    >
-      {children}
-    </Link>
-  );
-}
-
 function CardLayout({
   href,
   icon,
@@ -65,22 +47,17 @@ function CardLayout({
   description?: string;
 }): ReactNode {
   return (
-    <Card asChild>
+    <Card size="3" asChild>
       <Link href={href}>
-        <Heading
-          as="h2"
-          className={clsx("text--truncate", styles.cardTitle)}
-          title={title}
-        >
+        <Heading as="h2" className={clsx("text--truncate")} title={title}>
           {icon} {title}
         </Heading>
         {description && (
-          <p
-            className={clsx("text--truncate", styles.cardDescription)}
-            title={description}
-          >
-            {description}
-          </p>
+          <Text asChild color="gray">
+            <p className={clsx("text--truncate")} title={description}>
+              {description}
+            </p>
+          </Text>
         )}
       </Link>
     </Card>
