@@ -156,6 +156,7 @@ export default function DocSidebarItemCategory({
     }
   }, [collapsible, expandedItem, index, setCollapsed, autoCollapseCategories]);
 
+  // Show non-collapsible categories as uppercase text labels rather than an interactive element
   if (collapsible === false) {
     return (
       <Box mb="6">

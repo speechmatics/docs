@@ -4,6 +4,7 @@
  * work well for content-centric websites.
  */
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Passion+One:wght@700&display=swap");
+@import "@radix-ui/themes/styles.css";
 
 /* 
   You can override the default Infima variables here.
@@ -89,17 +90,18 @@ html[data-theme="dark"] {
   --ifm-color-emphasis-1000: var(--ifm-color-gray-1000);
 
   --ifm-color-content: var(--ifm-color-emphasis-900);
-  --ifm-color-content-inverse: var(--ifm-color-emphasis-0);
   --ifm-color-content-secondary: var(--gray-11);
 
   --ifm-background-color: transparent;
-  --ifm-background-surface-color: var(--ifm-color-content-inverse);
   --ifm-menu-color: var(--gray-11);
   --ifm-footer-background-color: var(--gray-1);
 
   /* Use Radix styles for links, unset Docusaurus/Infima tokens */
   --ifm-link-color: unset;
   --ifm-link-hover-color: unset;
+  --ifm-code-background: unset;
+  --ifm-code-border-radius: unset;
+  --ifm-font-family-base: unset;
 }
 
 .radix-themes {
@@ -116,12 +118,16 @@ html[data-theme="dark"] {
   --docusaurus-progress-bar-color: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-secondary-darkest);
   --ifm-menu-color-active: var(--ifm-color-secondary-darkest);
+
+  --ifm-color-content: var(--ifm-color-emphasis-900);
+  --ifm-color-content-inverse: var(--ifm-color-content);
+
+  --default-font-family: "DM Sans", sans-serif;
+  --ifm-font-family-base: var(--default-font-family);
 }
 
 html {
-  --default-font-family: "DM Sans", sans-serif;
-  font-family: var(--default-font-family);
-  --ifm-background-surface-color: var(--gray-1);
+  --ifm-font-family-base: unset;
 }
 
 .theme-doc-sidebar-container {
@@ -144,4 +150,16 @@ footer.footer,
 footer.footer--dark {
   --ifm-footer-background-color: var(--gray-2);
   border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+/* Duplicating the Radix link styles, since Docusaurus imposes them at higher specificity */
+a.rt-Link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent-a6);
+  color: var(--accent-a11);
+}
+
+a.rt-Card {
+  text-decoration: none;
+  text-decoration-color: unset;
 }

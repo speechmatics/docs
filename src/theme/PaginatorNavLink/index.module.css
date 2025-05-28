@@ -1,8 +1,3 @@
-.card {
-  --ifm-link-hover-decoration: none;
-  --ifm-link--decoration: none;
-}
-
 .cardLabelPrev::before {
   content: "« ";
 }

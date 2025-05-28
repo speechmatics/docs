@@ -55,3 +55,13 @@ async function transcribeFile() {
 transcribeFile();
 
 ```
+
+## A YAML example
+
+```yaml
+apiVersion: 3.0
+pods:
+  - foo
+  - bar
+  - baz
+```
