@@ -3,9 +3,8 @@
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
-    "types": ["node"],
-    "lib": ["ES2024"],
-    "target": "ES2024"
+    "lib": ["ES2023", "DOM"],
+    "target": "ES2023"
   },
   "exclude": [".docusaurus", "build"]
 }

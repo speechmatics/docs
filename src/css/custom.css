@@ -3,28 +3,163 @@
  * bundles Infima by default. Infima is a CSS framework designed to
  * work well for content-centric websites.
  */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Passion+One:wght@700&display=swap");
+@import "@radix-ui/themes/styles.css";
 
-/* You can override the default Infima variables here. */
-:root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+/* 
+  You can override the default Infima variables here.
+  Here we're intentionally setting the same tokens for light and dark mode, since Radix handles this automatically.
+*/
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+  --ifm-color-secondary: var(--gray-10);
+  --ifm-color-success: var(--green-10);
+  --ifm-color-info: var(--blue-10);
+  --ifm-color-warning: var(--amber-10);
+  --ifm-color-danger: var(--red-10);
+
+  --ifm-color-secondary-dark: var(--gray-10);
+  --ifm-color-secondary-darker: var(--gray-11);
+  --ifm-color-secondary-darkest: var(--gray-12);
+  --ifm-color-secondary-light: var(--gray-9);
+  --ifm-color-secondary-lighter: var(--gray-8);
+  --ifm-color-secondary-lightest: var(--gray-7);
+  --ifm-color-secondary-contrast-background: var(--gray-1);
+  --ifm-color-secondary-contrast-foreground: var(--gray-10);
+
+  --ifm-color-success-dark: var(--green-10);
+  --ifm-color-success-darker: var(--green-11);
+  --ifm-color-success-darkest: var(--green-12);
+  --ifm-color-success-light: var(--green-9);
+  --ifm-color-success-lighter: var(--green-8);
+  --ifm-color-success-lightest: var(--green-7);
+  --ifm-color-success-contrast-background: var(--green-1);
+  --ifm-color-success-contrast-foreground: var(--green-10);
+
+  --ifm-color-info-dark: var(--blue-10);
+  --ifm-color-info-darker: var(--blue-11);
+  --ifm-color-info-darkest: var(--blue-12);
+  --ifm-color-info-light: var(--blue-9);
+  --ifm-color-info-lighter: var(--blue-8);
+  --ifm-color-info-lightest: var(--blue-7);
+  --ifm-color-info-contrast-background: var(--blue-1);
+  --ifm-color-info-contrast-foreground: var(--blue-10);
+
+  --ifm-color-warning-dark: var(--amber-10);
+  --ifm-color-warning-darker: var(--amber-11);
+  --ifm-color-warning-darkest: var(--amber-12);
+  --ifm-color-warning-light: var(--amber-9);
+  --ifm-color-warning-lighter: var(--amber-8);
+  --ifm-color-warning-lightest: var(--amber-7);
+  --ifm-color-warning-contrast-background: var(--amber-1);
+  --ifm-color-warning-contrast-foreground: var(--amber-10);
+
+  --ifm-color-danger-dark: var(--red-10);
+  --ifm-color-danger-darker: var(--red-11);
+  --ifm-color-danger-darkest: var(--red-12);
+  --ifm-color-danger-light: var(--red-9);
+  --ifm-color-danger-lighter: var(--red-8);
+  --ifm-color-danger-lightest: var(--red-7);
+  --ifm-color-danger-contrast-background: var(--red-1);
+  --ifm-color-danger-contrast-foreground: var(--red-10);
+
+  --ifm-color-white: #fff;
+  --ifm-color-black: #000;
+  --ifm-color-gray-0: var(--ifm-color-white);
+  --ifm-color-gray-100: var(--gray-3);
+  --ifm-color-gray-200: var(--gray-4);
+  --ifm-color-gray-300: var(--gray-5);
+  --ifm-color-gray-400: var(--gray-6);
+  --ifm-color-gray-500: var(--gray-7);
+  --ifm-color-gray-600: var(--gray-8);
+  --ifm-color-gray-700: var(--gray-9);
+  --ifm-color-gray-800: var(--gray-10);
+  --ifm-color-gray-900: var(--gray-11);
+  --ifm-color-gray-1000: var(--gray-12);
+
+  --ifm-color-emphasis-0: var(--ifm-color-gray-0);
+  --ifm-color-emphasis-100: var(--ifm-color-gray-100);
+  --ifm-color-emphasis-200: var(--ifm-color-gray-200);
+  --ifm-color-emphasis-300: var(--ifm-color-gray-300);
+  --ifm-color-emphasis-400: var(--ifm-color-gray-400);
+  --ifm-color-emphasis-600: var(--ifm-color-gray-600);
+  --ifm-color-emphasis-700: var(--ifm-color-gray-700);
+  --ifm-color-emphasis-800: var(--ifm-color-gray-800);
+  --ifm-color-emphasis-900: var(--ifm-color-gray-900);
+  --ifm-color-emphasis-1000: var(--ifm-color-gray-1000);
+
+  --ifm-color-content: var(--ifm-color-emphasis-900);
+  --ifm-color-content-secondary: var(--gray-11);
+
+  --ifm-background-color: transparent;
+  --ifm-menu-color: var(--gray-11);
+  --ifm-footer-background-color: var(--gray-1);
+
+  /* Use Radix styles for links, unset Docusaurus/Infima tokens */
+  --ifm-link-color: unset;
+  --ifm-link-hover-color: unset;
+  --ifm-code-background: unset;
+  --ifm-code-border-radius: unset;
+  --ifm-font-family-base: unset;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme="dark"] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+.radix-themes {
+  --color-background: var(--gray-1);
+  --ifm-color-primary: var(--accent-10);
+  --ifm-color-primary-dark: var(--accent-10);
+  --ifm-color-primary-darker: var(--accent-11);
+  --ifm-color-primary-darkest: var(--accent-12);
+  --ifm-color-primary-light: var(--accent-9);
+  --ifm-color-primary-lighter: var(--accent-8);
+  --ifm-color-primary-lightest: var(--accent-7);
+
+  --ifm-breadcrumb-color-active: var(--ifm-color-primary);
+  --docusaurus-progress-bar-color: var(--ifm-color-primary);
+  --ifm-navbar-link-hover-color: var(--ifm-color-secondary-darkest);
+  --ifm-menu-color-active: var(--ifm-color-secondary-darkest);
+
+  --ifm-color-content: var(--ifm-color-emphasis-900);
+  --ifm-color-content-inverse: var(--ifm-color-content);
+
+  --default-font-family: "DM Sans", sans-serif;
+  --ifm-font-family-base: var(--default-font-family);
+}
+
+html {
+  --ifm-font-family-base: unset;
+}
+
+.theme-doc-sidebar-container {
+  background-color: var(--gray-2);
+}
+
+.navbar {
+  --ifm-navbar-background-color: var(--gray-2);
+}
+
+main {
+  min-height: 100vh;
+}
+
+.navbar__logo {
+  color: red;
+}
+
+footer.footer,
+footer.footer--dark {
+  --ifm-footer-background-color: var(--gray-2);
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+/* Duplicating the Radix link styles, since Docusaurus imposes them at higher specificity */
+a.rt-Link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent-a6);
+  color: var(--accent-a11);
+}
+
+a.rt-Card {
+  text-decoration: none;
+  text-decoration-color: unset;
 }

@@ -1,0 +1,7 @@
+.cardLabelPrev::before {
+  content: "« ";
+}
+
+.cardLabelNext::after {
+  content: " »";
+}

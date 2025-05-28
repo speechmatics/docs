@@ -1,6 +1,6 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
-import { themes as prismThemes } from "prism-react-renderer";
+import { prismTheme } from "./prism-theme";
 import { sidebarItemsGenerator } from "./sidebar-generator";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -41,8 +41,8 @@ const config: Config = {
           // editUrl:
           //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
           routeBasePath: "/",
-          sidebarItemsGenerator,
           sidebarPath: "./sidebars.ts",
+          sidebarItemsGenerator,
         },
         theme: {
           customCss: "./src/css/custom.css",
@@ -57,7 +57,10 @@ const config: Config = {
     navbar: {
       logo: {
         alt: "Speechmatics Logo",
-        src: "img/logo.svg",
+        src: "img/logo-text.svg",
+        srcDark: "img/logo-text-dark.svg",
+        height: 23,
+        width: 150,
       },
       items: [
         {
@@ -94,10 +97,17 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} Speechmatics. Built with Docusaurus.`,
     },
     prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      theme: prismTheme,
+      darkTheme: prismTheme,
     },
   } satisfies Preset.ThemeConfig,
+
+  scripts: [
+    {
+      src: "/js/color-theme.js",
+      async: true,
+    },
+  ],
 };
 
 export default config;
