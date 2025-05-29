@@ -175,38 +175,6 @@ a.rt-Card {
   border-color: var(--gray-4);
 }
 
-/* Style non Radix code elements equivalently */
-/* https://github.com/radix-ui/themes/blob/6ff886b26945ee0622eedb61752f879a322e0658/packages/radix-ui-themes/src/components/code.css#L4 */
-.radix-themes code:not(.rt-Code) {
-  --code-variant-font-size-adjust: calc(var(--code-font-size-adjust) * 0.95);
-  font-family: var(--code-font-family);
-  font-size: calc(var(--code-variant-font-size-adjust) * 1em);
-  font-style: var(--code-font-style);
-  font-weight: var(--code-font-weight);
-  line-height: 1.25;
-  letter-spacing: calc(
-    var(--code-letter-spacing) +
-    var(--letter-spacing, var(--default-letter-spacing))
-  );
-  border-radius: calc((0.5px + 0.2em) * var(--radius-factor));
-
-  box-sizing: border-box;
-  padding-top: var(--code-padding-top);
-  padding-left: var(--code-padding-left);
-  padding-bottom: var(--code-padding-bottom);
-  padding-right: var(--code-padding-right);
-
-  /* Make sure that the height is not stretched in a Flex/Grid layout */
-  height: fit-content;
-
-  & :where(&) {
-    font-size: inherit;
-  }
-
+code {
   background-color: unset;
-  color: var(--gray-11);
-}
-
-pre.openapi-explorer__code-block {
-  padding: var(--space-3);
 }

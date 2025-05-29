@@ -41,9 +41,10 @@ export const prismTheme = {
         "boolean",
         "variable",
         "constant",
-        "property",
         "regex",
         "inserted",
+        "function",
+        "class-name",
       ],
       style: {
         color: "var(--crimson-11)",
@@ -56,7 +57,7 @@ export const prismTheme = {
       },
     },
     {
-      types: ["function", "deleted", "tag"],
+      types: ["deleted", "tag", "property"],
       style: {
         color: "var(--cyan-11)",
       },
