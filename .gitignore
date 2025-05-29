@@ -21,3 +21,4 @@ yarn-error.log*
 
 # Auto generated API ref pages
 docs/jobs-api
+static/*.yaml

@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "npm run build:apis && docusaurus start",
+    "start": "npm run build:jobs-spec && npm run build:apis && docusaurus start",
     "build": "npm run build:apis && docusaurus build",
     "build:apis": "npm run build:jobs-api",
+    "build:jobs-spec": "tsx scripts/generate-jobs-spec.ts",
     "build:jobs-api": "rm -rf docs/jobs-api && docusaurus gen-api-docs jobs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -36,7 +37,9 @@
     "@docusaurus/module-type-aliases": "3.7.0",
     "@docusaurus/tsconfig": "3.7.0",
     "@docusaurus/types": "3.7.0",
-    "typescript": "~5.6.2"
+    "tsx": "^4.19.4",
+    "typescript": "~5.6.2",
+    "yaml": "^2.8.0"
   },
   "overrides": {
     "postman-code-generators": "1.10.1"

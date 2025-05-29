@@ -13,11 +13,11 @@
 :root,
 html[data-theme="light"],
 html[data-theme="dark"] {
-  --ifm-color-secondary: var(--gray-10);
-  --ifm-color-success: var(--green-10);
-  --ifm-color-info: var(--blue-10);
-  --ifm-color-warning: var(--amber-10);
-  --ifm-color-danger: var(--red-10);
+  --ifm-color-secondary: var(--gray-3);
+  --ifm-color-success: var(--green-9);
+  --ifm-color-info: var(--blue-9);
+  --ifm-color-warning: var(--amber-9);
+  --ifm-color-danger: var(--red-9);
 
   --ifm-color-secondary-dark: var(--gray-10);
   --ifm-color-secondary-darker: var(--gray-11);
@@ -102,6 +102,7 @@ html[data-theme="dark"] {
   --ifm-code-background: unset;
   --ifm-code-border-radius: unset;
   --ifm-font-family-base: unset;
+  --ifm-color-primary: unset;
 }
 
 .radix-themes {
@@ -113,6 +114,10 @@ html[data-theme="dark"] {
   --ifm-color-primary-light: var(--accent-9);
   --ifm-color-primary-lighter: var(--accent-8);
   --ifm-color-primary-lightest: var(--accent-7);
+
+  --ifm-tabs-color: var(--ifm-font-color-secondary);
+  --ifm-tabs-color-active: var(--ifm-color-primary);
+  --ifm-tabs-color-active-border: var(--ifm-tabs-color-active);
 
   --ifm-breadcrumb-color-active: var(--ifm-color-primary);
   --docusaurus-progress-bar-color: var(--ifm-color-primary);
@@ -162,4 +167,46 @@ a.rt-Link:hover {
 a.rt-Card {
   text-decoration: none;
   text-decoration-color: unset;
+}
+
+/* OpenAPI docs plugin customization */
+.radix-themes .openapi-explorer__form-item-input {
+  background-color: var(--gray-1);
+  border-color: var(--gray-4);
+}
+
+/* Style non Radix code elements equivalently */
+/* https://github.com/radix-ui/themes/blob/6ff886b26945ee0622eedb61752f879a322e0658/packages/radix-ui-themes/src/components/code.css#L4 */
+.radix-themes code:not(.rt-Code) {
+  --code-variant-font-size-adjust: calc(var(--code-font-size-adjust) * 0.95);
+  font-family: var(--code-font-family);
+  font-size: calc(var(--code-variant-font-size-adjust) * 1em);
+  font-style: var(--code-font-style);
+  font-weight: var(--code-font-weight);
+  line-height: 1.25;
+  letter-spacing: calc(
+    var(--code-letter-spacing) +
+    var(--letter-spacing, var(--default-letter-spacing))
+  );
+  border-radius: calc((0.5px + 0.2em) * var(--radius-factor));
+
+  box-sizing: border-box;
+  padding-top: var(--code-padding-top);
+  padding-left: var(--code-padding-left);
+  padding-bottom: var(--code-padding-bottom);
+  padding-right: var(--code-padding-right);
+
+  /* Make sure that the height is not stretched in a Flex/Grid layout */
+  height: fit-content;
+
+  & :where(&) {
+    font-size: inherit;
+  }
+
+  background-color: unset;
+  color: var(--gray-11);
+}
+
+pre.openapi-explorer__code-block {
+  padding: var(--space-3);
 }

@@ -70,6 +70,12 @@ function CodeSnippets({ postman, codeSamples }: Props) {
   //   auth: cleanedAuth,
   // });
 
+  if (!codeSamples.length) {
+    return null;
+  }
+
+  console.log(codeSamples);
+
   return (
     <Tabs>
       {codeSamples.map((sample) => (

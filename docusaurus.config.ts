@@ -114,7 +114,7 @@ const config: Config = {
         docsPluginId: "classic", // configured for preset-classic
         config: {
           jobs: {
-            specPath: "spec/jobs-spec-final.yaml",
+            specPath: "static/jobs.yaml",
             outputDir: "docs/jobs-api",
             sidebarOptions: {
               groupPathsBy: "tag",
