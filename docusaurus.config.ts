@@ -121,26 +121,6 @@ const config: Config = {
               sidebarCollapsed: false,
               sidebarCollapsible: true,
               groupPathsBy: "tag",
-              sidebarGenerators: {
-                // Tweaked from default implementation here:
-                // https://github.com/PaloAltoNetworks/docusaurus-openapi-docs/blob/912f7d6191333d76784f5dda0818d6b431952b9b/packages/docusaurus-plugin-openapi-docs/src/sidebars/index.ts#L44
-                createDocItem: (item, context) => {
-                  if (item.type === "api" && !item.api.tags?.length) {
-                    return null;
-                  }
-                  const id =
-                    item.type === "schema" ? `schemas/${item.id}` : item.id;
-
-                  return {
-                    type: "doc",
-                    id:
-                      context.basePath === "" || undefined
-                        ? `${id}`
-                        : `${context.basePath}/${id}`,
-                    label: item.title,
-                  };
-                },
-              },
             },
             showSchemas: true,
           } satisfies OpenApiPlugin.Options,
