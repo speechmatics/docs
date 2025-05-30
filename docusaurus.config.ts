@@ -121,6 +121,7 @@ const config: Config = {
               sidebarCollapsed: false,
               sidebarCollapsible: true,
             },
+            showSchemas: true,
           } satisfies OpenApiPlugin.Options,
         },
       },

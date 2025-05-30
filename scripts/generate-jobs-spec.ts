@@ -11,12 +11,30 @@ const LANGUAGES = {
   sh: "Shell",
 } as const;
 
+const includePaths = [
+  "/jobs",
+  "/jobs/{jobid}",
+  "/jobs/{jobid}/transcript",
+  "/jobs/{jobid}/alignment",
+  "/usage",
+];
+
+spec.tags = [
+  { name: "jobs", "x-displayName": "Jobs", description: "Jobs API" },
+];
+
+spec.basePath = "https://asr.api.speechmatics.com/v2";
+
 for (const [path, data] of Object.entries(spec.paths)) {
   if (!data || typeof data !== "object")
     throw new Error(`Unexpected path value under "${path}": ${data}`);
 
   for (const method of METHODS) {
     if (method in data) {
+      if (includePaths.includes(path)) {
+        data[method].tags = ["jobs"];
+      }
+
       let sampleFiles: string[] = [];
       try {
         sampleFiles = readdirSync(`./code-samples/jobs-api${path}`).filter(
@@ -37,6 +55,12 @@ for (const [path, data] of Object.entries(spec.paths)) {
       }));
     }
   }
+}
+
+// Give titles to each schema
+for (const schema of Object.values(spec.definitions)) {
+  // @ts-ignore, if this errors it will just break the build
+  schema.title = schema.name;
 }
 
 writeFileSync("static/jobs.yaml", yaml.stringify(spec));

@@ -94,7 +94,6 @@ html[data-theme="dark"] {
 
   --ifm-background-color: transparent;
   --ifm-menu-color: var(--gray-11);
-  --ifm-footer-background-color: var(--gray-1);
 
   /* Use Radix styles for links, unset Docusaurus/Infima tokens */
   --ifm-link-color: unset;
@@ -154,6 +153,8 @@ main {
 footer.footer,
 footer.footer--dark {
   --ifm-footer-background-color: var(--gray-2);
+  --ifm-footer-color: var(--gray-11);
+  --ifm-footer-link-color: var(--gray-11);
   border-top: 1px solid var(--ifm-toc-border-color);
 }
 
