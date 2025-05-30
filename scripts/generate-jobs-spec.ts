@@ -58,9 +58,9 @@ for (const [path, data] of Object.entries(spec.paths)) {
 }
 
 // Give titles to each schema
-for (const schema of Object.values(spec.definitions)) {
+for (const name of Object.keys(spec.definitions)) {
   // @ts-ignore, if this errors it will just break the build
-  schema.title = schema.name;
+  spec.definitions[name].title = name;
 }
 
 writeFileSync("static/jobs.yaml", yaml.stringify(spec));
