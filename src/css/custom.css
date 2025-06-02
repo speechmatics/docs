@@ -179,3 +179,44 @@ a.rt-Card {
 code {
   background-color: unset;
 }
+
+.api-method > a {
+  position: relative;
+  padding-left: 3.5em;
+}
+
+.api-method > a::before {
+  position: absolute;
+  font-size: 70%;
+  left: var(--space-1);
+  border-radius: var(--radius-4);
+  font-weight: 700;
+  font-family: var(--ifm-font-family-monospace);
+  background-color: var(--api-method-badge-color);
+  color: var(--gray-2);
+  padding: var(--space-1) var(--space-2);
+}
+
+.get.api-method > a::before {
+  --api-method-badge-color: var(--accent-6);
+  content: "GET";
+}
+.get.api-method > a.menu__link--active::before {
+  --api-method-badge-color: var(--accent-9);
+}
+
+.post.api-method > a::before {
+  --api-method-badge-color: var(--green-6);
+  content: "POST";
+}
+.post.api-method > a.menu__link--active::before {
+  --api-method-badge-color: var(--green-9);
+}
+
+.delete.api-method > a::before {
+  --api-method-badge-color: var(--red-6);
+  content: "DEL";
+}
+.delete.api-method > a.menu__link--active::before {
+  --api-method-badge-color: var(--red-9);
+}

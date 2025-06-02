@@ -11,18 +11,6 @@ const LANGUAGES = {
   sh: "Shell",
 } as const;
 
-const includePaths = [
-  "/jobs",
-  "/jobs/{jobid}",
-  "/jobs/{jobid}/transcript",
-  "/jobs/{jobid}/alignment",
-  "/usage",
-];
-
-spec.tags = [
-  { name: "jobs", "x-displayName": "Jobs", description: "Jobs API" },
-];
-
 spec.basePath = "https://asr.api.speechmatics.com/v2";
 
 for (const [path, data] of Object.entries(spec.paths)) {
@@ -31,10 +19,6 @@ for (const [path, data] of Object.entries(spec.paths)) {
 
   for (const method of METHODS) {
     if (method in data) {
-      if (includePaths.includes(path)) {
-        data[method].tags = ["jobs"];
-      }
-
       let sampleFiles: string[] = [];
       try {
         sampleFiles = readdirSync(`./code-samples/jobs-api${path}`).filter(

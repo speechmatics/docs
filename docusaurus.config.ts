@@ -1,6 +1,5 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
-import clsx from "clsx";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import { prismTheme } from "./prism-theme";
 import { sidebarItemsGenerator } from "./sidebar-generator";
@@ -74,25 +73,10 @@ const config: Config = {
           label: "Docs",
         },
         {
-          type: "dropdown",
-          label: "API reference",
+          type: "doc",
           position: "left",
-          items: [
-            {
-              type: "doc",
-              docId: "jobs-api/speechmatics-asr-rest-api",
-              label: "Jobs API",
-            },
-            // TODO add these as docs later. For now link to the existing docs as placeholder
-            {
-              label: "Flow Conversational AI",
-              href: "https://docs.speechmatics.com/flow-api-ref",
-            },
-            {
-              label: "Real-time transcription",
-              href: "https://docs.speechmatics.com/flow-api-ref",
-            },
-          ],
+          docId: "api-ref/index",
+          label: "API Reference",
         },
       ],
     },
@@ -116,13 +100,9 @@ const config: Config = {
         config: {
           jobs: {
             specPath: "static/jobs.yaml",
-            outputDir: "docs/jobs-api",
-            sidebarOptions: {
-              sidebarCollapsed: false,
-              sidebarCollapsible: true,
-              groupPathsBy: "tag",
-            },
+            outputDir: "docs/api-ref/jobs",
             showSchemas: true,
+            template: "templates/api.mustache",
           } satisfies OpenApiPlugin.Options,
         },
       },

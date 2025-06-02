@@ -166,7 +166,8 @@ paths:
       - $ref: "#/parameters/AuthHeader"
       - $ref: "#/parameters/EARTag"
     get:
-      summary: Get job details, including progress and any error reports.
+      summary: Get job details
+      description: Get job details, including progress and any error reports.
       parameters:
         - name: jobid
           in: path
@@ -214,7 +215,8 @@ paths:
               code: 500
               error: Internal Server Error
     delete:
-      summary: Delete a job and remove all associated resources.
+      summary: Delete a job
+      description: Delete a job and remove all associated resources.
       parameters:
         - name: jobid
           in: path
@@ -674,7 +676,8 @@ paths:
       - $ref: "#/parameters/AuthHeader"
       - $ref: "#/parameters/EARTag"
     get:
-      summary: Get signed urls for data files associated to the job.
+      summary: Get object URLs
+      description: Get signed urls for data files associated to the job.
       produces:
         - application/octet-stream
         - application/json

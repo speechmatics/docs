@@ -8,7 +8,7 @@
     "build": "npm run build:apis && docusaurus build",
     "build:apis": "npm run build:jobs-spec && npm run build:jobs-api",
     "build:jobs-spec": "tsx scripts/generate-jobs-spec.ts",
-    "build:jobs-api": "rm -rf docs/jobs-api && docusaurus gen-api-docs jobs",
+    "build:jobs-api": "rm -rf docs/api-ref/jobs && docusaurus gen-api-docs jobs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
