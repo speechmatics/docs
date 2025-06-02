@@ -113,13 +113,6 @@ export default {
           label: "Start transcription",
           className: "wss api-method",
         },
-        {
-          type: "category",
-          collapsible: false,
-          collapsed: false,
-          label: "Schemas",
-          items: [],
-        },
       ],
     },
   ],
