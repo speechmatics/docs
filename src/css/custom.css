@@ -193,7 +193,7 @@ code {
   font-weight: 700;
   font-family: var(--ifm-font-family-monospace);
   background-color: var(--api-method-badge-color);
-  color: var(--gray-2);
+  color: white;
   padding: var(--space-1) var(--space-2);
 }
 
@@ -219,4 +219,12 @@ code {
 }
 .delete.api-method > a.menu__link--active::before {
   --api-method-badge-color: var(--red-9);
+}
+
+.wss.api-method > a::before {
+  --api-method-badge-color: var(--teal-6);
+  content: "WSS";
+}
+.wss.api-method > a.menu__link--active::before {
+  --api-method-badge-color: var(--teal-9);
 }
