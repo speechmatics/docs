@@ -104,8 +104,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - StartConversation
+            const: StartConversation
           audio_format:
             "$ref": "#/components/schemas/AudioFormat"
           conversation_config:
@@ -134,8 +133,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - AudioReceived
+            const: AudioReceived
           seq_no:
             type: integer
         required:
@@ -148,8 +146,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - AudioEnded
+            const: AudioEnded
           last_seq_no:
             type: integer
         required:
@@ -162,8 +159,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - AddInput
+            const: AddInput
           input:
             type: string
           interrupt_response:
@@ -188,8 +184,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - ConversationStarted
+            const: ConversationStarted
           orchestrator_version:
             type: string
           id:
@@ -203,8 +198,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - AudioAdded
+            const: AudioAdded
           seq_no:
             type: integer
         required:
@@ -217,8 +211,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - AddPartialTranscript
+            const: AddPartialTranscript
           format:
             type: string
             example: "2.1"
@@ -240,8 +233,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - AddTranscript
+            const: AddTranscript
           format:
             type: string
             example: "2.1"
@@ -263,8 +255,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - ResponseStarted
+            const: ResponseStarted
           content:
             type: string
             description: The content that is spoken by the agent in the response.
@@ -283,8 +274,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - ResponseCompleted
+            const: ResponseCompleted
           content:
             type: string
             description: The content that is spoken by the agent in the response.
@@ -308,8 +298,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - ResponseInterrupted
+            const: ResponseInterrupted
           content:
             type: string
             description: The content that is spoken by the agent in the response.
@@ -333,8 +322,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - Info
+            const: Info
           type:
             enum:
               - recognition_quality
@@ -359,8 +347,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - Warning
+            const: Warning
           type:
             enum:
               - duration_limit_exceeded
@@ -383,8 +370,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - Error
+            const: Error
           type:
             enum:
               - invalid_message
@@ -418,8 +404,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - ConversationEnding
+            const: ConversationEnding
           reason:
             type: string
         required:
@@ -431,8 +416,7 @@ components:
         type: object
         properties:
           message:
-            enum:
-              - ConversationEnded
+            const: ConversationEnded
         required:
           - message
 
