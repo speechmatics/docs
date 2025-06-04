@@ -14,8 +14,8 @@ info:
 
 servers:
   default:
-    host: flow.speechmatics.com
-    protocol: WebSocket
+    host: flow.api.speechmatics.com/v1/flow
+    protocol: wss
     protocolVersion: v13 (RFC 6455)
     description: Flow server
     variables:
@@ -459,6 +459,8 @@ components:
         - "$ref": "#/components/schemas/AudioFormatFile"
 
     AudioFormatRaw:
+      type: object
+      title: "AudioFormatRaw"
       properties:
         type:
           enum:
@@ -476,6 +478,8 @@ components:
         - sample_rate
 
     AudioFormatFile:
+      type: object
+      title: "AudioFormatFile"
       properties:
         type:
           enum:

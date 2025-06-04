@@ -8,12 +8,27 @@ import { Parser, fromFile } from "@asyncapi/parser";
   const parser = new Parser();
   const { document } = await fromFile(parser, inputPath).parse();
 
-  let mdx = `
+  let mdx = `---
+title: ${document.info().externalDocs().description()}
+hide_title: true
+---
 import SchemaNode from "@theme/Schema";
 import Details from "@theme/Details";
+import Heading from "@theme/Heading";
 
-# ${document.info().externalDocs().description()}
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"${document.info().externalDocs().description()}"}
+>
+</Heading>
 
+<pre class="openapi__method-endpoint">
+  <span class="badge badge--primary">GET</span>
+  <h2 class="openapi__method-endpoint-path">${document.servers()[0].url()}</h2>
+</pre>
+
+<div class="openapi__divider"></div>
 `;
 
   const allMessageNames = Array.from(

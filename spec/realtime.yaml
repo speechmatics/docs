@@ -13,8 +13,8 @@ info:
     url: "https://docs.speechmatics.com/rt-api-ref"
 servers:
   default:
-    host: example.speechmatics.com
-    protocol: WebSocket
+    host: eu2.rt.speechmatics.com/v2
+    protocol: wss
     protocolVersion: v13 (RFC 6455)
     description: RealTime ASR server
     variables:
