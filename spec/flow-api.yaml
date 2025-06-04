@@ -1,6 +1,6 @@
-asyncapi: "1.0.0"
+asyncapi: 3.0.0
 id: "urn:com:speechmatics:flow-aservice"
-defaultContentType: "application/json"
+defaultContentType: application/json
 info:
   title: Speechmatics Flow API
   version: "1.0.0"
@@ -10,44 +10,91 @@ info:
     email: support@speechmatics.com
 
 servers:
-  - url: flow.speechmatics.com
-    description: Flow server
+  default:
+    host: flow.speechmatics.com
     protocol: WebSocket
     protocolVersion: v13 (RFC 6455)
+    description: Flow server
     variables:
       ports:
         default: "9000"
 
 channels:
-  /:
-    publish:
-      message:
-        oneOf:
-          - $ref: "#/components/messages/StartConversation"
-          - $ref: "#/components/messages/AddAudio"
-          - $ref: "#/components/messages/AudioReceived"
-          - $ref: "#/components/messages/AudioEnded"
-          - $ref: "#/components/messages/AddInput"
-    subscribe:
-      message:
-        oneOf:
-          - $ref: "#/components/messages/ConversationStarted"
-          - $ref: "#/components/messages/AddAudio"
-          - $ref: "#/components/messages/AudioAdded"
-          - $ref: "#/components/messages/AddPartialTranscript"
-          - $ref: "#/components/messages/AddTranscript"
-          - $ref: "#/components/messages/ResponseStarted"
-          - $ref: "#/components/messages/ResponseCompleted"
-          - $ref: "#/components/messages/ResponseInterrupted"
-          - $ref: "#/components/messages/Error"
-          - $ref: "#/components/messages/Warning"
-          - $ref: "#/components/messages/Info"
-          - $ref: "#/components/messages/ConversationEnding"
-          - $ref: "#/components/messages/ConversationEnded"
+  publish:
+    address: /
+    messages:
+      StartConversation:
+        $ref: "#/components/messages/StartConversation"
+      AddAudio:
+        $ref: "#/components/messages/AddAudio"
+      AudioReceived:
+        $ref: "#/components/messages/AudioReceived"
+      AudioEnded:
+        $ref: "#/components/messages/AudioEnded"
+      AddInput:
+        $ref: "#/components/messages/AddInput"
+  subscribe:
+    address: /
+    messages:
+      ConversationStarted:
+        $ref: "#/components/messages/ConversationStarted"
+      AddAudio:
+        $ref: "#/components/messages/AddAudio"
+      AudioAdded:
+        $ref: "#/components/messages/AudioAdded"
+      AddPartialTranscript:
+        $ref: "#/components/messages/AddPartialTranscript"
+      AddTranscript:
+        $ref: "#/components/messages/AddTranscript"
+      ResponseStarted:
+        $ref: "#/components/messages/ResponseStarted"
+      ResponseCompleted:
+        $ref: "#/components/messages/ResponseCompleted"
+      ResponseInterrupted:
+        $ref: "#/components/messages/ResponseInterrupted"
+      Error:
+        $ref: "#/components/messages/Error"
+      Warning:
+        $ref: "#/components/messages/Warning"
+      Info:
+        $ref: "#/components/messages/Info"
+      ConversationEnding:
+        $ref: "#/components/messages/ConversationEnding"
+      ConversationEnded:
+        $ref: "#/components/messages/ConversationEnded"
+
+operations:
+  publish:
+    action: send
+    channel:
+      $ref: "#/channels/publish"
+    messages:
+      - $ref: "#/channels/publish/messages/StartConversation"
+      - $ref: "#/channels/publish/messages/AddAudio"
+      - $ref: "#/channels/publish/messages/AudioReceived"
+      - $ref: "#/channels/publish/messages/AudioEnded"
+      - $ref: "#/channels/publish/messages/AddInput"
+  subscribe:
+    action: receive
+    channel:
+      $ref: "#/channels/subscribe"
+    messages:
+      - $ref: "#/channels/subscribe/messages/ConversationStarted"
+      - $ref: "#/channels/subscribe/messages/AddAudio"
+      - $ref: "#/channels/subscribe/messages/AudioAdded"
+      - $ref: "#/channels/subscribe/messages/AddPartialTranscript"
+      - $ref: "#/channels/subscribe/messages/AddTranscript"
+      - $ref: "#/channels/subscribe/messages/ResponseStarted"
+      - $ref: "#/channels/subscribe/messages/ResponseCompleted"
+      - $ref: "#/channels/subscribe/messages/ResponseInterrupted"
+      - $ref: "#/channels/subscribe/messages/Error"
+      - $ref: "#/channels/subscribe/messages/Warning"
+      - $ref: "#/channels/subscribe/messages/Info"
+      - $ref: "#/channels/subscribe/messages/ConversationEnding"
+      - $ref: "#/channels/subscribe/messages/ConversationEnded"
 
 components:
   messages:
-    # Sub
     StartConversation:
       summary: Initiates a new conversation session.
       payload:
@@ -73,7 +120,7 @@ components:
 
     AddAudio:
       summary: A binary chunk of audio. The server confirms receipt by sending an AudioAdded message.
-      contentType: "application/octet-stream"
+      contentType: application/octet-stream
       payload:
         type: string
         format: binary
@@ -132,7 +179,6 @@ components:
           - message
           - input
 
-    # Pub
     ConversationStarted:
       summary: Server response to StartConversation, acknowledging that a conversation session has started.
       payload:
@@ -209,60 +255,74 @@ components:
           - results
 
     ResponseStarted:
-      summary:
+      summary: Indicates the start of a response from the agent.
       payload:
         type: object
         properties:
           message:
             enum:
               - ResponseStarted
-            content:
-              type: string
-              description: The content that is spoken by the agent in the response.
-            start_time:
-              type: number
-              format: float
-              description: The start time of the spoken response, relative to the start of the session.
+          content:
+            type: string
+            description: The content that is spoken by the agent in the response.
+          start_time:
+            type: number
+            format: float
+            description: The start time of the spoken response, relative to the start of the session.
+        required:
+          - message
+          - content
+          - start_time
 
     ResponseCompleted:
-      summary:
+      summary: Indicates the completion of a response from the agent.
       payload:
         type: object
         properties:
           message:
             enum:
               - ResponseCompleted
-            content:
-              type: string
-              description: The content that is spoken by the agent in the response.
-            start_time:
-              type: number
-              format: float
-              description: The start time of the spoken response, relative to the start of the session.
-            end_time:
-              type: number
-              format: float
-              description: The end time of the spoken response, relative to the start of the session.
+          content:
+            type: string
+            description: The content that is spoken by the agent in the response.
+          start_time:
+            type: number
+            format: float
+            description: The start time of the spoken response, relative to the start of the session.
+          end_time:
+            type: number
+            format: float
+            description: The end time of the spoken response, relative to the start of the session.
+        required:
+          - message
+          - content
+          - start_time
+          - end_time
 
     ResponseInterrupted:
-      summary:
+      summary: Indicates that a response from the agent was interrupted.
       payload:
         type: object
         properties:
           message:
             enum:
               - ResponseInterrupted
-            content:
-              type: string
-              description: The content that is spoken by the agent in the response.
-            start_time:
-              type: number
-              format: float
-              description: The start time of the spoken response, relative to the start of the session.
-            end_time:
-              type: number
-              format: float
-              description: The end time of the spoken response, relative to the start of the session.
+          content:
+            type: string
+            description: The content that is spoken by the agent in the response.
+          start_time:
+            type: number
+            format: float
+            description: The start time of the spoken response, relative to the start of the session.
+          end_time:
+            type: number
+            format: float
+            description: The end time of the spoken response, relative to the start of the session.
+        required:
+          - message
+          - content
+          - start_time
+          - end_time
 
     Info:
       summary: Additional information sent from the server to the client.
