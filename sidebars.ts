@@ -92,7 +92,7 @@ export default {
       items: [
         {
           type: "doc",
-          id: "api-ref/flow-voice-ai",
+          id: "api-ref/flow-voice-ai-websocket",
           className: "wss api-method",
           label: "Start conversation with an agent",
         },
@@ -106,7 +106,7 @@ export default {
       items: [
         {
           type: "doc",
-          id: "api-ref/realtime",
+          id: "api-ref/realtime-transcription-websocket",
           label: "Transcribe real-time audio",
           className: "wss api-method",
         },
