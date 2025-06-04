@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "npm run build:jobs-spec && npm run build:apis && docusaurus start",
-    "build": "npm run build:apis && docusaurus build",
-    "build:apis": "npm run build:jobs-spec && npm run build:jobs-api",
+    "start": "run-s build:jobs-spec build:realtime-api-ref && docusaurus start",
+    "build": "run-s build:jobs-api-ref build:realtime-api-ref && docusaurus build",
     "build:jobs-spec": "tsx scripts/generate-jobs-spec.ts",
-    "build:jobs-api": "rm -rf docs/api-ref/jobs && docusaurus gen-api-docs jobs",
+    "build:jobs-api-ref": "rm -rf docs/api-ref/jobs && npm run build:jobs-spec && docusaurus gen-api-docs jobs",
     "build:realtime-api-ref": "tsx scripts/generate-websocket-api-ref.ts",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -39,6 +38,7 @@
     "@docusaurus/module-type-aliases": "3.7.0",
     "@docusaurus/tsconfig": "3.7.0",
     "@docusaurus/types": "3.7.0",
+    "npm-run-all": "^4.1.5",
     "tsx": "^4.19.4",
     "typescript": "~5.6.2",
     "yaml": "^2.8.0"
@@ -47,11 +47,7 @@
     "postman-code-generators": "1.10.1"
   },
   "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.5%", "not dead", "not op_mini all"],
     "development": [
       "last 3 chrome version",
       "last 3 firefox version",

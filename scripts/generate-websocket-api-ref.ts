@@ -1,22 +1,37 @@
-import { Parser, fromFile } from "@asyncapi/parser";
 import { writeFile } from "node:fs/promises";
+import { Parser, fromFile } from "@asyncapi/parser";
 
 (async () => {
   const parser = new Parser();
   const { document } = await fromFile(parser, "./spec/realtime.yaml").parse();
 
-  const startRecognition = document.channels()[0].messages()[0].json();
-
-  const mdx = `
+  let mdx = `
 import SchemaNode from "@theme/Schema";
 import Details from "@theme/Details";
 
-### ${startRecognition["x-parser-message-name"]}
+# ${document.info().externalDocs().description()}
 
-${startRecognition.summary}
-
-<SchemaNode schema={${JSON.stringify(startRecognition.payload)}} />
 `;
+
+  for (const channel of document.allChannels()) {
+    mdx += `## ${channel.id() === "publish" ? "Sent messages" : "Received messages"}
+`;
+
+    for (const message of channel.messages()) {
+      const {
+        "x-parser-message-name": name,
+        summary,
+        payload,
+      } = message.json();
+      mdx += `
+### ${name}
+
+${summary}
+
+<SchemaNode schema={${JSON.stringify(payload)}} />
+`;
+    }
+  }
 
   await writeFile("./docs/api-ref/realtime.mdx", mdx);
 })();
