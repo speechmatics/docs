@@ -186,7 +186,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/StartRecognitionEnum"
+          const: StartRecognition
         audio_format:
           $ref: "#/components/schemas/AudioFormat"
         transcription_config:
@@ -206,7 +206,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/EndOfStreamEnum"
+          const: EndOfStream
         last_seq_no:
           type: integer
       required:
@@ -216,7 +216,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/SetRecognitionConfigEnum"
+          const: SetRecognitionConfig
         transcription_config:
           $ref: "#/components/schemas/TranscriptionConfig"
       required:
@@ -226,7 +226,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/SessionTransferEnum"
+          const: SessionTransfer
         next_seq_no:
           type: integer
         end_time:
@@ -249,7 +249,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/RecognitionStartedEnum"
+          const: RecognitionStarted
         orchestrator_version:
           type: string
         id:
@@ -260,7 +260,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/AudioAddedEnum"
+          const: AudioAdded
         seq_no:
           type: integer
       required:
@@ -270,7 +270,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/AddPartialTranscriptEnum"
+          const: AddPartialTranscript
         format:
           type: string
           example: "2.1"
@@ -289,7 +289,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/AddTranscriptEnum"
+          const: AddTranscript
         format:
           type: string
           example: "2.1"
@@ -308,7 +308,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/EndOfUtteranceEnum"
+          const: EndOfUtterance
         metadata:
           $ref: "#/components/schemas/EndOfUtteranceMetadata"
       required:
@@ -327,7 +327,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/AddPartialTranslationEnum"
+          const: AddPartialTranslation
         format:
           type: string
           example: "2.1"
@@ -346,7 +346,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/AddTranslationEnum"
+          const: AddTranslation
         format:
           type: string
           example: "2.1"
@@ -365,14 +365,14 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/EndOfTranscriptEnum"
+          const: EndOfTranscript
       required:
         - message
     AudioEventStarted:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/AudioEventStartedEnum"
+          const: AudioEventStarted
         event:
           $ref: "#/components/schemas/AudioEventStartData"
       required:
@@ -382,7 +382,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/AudioEventEndedEnum"
+          const: AudioEventEnded
         event:
           $ref: "#/components/schemas/AudioEventEndData"
       required:
@@ -392,7 +392,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/InfoEnum"
+          const: Info
         type:
           $ref: "#/components/schemas/InfoTypeEnum"
         reason:
@@ -417,7 +417,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/WarningEnum"
+          const: Warning
         type:
           $ref: "#/components/schemas/WarningTypeEnum"
         reason:
@@ -436,7 +436,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/ErrorEnum"
+          const: Error
         type:
           $ref: "#/components/schemas/ErrorTypeEnum"
         reason:
@@ -453,7 +453,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/StartSessionTerminateEnum"
+          const: StartSessionTerminate
         reason:
           type: string
       required:
@@ -463,7 +463,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/EndSessionTerminateEnum"
+          const: EndSessionTerminate
         session_id:
           type: string
         next_seq_no:
@@ -491,7 +491,7 @@ components:
       type: object
       properties:
         type:
-          $ref: "#/components/schemas/AudioFormatRawEnum"
+          const: raw
         encoding:
           $ref: "#/components/schemas/RawAudioEncodingEnum"
         sample_rate:
@@ -504,7 +504,7 @@ components:
       type: object
       properties:
         type:
-          $ref: "#/components/schemas/AudioFormatFileEnum"
+          const: file
       required:
         - type
     TranscriptionConfig:
@@ -842,97 +842,9 @@ components:
       required:
         - type
         - end_time
-    StartRecognitionEnum:
-      type: string
-      enum:
-        - StartRecognition
-    AddAudioEnum:
-      type: string
-      enum:
-        - AddAudio
-    EndOfStreamEnum:
-      type: string
-      enum:
-        - EndOfStream
-    SetRecognitionConfigEnum:
-      type: string
-      enum:
-        - SetRecognitionConfig
-    SessionTransferEnum:
-      type: string
-      enum:
-        - SessionTransfer
-    RecognitionStartedEnum:
-      type: string
-      enum:
-        - RecognitionStarted
-    AudioAddedEnum:
-      type: string
-      enum:
-        - AudioAdded
-    AddPartialTranscriptEnum:
-      type: string
-      enum:
-        - AddPartialTranscript
-    AddTranscriptEnum:
-      type: string
-      enum:
-        - AddTranscript
-    AddPartialTranslationEnum:
-      type: string
-      enum:
-        - AddPartialTranslation
-    AddTranslationEnum:
-      type: string
-      enum:
-        - AddTranslation
-    EndOfTranscriptEnum:
-      type: string
-      enum:
-        - EndOfTranscript
-    AudioEventStartedEnum:
-      type: string
-      enum:
-        - AudioEventStarted
-    AudioEventEndedEnum:
-      type: string
-      enum:
-        - AudioEventEnded
-    InfoEnum:
-      type: string
-      enum:
-        - Info
-    WarningEnum:
-      type: string
-      enum:
-        - Warning
-    ErrorEnum:
-      type: string
-      enum:
-        - Error
-    StartSessionTerminateEnum:
-      type: string
-      enum:
-        - StartSessionTerminate
-    EndSessionTerminateEnum:
-      type: string
-      enum:
-        - EndSessionTerminate
-    AudioFormatRawEnum:
-      type: string
-      enum:
-        - raw
-    AudioFormatFileEnum:
-      type: string
-      enum:
-        - file
     RawAudioEncodingEnum:
       type: string
       enum:
         - pcm_f32le
         - pcm_s16le
         - mulaw
-    EndOfUtteranceEnum:
-      type: string
-      enum:
-        - EndOfUtterance

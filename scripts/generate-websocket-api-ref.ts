@@ -23,12 +23,12 @@ import Heading from "@theme/Heading";
 >
 </Heading>
 
-<pre class="openapi__method-endpoint">
-  <span class="badge badge--primary">GET</span>
-  <h2 class="openapi__method-endpoint-path">${document.servers()[0].url()}</h2>
+<pre className="openapi__method-endpoint">
+  <span className="badge badge--primary">GET</span>
+  <h2 className="openapi__method-endpoint-path">${document.servers()[0].url()}</h2>
 </pre>
 
-<div class="openapi__divider"></div>
+<div className="openapi__divider"></div>
 `;
 
   const allMessageNames = Array.from(

@@ -983,8 +983,8 @@ definitions:
           Specify an operating point to use.
           Operating points change the transcription process in a high level way, such as altering the acoustic model.
           The default is `standard`.
-            - **standard**:
-            - **enhanced**: transcription will take longer but be more accurate than 'standard'
+            - `standard`:
+            - `enhanced`: transcription will take longer but be more accurate than 'standard'
       additional_vocab:
         type: array
         x-omitempty: true
