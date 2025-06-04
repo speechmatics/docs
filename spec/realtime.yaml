@@ -1,0 +1,938 @@
+asyncapi: 3.0.0
+id: "urn:com:speechmatics:realtime-asr-api"
+defaultContentType: application/json
+info:
+  title: Speechmatics Realtime ASR API
+  version: 2.0.0
+  contact:
+    name: Speechmatics Support
+    url: "https://www.speechmatics.com/product/support/"
+    email: support@speechmatics.com
+  externalDocs:
+    description: Realtime API Reference
+    url: "https://docs.speechmatics.com/rt-api-ref"
+servers:
+  default:
+    host: example.speechmatics.com
+    protocol: WebSocket
+    protocolVersion: v13 (RFC 6455)
+    description: RealTime ASR server
+    variables:
+      ports:
+        default: "9000"
+channels:
+  publish:
+    address: /
+    messages:
+      StartRecognition:
+        $ref: "#/components/messages/StartRecognition"
+      AddAudio:
+        $ref: "#/components/messages/AddAudio"
+      EndOfStream:
+        $ref: "#/components/messages/EndOfStream"
+      SetRecognitionConfig:
+        $ref: "#/components/messages/SetRecognitionConfig"
+      SessionTransfer:
+        $ref: "#/components/messages/SessionTransfer"
+  subscribe:
+    address: /
+    messages:
+      RecognitionStarted:
+        $ref: "#/components/messages/RecognitionStarted"
+      AudioAdded:
+        $ref: "#/components/messages/AudioAdded"
+      AddPartialTranscript:
+        $ref: "#/components/messages/AddPartialTranscript"
+      AddTranscript:
+        $ref: "#/components/messages/AddTranscript"
+      AddPartialTranslation:
+        $ref: "#/components/messages/AddPartialTranslation"
+      AddTranslation:
+        $ref: "#/components/messages/AddTranslation"
+      EndOfTranscript:
+        $ref: "#/components/messages/EndOfTranscript"
+      AudioEventStarted:
+        $ref: "#/components/messages/AudioEventStarted"
+      AudioEventEnded:
+        $ref: "#/components/messages/AudioEventEnded"
+      EndOfUtterance:
+        $ref: "#/components/messages/EndOfUtterance"
+      Info:
+        $ref: "#/components/messages/Info"
+      Warning:
+        $ref: "#/components/messages/Warning"
+      Error:
+        $ref: "#/components/messages/Error"
+      StartSessionTerminate:
+        $ref: "#/components/messages/StartSessionTerminate"
+      EndSessionTerminate:
+        $ref: "#/components/messages/EndSessionTerminate"
+operations:
+  publish:
+    action: send
+    channel:
+      $ref: "#/channels/publish"
+    messages:
+      - $ref: "#/channels/publish/messages/StartRecognition"
+      - $ref: "#/channels/publish/messages/AddAudio"
+      - $ref: "#/channels/publish/messages/EndOfStream"
+      - $ref: "#/channels/publish/messages/SetRecognitionConfig"
+      - $ref: "#/channels/publish/messages/SessionTransfer"
+  subscribe:
+    action: receive
+    channel:
+      $ref: "#/channels/subscribe"
+    messages:
+      - $ref: "#/channels/subscribe/messages/RecognitionStarted"
+      - $ref: "#/channels/subscribe/messages/AudioAdded"
+      - $ref: "#/channels/subscribe/messages/AddPartialTranscript"
+      - $ref: "#/channels/subscribe/messages/AddTranscript"
+      - $ref: "#/channels/subscribe/messages/AddPartialTranslation"
+      - $ref: "#/channels/subscribe/messages/AddTranslation"
+      - $ref: "#/channels/subscribe/messages/EndOfTranscript"
+      - $ref: "#/channels/subscribe/messages/AudioEventStarted"
+      - $ref: "#/channels/subscribe/messages/AudioEventEnded"
+      - $ref: "#/channels/subscribe/messages/EndOfUtterance"
+      - $ref: "#/channels/subscribe/messages/Info"
+      - $ref: "#/channels/subscribe/messages/Warning"
+      - $ref: "#/channels/subscribe/messages/Error"
+      - $ref: "#/channels/subscribe/messages/StartSessionTerminate"
+      - $ref: "#/channels/subscribe/messages/EndSessionTerminate"
+components:
+  messages:
+    StartRecognition:
+      summary: Initiates a new recognition session.
+      payload:
+        $ref: "#/components/schemas/StartRecognition"
+    AddAudio:
+      summary: A binary chunk of audio. The server confirms receipt by sending an AudioAdded message.
+      contentType: application/octet-stream
+      payload:
+        $ref: "#/components/schemas/AddAudio"
+    EndOfStream:
+      summary: Declares that the client has no more audio to send.
+      payload:
+        $ref: "#/components/schemas/EndOfStream"
+    SetRecognitionConfig:
+      summary: Allows the client to re-configure the recognition session.
+      payload:
+        $ref: "#/components/schemas/SetRecognitionConfig"
+    SessionTransfer:
+      summary: Allows to continue with session transfed from other transcriber
+      payload:
+        $ref: "#/components/schemas/SessionTransfer"
+    RecognitionStarted:
+      summary: Server response to StartRecognition, acknowledging that a recognition session has started.
+      payload:
+        $ref: "#/components/schemas/RecognitionStarted"
+    AudioAdded:
+      summary: Server response to AddAudio, indicating that audio has been added successfully.
+      payload:
+        $ref: "#/components/schemas/AudioAdded"
+    AddPartialTranscript:
+      summary: Contains a work-in-progress transcript of a part of the audio that the client has sent.
+      payload:
+        $ref: "#/components/schemas/AddPartialTranscript"
+    AddTranscript:
+      summary: Contains the final transcript of a part of the audio that the client has sent.
+      payload:
+        $ref: "#/components/schemas/AddTranscript"
+    EndOfUtterance:
+      summary: Indicates the end of an utterance, triggered by a configurable period of non-speech.
+      payload:
+        $ref: "#/components/schemas/EndOfUtterance"
+    AddPartialTranslation:
+      summary: Contains a work-in-progress translation of a part of the audio that the client has sent.
+      payload:
+        $ref: "#/components/schemas/AddPartialTranslation"
+    AddTranslation:
+      summary: Contains the final translation of a part of the audio that the client has sent.
+      payload:
+        $ref: "#/components/schemas/AddTranslation"
+    EndOfTranscript:
+      summary: Server response to EndOfStream, after the server has finished sending all AddTranscript messages.
+      payload:
+        $ref: "#/components/schemas/EndOfTranscript"
+    AudioEventStarted:
+      summary: Start of an audio event detected.
+      payload:
+        $ref: "#/components/schemas/AudioEventStarted"
+    AudioEventEnded:
+      summary: End of an audio event detected.
+      payload:
+        $ref: "#/components/schemas/AudioEventEnded"
+    Info:
+      summary: Additional information sent from the server to the client.
+      payload:
+        $ref: "#/components/schemas/Info"
+    Warning:
+      summary: Warning messages sent from the server to the client.
+      payload:
+        $ref: "#/components/schemas/Warning"
+    Error:
+      summary: Error messages sent from the server to the client.
+      payload:
+        $ref: "#/components/schemas/Error"
+    StartSessionTerminate:
+      summary: Indicates starting of the session transfer procedure
+      payload:
+        $ref: "#/components/schemas/StartSessionTerminate"
+    EndSessionTerminate:
+      summary: Indicates finish of the session transfer procedure
+      payload:
+        $ref: "#/components/schemas/EndSessionTerminate"
+  schemas:
+    StartRecognition:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/StartRecognitionEnum"
+        audio_format:
+          $ref: "#/components/schemas/AudioFormat"
+        transcription_config:
+          $ref: "#/components/schemas/TranscriptionConfig"
+        translation_config:
+          $ref: "#/components/schemas/TranslationConfig"
+        audio_events_config:
+          $ref: "#/components/schemas/AudioEventsConfig"
+      required:
+        - message
+        - audio_format
+        - transcription_config
+    AddAudio:
+      type: string
+      format: binary
+    EndOfStream:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/EndOfStreamEnum"
+        last_seq_no:
+          type: integer
+      required:
+        - message
+        - last_seq_no
+    SetRecognitionConfig:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/SetRecognitionConfigEnum"
+        transcription_config:
+          $ref: "#/components/schemas/TranscriptionConfig"
+      required:
+        - message
+        - transcription_config
+    SessionTransfer:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/SessionTransferEnum"
+        next_seq_no:
+          type: integer
+        end_time:
+          type: number
+          format: float
+        speech_duration:
+          type: number
+          format: float
+        session_id:
+          type: string
+        transcription_config:
+          $ref: "#/components/schemas/TranscriptionConfig"
+      required:
+        - message
+        - next_seq_no
+        - end_time
+        - speech_duration
+        - session_id
+    RecognitionStarted:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/RecognitionStartedEnum"
+        orchestrator_version:
+          type: string
+        id:
+          type: string
+      required:
+        - message
+    AudioAdded:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/AudioAddedEnum"
+        seq_no:
+          type: integer
+      required:
+        - message
+        - seq_no
+    AddPartialTranscript:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/AddPartialTranscriptEnum"
+        format:
+          type: string
+          example: "2.1"
+          description: Speechmatics JSON output format version number.
+        metadata:
+          $ref: "#/components/schemas/RecognitionMetadata"
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecognitionResult"
+      required:
+        - message
+        - metadata
+        - results
+    AddTranscript:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/AddTranscriptEnum"
+        format:
+          type: string
+          example: "2.1"
+          description: Speechmatics JSON output format version number.
+        metadata:
+          $ref: "#/components/schemas/RecognitionMetadata"
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecognitionResult"
+      required:
+        - message
+        - metadata
+        - results
+    EndOfUtterance:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/EndOfUtteranceEnum"
+        metadata:
+          $ref: "#/components/schemas/EndOfUtteranceMetadata"
+      required:
+        - message
+        - metadata
+    EndOfUtteranceMetadata:
+      type: object
+      properties:
+        start_time:
+          type: number
+          format: float
+        end_time:
+          type: number
+          format: float
+    AddPartialTranslation:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/AddPartialTranslationEnum"
+        format:
+          type: string
+          example: "2.1"
+          description: Speechmatics JSON output format version number.
+        language:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/TranslatedSentence"
+      required:
+        - message
+        - language
+        - results
+    AddTranslation:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/AddTranslationEnum"
+        format:
+          type: string
+          example: "2.1"
+          description: Speechmatics JSON output format version number.
+        language:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/TranslatedSentence"
+      required:
+        - message
+        - language
+        - results
+    EndOfTranscript:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/EndOfTranscriptEnum"
+      required:
+        - message
+    AudioEventStarted:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/AudioEventStartedEnum"
+        event:
+          $ref: "#/components/schemas/AudioEventStartData"
+      required:
+        - message
+        - event
+    AudioEventEnded:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/AudioEventEndedEnum"
+        event:
+          $ref: "#/components/schemas/AudioEventEndData"
+      required:
+        - message
+        - event
+    Info:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/InfoEnum"
+        type:
+          $ref: "#/components/schemas/InfoTypeEnum"
+        reason:
+          type: string
+        code:
+          type: integer
+        seq_no:
+          type: integer
+        quality:
+          type: string
+        usage:
+          type: number
+        quota:
+          type: number
+        last_updated:
+          type: string
+      required:
+        - message
+        - type
+        - reason
+    Warning:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/WarningEnum"
+        type:
+          $ref: "#/components/schemas/WarningTypeEnum"
+        reason:
+          type: string
+        code:
+          type: integer
+        seq_no:
+          type: integer
+        duration_limit:
+          type: number
+      required:
+        - message
+        - type
+        - reason
+    Error:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/ErrorEnum"
+        type:
+          $ref: "#/components/schemas/ErrorTypeEnum"
+        reason:
+          type: string
+        code:
+          type: integer
+        seq_no:
+          type: integer
+      required:
+        - message
+        - type
+        - reason
+    StartSessionTerminate:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/StartSessionTerminateEnum"
+        reason:
+          type: string
+      required:
+        - message
+        - reason
+    EndSessionTerminate:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/EndSessionTerminateEnum"
+        session_id:
+          type: string
+        next_seq_no:
+          type: integer
+        end_time:
+          type: number
+          format: float
+        speech_duration:
+          type: number
+          format: float
+      required:
+        - message
+        - session_id
+        - next_seq_no
+        - end_time
+        - speech_duration
+    AudioFormat:
+      type: object
+      required:
+        - type
+      oneOf:
+        - $ref: "#/components/schemas/AudioFormatRaw"
+        - $ref: "#/components/schemas/AudioFormatFile"
+    AudioFormatRaw:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/AudioFormatRawEnum"
+        encoding:
+          $ref: "#/components/schemas/RawAudioEncodingEnum"
+        sample_rate:
+          type: integer
+      required:
+        - type
+        - encoding
+        - sample_rate
+    AudioFormatFile:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/AudioFormatFileEnum"
+      required:
+        - type
+    TranscriptionConfig:
+      type: object
+      properties:
+        language:
+          type: string
+        domain:
+          type: string
+          description: Request a specialized model based on 'language' but optimized for a particular field, e.g. "finance" or "medical".
+        output_locale:
+          $ref: "#/components/schemas/OutputLocale"
+        additional_vocab:
+          $ref: "#/components/schemas/VocabList"
+        diarization:
+          $ref: "#/components/schemas/DiarizationConfig"
+        max_delay:
+          type: number
+          minimum: 0
+        max_delay_mode:
+          $ref: "#/components/schemas/MaxDelayModeConfig"
+        speaker_diarization_config:
+          $ref: "#/components/schemas/SpeakerDiarizationConfig"
+        audio_filtering_config:
+          $ref: "#/components/schemas/AudioFilteringConfig"
+        transcript_filtering_config:
+          $ref: "#/components/schemas/TranscriptFilteringConfig"
+        enable_partials:
+          type: boolean
+          default: false
+        enable_entities:
+          type: boolean
+          default: true
+        operating_point:
+          $ref: "#/components/schemas/OperatingPoint"
+        punctuation_overrides:
+          $ref: "#/components/schemas/PunctuationOverrides"
+        conversation_config:
+          $ref: "#/components/schemas/ConversationConfig"
+      required:
+        - language
+    OperatingPoint:
+      type: string
+      enum:
+        - standard
+        - enhanced
+    PunctuationOverrides:
+      type: object
+      properties:
+        permitted_marks:
+          type: array
+          description: The punctuation marks which the client is prepared to accept in transcription output, or the special value 'all' (the default). Unsupported marks are ignored. This value is used to guide the transcription process.
+          items:
+            pattern: ^(.|all)$
+            type: string
+        sensitivity:
+          type: number
+          description: Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5.
+          format: float
+          maximum: 1
+          minimum: 0
+    ConversationConfig:
+      type: object
+      properties:
+        end_of_utterance_silence_trigger:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 2
+          default: 0
+      description: >-
+        This mode will detect when a speaker has stopped
+        talking. The end_of_utterance_silence_trigger is the time in seconds
+        after which the server will assume that the speaker has finished
+        speaking, and will emit an EndOfUtterance message. A value of 0 disables the feature.
+    TranslationConfig:
+      type: object
+      properties:
+        target_languages:
+          type: array
+          items:
+            type: string
+        enable_partials:
+          type: boolean
+          default: false
+      required:
+        - target_languages
+    AudioEventsConfig:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+    VocabList:
+      type: array
+      items:
+        $ref: "#/components/schemas/VocabWord"
+    VocabWord:
+      oneOf:
+        - type: string
+          minLength: 1
+        - $ref: "#/components/schemas/AdditionalVocabObject"
+    AdditionalVocabObject:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+        sounds_like:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          minItems: 1
+      required:
+        - content
+    DiarizationConfig:
+      type: string
+      enum:
+        - none
+        - speaker
+    SpeakerDiarizationConfig:
+      type: object
+      properties:
+        max_speakers:
+          type: number
+          format: integer
+          minimum: 2
+          maximum: 100
+        prefer_current_speaker:
+          type: boolean
+        speaker_sensitivity:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+    AudioFilteringConfig:
+      type: object
+      properties:
+        volume_threshold:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+    TranscriptFilteringConfig:
+      properties:
+        remove_disfluencies:
+          type: boolean
+        replacements:
+          description: A list of replacement rules to apply to the transcript. Each rule consists of a pattern to match and a replacement string.
+          type: array
+          items:
+            $ref: "#/components/schemas/WordReplacementList"
+    OutputLocale:
+      type: string
+      minLength: 1
+    RecognitionMetadata:
+      type: object
+      properties:
+        start_time:
+          type: number
+          format: float
+        end_time:
+          type: number
+          format: float
+        transcript:
+          type: string
+      required:
+        - start_time
+        - end_time
+        - transcript
+    RecognitionResult:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/RecognitionResultTypeEnum"
+        start_time:
+          type: number
+          format: float
+        end_time:
+          type: number
+          format: float
+        channel:
+          type: string
+        attaches_to:
+          $ref: "#/components/schemas/AttachesToEnum"
+        is_eos:
+          type: boolean
+        alternatives:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecognitionAlternative"
+        score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+        volume:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+      required:
+        - type
+        - start_time
+        - end_time
+    TranslatedSentence:
+      type: object
+      properties:
+        content:
+          type: string
+        start_time:
+          type: number
+          format: float
+        end_time:
+          type: number
+          format: float
+        speaker:
+          type: string
+      required:
+        - content
+        - start_time
+        - end_time
+    WordReplacementList:
+      type: array
+      items:
+        $ref: "#/components/schemas/WordReplacementItem"
+    RecognitionAlternative:
+      type: object
+      properties:
+        content:
+          type: string
+        confidence:
+          type: number
+          format: float
+        language:
+          type: string
+        display:
+          $ref: "#/components/schemas/RecognitionDisplay"
+        speaker:
+          type: string
+      required:
+        - content
+        - confidence
+    RecognitionDisplay:
+      required:
+        - direction
+      properties:
+        direction:
+          $ref: "#/components/schemas/DirectionEnum"
+    MaxDelayModeConfig:
+      type: string
+      enum:
+        - flexible
+        - fixed
+    RecognitionResultTypeEnum:
+      type: string
+      enum:
+        - word
+        - punctuation
+    AttachesToEnum:
+      type: string
+      enum:
+        - next
+        - previous
+        - none
+        - both
+    DirectionEnum:
+      type: string
+      enum:
+        - ltr
+        - rtl
+    WordReplacementItem:
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+      required:
+        - from
+        - to
+    InfoTypeEnum:
+      type: string
+      enum:
+        - recognition_quality
+        - model_redirect
+        - deprecated
+        - concurrent_session_usage
+    WarningTypeEnum:
+      type: string
+      enum:
+        - duration_limit_exceeded
+    ErrorTypeEnum:
+      type: string
+      enum:
+        - invalid_message
+        - invalid_model
+        - invalid_config
+        - invalid_audio_type
+        - not_authorised
+        - insufficient_funds
+        - not_allowed
+        - job_error
+        - data_error
+        - buffer_error
+        - protocol_error
+        - timelimit_exceeded
+        - quota_exceeded
+        - unknown_error
+    AudioEventStartData:
+      type: object
+      properties:
+        type:
+          type: string
+        start_time:
+          type: number
+          format: float
+        confidence:
+          type: number
+          format: float
+      required:
+        - type
+        - start_time
+        - confidence
+    AudioEventEndData:
+      type: object
+      properties:
+        type:
+          type: string
+        end_time:
+          type: number
+          format: float
+      required:
+        - type
+        - end_time
+    StartRecognitionEnum:
+      type: string
+      enum:
+        - StartRecognition
+    AddAudioEnum:
+      type: string
+      enum:
+        - AddAudio
+    EndOfStreamEnum:
+      type: string
+      enum:
+        - EndOfStream
+    SetRecognitionConfigEnum:
+      type: string
+      enum:
+        - SetRecognitionConfig
+    SessionTransferEnum:
+      type: string
+      enum:
+        - SessionTransfer
+    RecognitionStartedEnum:
+      type: string
+      enum:
+        - RecognitionStarted
+    AudioAddedEnum:
+      type: string
+      enum:
+        - AudioAdded
+    AddPartialTranscriptEnum:
+      type: string
+      enum:
+        - AddPartialTranscript
+    AddTranscriptEnum:
+      type: string
+      enum:
+        - AddTranscript
+    AddPartialTranslationEnum:
+      type: string
+      enum:
+        - AddPartialTranslation
+    AddTranslationEnum:
+      type: string
+      enum:
+        - AddTranslation
+    EndOfTranscriptEnum:
+      type: string
+      enum:
+        - EndOfTranscript
+    AudioEventStartedEnum:
+      type: string
+      enum:
+        - AudioEventStarted
+    AudioEventEndedEnum:
+      type: string
+      enum:
+        - AudioEventEnded
+    InfoEnum:
+      type: string
+      enum:
+        - Info
+    WarningEnum:
+      type: string
+      enum:
+        - Warning
+    ErrorEnum:
+      type: string
+      enum:
+        - Error
+    StartSessionTerminateEnum:
+      type: string
+      enum:
+        - StartSessionTerminate
+    EndSessionTerminateEnum:
+      type: string
+      enum:
+        - EndSessionTerminate
+    AudioFormatRawEnum:
+      type: string
+      enum:
+        - raw
+    AudioFormatFileEnum:
+      type: string
+      enum:
+        - file
+    RawAudioEncodingEnum:
+      type: string
+      enum:
+        - pcm_f32le
+        - pcm_s16le
+        - mulaw
+    EndOfUtteranceEnum:
+      type: string
+      enum:
+        - EndOfUtterance

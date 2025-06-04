@@ -9,6 +9,7 @@
     "build:apis": "npm run build:jobs-spec && npm run build:jobs-api",
     "build:jobs-spec": "tsx scripts/generate-jobs-spec.ts",
     "build:jobs-api": "rm -rf docs/api-ref/jobs && docusaurus gen-api-docs jobs",
+    "build:realtime-api-ref": "tsx scripts/generate-websocket-api-ref.ts",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -33,6 +34,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@asyncapi/parser": "^3.4.0",
     "@biomejs/biome": "^1.9.4",
     "@docusaurus/module-type-aliases": "3.7.0",
     "@docusaurus/tsconfig": "3.7.0",
@@ -45,7 +47,11 @@
     "postman-code-generators": "1.10.1"
   },
   "browserslist": {
-    "production": [">0.5%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 3 chrome version",
       "last 3 firefox version",
