@@ -23,11 +23,13 @@ export const sidebarItemsGenerator: SidebarItemsGeneratorOption = async ({
       return batchAPIPaths.includes(doc.frontMatter.api_path as string);
     }
     // TODO we can also filter schema docs we don't want here.
+    if (doc.frontMatter.sidebar_exclude) {
+      return false;
+    }
 
     return true;
   });
   const defaults = await defaultSidebarItemsGenerator({ ...args, docs });
-  console.log(defaults);
   return defaults.map((item) => withNormalizedLabel(item));
 };
 

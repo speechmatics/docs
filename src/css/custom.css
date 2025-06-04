@@ -95,24 +95,14 @@ html[data-theme="dark"] {
   --ifm-background-color: transparent;
   --ifm-menu-color: var(--gray-11);
 
-  /* Use Radix styles for links, unset Docusaurus/Infima tokens */
-  --ifm-link-color: unset;
-  --ifm-link-hover-color: unset;
-  --ifm-code-background: unset;
-  --ifm-code-border-radius: unset;
-  --ifm-font-family-base: unset;
-  --ifm-color-primary: unset;
-}
-
-.radix-themes {
   --color-background: var(--gray-1);
-  --ifm-color-primary: var(--accent-10);
-  --ifm-color-primary-dark: var(--accent-10);
-  --ifm-color-primary-darker: var(--accent-11);
-  --ifm-color-primary-darkest: var(--accent-12);
-  --ifm-color-primary-light: var(--accent-9);
-  --ifm-color-primary-lighter: var(--accent-8);
-  --ifm-color-primary-lightest: var(--accent-7);
+  --ifm-color-primary: var(--cyan-10);
+  --ifm-color-primary-dark: var(--cyan-10);
+  --ifm-color-primary-darker: var(--cyan-11);
+  --ifm-color-primary-darkest: var(--cyan-12);
+  --ifm-color-primary-light: var(--cyan-9);
+  --ifm-color-primary-lighter: var(--cyan-8);
+  --ifm-color-primary-lightest: var(--cyan-7);
 
   --ifm-tabs-color: var(--ifm-font-color-secondary);
   --ifm-tabs-color-active: var(--ifm-color-primary);
@@ -126,8 +116,21 @@ html[data-theme="dark"] {
   --ifm-color-content: var(--ifm-color-emphasis-900);
   --ifm-color-content-inverse: var(--ifm-color-content);
 
+  --ifm-alert-color: var(--cyan-10);
+  --ifm-alert-border-color: var(--cyan-10);
+}
+
+.radix-themes {
   --default-font-family: "DM Sans", sans-serif;
   --ifm-font-family-base: var(--default-font-family);
+
+  --ifm-color-primary: var(--accent-10);
+  --ifm-color-primary-dark: var(--accent-10);
+  --ifm-color-primary-darker: var(--accent-11);
+  --ifm-color-primary-darkest: var(--accent-12);
+  --ifm-color-primary-light: var(--accent-9);
+  --ifm-color-primary-lighter: var(--accent-8);
+  --ifm-color-primary-lightest: var(--accent-7);
 }
 
 html {

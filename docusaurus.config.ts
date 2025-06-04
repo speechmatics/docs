@@ -101,7 +101,6 @@ const config: Config = {
           jobs: {
             specPath: "static/jobs.yaml",
             outputDir: "docs/api-ref/jobs",
-            showSchemas: true,
             template: "templates/api.mustache",
           } satisfies OpenApiPlugin.Options,
         },

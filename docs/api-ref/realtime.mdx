@@ -14,7 +14,7 @@ Initiates a new recognition session.
 
 ### AddAudio
 
-A binary chunk of audio. The server confirms receipt by sending an AudioAdded message.
+A binary chunk of audio. The server confirms receipt by sending an [AudioAdded](#audioadded) message.
 
 <SchemaNode schema={{"type":"string","format":"binary","x-parser-schema-id":"AddAudio"}} />
 
@@ -39,13 +39,13 @@ Allows to continue with session transfed from other transcriber
 
 ### RecognitionStarted
 
-Server response to StartRecognition, acknowledging that a recognition session has started.
+Server response to [StartRecognition](#startrecognition), acknowledging that a recognition session has started.
 
 <SchemaNode schema={{"type":"object","properties":{"message":{"type":"string","enum":["RecognitionStarted"],"x-parser-schema-id":"RecognitionStartedEnum"},"orchestrator_version":{"type":"string","x-parser-schema-id":"<anonymous-schema-29>"},"id":{"type":"string","x-parser-schema-id":"<anonymous-schema-30>"}},"required":["message"],"x-parser-schema-id":"RecognitionStarted"}} />
 
 ### AudioAdded
 
-Server response to AddAudio, indicating that audio has been added successfully.
+Server response to [AddAudio](#addaudio), indicating that audio has been added successfully.
 
 <SchemaNode schema={{"type":"object","properties":{"message":{"type":"string","enum":["AudioAdded"],"x-parser-schema-id":"AudioAddedEnum"},"seq_no":{"type":"integer","x-parser-schema-id":"<anonymous-schema-31>"}},"required":["message","seq_no"],"x-parser-schema-id":"AudioAdded"}} />
 
@@ -75,7 +75,7 @@ Contains the final translation of a part of the audio that the client has sent.
 
 ### EndOfTranscript
 
-Server response to EndOfStream, after the server has finished sending all AddTranscript messages.
+Server response to [EndOfStream](#endofstream), after the server has finished sending all [AddTranscript](#addtranscript) messages.
 
 <SchemaNode schema={{"type":"object","properties":{"message":{"type":"string","enum":["EndOfTranscript"],"x-parser-schema-id":"EndOfTranscriptEnum"}},"required":["message"],"x-parser-schema-id":"EndOfTranscript"}} />
 

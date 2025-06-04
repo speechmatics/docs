@@ -8,6 +8,9 @@ info:
     name: Speechmatics Support
     url: https://www.speechmatics.com/product/support/
     email: support@speechmatics.com
+  externalDocs:
+    description: "Flow API Reference"
+    url: https://docs.speechmatics.com/api-ref/flow-voice-ai
 
 servers:
   default:

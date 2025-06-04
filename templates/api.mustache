@@ -9,7 +9,7 @@ sidebar_label: Introduction
 sidebar_label: "{{{title}}}"
 {{/api}}
 {{^api}}
-sidebar_position: 0
+sidebar_exclude: true
 {{/api}}
 hide_title: true
 {{#api}}
@@ -34,6 +34,8 @@ hide_send_button: true
 {{#frontMatter.show_extensions}}
 show_extensions: true
 {{/frontMatter.show_extensions}}
+{{#api}}
 api_path: {{{api.path}}}
+{{/api}}
 ---
 {{{markdown}}}

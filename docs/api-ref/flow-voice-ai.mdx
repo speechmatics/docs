@@ -1,0 +1,116 @@
+
+import SchemaNode from "@theme/Schema";
+import Details from "@theme/Details";
+
+# Flow API Reference
+
+## Sent messages
+
+### StartConversation
+
+Initiates a new conversation session.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["StartConversation"],"x-parser-schema-id":"<anonymous-schema-2>"},"audio_format":{"type":"object","required":["type"],"oneOf":[{"properties":{"type":{"enum":["raw"]},"encoding":{"enum":["pcm_f32le","pcm_s16le","mulaw"]},"sample_rate":{"type":"integer"}},"required":["type","encoding","sample_rate"],"x-parser-schema-id":"AudioFormatRaw"},{"properties":{"type":{"enum":["file"]}},"required":["type"],"x-parser-schema-id":"AudioFormatFile"}],"x-parser-schema-id":"AudioFormat"},"conversation_config":{"type":"object","required":["template_id"],"properties":{"template_id":{"type":"string","description":"The id of the agent or persona to use during the conversation.","x-parser-schema-id":"<anonymous-schema-3>"},"template_variables":{"type":"object","additionalProperties":{"type":"string","x-parser-schema-id":"<anonymous-schema-5>"},"x-parser-schema-id":"<anonymous-schema-4>"}},"x-parser-schema-id":"ConversationConfig"},"debug":{"type":"object","properties":{"llm":{"type":"boolean","x-parser-schema-id":"<anonymous-schema-7>"}},"additionalProperties":true,"x-parser-schema-id":"<anonymous-schema-6>"}},"required":["message","audio_format","conversation_config"],"x-parser-schema-id":"<anonymous-schema-1>"}} />
+
+### AddAudio
+
+A binary chunk of audio. The server confirms receipt by sending an AudioAdded message.
+
+<SchemaNode schema={{"type":"string","format":"binary","x-parser-schema-id":"<anonymous-schema-8>"}} />
+
+### AudioReceived
+
+Client response to AddAudio, indicating that server audio has been added to the client successfully.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["AudioReceived"],"x-parser-schema-id":"<anonymous-schema-10>"},"seq_no":{"type":"integer","x-parser-schema-id":"<anonymous-schema-11>"}},"required":["message","seq_no"],"x-parser-schema-id":"<anonymous-schema-9>"}} />
+
+### AudioEnded
+
+Declares that the client has no more audio to send.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["AudioEnded"],"x-parser-schema-id":"<anonymous-schema-13>"},"last_seq_no":{"type":"integer","x-parser-schema-id":"<anonymous-schema-14>"}},"required":["message","last_seq_no"],"x-parser-schema-id":"<anonymous-schema-12>"}} />
+
+### AddInput
+
+Message used by the application client to send input to the LLM in order to influence the conversation.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["AddInput"],"x-parser-schema-id":"<anonymous-schema-16>"},"input":{"type":"string","x-parser-schema-id":"<anonymous-schema-17>"},"interrupt_response":{"type":"boolean","default":false,"description":"If true, the response will be interrupted by the new input. If false, the response will continue until it is complete, defaults to false.","x-parser-schema-id":"<anonymous-schema-18>"},"immediate":{"type":"boolean","default":false,"description":"If true, the input will be treated as urgent and will be sent to LLM immediately. If false, new input will be added to current prompt and sent to LLM as a part of the next request.","x-parser-schema-id":"<anonymous-schema-19>"}},"required":["message","input"],"x-parser-schema-id":"<anonymous-schema-15>"}} />
+## Received messages
+
+### ConversationStarted
+
+Server response to StartConversation, acknowledging that a conversation session has started.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["ConversationStarted"],"x-parser-schema-id":"<anonymous-schema-21>"},"orchestrator_version":{"type":"string","x-parser-schema-id":"<anonymous-schema-22>"},"id":{"type":"string","x-parser-schema-id":"<anonymous-schema-23>"}},"required":["message"],"x-parser-schema-id":"<anonymous-schema-20>"}} />
+
+### AddAudio
+
+A binary chunk of audio. The server confirms receipt by sending an AudioAdded message.
+
+<SchemaNode schema={{"type":"string","format":"binary","x-parser-schema-id":"<anonymous-schema-8>"}} />
+
+### AudioAdded
+
+Server response to AddAudio, indicating that audio has been added successfully.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["AudioAdded"],"x-parser-schema-id":"<anonymous-schema-25>"},"seq_no":{"type":"integer","x-parser-schema-id":"<anonymous-schema-26>"}},"required":["message","seq_no"],"x-parser-schema-id":"<anonymous-schema-24>"}} />
+
+### AddPartialTranscript
+
+Contains a work-in-progress transcript of a part of the audio that the client has sent.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["AddPartialTranscript"],"x-parser-schema-id":"<anonymous-schema-28>"},"format":{"type":"string","example":"2.1","description":"Speechmatics JSON output format version number.","x-parser-schema-id":"<anonymous-schema-29>"},"metadata":{"type":"object","properties":{"start_time":{"type":"number","format":"float","x-parser-schema-id":"<anonymous-schema-30>"},"end_time":{"type":"number","format":"float","x-parser-schema-id":"<anonymous-schema-31>"},"transcript":{"type":"string","x-parser-schema-id":"<anonymous-schema-32>"}},"required":["start_time","end_time","transcript"],"x-parser-schema-id":"RecognitionMetadata"},"results":{"type":"array","items":{"type":"object","properties":{"type":{"type":"string","enum":["word","punctuation"],"x-parser-schema-id":"<anonymous-schema-34>"},"start_time":{"type":"number","format":"float","x-parser-schema-id":"<anonymous-schema-35>"},"end_time":{"type":"number","format":"float","x-parser-schema-id":"<anonymous-schema-36>"},"channel":{"type":"string","x-parser-schema-id":"<anonymous-schema-37>"},"attaches_to":{"type":"string","enum":["next","previous","none","both"],"x-parser-schema-id":"<anonymous-schema-38>"},"is_eos":{"type":"boolean","x-parser-schema-id":"<anonymous-schema-39>"},"alternatives":{"type":"array","items":{"type":"object","properties":{"content":{"type":"string","x-parser-schema-id":"<anonymous-schema-41>"},"confidence":{"type":"number","format":"float","x-parser-schema-id":"<anonymous-schema-42>"},"language":{"type":"string","x-parser-schema-id":"<anonymous-schema-43>"},"display":{"required":["direction"],"properties":{"direction":{"type":"string","enum":["ltr","rtl"]}},"x-parser-schema-id":"RecognitionDisplay"},"speaker":{"type":"string","x-parser-schema-id":"<anonymous-schema-44>"}},"required":["content","confidence"],"x-parser-schema-id":"RecognitionAlternative"},"x-parser-schema-id":"<anonymous-schema-40>"},"score":{"type":"number","format":"float","minimum":0,"maximum":1,"x-parser-schema-id":"<anonymous-schema-45>"},"volume":{"type":"number","format":"float","minimum":0,"maximum":100,"x-parser-schema-id":"<anonymous-schema-46>"}},"required":["type","start_time","end_time"],"x-parser-schema-id":"RecognitionResult"},"x-parser-schema-id":"<anonymous-schema-33>"}},"required":["message","metadata","results"],"x-parser-schema-id":"<anonymous-schema-27>"}} />
+
+### AddTranscript
+
+Contains the final transcript of a part of the audio that the client has sent.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["AddTranscript"],"x-parser-schema-id":"<anonymous-schema-48>"},"format":{"type":"string","example":"2.1","description":"Speechmatics JSON output format version number.","x-parser-schema-id":"<anonymous-schema-49>"},"metadata":{"type":"object","properties":{"start_time":{"type":"number","format":"float","x-parser-schema-id":"<anonymous-schema-30>"},"end_time":{"type":"number","format":"float","x-parser-schema-id":"<anonymous-schema-31>"},"transcript":{"type":"string","x-parser-schema-id":"<anonymous-schema-32>"}},"required":["start_time","end_time","transcript"],"x-parser-schema-id":"RecognitionMetadata"},"results":{"type":"array","items":{"type":"object","properties":{"type":{"type":"string","enum":["word","punctuation"],"x-parser-schema-id":"<anonymous-schema-34>"},"start_time":{"type":"number","format":"float","x-parser-schema-id":"<anonymous-schema-35>"},"end_time":{"type":"number","format":"float","x-parser-schema-id":"<anonymous-schema-36>"},"channel":{"type":"string","x-parser-schema-id":"<anonymous-schema-37>"},"attaches_to":{"type":"string","enum":["next","previous","none","both"],"x-parser-schema-id":"<anonymous-schema-38>"},"is_eos":{"type":"boolean","x-parser-schema-id":"<anonymous-schema-39>"},"alternatives":{"type":"array","items":{"type":"object","properties":{"content":{"type":"string","x-parser-schema-id":"<anonymous-schema-41>"},"confidence":{"type":"number","format":"float","x-parser-schema-id":"<anonymous-schema-42>"},"language":{"type":"string","x-parser-schema-id":"<anonymous-schema-43>"},"display":{"required":["direction"],"properties":{"direction":{"type":"string","enum":["ltr","rtl"]}},"x-parser-schema-id":"RecognitionDisplay"},"speaker":{"type":"string","x-parser-schema-id":"<anonymous-schema-44>"}},"required":["content","confidence"],"x-parser-schema-id":"RecognitionAlternative"},"x-parser-schema-id":"<anonymous-schema-40>"},"score":{"type":"number","format":"float","minimum":0,"maximum":1,"x-parser-schema-id":"<anonymous-schema-45>"},"volume":{"type":"number","format":"float","minimum":0,"maximum":100,"x-parser-schema-id":"<anonymous-schema-46>"}},"required":["type","start_time","end_time"],"x-parser-schema-id":"RecognitionResult"},"x-parser-schema-id":"<anonymous-schema-50>"}},"required":["message","metadata","results"],"x-parser-schema-id":"<anonymous-schema-47>"}} />
+
+### ResponseStarted
+
+Indicates the start of a response from the agent.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["ResponseStarted"],"x-parser-schema-id":"<anonymous-schema-52>"},"content":{"type":"string","description":"The content that is spoken by the agent in the response.","x-parser-schema-id":"<anonymous-schema-53>"},"start_time":{"type":"number","format":"float","description":"The start time of the spoken response, relative to the start of the session.","x-parser-schema-id":"<anonymous-schema-54>"}},"required":["message","content","start_time"],"x-parser-schema-id":"<anonymous-schema-51>"}} />
+
+### ResponseCompleted
+
+Indicates the completion of a response from the agent.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["ResponseCompleted"],"x-parser-schema-id":"<anonymous-schema-56>"},"content":{"type":"string","description":"The content that is spoken by the agent in the response.","x-parser-schema-id":"<anonymous-schema-57>"},"start_time":{"type":"number","format":"float","description":"The start time of the spoken response, relative to the start of the session.","x-parser-schema-id":"<anonymous-schema-58>"},"end_time":{"type":"number","format":"float","description":"The end time of the spoken response, relative to the start of the session.","x-parser-schema-id":"<anonymous-schema-59>"}},"required":["message","content","start_time","end_time"],"x-parser-schema-id":"<anonymous-schema-55>"}} />
+
+### ResponseInterrupted
+
+Indicates that a response from the agent was interrupted.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["ResponseInterrupted"],"x-parser-schema-id":"<anonymous-schema-61>"},"content":{"type":"string","description":"The content that is spoken by the agent in the response.","x-parser-schema-id":"<anonymous-schema-62>"},"start_time":{"type":"number","format":"float","description":"The start time of the spoken response, relative to the start of the session.","x-parser-schema-id":"<anonymous-schema-63>"},"end_time":{"type":"number","format":"float","description":"The end time of the spoken response, relative to the start of the session.","x-parser-schema-id":"<anonymous-schema-64>"}},"required":["message","content","start_time","end_time"],"x-parser-schema-id":"<anonymous-schema-60>"}} />
+
+### Error
+
+Error messages sent from the server to the client.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["Error"],"x-parser-schema-id":"<anonymous-schema-66>"},"type":{"enum":["invalid_message","invalid_model","invalid_config","invalid_audio_type","not_authorised","insufficient_funds","not_allowed","job_error","data_error","buffer_error","protocol_error","timelimit_exceeded","quota_exceeded","unknown_error"],"x-parser-schema-id":"<anonymous-schema-67>"},"reason":{"type":"string","x-parser-schema-id":"<anonymous-schema-68>"},"code":{"type":"integer","x-parser-schema-id":"<anonymous-schema-69>"},"seq_no":{"type":"integer","x-parser-schema-id":"<anonymous-schema-70>"}},"required":["message","type","reason"],"x-parser-schema-id":"<anonymous-schema-65>"}} />
+
+### Warning
+
+Warning messages sent from the server to the client.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["Warning"],"x-parser-schema-id":"<anonymous-schema-72>"},"type":{"enum":["duration_limit_exceeded"],"x-parser-schema-id":"<anonymous-schema-73>"},"reason":{"type":"string","x-parser-schema-id":"<anonymous-schema-74>"},"code":{"type":"integer","x-parser-schema-id":"<anonymous-schema-75>"},"seq_no":{"type":"integer","x-parser-schema-id":"<anonymous-schema-76>"},"duration_limit":{"type":"number","x-parser-schema-id":"<anonymous-schema-77>"}},"required":["message","type","reason"],"x-parser-schema-id":"<anonymous-schema-71>"}} />
+
+### Info
+
+Additional information sent from the server to the client.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["Info"],"x-parser-schema-id":"<anonymous-schema-79>"},"type":{"enum":["recognition_quality","model_redirect","deprecated"],"x-parser-schema-id":"<anonymous-schema-80>"},"reason":{"type":"string","x-parser-schema-id":"<anonymous-schema-81>"},"code":{"type":"integer","x-parser-schema-id":"<anonymous-schema-82>"},"seq_no":{"type":"integer","x-parser-schema-id":"<anonymous-schema-83>"},"quality":{"type":"string","x-parser-schema-id":"<anonymous-schema-84>"}},"required":["message","type","reason"],"x-parser-schema-id":"<anonymous-schema-78>"}} />
+
+### ConversationEnding
+
+Indicates starting of the session transfer procedure
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["ConversationEnding"],"x-parser-schema-id":"<anonymous-schema-86>"},"reason":{"type":"string","x-parser-schema-id":"<anonymous-schema-87>"}},"required":["message"],"x-parser-schema-id":"<anonymous-schema-85>"}} />
+
+### ConversationEnded
+
+Server ends the conversation, after the server has finished sending all other messages.
+
+<SchemaNode schema={{"type":"object","properties":{"message":{"enum":["ConversationEnded"],"x-parser-schema-id":"<anonymous-schema-89>"}},"required":["message"],"x-parser-schema-id":"<anonymous-schema-88>"}} />
