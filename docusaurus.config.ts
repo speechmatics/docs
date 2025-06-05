@@ -1,7 +1,9 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
+import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import { prismTheme } from "./prism-theme";
 import { sidebarItemsGenerator } from "./sidebar-generator";
+
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
@@ -42,6 +44,7 @@ const config: Config = {
           //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
           routeBasePath: "/",
           sidebarPath: "./sidebars.ts",
+          docItemComponent: "@theme/ApiItem", // Derived from docusaurus-theme-openapi
           sidebarItemsGenerator,
         },
         theme: {
@@ -70,24 +73,10 @@ const config: Config = {
           label: "Docs",
         },
         {
-          type: "dropdown",
-          label: "API reference",
+          type: "doc",
           position: "left",
-          items: [
-            // TODO add these as docs later. For now link to the existing docs as placeholder
-            {
-              label: "Flow Conversational AI",
-              href: "https://docs.speechmatics.com/flow-api-ref",
-            },
-            {
-              label: "Real-time transcription",
-              href: "https://docs.speechmatics.com/flow-api-ref",
-            },
-            {
-              label: "Jobs API",
-              href: "https://docs.speechmatics.com/jobs-api",
-            },
-          ],
+          docId: "api-ref/index",
+          label: "API Reference",
         },
       ],
     },
@@ -102,6 +91,23 @@ const config: Config = {
     },
   } satisfies Preset.ThemeConfig,
 
+  plugins: [
+    [
+      "docusaurus-plugin-openapi-docs",
+      {
+        id: "api", // plugin id
+        docsPluginId: "classic", // configured for preset-classic
+        config: {
+          jobs: {
+            specPath: "static/jobs.yaml",
+            outputDir: "docs/api-ref/jobs",
+            template: "templates/api.mustache",
+          } satisfies OpenApiPlugin.Options,
+        },
+      },
+    ],
+  ],
+  themes: ["docusaurus-theme-openapi-docs"], // export theme components
   scripts: [
     {
       src: "/js/color-theme.js",
