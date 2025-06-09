@@ -77,6 +77,8 @@ export default function SchemaItem(props: Props) {
     schemaName,
     schema,
   } = props;
+  console.log(qualifierMessage);
+
   // biome-ignore lint/suspicious/noImplicitAnyLet: This whole file will be removed when upstream is updated
   let deprecated;
   // biome-ignore lint/suspicious/noImplicitAnyLet: This whole file will be removed when upstream is updated
@@ -134,7 +136,7 @@ export default function SchemaItem(props: Props) {
 
   const renderQualifierMessage = guard(qualifierMessage, (message) => (
     <>
-      <Markdown>{message}</Markdown>
+      <Markdown>{message.replace(/^\*\*|\*\*:|\*\*/g, "")}</Markdown>
     </>
   ));
 
@@ -144,7 +146,7 @@ export default function SchemaItem(props: Props) {
       if (typeof constValue === "string") {
         return (
           <div>
-            <strong>Constant value: </strong>
+            <span>Constant value: </span>
             <span>
               <code>{constValue}</code>
             </span>

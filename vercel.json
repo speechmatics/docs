@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/introduction",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}
