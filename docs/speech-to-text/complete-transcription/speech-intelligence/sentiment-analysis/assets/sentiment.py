@@ -16,7 +16,7 @@ conf = {
     "type": "transcription",
     "transcription_config": {"language": LANGUAGE},
     # highlight-start
-    "summarization_config": {},  # You can also configure the summary. See below for more detail.
+    "sentiment_analysis_config": {},
     # highlight-end
 }
 
@@ -33,8 +33,17 @@ with BatchClient(settings) as client:
         # Notifications are described here: https://docs.speechmatics.com/features-other/notifications
         transcript = client.wait_for_completion(job_id, transcription_format="json-v2")
         # highlight-start
-        summary = transcript["summary"]["content"]
-        print(summary)  # print the returned summary
+        sentiment = transcript["sentiment_analysis"]
+        sentiment_summary = sentiment["summary"]
+        sentiment_segments = sentiment["segments"]
+        # highlight-end
+
+        print(sentiment_summary["overall"])
+        # highlight-start
+        for segment in sentiment_segments:
+            print(
+                f" {segment['text']} ({segment['sentiment']})"
+            )  # print the sentiment for each segment
         # highlight-end
     except HTTPStatusError as e:
         if e.response.status_code == 401:

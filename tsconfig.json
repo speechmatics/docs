@@ -4,7 +4,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "lib": ["ES2023", "DOM"],
-    "target": "ES2023"
+    "target": "ES2023",
+    "types": ["docusaurus-theme-openapi-docs"]
   },
   "exclude": [".docusaurus", "build"]
 }

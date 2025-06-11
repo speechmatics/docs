@@ -1,3 +1,10 @@
+import CodeBlock from '@theme/CodeBlock'
+import SchemaNode from '@theme/Schema'
+import { Box } from '@radix-ui/themes'
+
+import sentimentPythonSample from "./assets/sentiment.py"
+import jobsSpec from "!api-schema-loader!@site/spec/jobs.yaml"
+
 # Sentiment analysis
 
 Speechmatics enables you to understand the sentiment of what was spoken in your audio. With just a single API call, you can quickly transcribe and extract the sentiment, either positive, negative or neutral to quickly detect areas of conversation to analyse further.
@@ -16,80 +23,21 @@ If you're new to Speechmatics, please see our guide on [Transcribing a File](/sp
 
 ## Quick start
 
-Python client example to return sentiment for a batch file.
+Python client example to return transcription with sentiment analysis for an audio file.
 
-```python showLineNumbers
-from speechmatics.models import ConnectionSettings
-from speechmatics.batch_client import BatchClient
-from httpx import HTTPStatusError
+<CodeBlock language="python" showLineNumbers>
+  {sentimentPythonSample}
+</CodeBlock>
 
-API_KEY = "YOUR_API_KEY"
-PATH_TO_FILE = "example.wav"
-LANGUAGE = "en" # Transcription language
-
-settings = ConnectionSettings(
-    url="https://asr.api.speechmatics.com/v2",
-    auth_token=API_KEY,
-)
-
-# Define transcription parameters
-conf = {
-    "type": "transcription",
-    "transcription_config": {
-        "language": LANGUAGE
-    },
-    "sentiment_analysis_config": {}
-}
-
-# Open the client using a context manager
-with BatchClient(settings) as client:
-    try:
-        job_id = client.submit_job(
-            audio=PATH_TO_FILE,
-            transcription_config=conf,
-        )
-        print(f'job {job_id} submitted successfully, waiting for transcript')
-
-        # Note that in production, you should set up notifications instead of polling.
-        # Notifications are described here: https://docs.speechmatics.com/features-other/notifications
-        transcript = client.wait_for_completion(job_id, transcription_format='json-v2')
-        sentiment = transcript["sentiment_analysis"]
-        sentiment_summary = sentiment["summary"]
-        sentiment_segments = sentiment["segments"]
-
-        print(sentiment_summary["overall"])
-
-        for segment in sentiment_segments:
-          print(f' {segment["text"]} ({segment["sentiment"]})') # print the sentiment for each segment
-
-    except HTTPStatusError as e:
-        if e.response.status_code == 401:
-            print('Invalid API key - Check your API_KEY at the top of the code!')
-        elif e.response.status_code == 400:
-            print(e.response.json()['detail'])
-        else:
-            raise e
-```
 ## Understanding the Response
 
 Sentiment results are only available in the JSON output.
 
 Segments of the transcript are labeled with either positive, negative or neutral and a confidence score. This score indicates the model's certainty regarding the assigned sentiment prediction.
 
-- `sentiment_analysis.segments` provides a list of transcript segments, each with the following keys:
-
-  - **text:** this represents the transcript of the analysed segment
-  - **sentiment:** the assigned sentiment to the segment, which can be `positive`, `neutral` or `negative`
-  - **start/end time:** the timestamps corresponding to the beginning and end of the transcription segment
-  - **confidence:** a confidence score in the range of 0-1, indicating the model's certainty in the predicted sentiment
-  - **speaker/channel:** the label of the speaker or channel that correspond to the spoken segment
-
-- `sentiment_analysis.summary` - contains summaries of the sentiment across the complete file. Each summary provides a breakdown of the total segments, categorized as positive, neutral, or negative
-  - `sentiment_analysis.summary.overall` - A summary for all segments in the file
-  - `sentiment_analysis.summary.speakers` (optional) - If [Speaker Diarization](../features/diarization.mdx#speaker-diarization) is set to `speaker`, provides a summary of the sentiment by speaker
-  - `sentiment_analysis.summary.channels` (optional) - If [Speaker Diarization](../features/diarization.mdx#speaker-diarization) is set to `channel`, provides a summary of the sentiment by channel
-
-Please refer to our [API Reference](https://docs.speechmatics.com/jobsapi#tag/RetrieveTranscriptResponse) for full details about the sentiment API content.
+<Box m="2">
+  <SchemaNode schema={jobsSpec.definitions.SentimentAnalysisResult} expanded />
+</Box>
 
 ```json
 {
@@ -105,6 +53,7 @@ Please refer to our [API Reference](https://docs.speechmatics.com/jobsapi#tag/Re
     ...
   },
   "results": [...],
+  // highlight-start
   "sentiment_analysis": {
     "segments": [
       {
@@ -140,6 +89,7 @@ Please refer to our [API Reference](https://docs.speechmatics.com/jobsapi#tag/Re
       ]
     }
   }
+  // highlight-end
 }
 ```
 

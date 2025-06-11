@@ -43,7 +43,8 @@
     "tsx": "^4.19.4",
     "typescript": "~5.6.2",
     "yaml": "^2.8.0",
-    "yaml-loader": "^0.8.1"
+    "yaml-loader": "^0.8.1",
+    "api-schema-loader": "git+https://github.com/mnemitz/webpack-api-schema-loader.git"
   },
   "overrides": {
     "postman-code-generators": "1.10.1"

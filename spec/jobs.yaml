@@ -1291,6 +1291,8 @@ definitions:
         type: string
   SummarizationConfig:
     type: object
+    description: >-
+      Configuration options for summarization.
     properties:
       content_type:
         type: string
@@ -1945,19 +1947,39 @@ definitions:
     type: object
     description: Represents a segment of text and its associated sentiment.
     properties:
-      text: { type: string }
-      start_time: { type: number, format: float }
-      end_time: { type: number, format: float }
-      sentiment: { type: string }
-      speaker: { type: string }
-      channel: { type: string }
-      confidence: { type: number, format: float }
+      text:
+        type: string
+        description: Represents the transcript of the analysed segment
+      sentiment:
+        type: string
+        description: The assigned sentiment to the segment, which can be positive, neutral or negative
+      start_time:
+        type: number
+        format: float
+        description: The timestamp corresponding to the beginning of the transcription segment
+      end_time:
+        type: number
+        format: float
+        description: The timestamp corresponding to the end of the transcription segment
+      speaker:
+        type: string
+        description: The speaker label for the segment, if speaker diarization is enabled
+      channel:
+        type: string
+        description: The channel label for the segment, if channel diarization is enabled
+      confidence:
+        {
+          type: number,
+          format: float,
+          description: A confidence score in the range of 0-1,
+          indicating the model's certainty in the predicted sentiment,
+        }
   SentimentSummary:
     type: object
     description: Holds overall sentiment information, as well as detailed per-speaker and per-channel sentiment data.
     properties:
       overall:
-        description: Summary of overall sentiment data.
+        description: Summary for all segments in the file
         $ref: "#/definitions/SentimentSummaryDetail"
       speakers:
         type: array

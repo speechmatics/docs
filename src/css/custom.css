@@ -118,6 +118,8 @@ html[data-theme="dark"] {
 
   --ifm-alert-color: var(--cyan-10);
   --ifm-alert-border-color: var(--cyan-10);
+
+  --docusaurus-highlighted-code-line-bg: var(--gray-4);
 }
 
 .radix-themes {
