@@ -13,6 +13,8 @@ const LANGUAGES = {
 
 spec.basePath = "https://asr.api.speechmatics.com/v2";
 
+const projectRoot = `${__dirname}/..`;
+
 for (const [path, data] of Object.entries(spec.paths)) {
   if (!data || typeof data !== "object")
     throw new Error(`Unexpected path value under "${path}": ${data}`);
@@ -22,7 +24,7 @@ for (const [path, data] of Object.entries(spec.paths)) {
       let sampleFiles: string[] = [];
       try {
         sampleFiles = readdirSync(
-          `./example-content/code-samples/jobs-api${path}`,
+          `${projectRoot}/spec/code-samples/jobs-api${path}`,
         ).filter(
           // Regex match: e.g. "get.py", "post.js"
           (file) => file.match(new RegExp(`^${method}.[A-Za-z]+$`)),
@@ -38,7 +40,7 @@ for (const [path, data] of Object.entries(spec.paths)) {
       data[method]["x-codeSamples"] = sampleFiles.map((file) => ({
         lang: LANGUAGES[file.split(".")[1] as keyof typeof LANGUAGES],
         source: readFileSync(
-          `./example-content/code-samples/jobs-api${path}/${file}`,
+          `${projectRoot}/spec/code-samples/jobs-api${path}/${file}`,
           "utf8",
         ),
       }));
