@@ -1,4 +1,9 @@
-# Overview
+---
+sidebar_position: 0
+sidebar_label: Overview
+---
+
+# Speech-to-text overview
 
 Our flexible speech-to-text API easily integrates into your services, solutions and
 applications – giving you the most accurate transcription, powered by machine learning.

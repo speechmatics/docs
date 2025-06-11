@@ -1,0 +1,13 @@
+Key Topics:
+- Technical issue with mobile app
+- Updating software
+- Sending promotional articles via email
+
+Discussion:
+- Laura Perez is unable to complete bookings through the mobile app despite refreshing the page and checking her internet connection and payment method
+- The app keeps going back to the main page
+- Miranda suggests updating the app as it was recently updated to remove bugs
+- Laura has not updated the app yet and is using iOS 12.1
+- Miranda instructs Laura to update the app through the app store
+- Laura updates the app and is able to book a place
+- Miranda offers to send promotional articles via email to Laura

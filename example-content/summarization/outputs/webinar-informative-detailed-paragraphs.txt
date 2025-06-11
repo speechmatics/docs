@@ -1,0 +1,14 @@
+1. Introduction
+Speechmatics, a speech recognition software company, held a live product update event titled "ASR Revolution" to introduce their new models that focus on accuracy, speed, and efficiency. The company has previously optimized their models for CPUs and recently launched a beta version for laptops. However, they have now shifted their focus to GPUs, which are more powerful and efficient for processing.
+
+2. New Models
+The new models, named Ursa, have been benchmarked against competitors and have been found to be the most accurate ASR on the planet, with a 35% improvement for standard and 22% for enhanced. The models also perform better with accents and noise. The company has also improved efficiency, with the new models being three times more efficient than CPU processing for standard and 1.7 times for enhanced. The new models also maintain accuracy even at small latencies, making them suitable for real-time transcription. The company has already had beta customers use the new models for live captioning at a major car racing event.
+
+3. New Version
+Speechmatics has released a new version of its speech recognition software that includes improvements to speaker diarization, batch processing, and readability. The new version also includes automatic language identification and translation capabilities for 34 languages to and from English. The translation feature is available in batch processing and will be available in real-time processing in Q2 2023. The company claims that its transcription accuracy is the best in the industry and that its translation feature outperforms Google's translation service. The new version is available to enterprise customers and will be rolled out to other languages later this year.
+
+4. How to Use
+The speaker demonstrates how to use Speechmatics' transcription and translation services through their portal or API. The user can select the language they want to translate their audio file to and choose between enhanced or standard speed. The portal also allows users to view previous jobs and real-time transcription with the option to add custom words and reduce latency. The speaker also addresses questions about the accuracy of the system, the maximum size of audio files, and the support for multiple languages in real-time streams.
+
+5. Conclusion
+The company claims to outcompete other alternatives in terms of accuracy, efficiency, and processing speed.

@@ -31,7 +31,7 @@ export default {
     },
     {
       type: "category",
-      label: "Voice Agents Flow",
+      label: "Voice Agents — Flow",
       collapsible: false,
       collapsed: false,
       items: [

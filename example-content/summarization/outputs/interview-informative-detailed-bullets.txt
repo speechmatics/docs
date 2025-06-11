@@ -1,0 +1,17 @@
+1. Importance of accurate transcription in contact center analytics
+  - Speech-to-text technology used to provide insights and predictions based on customer conversations
+  - Accuracy of transcription crucial for machine learning algorithms to make accurate predictions
+  - Small improvements in transcription accuracy can have a significant impact on machine learning accuracy
+
+2. Importance of diverse and inclusive voice model
+  - Multinational corporations send voice traffic to call centers all over the world
+  - More diverse set of voices used in training, wider the net for what's typical and same level of recognition accuracy can be achieved
+  - Non-native English speaking voices, female voices, and younger voices are all areas where many transcription engines struggle
+
+3. Disparate impact of transcription accuracy differences
+  - If transcription is less accurate for a particular voice, then the prediction is less accurate for that voice, creating a disparate impact that businesses do not want
+
+4. Future of speech recognition in contact center space
+  - Evolving towards a hybrid workforce, where businesses need to be remote-ready to support both customers and employees
+  - Automation is a trend, but there are certain interactions that people will not be comfortable dealing with an automated bot
+  - Sarcasm is a tricky problem, but speech and voice analytics used as data point to detect it.

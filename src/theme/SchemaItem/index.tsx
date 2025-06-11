@@ -77,7 +77,6 @@ export default function SchemaItem(props: Props) {
     schemaName,
     schema,
   } = props;
-  console.log(qualifierMessage);
 
   // biome-ignore lint/suspicious/noImplicitAnyLet: This whole file will be removed when upstream is updated
   let deprecated;

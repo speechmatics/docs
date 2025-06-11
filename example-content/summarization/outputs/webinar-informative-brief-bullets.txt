@@ -1,0 +1,5 @@
+- Speechmatics introduced new speech recognition models named Ursa that are optimized for GPUs and are the most accurate ASR on the planet with a 35% improvement for standard and a 22% improvement for enhanced. The new models are also three times more efficient than CPU-based models.
+  
+- The company has released a new version of its speech recognition software that includes improvements to speaker diarization, batch processing, and readability. The new version also includes automatic language identification and translation capabilities for 34 languages to and from English, with the translation feature outperforming Google's translation service.
+  
+- The speaker demonstrates how to use Speechmatics' transcription and translation services through their portal or API, including real-time transcription that can be customized with speaker labels and custom words. The speaker also answers questions about the accuracy of the system, maximum file size for transcription, and support for multiple languages in real-time streams.

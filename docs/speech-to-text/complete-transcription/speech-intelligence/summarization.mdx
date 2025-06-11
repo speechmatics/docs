@@ -1,0 +1,226 @@
+---
+description: "Learn how to use Speechmatics's summarization feature."
+keywords:
+  [
+    speechmatics,
+    features,
+    summarization,
+    summary,
+    transcription,
+    speech recognition,
+    automatic speech recognition,
+    asr,
+    speech summarization,
+    speech-to-text summarization,
+    speech summarization,
+    abstractive summarization,
+  ]
+---
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+import { Text, Box, Card } from '@radix-ui/themes'
+import CodeBlock from '@theme/CodeBlock'
+
+import jobsSchema from "@site/spec/jobs.yaml"
+import summarizationPythonSample from "@site/example-content/summarization/summarization.py"
+
+import webinarSummaryBriefBullets from "@site/example-content/summarization/outputs/webinar-informative-brief-bullets.txt"
+import webinarSummaryBriefParagraphs from "@site/example-content/summarization/outputs/webinar-informative-brief-paragraphs.txt"
+import webinarSummaryDetailedBullets from "@site/example-content/summarization/outputs/webinar-informative-detailed-bullets.txt"
+import webinarSummaryDetailedParagraphs from "@site/example-content/summarization/outputs/webinar-informative-detailed-paragraphs.txt"
+import interviewSummaryBriefBullets from "@site/example-content/summarization/outputs/interview-informative-brief-bullets.txt"
+import interviewSummaryBriefParagraphs from "@site/example-content/summarization/outputs/interview-informative-brief-paragraphs.txt"
+import interviewSummaryDetailedBullets from "@site/example-content/summarization/outputs/interview-informative-detailed-bullets.txt"
+import interviewSummaryDetailedParagraphs from "@site/example-content/summarization/outputs/interview-informative-detailed-paragraphs.txt"
+import techSupportCallBriefBullets from "@site/example-content/summarization/outputs/tech-support-call-conversational-brief-bullets.txt"
+import techSupportCallBriefParagraphs from "@site/example-content/summarization/outputs/tech-support-call-conversational-brief-paragraphs.txt"
+import techSupportCallDetailedBullets from "@site/example-content/summarization/outputs/tech-support-call-conversational-detailed-bullets.txt"
+import techSupportCallDetailedParagraphs from "@site/example-content/summarization/outputs/tech-support-call-conversational-detailed-paragraphs.txt"
+
+import SchemaNode from "@theme/Schema"
+
+# Summarization
+
+Speechmatics enables you to generate a concise summary from your audio. With just a single API call, you can quickly transcribe and summarize content, making content review simpler and more efficient.
+
+If you're new to Speechmatics, please see our guide on [Transcribing a File](/speech-to-text/complete-transcription/quickstart). Once you are set up, include the following config to enable Summaries:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en"
+  },
+  "summarization_config": {}  # You can also configure the summary. See below for more detail.
+}
+```
+
+## Quickstart
+
+Python example to summarize a filed with the default parameters:
+
+<CodeBlock language="python">
+  {summarizationPythonSample}
+</CodeBlock>
+
+## Example Response
+
+The summary is only present in the JSON output.
+
+```json
+{
+  "job": { ... },
+  "metadata": {
+    "created_at": "2023-05-26T15:01:48.412714Z",
+    "type": "transcription",
+    "transcription_config": {
+      "language": "en"
+    },
+    "summarization_config": {}
+    ...
+  },
+  "results": [...],
+  "summary": {
+    "content": "Laura Perez called to seek assistance in completing her booking through the mobile application..."
+  }
+}
+```
+
+
+## Configuration options
+
+{/* TODO this is a bit of a hack to get the `summarization_config` property name. We can engineer something better later */}
+<Text size="4">
+  <Text style={{fontFamily: "var(--code-font-family)"}}>**summarization_config**</Text>&nbsp;<Text color="gray">object</Text>
+</Text>
+<Box ml="4">
+  <SchemaNode collapsed={false} schema={jobsSchema.definitions.SummarizationConfig} />
+</Box>
+
+## Example summary outputs
+
+### Webinar - Informative
+
+A summary of our Ursa release webinar. Watch on [YouTube](https://www.youtube.com/watch?v=x438-2c59l8&t=1s&ab_channel=Speechmatics).
+
+#### Brief
+
+<Tabs groupId="summary-types">
+  <TabItem value="bullets" label="Bullets" default>
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {webinarSummaryBriefBullets}
+      </pre>
+    </Card>
+  </TabItem>
+  <TabItem value="paragraphs" label="Paragraphs">
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {webinarSummaryBriefParagraphs}
+      </pre>
+    </Card>
+  </TabItem>
+</Tabs>
+
+#### Detailed
+
+<Tabs groupId="summary-types">
+  <TabItem value="bullets" label="Bullets" default>
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {webinarSummaryDetailedBullets}
+      </pre>
+    </Card>
+  </TabItem>
+  <TabItem value="paragraphs" label="Paragraphs">
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {webinarSummaryDetailedParagraphs}
+      </pre>
+    </Card>
+  </TabItem>
+</Tabs>
+
+### Interview - Informative
+
+A summary of a LinkedIn interview live "Adding Value for Contact Center Solutions Using Speech to Text". Watch on [YouTube](https://www.youtube.com/watch?v=n-3gDCVkD1g&ab_channel=Speechmatics).
+
+#### Brief
+
+<Tabs groupId="summary-types">
+  <TabItem value="bullets" label="Bullets" default>
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {interviewSummaryBriefBullets}
+      </pre>
+    </Card>
+  </TabItem>
+  <TabItem value="paragraphs" label="Paragraphs">
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {interviewSummaryBriefParagraphs}
+      </pre>
+    </Card>
+  </TabItem>
+</Tabs>
+
+#### Detailed
+
+<Tabs groupId="summary-types">
+  <TabItem value="bullets" label="Bullets" default>
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {interviewSummaryDetailedBullets}
+      </pre>
+    </Card>
+  </TabItem>
+  <TabItem value="paragraphs" label="Paragraphs">
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {interviewSummaryDetailedParagraphs}
+      </pre>
+    </Card>
+  </TabItem>
+</Tabs>
+
+### Technical Support Call - Conversational
+
+A summary of a Technical Customer Support Call.
+
+#### Brief
+
+<Tabs groupId="summary-types">
+  <TabItem value="bullets" label="Bullets" default>
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {techSupportCallBriefBullets}
+      </pre>
+    </Card>
+  </TabItem>
+  <TabItem value="paragraphs" label="Paragraphs">
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {techSupportCallBriefParagraphs}
+      </pre>
+    </Card>
+  </TabItem>
+</Tabs>
+
+#### Detailed
+
+<Tabs groupId="summary-types">
+  <TabItem value="bullets" label="Bullets" default>
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {techSupportCallDetailedBullets}
+      </pre>
+    </Card>
+  </TabItem>
+  <TabItem value="paragraphs" label="Paragraphs">
+    <Card size="2" asChild style={{whiteSpace: "pre-wrap"}}>
+      <pre>
+        {techSupportCallDetailedParagraphs}
+      </pre>
+    </Card>
+  </TabItem>
+</Tabs>

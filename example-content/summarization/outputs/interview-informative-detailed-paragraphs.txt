@@ -1,0 +1,14 @@
+1. Introduction
+In this transcript, Ricardo Herreros-Symons, VP of Sales Business Development at Speechmatics, and Mariano Tan, CEO and founder of Prosodica, discuss the use of speech-to-text technology in contact center analytics. Prosodica uses Speechmatics' transcription engine to provide insights and predictions based on customer conversations.
+
+2. Importance of Transcription Accuracy
+The accuracy of the transcription is crucial for machine learning algorithms to make accurate predictions, and even small improvements in transcription accuracy can have a significant impact on machine learning accuracy. The importance of having a diverse and inclusive voice model has also risen in recent years, as multinational corporations send voice traffic to call centers all over the world.
+
+3. Disparate Impacts of Transcription Accuracy Differences
+As speech recognition becomes more mainstream, businesses are becoming increasingly concerned about the potential disparate impacts of transcription accuracy differences when analyzing less typical voices. The more diverse the set of voices used in training, the more likely we are to have a wider net for what's typical and get the same level of recognition accuracy across that.
+
+4. Future of Speech and Speech Recognition in Contact Center Space
+In terms of the future of speech and speech recognition within the context center space, there is more prevalent use of speech analytics technology in the contact center space. The two approaches are to use speech recognition to fully automate interactions or to measure and improve the experience, the employee experience. The technology was easier to implement in a cloud-based format, and so we did see a lot of adoption for cloud providers. However, there are certain interactions that people will not get comfortable with dealing with an automated bot.
+
+5. Detection of Sarcasm
+Sarcasm is a tricky problem, but the reason why Prosodica uses as its data point, both speech and voice analytics, is to detect that.

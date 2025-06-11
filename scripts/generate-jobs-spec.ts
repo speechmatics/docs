@@ -21,7 +21,9 @@ for (const [path, data] of Object.entries(spec.paths)) {
     if (method in data) {
       let sampleFiles: string[] = [];
       try {
-        sampleFiles = readdirSync(`./code-samples/jobs-api${path}`).filter(
+        sampleFiles = readdirSync(
+          `./example-content/code-samples/jobs-api${path}`,
+        ).filter(
           // Regex match: e.g. "get.py", "post.js"
           (file) => file.match(new RegExp(`^${method}.[A-Za-z]+$`)),
         );
@@ -35,7 +37,10 @@ for (const [path, data] of Object.entries(spec.paths)) {
 
       data[method]["x-codeSamples"] = sampleFiles.map((file) => ({
         lang: LANGUAGES[file.split(".")[1] as keyof typeof LANGUAGES],
-        source: readFileSync(`./code-samples/jobs-api${path}/${file}`, "utf8"),
+        source: readFileSync(
+          `./example-content/code-samples/jobs-api${path}/${file}`,
+          "utf8",
+        ),
       }));
     }
   }

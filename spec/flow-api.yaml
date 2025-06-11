@@ -436,8 +436,6 @@ components:
 
     AudioFormat:
       type: object
-      required:
-        - type
       oneOf:
         - "$ref": "#/components/schemas/AudioFormatRaw"
         - "$ref": "#/components/schemas/AudioFormatFile"
@@ -447,8 +445,7 @@ components:
       title: "AudioFormatRaw"
       properties:
         type:
-          enum:
-            - raw
+          const: raw
         encoding:
           enum:
             - pcm_f32le
@@ -466,8 +463,7 @@ components:
       title: "AudioFormatFile"
       properties:
         type:
-          enum:
-            - file
+          const: file
       required:
         - type
 

@@ -1,0 +1,3 @@
+- Prosodica uses Speechmatics' transcription engine to provide insights and predictions based on customer conversations in contact center analytics.
+- The accuracy of transcription is crucial for machine learning algorithms to make accurate predictions, and having a diverse and inclusive voice model is important to avoid disparate impacts.
+- The future of speech recognition in the contact center space is evolving towards a hybrid workforce, where businesses need to be remote-ready to support both customers and employees

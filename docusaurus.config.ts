@@ -1,6 +1,7 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
+import yamlLoaderPlugin from "./plugins/yaml-loader-plugin";
 import { prismTheme } from "./prism-theme";
 import { sidebarItemsGenerator } from "./sidebar-generator";
 
@@ -106,6 +107,24 @@ const config: Config = {
         },
       },
     ],
+    yamlLoaderPlugin,
+    () => {
+      return {
+        name: "py-source-loader-plugin",
+        configureWebpack() {
+          return {
+            module: {
+              rules: [
+                {
+                  test: /\.py$|\.txt$/,
+                  type: "asset/source",
+                },
+              ],
+            },
+          };
+        },
+      };
+    },
   ],
   themes: ["docusaurus-theme-openapi-docs"], // export theme components
   scripts: [
