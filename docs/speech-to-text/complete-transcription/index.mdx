@@ -1,4 +1,6 @@
 import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
+import DocCardList from '@theme/DocCardList'
+import { Box } from "@radix-ui/themes"
 
 # Complete transcription
 
@@ -13,8 +15,8 @@ The API follows an asynchronous job-processing model, allowing you to create a t
 1. Either poll the job status until it is completed, or wait for a notification to be sent to your callback URL.
 1. Once the job completes, you can retrieve the transcription by making a <HTTPMethodBadge method="GET" /> request to the job's `id`.
 
-## Turnaround time
+# Learn more
 
-## Accuracy
-
-## Speech intelligence
+<Box py="3">
+  <DocCardList />
+</Box>

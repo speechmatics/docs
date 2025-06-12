@@ -12,7 +12,7 @@ import styles from "./index.module.css";
 
 const admonitionMap = {
   note: { icon: InfoIcon, color: "gray" },
-  info: { icon: InfoIcon, color: "blue" },
+  info: { icon: InfoIcon, color: "cyan" },
   warning: { icon: AlertTriangleIcon, color: "orange" },
   danger: { icon: CircleAlertIcon, color: "red" },
   tip: { icon: LightbulbIcon, color: "green" },

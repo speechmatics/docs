@@ -2092,12 +2092,16 @@ definitions:
     properties:
       title:
         type: string
+        description: The auto-generated title for the chapter
       summary:
         type: string
+        description: An auto-generated paragraph-style, short summary of the chapter
       start_time:
         type: number
+        description: The start time of the chapter in the audio file
       end_time:
         type: number
+        description: The end time of the chapter in the audio file
   AudioEventItem:
     type: object
     properties:

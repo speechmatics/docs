@@ -239,7 +239,6 @@ const PropertyDiscriminator: React.FC<SchemaEdgeProps> = ({
   schemaType,
   discriminator,
   required,
-  expanded,
 }) => {
   if (!schema) {
     return null;
@@ -515,13 +514,18 @@ const SchemaNodeDetails: React.FC<SchemaEdgeProps> = ({
 const Items: React.FC<{
   schema: SchemaObject;
   schemaType: "request" | "response";
-}> = ({ schema, schemaType }) => {
+  expanded?: boolean;
+}> = ({ schema, schemaType, expanded }) => {
   // Handles case when schema.items has properties
   if (schema.items?.properties) {
     return (
       <>
         <OpeningArrayBracket />
-        <Properties schema={schema.items} schemaType={schemaType} />
+        <Properties
+          schema={schema.items}
+          schemaType={schemaType}
+          expanded={expanded}
+        />
         <ClosingArrayBracket />
       </>
     );
@@ -872,7 +876,9 @@ function renderChildren(
       {schema.additionalProperties && (
         <AdditionalProperties schema={schema} schemaType={schemaType} />
       )}
-      {schema.items && <Items schema={schema} schemaType={schemaType} />}
+      {schema.items && (
+        <Items schema={schema} schemaType={schemaType} expanded={expanded} />
+      )}
     </>
   );
 }
@@ -923,7 +929,11 @@ const SchemaNode: React.FC<SchemaProps> = ({
           <Properties schema={mergedSchemas} schemaType={schemaType} />
         )}
         {mergedSchemas.items && (
-          <Items schema={mergedSchemas} schemaType={schemaType} />
+          <Items
+            schema={mergedSchemas}
+            schemaType={schemaType}
+            expanded={expanded}
+          />
         )}
       </div>
     );
