@@ -7,6 +7,10 @@ import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
 import { Card, Link, Text, Flex, Button, Box } from '@radix-ui/themes'
 import { ExternalLink } from 'lucide-react'
+import fileTranscriptionQuickstartPythonSample from "./assets/file-transcription-quickstart.py"
+import fileTranscriptionQuickstartJavascriptSample from "./assets/file-transcription-quickstart.example.js?raw"
+import fileTranscriptionQuickstartCurlSample from "./assets/file-transcription-quickstart.sh"
+import CodeBlock from '@theme/CodeBlock'
 
 # Quickstart: Transcribe a File
 
@@ -47,20 +51,6 @@ The examples below will help you get started by using the official Speechmatics 
 
 
 <Tabs className="code-tabs" groupId="programming-language">
-    <TabItem value="cli" label="CLI">
-
-The Speechmatics Python library and CLI can found on [GitHub](https://github.com/speechmatics/speechmatics-python) and installed using pip:
-
-```
-pip3 install speechmatics-python
-```
-
-```cli
-speechmatics config set --auth-token $API_KEY
-speechmatics batch transcribe example.wav
-```
-
-  </TabItem>
   <TabItem value="python" label="Python">
 
 The Speechmatics Python library and CLI can found on [GitHub](https://github.com/speechmatics/speechmatics-python) and installed using pip:
@@ -69,51 +59,9 @@ The Speechmatics Python library and CLI can found on [GitHub](https://github.com
 pip3 install speechmatics-python
 ```
 
-```python
-from speechmatics.models import ConnectionSettings
-from speechmatics.batch_client import BatchClient
-from httpx import HTTPStatusError
-
-API_KEY = "YOUR_API_KEY"
-PATH_TO_FILE = "example.wav"
-LANGUAGE = "en"
-
-settings = ConnectionSettings(
-    url="https://asr.api.speechmatics.com/v2",
-    auth_token=API_KEY,
-)
-
-# Define transcription parameters
-conf = {
-    "type": "transcription",
-    "transcription_config": {
-        "language": LANGUAGE
-    }
-}
-
-# Open the client using a context manager
-with BatchClient(settings) as client:
-    try:
-        job_id = client.submit_job(
-            audio=PATH_TO_FILE,
-            transcription_config=conf,
-        )
-        print(f'job {job_id} submitted successfully, waiting for transcript')
-
-        # Note that in production, you should set up notifications instead of polling.
-        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/complete-transcription/notifications
-        transcript = client.wait_for_completion(job_id, transcription_format='txt')
-        # To see the full output, try setting transcription_format='json-v2'.
-        print(transcript)
-    except HTTPStatusError as e:
-        if e.response.status_code == 401:
-            print('Invalid API key - Check your API_KEY at the top of the code!')
-        elif e.response.status_code == 400:
-            print(e.response.json()['detail'])
-        else:
-            raise e
-```
-
+    <CodeBlock language="python">
+      {fileTranscriptionQuickstartPythonSample}
+    </CodeBlock>
   </TabItem>
 
   <TabItem value="javascript" label="Javascript">
@@ -133,56 +81,15 @@ This library can be used in the browser and backend runtimes like NodeJS and Bun
   
   Below is a basic NodeJS example transcribing a file.
 
-
-```js
-// This example transcribes a file in NodeJS.
-// For examples in other environments, see the link above
-
-import { BatchClient } from '@speechmatics/batch-client';
-import { openAsBlob } from 'node:fs';
-
-const client = new BatchClient({ apiKey: YOUR_API_KEY, appId: 'nodeJS-example' });
-
-console.log('Sending file for transcription...');
-
-async function transcribeFile() {
-  const blob = await openAsBlob('./example.wav');
-  const file = new File([blob], 'example.wav');
-
-  const response = await client.transcribe(
-    file,
-    {
-      transcription_config: {
-        language: 'en',
-      },
-    },
-    'json-v2',
-  );
-
-  console.log('Transcription finished!');
-
-  console.log(
-    // Transcripts can be strings when the 'txt' format is chosen
-    typeof response === 'string'
-      ? response
-      : response.results.map((r) => r.alternatives?.[0].content).join(' '),
-  );
-}
-
-transcribeFile();
-```
+    <CodeBlock language="javascript">
+      {fileTranscriptionQuickstartJavascriptSample}
+    </CodeBlock>
   </TabItem>
   <TabItem value="curl" label="cURL">
 
-```bash
-API_KEY="YOUR_API_KEY"
-PATH_TO_FILE="example.wav"
-
-curl -L -X POST "https://asr.api.speechmatics.com/v2/jobs/" \
-    -H "Authorization: Bearer ${API_KEY}" \
-    -F data_file=@${PATH_TO_FILE} \
-    -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'
-```
+  <CodeBlock language="bash">
+    {fileTranscriptionQuickstartCurlSample}
+  </CodeBlock>
 
 Jobs will typically take less than half the audio length to process. You will need to recheck periodically until the transcript is ready. It is also possible to get the status of up to 100 jobs at once. For more information, see the [Check Job Status page](/speech-to-text/complete-transcription/check-job-status). To set up a callback when the transcript is ready, see the page on [Notifications](/speech-to-text/complete-transcription/notifications).
 

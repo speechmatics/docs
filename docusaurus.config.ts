@@ -108,14 +108,26 @@ const config: Config = {
     ],
     () => {
       return {
-        name: "py-source-loader-plugin",
+        name: "source-loader-plugin",
         configureWebpack() {
           return {
             module: {
               rules: [
                 {
-                  test: /\.py$|\.txt$/,
+                  // Load Python and text files as raw assets
+                  test: /\.py$|\.txt$|\.sh$/,
                   type: "asset/source",
+                },
+                {
+                  // Load JS files as raw assets when requested with ?raw query
+                  test: /\.js$/,
+                  resourceQuery: /raw/,
+                  // With Webpack 5 we shouldn't need raw-loader
+                  // But because Docusaurus uses babel-loader for all JS files by default,
+                  // doing it like above for txt and py files strips line breaks and whitespace
+                  // TODO: Configure custom JS loader that isn't babel, and remove the raw-loader dependency
+                  // one day it will be legacy.
+                  use: "raw-loader",
                 },
               ],
             },

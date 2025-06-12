@@ -1,6 +1,9 @@
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
+import CodeBlock from '@theme/CodeBlock'
 import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
+import checkJobStatusUnixSample from './assets/check-job-status.sh'
+import checkMultipleJobsStatusUnixSample from './assets/check-multiple-jobs-status.sh'
 
 # Check job status
 
@@ -21,20 +24,16 @@ You can make a GET request to check the status of a job as follows:
 <Tabs>
   <TabItem value='unix' label='Unix'>
 
-```bash
-# $JOB_ID is from the submit command output
-curl -L -X GET "https://asr.api.speechmatics.com/v2/jobs/$JOB_ID" \
-     -H "Authorization: Bearer $API_KEY"
-```
+  <CodeBlock language="bash">
+    {checkJobStatusUnixSample}
+  </CodeBlock>
 
   </TabItem>
   <TabItem value='windows' label='Windows'>
 
-```bash
-# $JOB_ID is from the submit command output
-curl -L -X GET "https://asr.api.speechmatics.com/v2/jobs/$JOB_ID" `
-     -H "Authorization: Bearer $API_KEY"
-```
+  <CodeBlock language="bash">
+    {checkMultipleJobsStatusUnixSample}
+  </CodeBlock>
 
   </TabItem>
 </Tabs>
