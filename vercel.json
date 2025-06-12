@@ -7,7 +7,7 @@
     },
     {
       "source": "/features-other/notifications",
-      "destination": "/speech-to-text/complete-transcription/notifications"
+      "destination": "/speech-to-text/batch-transcription/notifications"
     }
   ]
 }

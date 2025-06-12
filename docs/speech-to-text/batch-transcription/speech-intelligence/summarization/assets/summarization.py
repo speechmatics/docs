@@ -4,7 +4,7 @@ from httpx import HTTPStatusError
 
 API_KEY = "YOUR_API_KEY"
 PATH_TO_FILE = "example.wav"
-LANGUAGE = "en"
+LANGUAGE = "en"  # Transcription language
 
 settings = ConnectionSettings(
     url="https://asr.api.speechmatics.com/v2",
@@ -12,7 +12,13 @@ settings = ConnectionSettings(
 )
 
 # Define transcription parameters
-conf = {"type": "transcription", "transcription_config": {"language": LANGUAGE}}
+conf = {
+    "type": "transcription",
+    "transcription_config": {"language": LANGUAGE},
+    # highlight-start
+    "summarization_config": {},  # You can also configure the summary. See below for more detail.
+    # highlight-end
+}
 
 # Open the client using a context manager
 with BatchClient(settings) as client:
@@ -24,10 +30,12 @@ with BatchClient(settings) as client:
         print(f"job {job_id} submitted successfully, waiting for transcript")
 
         # Note that in production, you should set up notifications instead of polling.
-        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/complete-transcription/notifications
-        transcript = client.wait_for_completion(job_id, transcription_format="txt")
-        # To see the full output, try setting transcription_format='json-v2'.
-        print(transcript)
+        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/batch-transcription/notifications
+        transcript = client.wait_for_completion(job_id, transcription_format="json-v2")
+        # highlight-start
+        summary = transcript["summary"]["content"]
+        print(summary)  # print the returned summary
+        # highlight-end
     except HTTPStatusError as e:
         if e.response.status_code == 401:
             print("Invalid API key - Check your API_KEY at the top of the code!")
