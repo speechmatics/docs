@@ -602,7 +602,7 @@ paths:
               error: Internal Server Error
       externalDocs:
         description: More details of our alignment service can be found here.
-        url: "https://docs.speechmatics.com/features-other/word-alignment"
+        url: "https://docs.speechmatics.com/speech-to-text/batch-transcription/word-alignment"
   "/jobs/{jobid}/log":
     parameters:
       - $ref: "#/parameters/AuthHeader"
