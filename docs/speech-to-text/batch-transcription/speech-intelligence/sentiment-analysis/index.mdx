@@ -3,7 +3,7 @@ import SchemaNode from '@theme/Schema'
 import { Box } from '@radix-ui/themes'
 
 import sentimentPythonSample from "./assets/sentiment.py"
-import jobsSpec from "!openapi-schema-loader!@site/spec/jobs.yaml"
+import batchSpec from "!openapi-schema-loader!@site/spec/batch.yaml"
 
 # Sentiment analysis
 
@@ -36,7 +36,7 @@ Sentiment results are only available in the JSON output.
 Segments of the transcript are labeled with either positive, negative or neutral and a confidence score. This score indicates the model's certainty regarding the assigned sentiment prediction.
 
 <Box m="2">
-  <SchemaNode schema={jobsSpec.definitions.SentimentAnalysisResult} expanded />
+  <SchemaNode schema={batchSpec.definitions.SentimentAnalysisResult} expanded />
 </Box>
 
 ```json

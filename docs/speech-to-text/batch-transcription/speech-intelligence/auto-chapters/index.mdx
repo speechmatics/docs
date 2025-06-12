@@ -26,7 +26,7 @@ import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 import autoChaptersPythonSample from "./assets/auto-chapters.py";
 import SchemaNode from "@theme/Schema";
-import jobsSpec from "!openapi-schema-loader!@site/spec/jobs.yaml";
+import batchSpec from "!openapi-schema-loader!@site/spec/batch.yaml";
 import { pick } from "lodash";
 
 # Chapters
@@ -62,7 +62,7 @@ Chapters' results are only available in the JSON output.
 Each chapter generated will contain a start and end time of the chapter, an auto-generated title and a short summary of the chapter. 
 Chapters are non-overlapping and exhaustive i.e. the chapters cover the entire audio file from start to end.
 
-<SchemaNode schema={{type: "object", properties: {chapters: jobsSpec.definitions.RetrieveTranscriptResponse.properties.chapters}}} expanded />
+<SchemaNode schema={{type: "object", properties: {chapters: batchSpec.definitions.RetrieveTranscriptResponse.properties.chapters}}} expanded />
 
 ```json
 {

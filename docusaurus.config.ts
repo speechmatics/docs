@@ -99,8 +99,8 @@ const config: Config = {
         docsPluginId: "classic", // configured for preset-classic
         config: {
           jobs: {
-            specPath: "static/jobs.yaml",
-            outputDir: "docs/api-ref/jobs",
+            specPath: "static/batch.yaml",
+            outputDir: "docs/api-ref/batch",
             template: "templates/api.mustache",
           } satisfies OpenApiPlugin.Options,
         },

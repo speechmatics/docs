@@ -4,13 +4,13 @@ import { Box } from "@radix-ui/themes"
 
 # Batch transcription
 
-Our REST API allows you to generate complete transcriptions from audio files programatically. We also offer several additional speech intelligence features like summarization, sentiment analysis, and topic detection (see [section below](#speech-intelligence)).
+Our REST API allows you to generate complete transcriptions from audio files programatically. We also offer several additional speech intelligence features like summarization, sentiment analysis, and topic detection.
 
-The API follows an asynchronous job-processing model, allowing you to create a transcription job, view its status, and retrieve the transcription when the job is completed. You can find our [full API reference here](/api-ref/jobs/create-a-new-job).
+The API follows an asynchronous job-processing model, allowing you to create a transcription job, view its status, and retrieve the transcription when the job is completed. You can find our [full API reference here](/api-ref/batch/create-a-new-job).
 
 ## How to use the API
 
-1. Make a <HTTPMethodBadge method="POST" /> request to request a transcription job using the [create a new job](/api-ref/jobs/create-a-new-job) endpoint.
+1. Make a <HTTPMethodBadge method="POST" /> request to request a transcription job using the [create a new job](/api-ref/batch/create-a-new-job) endpoint.
 1. If successful, a job will be created with the returned `id`
 1. Either poll the job status until it is completed, or wait for a notification to be sent to your callback URL.
 1. Once the job completes, you can retrieve the transcription by making a <HTTPMethodBadge method="GET" /> request to the job's `id`.
