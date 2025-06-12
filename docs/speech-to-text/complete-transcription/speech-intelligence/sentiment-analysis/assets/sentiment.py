@@ -30,7 +30,7 @@ with BatchClient(settings) as client:
         print(f"job {job_id} submitted successfully, waiting for transcript")
 
         # Note that in production, you should set up notifications instead of polling.
-        # Notifications are described here: https://docs.speechmatics.com/features-other/notifications
+        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/complete-transcription/notifications
         transcript = client.wait_for_completion(job_id, transcription_format="json-v2")
         # highlight-start
         sentiment = transcript["sentiment_analysis"]

@@ -27,14 +27,14 @@ The quickest way to try transcribing for free is by creating a Speechmatics acco
 
 ## Transcribe using the API
 
-The rest of this page will show you how to use the Speechmatics REST API to transcribe an audio or video file saved on your local machine. If you want to transcribe a file that is hosted on the Web, you can use our [Fetch URL](../features-other/fetch-url.mdx) feature.
+The rest of this page will show you how to use the Speechmatics REST API to transcribe an audio or video file saved on your local machine. If you want to transcribe a file that is hosted on the Web, you can use our [Fetch URL](/speech-to-text/complete-transcription/fetch-url) feature.
 
-Finally, you can also learn about [On-Prem](../on-prem/containers/cpu-container.mdx) deployments by following our guides.
+Finally, you can also learn about [On-Prem](/deployments/container/cpu-speech-to-text-container) deployments by following our guides.
 
 ### Set up your API key
 
 1. <Link href="https://portal.speechmatics.com/signup" target="_blank">Sign up to the Speechmatics portal</Link>
-1. Navigate to Manage > [API Keys](https://portal.speechmatics.com/manage-access/) page in the Speechmatics On-Demand Portal.
+1. Navigate to Manage > [API Keys](https://portal.speechmatics.com/settings/api-keys) page in the Speechmatics On-Demand Portal.
 1. Enter a name for your API key and store your API key somewhere safe.
 
 :::info
@@ -101,7 +101,7 @@ with BatchClient(settings) as client:
         print(f'job {job_id} submitted successfully, waiting for transcript')
 
         # Note that in production, you should set up notifications instead of polling.
-        # Notifications are described here: https://docs.speechmatics.com/features-other/notifications
+        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/complete-transcription/notifications
         transcript = client.wait_for_completion(job_id, transcription_format='txt')
         # To see the full output, try setting transcription_format='json-v2'.
         print(transcript)
@@ -184,7 +184,7 @@ curl -L -X POST "https://asr.api.speechmatics.com/v2/jobs/" \
     -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'
 ```
 
-Jobs will typically take less than half the audio length to process. You will need to recheck periodically until the transcript is ready. It is also possible to get the status of up to 100 jobs at once. For more information, see the [Check Job Status page](additional-info.mdx). To set up a callback when the transcript is ready, see the page on [Notifications](../features-other/notifications.mdx).
+Jobs will typically take less than half the audio length to process. You will need to recheck periodically until the transcript is ready. It is also possible to get the status of up to 100 jobs at once. For more information, see the [Check Job Status page](/speech-to-text/complete-transcription/check-job-status). To set up a callback when the transcript is ready, see the page on [Notifications](/speech-to-text/complete-transcription/notifications).
 
 ```bash
 JOB_ID="JOB_ID_FROM_PREVIOUS_STEP"
