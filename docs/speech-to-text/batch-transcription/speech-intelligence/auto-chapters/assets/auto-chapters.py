@@ -15,7 +15,9 @@ settings = ConnectionSettings(
 conf = {
     "type": "transcription",
     "transcription_config": {"language": LANGUAGE},
+    # highlight-start
     "auto_chapters_config": {},
+    # highlight-end
 }
 
 # Open the client using a context manager
@@ -30,11 +32,13 @@ with BatchClient(settings) as client:
         # Note that in production, you should set up notifications instead of polling.
         # Notifications are described here: https://docs.speechmatics.com/speech-to-text/batch-transcription/notifications
         transcript = client.wait_for_completion(job_id, transcription_format="json-v2")
+        # highlight-start
         chapters = transcript["chapters"]
         for chapter in chapters:
             print(
                 f"({chapter['start_time']} - {chapter['end_time']}) {chapter['title']}\n{chapter['summary']}\n\n"
             )
+        # highlight-end
 
     except HTTPStatusError as e:
         if e.response.status_code == 401:
