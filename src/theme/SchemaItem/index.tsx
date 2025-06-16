@@ -1,13 +1,3 @@
-/**
- *
- * This file is only being Swizzled to deal with the missing const-value
- * rendering. It has been implemented upstream, but not yet released.
- *
- * See line here: https://github.com/PaloAltoNetworks/docusaurus-openapi-docs/blob/912f7d6191333d76784f5dda0818d6b431952b9b/packages/docusaurus-theme-openapi-docs/src/theme/SchemaItem/index.tsx#L166C1-L188C4
- *
- * TODO when docusaurus-plugin-openapi-docs version >4.4.0 comes out (hopefully in the coming days), update the package and remove this file.
- */
-
 import React, { type ReactNode } from "react";
 
 // @ts-ignore This whole file will be removed when upstream is updated

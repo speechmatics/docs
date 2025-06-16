@@ -17,9 +17,6 @@ import {
 import type { SchemaObject } from "docusaurus-plugin-openapi-docs/lib/openapi/types";
 import isEmpty from "lodash/isEmpty";
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-// const jsonSchemaMergeAllOf = require("json-schema-merge-allof");
-
 const mergeAllOf = (allOf: SchemaObject) => {
   const onMergeError = (msg: string) => {
     console.warn(msg);
@@ -409,6 +406,7 @@ const AdditionalProperties: React.FC<SchemaProps> = ({
   schemaType,
 }) => {
   const additionalProperties = schema.additionalProperties;
+  const keyDescription = `[${additionalProperties["x-key-description"] ?? "property name"}: string]`;
 
   if (!additionalProperties) return null;
 
@@ -416,7 +414,7 @@ const AdditionalProperties: React.FC<SchemaProps> = ({
   if (additionalProperties === true || isEmpty(additionalProperties)) {
     return (
       <SchemaItem
-        name="property name*"
+        name={keyDescription}
         required={false}
         schemaName="any"
         qualifierMessage={getQualifierMessage(schema)}
@@ -441,7 +439,7 @@ const AdditionalProperties: React.FC<SchemaProps> = ({
     const required = schema.required || false;
     return (
       <SchemaNodeDetails
-        name="property name*"
+        name={keyDescription}
         schemaName={title}
         required={required}
         nullable={schema.nullable}
@@ -462,7 +460,7 @@ const AdditionalProperties: React.FC<SchemaProps> = ({
     const schemaName = getSchemaName(additionalProperties);
     return (
       <SchemaItem
-        name="property name*"
+        name={keyDescription}
         required={false}
         schemaName={schemaName}
         qualifierMessage={getQualifierMessage(schema)}

@@ -109,7 +109,9 @@ const config: Config = {
     () => {
       return {
         name: "source-loader-plugin",
-        configureWebpack() {
+        configureWebpack(config) {
+          // console.log("Webpack Configuration:");
+          // console.log("Rules:", config.module.rules);
           return {
             module: {
               rules: [
