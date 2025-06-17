@@ -1,0 +1,48 @@
+---
+description: 'Learn about how to add metadata to your transcription'
+keywords: [speechmatics, features, transcription, speech recognition, asr]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Job tracking
+
+Tracking allows you to attach your own metadata to a job, which can be used for tracking the job through your own management workflow.
+
+The tracking information will be returned when you [check job status](/speech-to-text/batch-transcription/check-job-status), or [get the transcript](/api-ref/batch/get-the-transcript-for-a-transcription-job) for a transcription job.
+
+The tracking object can contain the following properties:
+
+- `title` - The title of the job
+- `reference` - The reference used on your system
+- `tags` - An array of strings
+- `details` - A JSON object which is defined by your system. There is currently no limit to the size of this object
+
+For example:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en"
+  },
+  "tracking": {
+    "title": "ACME Q12018 Statement",
+    "reference": "/data/clients/ACME/statements/segs/2018Q1-seg8",
+    "tags": [
+      "quick-review",
+      "segment"
+    ],
+    "details": {
+      "user_type": "agent",
+      "client": {
+        "name": "ACME Corp",
+        "type": "enterprise"
+        },
+      "seg_start": 963.201,
+      "seg_end": 1091.481
+    }
+  }
+}
+```

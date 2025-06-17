@@ -1,13 +1,36 @@
 import DocCardList from '@theme/DocCardList';
+import { Card, DataList, Text } from '@radix-ui/themes';
 
 # Diarization
 
 Speechmatics offers two different modes for separating out different speakers in the audio:
 
-| Type                                                     | Description                                                                                | Use Case                                                                     |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| [Speaker Diarization](#speaker-diarization) | Each speaker will be identified by their voice.                                            | Used in cases where there are multiple speakers in the same audio recording. |
-| [Channel Diarization](#channel-diarization) | Each audio channel will be transcribed separately. Available for batch transcription only. | Used when it's possible to record each speaker on a separate audio channel.  |
+<Card mb="4">
+  <DataList.Root size="3">
+  <DataList.Item>
+    <DataList.Label>
+    [Speaker Diarization](#speaker-diarization)
+    </DataList.Label>
+    <DataList.Value>
+      <Text asChild mb="0">
+        Each speaker will be identified by their voice. <br/>
+        Used in cases where there are multiple speakers in the same audio recording.
+      </Text>
+    </DataList.Value>
+  </DataList.Item>
+  <DataList.Item>
+    <DataList.Label>
+    [Channel Diarization](#channel-diarization)
+    </DataList.Label>
+    <DataList.Value>
+      <Text asChild mb="0">
+        Each audio channel will be transcribed separately. <br/>
+        Used when it's possible to record each speaker on a separate audio channel.
+      </Text>
+    </DataList.Value>
+  </DataList.Item>
+</DataList.Root>
+</Card>
 
 By default, the transcript will not be diarized. For details on configuring Diarization, please see the relevant page linked below.
 
@@ -37,7 +60,7 @@ indicating who said that word. There are two kinds of labels you will see:
 
 **Considerations**
 - Enabling diarization for a file increases the amount of time taken to transcribe an audio file. In general, we expect the use of Diarization to increase the overall processing time by 10-50%.
-- When transcribing in Real-Time, [Partial transcripts](./realtime-latency.mdx#partial-transcripts) will not include speaker information.
+- When transcribing in Real-Time, [Partial transcripts](/speech-to-text/real-time-transcription#partial-transcripts) will not include speaker information.
 
 The example below shows relevant parts of a transcript with 2 speakers:
 
@@ -149,7 +172,7 @@ The legacy Speaker Change Detection feature was removed on 1st July 2024. From t
 
 ## Channel Diarization
 
-{/* <FeatureAvailability modes={['Batch']} deployments={['All']}/> */}
+### Overview
 
 Channel Diarization enables each channel in multi-channel audio to be transcribed separately and collated into a single transcript. This provides perfect diarization at the channel level as well as better handling of cross-talk between channels. Using Channel Diarization, files with up to 100 separate input channels are supported.
 

@@ -1,0 +1,34 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# App analytics
+
+If your application allows users to enter their own Speechmatics API key, Speechmatics can offer you aggregated analytics about your users' usage levels. This includes the number of unique users, hours processed, languages used, and more.
+
+Please reach out to [Support](https://support.speechmatics.com) to get set up.
+
+<Tabs groupId="transcription-types">
+  <TabItem value="batch" label="Batch transcription" default>
+Once set up, simply use the `sm-app` query parameter when starting a job. For example:
+
+```bash
+APP_ID="YourAppID"
+API_KEY="YOUR_API_KEY"
+PATH_TO_FILE="example.wav"
+
+curl -L -X POST "https://asr.api.speechmatics.com/v2/jobs/?sm-app=${APP_ID}" \
+    -H "Authorization: Bearer ${API_KEY}" \
+    -F data_file=@${PATH_TO_FILE} \
+    -F config='{"type": "transcription","transcription_config": { "language": "en" }}'
+```
+
+  </TabItem>
+  <TabItem value="real-time" label="Real-Time transcription" default>
+Once set up, simply use the `sm-app` query parameter in the connection string when starting a session. For example:
+
+```bash
+wss://eu2.rt.speechmatics.com/v2?sm-app=YourAppID
+```
+
+  </TabItem>
+</Tabs>
