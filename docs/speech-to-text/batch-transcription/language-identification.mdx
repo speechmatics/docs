@@ -98,7 +98,7 @@ To configure a job which would use your predefined Default Language:
 ```
 
 
-When getting [Job Details](https://docs.speechmatics.com/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get) or [Transcript](https://docs.speechmatics.com/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D~1transcript/get), the job will succeed and you will see an error message in the job metadata:
+When getting [Job Details](/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get) or [Transcript](/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D~1transcript/get), the job will succeed and you will see an error message in the job metadata:
 
   ```json
   {
@@ -135,7 +135,7 @@ To configure a job with Default Language:
 }
 ```
 
-When getting [Job Details](https://docs.speechmatics.com/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get) or [Transcript](https://docs.speechmatics.com/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D~1transcript/get), the job will succeed and you will see an error message in the job metadata:
+When getting [Job Details](/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get) or [Transcript](/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D~1transcript/get), the job will succeed and you will see an error message in the job metadata:
 
   ```json
   {
@@ -277,7 +277,7 @@ This error is available when checking the [job details](/api-ref/batch/get-job-d
 
 If there is not enough speech detected in the file, and you have not set a [Default Language](#default-language), then the job will be rejected.
 
-This error is available when checking the [job details](https://docs.speechmatics.com/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get):
+This error is available when checking the [job details](/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get):
 
 ```json
 {
@@ -304,7 +304,7 @@ If the confidence on the language prediction is too low, and you have not set a 
 
 This can occur when there is not enough speech in the file or if the file contains multiple languages in similar proportions.
 
-This error is available when checking the [job details](https://docs.speechmatics.com/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get):
+This error is available when checking the [job details](/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get):
 ```json
 {
     "job": {
@@ -327,7 +327,7 @@ This error is available when checking the [job details](https://docs.speechmatic
 
 If the predicted language cannot be transcribed then the job will be rejected.
 
-This error is available when checking the [job details](https://docs.speechmatics.com/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get):
+This error is available when checking the [job details](/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get):
 
 ```json
 {
@@ -352,7 +352,7 @@ This error is available when checking the [job details](https://docs.speechmatic
 
 If in the unlikely event the Language Identification stage fails then the job will be rejected.
 
-This error is available when checking the [job details](https://docs.speechmatics.com/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get):
+This error is available when checking the [job details](/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D/get):
 
 ```json
 {
@@ -377,7 +377,7 @@ This error is available when checking the [job details](https://docs.speechmatic
 
 It is not possible to translate between all language pairs. When `auto` language is used, this can mean some translation target languages will not be available. See the full list of [Supported Language Pairs](/speech-to-text/translation#supported-translation-pairs).
 
-These errors are available when getting the [job transcript](https://docs.speechmatics.com/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D~1transcript/get):
+These errors are available when getting the [job transcript](/jobsapi#tag/jobs/paths/~1jobs~1%7Bjobid%7D~1transcript/get):
 
 ```json
 {

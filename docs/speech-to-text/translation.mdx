@@ -308,13 +308,13 @@ Partial translation example message
 
 Each translated section of text matches directly to one or more words in the native language transcription based on the start and end time. Each one has the following properties:
 
-- `language`: Real-time only. The translated language [ISO Language Code](https://docs.speechmatics.com/introduction/supported-languages#languages)
+- `language`: Real-time only. The translated language [ISO Language Code](/speech-to-text/supported-languages#languages)
 - `content`: The translated content
 - `start_time`: The start time of the translated content, which matches the start time of the first word in the transcript
 - `end_time`: The end time of the translated content, which matches the end time of the last word in the transcript
-- `speaker`: The speaker label when `diarization:speaker` is set - see [here](https://docs.speechmatics.com/features/diarization/speaker-diarization#overview) about Speaker Diarization
+- `speaker`: The speaker label when `diarization:speaker` is set - see [here](/features/diarization/speaker-diarization#overview) about Speaker Diarization
   - Speaker labels are only available on Final translations, not Partial translations
-- `channel`: The channel label when `diarization:channel` is set - see [here](https://docs.speechmatics.com/features/diarization/channel-diarization) about Channel Diarization
+- `channel`: The channel label when `diarization:channel` is set - see [here](/features/diarization/channel-diarization) about Channel Diarization
   - Only available for Batch transcription
 
 ## Supported Translation Pairs 
@@ -334,8 +334,8 @@ Translation is supported for the majority of Speechmatics' languages. The suppor
 When using Translation, there are a few things to keep in mind:
 
 - **Accuracy of Transcription:** We recommended using the Enhanced Operating Point for the best Translation results. Transcription accuracy directly impacts the accuracy of translation
-- **Punctuation:** Punctuation plays a significant role in the accuracy of translation. It is therefore recommended to avoid disabling any [Punctuation Marks](https://docs.speechmatics.com/features/punctuation-settings) or reducing the [Punctuation Sensitivity](https://docs.speechmatics.com/features/punctuation-settings) to ensure the best possible results
-- **Formatting:** The translation is applied to the [written form](https://docs.speechmatics.com/features/entities#overview) transcript
+- **Punctuation:** Punctuation plays a significant role in the accuracy of translation. It is therefore recommended to avoid disabling any [Punctuation Marks](/features/punctuation-settings) or reducing the [Punctuation Sensitivity](/features/punctuation-settings) to ensure the best possible results
+- **Formatting:** The translation is applied to the [written form](/features/entities#overview) transcript
 - **Transcription Time:** Enabling Translation for a file will increase the turnaround time of jobs. The amount of time it increases for a single translation will be small. The number of translation target languages directly affects turnaround time. This does not affect Real-time, except when closing a connection when there can be a delay of up to 5 seconds while we receive the final translation
 
 ## Limitations
@@ -467,4 +467,4 @@ ERROR:speechmatics.exceptions.TranscriptionError: translation_config.target_lang
 
 Do you have requests or feedback on translation? If so, please send us your thoughts via our [Translation Feedback Form](https://forms.office.com/e/haXSWcpf0C).
 
-If you want to report an issue or get Support more urgently [Raise an Issue](https://docs.speechmatics.com/introduction/troubleshooting) instead.
+If you want to report an issue or get Support more urgently [Raise an Issue](/introduction/troubleshooting) instead.
