@@ -1,0 +1,45 @@
+import Admonition from '@theme/Admonition';
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import microphonePythonExample from './assets/microphone-example.py';
+
+# Using Microphone Input
+
+The example below will help you transcribe your voice by using the official Speechmatics Python library and CLI.
+
+You can of course integrate with Speechmatics using our [Official JavaScript SDK](https://github.com/speechmatics/speechmatics-js-sdk), or in the programming language of your choice by referring to the [Real-Time API Reference](/api-ref/realtime-transcription-websocket.mdx).
+
+### Setup
+
+The Speechmatics Python library and CLI can be installed using pip:
+
+```bash
+pip3 install speechmatics-python
+```
+
+Transcribe your voice in real-time using the Speechmatics Python library. Just copy in your API key to get started!<br/><br/>
+
+In order to use this script, you may also need to install PyAudio by running:
+
+```bash
+pip3 install pyaudio
+```
+
+:::info
+  For Mac M1/M2, use the following instructions to install PyAudio:
+  ```bash
+  brew install portaudio
+  brew link portaudio
+  BREW_PREFIX=$(brew --prefix)
+  CFLAGS="-I$BREW_PREFIX/include -L$BREW_PREFIX/lib" python3 -m pip install pyaudio
+  ```
+:::
+
+
+### Code Example
+
+<CodeBlock language="python">
+{microphonePythonExample}
+</CodeBlock>
+

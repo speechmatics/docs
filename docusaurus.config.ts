@@ -97,6 +97,11 @@ const config: Config = {
       theme: prismTheme,
       darkTheme: prismTheme,
     },
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true,
+      },
+    },
   } satisfies Preset.ThemeConfig,
 
   plugins: [
