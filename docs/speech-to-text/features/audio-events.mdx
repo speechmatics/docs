@@ -1,1 +1,288 @@
-# Audio events
+---
+description: "Learn how to utilize the Audio Events feature in your media processing workflows" 
+keywords: 
+  [ 
+    speechmatics, 
+    features, 
+    audio events, 
+    speech recognition, 
+    automatic speech recognition, 
+    asr, 
+    audio analytics, 
+    non-speech audio, 
+    audio analysis, 
+    silence detection, 
+    music detection, 
+    laughter detection, 
+    applause detection, 
+  ] 
+---
+
+import Tabs from "@theme/Tabs"; 
+import TabItem from "@theme/TabItem"; 
+
+# Audio Events 
+ 
+The Audio Events feature, available through our Automatic Speech Recognition (ASR) API, provides the detection and labelling of non-speech sounds within audio and video content, such as music, laughter, and applause. 
+
+Enable Audio Events in your application for file processing scenarios by leveraging Speechmatics SaaS or On-Prem solutions.
+
+If you're new to Speechmatics, start by exploring our guides on [Processing a File](/speech-to-text/batch-transcription/quickstart) or [Analyzing in Real-Time](/speech-to-text/real-time-transcription/quickstart). To activate Audio Events, include the following configuration:  
+
+```json 
+{ 
+  "type": "transcription", 
+  "transcription_config": { 
+    "operating_point": "enhanced", 
+    "language": "en" 
+  }, 
+  // highlight-start
+  "audio_events_config": {} 
+  // highlight-end
+} 
+``` 
+
+## Example 
+
+<Tabs groupId="processing-types"> 
+
+  <TabItem value="batch" label="Batch Processing" default> 
+
+Python client example to detect Audio Events in a file for batch processing. 
+```python showLineNumbers 
+from speechmatics.models import ConnectionSettings, BatchTranscriptionConfig, AudioEventsConfig
+from speechmatics.batch_client import BatchClient 
+
+API_KEY = "YOUR_API_KEY" 
+PATH_TO_FILE = "example.wav" 
+
+settings = ConnectionSettings( 
+    url="https://asr.api.speechmatics.com/v2", 
+    auth_token=API_KEY, 
+) 
+
+with BatchClient(settings) as client: 
+    job_id = client.submit_job( 
+        audio=PATH_TO_FILE, 
+        transcription_config=BatchTranscriptionConfig(audio_events_config=AudioEventsConfig()), 
+    ) 
+    print(f'Job {job_id} submitted successfully, waiting for analysis') 
+
+    # In production, consider using notifications instead of polling 
+    analysis = client.wait_for_completion(job_id, transcription_format='json-v2') 
+    print(f"Detected audio event summary: \n{analysis['audio_event_summary']}",)
+    print("Detected audio events:") 
+    for event in analysis["audio_events"]: 
+        print(f"{event['type']} from {event['start_time']} to {event['end_time']}, confidence: {event['confidence']}") 
+``` 
+</TabItem> 
+
+<TabItem value="real-time" label="Real-Time Processing"> 
+
+Python client example for detecting Audio Events in real-time, see [here](/speech-to-text/real-time-transcription/quickstart) for more examples of Real-Time Transcription 
+
+```python showLineNumbers 
+import speechmatics.client
+import speechmatics.models
+from speechmatics.models import AudioEventsConfig, TranscriptionConfig
+
+API_KEY = "YOUR_API_KEY" 
+PATH_TO_FILE = "example.wav" 
+CONNECTION_URL = "wss://eu2.rt.speechmatics.com/v2" 
+
+# Create a real-time client 
+ws = speechmatics.client.WebsocketClient( 
+    speechmatics.models.ConnectionSettings( 
+        url=CONNECTION_URL, 
+        auth_token=API_KEY,
+    )
+)
+
+config = TranscriptionConfig(audio_events_config=AudioEventsConfig())
+
+# Define an event handler for detected audio events 
+def handle_audio_event(msg): 
+    event = msg["event"]
+    if msg['message'] == "AudioEventStarted": 
+        print(f"{event['type']} event started at {event['start_time']}, confidence: {event['confidence']}") 
+    elif msg['message'] == "AudioEventEnded": 
+        print(f"{event['type']} event ended at {event['end_time']}") 
+
+# Register the event handler for audio events 
+ws.add_event_handler( 
+    event_name=speechmatics.models.ServerMessageType.AudioEventStarted, 
+    event_handler=handle_audio_event, 
+) 
+
+ws.add_event_handler( 
+    event_name=speechmatics.models.ServerMessageType.AudioEventEnded, 
+    event_handler=handle_audio_event, 
+) 
+
+print("Starting analysis (type Ctrl-C to stop):") 
+
+with open(PATH_TO_FILE, 'rb') as fd: 
+    try:
+        ws.run_synchronously(fd, config) 
+    except KeyboardInterrupt: 
+        print("\nAnalysis stopped.") 
+``` 
+  </TabItem> 
+</Tabs> 
+
+## Audio Events Response 
+
+<Tabs groupId="processing-types"> 
+  <TabItem value="batch" label="Batch Response" default> 
+
+The JSON output for batch processing will include the following information about each detected Audio Event:
+- `type`: A string indicating the type of Audio Event detected - `applause`, `laughter`, `music`
+- `start_time`: A number indicating the start time of the event in the media file, in seconds
+- `end_time`: A number indicating the end time of the event in the media file, in seconds
+- `confidence`: A number indicating the confidence value of the event detected by the model.
+- `channel`: Only returned if Channel Diarization is enabled, this would indicate the channel in which the event was detected
+
+The JSON output will also contain an `audio_event_summary` which will summarise all detected Audio Events highlighting the number of times and the total duration for which each category of Audio Event occurred.
+
+The Audio Event summary will also contain the summary of silence & speech events, with the total duration being calculated by adding duration of all the words spoken.
+
+```json 
+{ 
+  "format": "2.9", 
+  "job": { ... }, 
+  "metadata": { 
+    "created_at": "2022-09-26T15:01:48.412714Z", 
+    "type": "transcription", 
+    "transcription_config": {...}, 
+    "audio_events_config": {}, 
+    ... 
+  }, 
+
+  "results": [...], 
+
+  "audio_events": [ 
+    {
+      "channel": "channel_1",
+      "confidence": 0.75,
+      "end_time": 21.76,
+      "start_time": 19.2,
+      "type": "laughter"
+    },
+    {
+      "channel": "channel_1",
+      "confidence": 0.76,
+      "end_time": 21.76,
+      "start_time": 19.2,
+      "type": "applause"
+    }, 
+    ... 
+  ], 
+
+  "audio_event_summary": { 
+      "applause": {
+        "count": 6,
+        "total_duration": 10.24
+      },
+      "laughter": {
+        "count": 6,
+        "total_duration": 19.84
+      },
+      "music": {
+        "count": 8,
+        "total_duration": 18.96
+      },
+      "silence": {
+        "count": 5,
+        "total_duration": 8.34
+      },
+      "speech": {
+        "count": 135,
+        "total_duration": 32.38
+      }
+    }, 
+
+    "channels": { 
+      "channel_1": {
+        "applause": {
+          "count": 3,
+          "total_duration": 5.12
+        },
+          ....  
+        } 
+      } 
+    } 
+  } 
+} 
+
+``` 
+</TabItem> 
+<TabItem value="real-time" label="Real-Time Response">  
+
+For real-time detection of Audio Events, separate messages will be sent at the beginning and end of each type of event. 
+In real-time scenarios, only one type of event can be actively detected at one time e.g. ongoing "music" event will take precedence over an overlapping "laughter" event which starts later. An audio event detection begins with an AudioEventStarted event. Once an AudioEvent has finished with a terminating AudioEventEnded then other AudioEvents can be detected.
+The message which indicates the beginning of an event type will also contain the confidence value of the event detected.  
+
+Starting message example for a music event:
+```json 
+{ 
+    "message": "AudioEventStarted", 
+    "event": { 
+        "start_time": 4.2, 
+        "confidence": 0.8, 
+        "type": "music" 
+    } 
+} 
+```
+
+Ending message example for the music event:
+```json
+{ 
+    "message": "AudioEventEnded", 
+    "event": { 
+        "end_time": 10.2, 
+        "type": "music" 
+    } 
+} 
+``` 
+</TabItem> 
+</Tabs> 
+
+## Supported Audio Events 
+| Event Type            | Availability                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+| ------------------    | ----------------------------- |
+| `laughter`            | Batch & Real-Time             |
+| `applause`            | Batch & Real-Time             |
+| `music`               | Batch & Real-Time. **Note**: Real-Time Audio Events can be overly sensitive to music. We are investigating the root cause and aim to fix this soon.              |
+| `silence`             | Batch Audio Event Summary     |
+| `speech`              | Batch Audio Event Summary     |
+
+## Configuring Specific Types of Audio Events in a Request
+The types `applause`, `laughter` and `music` can be requested specifically in a transcription request as a part of the `audio_events_config` payload
+
+An example of a request only for `applause` and `music`
+```json 
+{ 
+  "type": "transcription", 
+  "transcription_config": { 
+    "operating_point": "enhanced", 
+    "language": "en" 
+  }, 
+
+  "audio_events_config": {
+    "types": ["applause", "music"]
+  } 
+
+} 
+``` 
+
+## Considerations 
+- Speech time summary is generated by adding together the durations of all words spoken
+- Gaps of less than 1s between two consecutive occurrences of the same type of event will lead to the events be considered a single event e.g. two music sequences separated by a break of 500ms will be returned as a single event
+- Silence is only detected for gaps where there are no other events (speech, music, laughter, applause) for at least 1 second
+- Multiple overlapping Audio Events of different type can be detected simultaneously, including speech - for example, music, applause and speech can all be detected at the same time
+
+## Limitations 
+- Audio Events is supported only in the JSON type API response
+- While the occurrence of music can be detected, richer metadata about the music such as title, artist, genre, etc cannot be identified
+- Only one instance of an event type can be tracked at a point in time. e.g. seamlessly switching consecutive songs will be detected as one single music event 
+- For On-Prem Containers, Audio Events is available only for GPU Operating Points
