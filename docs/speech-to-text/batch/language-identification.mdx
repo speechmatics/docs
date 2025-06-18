@@ -1,0 +1,405 @@
+---
+description: 'Learn about Speechmatics Language ID'
+keywords:
+  [
+    speechmatics,
+    features,
+    lang id,
+    language identification,
+    recognize language,
+    transcription,
+    speech recognition,
+    asr
+  ]
+sidebar_label: 'Language Identification'
+---
+
+# Language Identification (SaaS)
+
+Detect the predominant language spoken and transcribe using the appropriate language.
+
+You can also learn about deploying this [On-Prem](/deployments/container/language-id) by following our documentation.
+
+Automatic Language Identification can be set when calling the Speechmatics transcription API. You can also try it for free in the [Speechmatics On-Demand Portal](https://portal.speechmatics.com/signup) with no code.
+
+If you're new to Speechmatics, please see our guide on [Transcribing a File](/speech-to-text/batch/quickstart) through our API.
+
+Once you are set up, just set `language` to `auto` to use Automatic Language Identification:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "auto"
+  }
+}
+```
+
+:::info
+To reliably identify the predominant language, the file should contain at least 60 seconds of speech in that language.
+:::
+
+Enabling this for a transcription job will result in a small increase in the total turnaround time.
+
+## Configuration
+
+### Expected Languages
+
+If you expect the audio to be one of a restricted set of languages, you can provide this information through the `expected_languages` parameter:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "auto"
+  },
+  "language_identification_config": {
+    "expected_languages": ["en", "es", "de", "fr"]
+  }
+}
+```
+
+If the language detected is not in the `expected_languages` list, the job will be [rejected](#language-not-in-expected-languages-list).
+
+A list of possible [Language Codes can be found here](/speech-to-text/supported-languages). The following languages are not supported for Language Identification: Interlingua (ia), Esperanto (eo), Uyghur (ug), Cantonese (yue), Irish (ga), Maltese (mt), Urdu (ur), Bengali (bn), Swahili (sw).
+
+### Low Confidence Action
+By default, the job will be rejected if no language is identified with [high enough confidence](#low-confidence).
+
+To prevent the job from being rejected, you can set a `low_confidence_action` with one of two options:
+- `allow` - Use the highest confidence identified language
+- `use_default_language` - Use your predefined [Default Language](#default-language)
+
+To configure a job which would use the highest confidence identified language:
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "auto"
+  },
+  "language_identification_config": {
+    "low_confidence_action": "allow"
+  }
+}
+```
+
+To configure a job which would use your predefined Default Language:
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "auto"
+  },
+  "language_identification_config": {
+    "low_confidence_action": "use_default_language",
+    "default_language": "es"
+  }
+}
+```
+
+
+When getting [Job Details](//api-ref/batch/get-job-details) or [Transcript](/api-ref/batch/get-the-transcript-for-a-transcription-job), the job will succeed and you will see an error message in the job metadata:
+
+  ```json
+  {
+    "transcription_config": {
+      "language": "auto"
+    },
+    "metadata": {
+        "created_at": "2023-10-10T14:51:12.051413Z",
+        "language_identification": {
+            "error": "LOW_CONFIDENCE",
+            "message": "Language identification could not identify any language with sufficient confidence."
+        }
+    },
+    ...,
+    "results": []
+}
+```
+
+### Default Language
+By default, the job will be rejected if there is [No Speech Detected](#no-speech-detected).
+
+To prevent the job from being rejected, you can set a `default_language`. This could also be used if the [Low Confidence Action](#low-confidence-action) is set to `use_default_language`.
+
+To configure a job with Default Language:
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "auto"
+  },
+  "language_identification_config": {
+    "default_language": "es"
+  }
+}
+```
+
+When getting [Job Details](//api-ref/batch/get-job-details) or [Transcript](/api-ref/batch/get-the-transcript-for-a-transcription-job), the job will succeed and you will see an error message in the job metadata:
+
+  ```json
+  {
+    "transcription_config": {
+      "language": "auto"
+    },
+    "language_identification_config": {
+        "default_language": "es"
+    },
+    "metadata": {
+        "created_at": "2023-10-10T14:51:12.051413Z",
+        "language_identification": {
+            "error": "NO_SPEECH",
+            "message": "No speech found for language identification"
+        }
+    },
+    ...,
+}
+```
+
+## Transcription Result
+
+You can determine the language used to transcribe the file from the first word in the response results.
+
+```json
+{
+  "job": { ... },
+  "metadata": {
+    "transcription_config": { "language": "auto" },
+    "language_identification_config": {
+      "expected_languages": ["en", "es", "de", "fr"]
+    },
+    "type": "transcription",
+    "created_at": "2023-02-24T18:22:22.563358Z",
+  },
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "It",
+          "language": "en",
+          "speaker": "UU"
+        }],
+          "end_time": 0.72,
+          "start_time": 0.6,
+          "type": "word"
+        },
+        ...
+    ]
+}
+```
+
+## Usage with Other Features
+
+The following considerations are required when using Automatic Language Identification along with other Speechmatics features.
+
+### Custom Dictionary
+
+[Custom Dictionary](/speech-to-text/features/custom-dictionary) can be used with Automatic Language Identification.
+
+The Custom Dictionary will be used with the identified language. Some language-specific features such as `sounds_like` might not behave as expected.
+
+### Output Locale
+
+[Output Locale](/speech-to-text/features/accuracy-language-packs#output-locale) is currently not supported in combination with using Automatic Language Identification. Jobs with this combination of features will be rejected.
+
+### Translation
+
+[Translation](/speech-to-text/translation) can be used with Automatic Language Identification.
+
+If the identified transcription language and target translation language match, then the translation will contain the transcription sentences.
+
+To reduce friction when using Automatic Language Identification, the translation target language is not validated when submitting the job. For each translation target language that is not supported for the identified language, there will be an error in the `translation_errors` field of the job metadata. For more information, see [Errors When Used with Translation](#errors-when-used-with-translation). Note that if the language is specified and an unsupported translation target language is selected then the job will be `rejected`.
+
+## Error Responses
+
+### Unsupported Expected Language
+
+If one or more of the expected languages are not supported, a HTTP 400 error response is returned.
+
+Language ID is supported for [all of Speechmatics' languages](/speech-to-text/supported-languages) except Interlingua (ia), Esperanto (eo), Uyghur (ug), Cantonese (yue), Irish (ga), Maltese (mt), Urdu (ur), Bengali (bn), Swahili (sw).
+
+Example bad config:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en"
+  },
+  "language_identification_config": {
+    "expected_languages": ["zz"]
+  }
+}
+```
+
+Response:
+
+```json
+{
+  "code": 400,
+  "detail": "Job config JSON is invalid. Error: Language(s) [zz] are not supported for language id",
+  "error": "Job rejected"
+}
+```
+
+### Language Not in Expected Languages List
+
+If the predicted language is not one of your expected languages, the job will be rejected.
+
+In this example the expected languages are German or Spanish, but the predicted language is English.
+
+This error is available when checking the [job details](/api-ref/batch/get-job-details):
+
+```json
+{
+    "job": {
+        "status": "rejected",
+        "errors": [
+            {
+                "message": "The identified language 'en' is not one of the expected languages",
+                "timestamp": "2023-02-27T11:57:20.321Z"
+            }
+        ],
+        "config": {
+            "language_identification_config": {
+                "expected_languages": ["de","es"]
+            },
+            ...
+        },
+        "id": "8eef82kaaa",
+
+    }
+}
+```
+
+### No Speech Detected
+
+If there is not enough speech detected in the file, and you have not set a [Default Language](#default-language), then the job will be rejected.
+
+This error is available when checking the [job details](//api-ref/batch/get-job-details):
+
+```json
+{
+    "job": {
+        "status": "rejected",
+        "errors": [
+            {
+                "message": "No speech found for language identification",
+                "timestamp": "2023-02-27T11:59:20.321Z"
+            }
+        ],
+        "config": {
+            ...
+        },
+        "id": "8wvf82kadd",
+    }
+}
+```
+
+
+### Low Confidence
+
+If the confidence on the language prediction is too low, and you have not set a [Low Confidence Action](#low-confidence-action), then the job will be rejected.
+
+This can occur when there is not enough speech in the file or if the file contains multiple languages in similar proportions.
+
+This error is available when checking the [job details](//api-ref/batch/get-job-details):
+```json
+{
+    "job": {
+        "status": "rejected",
+        "errors": [
+            {
+                "message": "Language identification could not identify any language with sufficient confidence",
+                "timestamp": "2023-02-27T12:09:22.321Z"
+            }
+        ],
+        "config": {
+            ...
+        },
+        "id": "8wvf82kadd",   
+    }
+}
+```
+
+### Language Not Supported for Transcription
+
+If the predicted language cannot be transcribed then the job will be rejected.
+
+This error is available when checking the [job details](//api-ref/batch/get-job-details):
+
+```json
+{
+    "job": {
+        "status": "rejected",
+        "errors": [
+            {
+                "message": "The identified language 'sw' is not supported for transcription",
+                "timestamp": "2023-02-27T12:11:24.321Z"
+            }
+        ],
+        "config": {
+            ...
+        },
+        "id": "8wvf82kadd",
+
+    }
+}
+```
+
+### Language Identification Fails
+
+If in the unlikely event the Language Identification stage fails then the job will be rejected.
+
+This error is available when checking the [job details](//api-ref/batch/get-job-details):
+
+```json
+{
+    "job": {
+        "status": "rejected",
+        "errors": [
+            {
+                "message": "Language identification failed",
+                "timestamp": "2023-02-27T12:19:52.321Z"
+            }
+        ],
+        "config": {
+            ...
+        },
+        "id": "8wvf82kadd",
+
+    }
+}
+```
+
+### Errors When Used with Translation
+
+It is not possible to translate between all language pairs. When `auto` language is used, this can mean some translation target languages will not be available. See the full list of [Supported Language Pairs](/speech-to-text/translation#supported-translation-pairs).
+
+These errors are available when getting the [job transcript](/api-ref/batch/get-the-transcript-for-a-transcription-job):
+
+```json
+{
+    ...
+    "metadata": {
+        "created_at": "2023-02-27T12:29:12.607814Z",
+        "type": "transcription",
+        "transcription_config": {
+            "language": "auto"
+        },
+        "translation_config": {
+            "target_languages": [
+                "de", "nn"
+            ]
+        },
+        "translation_errors": [
+            {
+                "type": "unsupported_translation_pair",
+                "message": "Translation from en to nn currently not supported"
+            }
+        ]
+    },
+    ...
+}
+```

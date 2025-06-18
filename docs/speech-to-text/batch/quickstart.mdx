@@ -1,0 +1,185 @@
+---
+sidebar_label: Quickstart
+sidebar_position: 1
+description: "Quickly transcribe an audio file using our REST API"
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+import { Card, Link, Text, Flex, Button, Box } from '@radix-ui/themes'
+import { ExternalLink } from 'lucide-react'
+import fileTranscriptionQuickstartPythonSample from "./assets/file-transcription-quickstart.py"
+import fileTranscriptionQuickstartJavascriptSample from "./assets/file-transcription-quickstart.example.js?raw"
+import fileTranscriptionQuickstartCurlSample from "./assets/file-transcription-quickstart.sh"
+import CodeBlock from '@theme/CodeBlock'
+
+# Quickstart: Transcribe a File
+
+The quickest way to try transcribing for free is by creating a Speechmatics account and using our self-service Portal.
+
+<Box maxWidth="350px">
+	<Card asChild>
+		<a href="https://portal.speechmatics.com/jobs/create/batch" target='_blank'>
+      <Text asChild size="3" weight="bold">
+        <div>Transcribe with no code <ExternalLink size="16"/></div>
+      </Text>
+      <Text asChild color="gray" size="3">
+        <div>using our self-service Portal</div>
+      </Text>
+		</a>
+	</Card>
+</Box>
+
+## Transcribe using the API
+
+The rest of this page will show you how to use the Speechmatics REST API to transcribe an audio or video file saved on your local machine. If you want to transcribe a file that is hosted on the Web, you can use our [Fetch URL](/speech-to-text/batch/fetch-url) feature.
+
+Finally, you can also learn about [On-Prem](/deployments/container/cpu-speech-to-text-container) deployments by following our guides.
+
+### Set up your API key
+
+1. <Link href="https://portal.speechmatics.com/signup" target="_blank">Sign up to the Speechmatics portal</Link>
+1. Navigate to Manage > [API Keys](https://portal.speechmatics.com/settings/api-keys) page in the Speechmatics On-Demand Portal.
+1. Enter a name for your API key and store your API key somewhere safe.
+
+:::info
+Enterprise customers may need to speak to [Support](https://support.speechmatics.com) to get your API keys.
+:::
+
+### File Transcription Examples
+
+The examples below will help you get started by using the official Speechmatics CLI, Python and JavaScript libraries. You can of course integrate using the programming language of your choice by referring to the [Jobs API Reference](/api-ref/batch/create-a-new-job).
+
+
+<Tabs className="code-tabs" groupId="programming-language">
+  <TabItem value="python" label="Python">
+
+The Speechmatics Python library and CLI can found on [GitHub](https://github.com/speechmatics/speechmatics-python) and installed using pip:
+
+```
+pip3 install speechmatics-python
+```
+
+    <CodeBlock language="python">
+      {fileTranscriptionQuickstartPythonSample}
+    </CodeBlock>
+  </TabItem>
+
+  <TabItem value="javascript" label="Javascript">
+
+  The Speechmatics JavaScript SDK can be found on [GitHub](https://github.com/speechmatics/speechmatics-js-sdk).
+
+  The package for interacting with the Batch API can be installed via NPM:
+
+```
+npm install @speechmatics/batch-client
+```
+
+:::tip
+This library can be used in the browser and backend runtimes like NodeJS and Bun!
+[Check out our examples on Github](https://github.com/speechmatics/speechmatics-js-sdk/tree/main/examples).
+:::
+  
+  Below is a basic NodeJS example transcribing a file.
+
+    <CodeBlock language="javascript">
+      {fileTranscriptionQuickstartJavascriptSample}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+  <CodeBlock language="bash">
+    {fileTranscriptionQuickstartCurlSample}
+  </CodeBlock>
+
+Jobs will typically take less than half the audio length to process. You will need to recheck periodically until the transcript is ready. It is also possible to get the status of up to 100 jobs at once. For more information, see the [Check Job Status page](/speech-to-text/batch/check-job-status). To set up a callback when the transcript is ready, see the page on [Notifications](/speech-to-text/batch/notifications).
+
+```bash
+JOB_ID="JOB_ID_FROM_PREVIOUS_STEP"
+
+curl -L -X GET "https://asr.api.speechmatics.com/v2/jobs/${JOB_ID}/transcript?format=txt" \
+    -H "Authorization: Bearer ${API_KEY}"
+```
+
+:::info
+Note that Windows users will need to update the examples above due to differences in formatting strings and variables when compared to Mac/Unix. 
+:::
+
+  </TabItem>
+</Tabs>
+
+### Transcript output
+
+As well as the content itself, the transcript will include information about the job and metadata such as the transcription config that was used.
+
+Please refer to our [API Reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#responses) for full details about the transcript contents.
+
+```json
+{
+  "format": "2.8",
+  "job": {
+    "created_at": "2019-01-17T17:50:54.113Z",
+    "data_name": "example.wav",
+    "duration": 275,
+    "id": "yjbmf9kqub"
+  },
+  "metadata": {
+    "created_at": "2019-01-17T17:52:26.222Z",
+    "language_pack_info": {
+      "adapted": false,
+      "itn": true,
+      "language_description": "English",
+      "word_delimiter": " ",
+      "writing_direction": "left-to-right"
+    },
+    "orchestrator_version": "2024.12.26085+a0a32e61ad.HEAD",
+    "transcription_config": {
+      "diarization": "none",
+      "language": "en"
+    },
+    "type": "transcription"
+  },
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.9,
+          "content": "Just",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 1.07,
+      "start_time": 0.9,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1,
+          "content": "this",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 1.44,
+      "start_time": 1.11,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1,
+          "content": ".",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "attaches_to": "previous",
+      "end_time": 273.64,
+      "start_time": 273.64,
+      "type": "punctuation"
+    }
+  ]
+}
+```
