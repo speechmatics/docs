@@ -151,7 +151,7 @@ export default {
       type: "category",
       collapsible: false,
       collapsed: false,
-      label: "Flow — Voice AI",
+      label: "Voice Agents — Flow",
       items: [
         {
           type: "doc",
