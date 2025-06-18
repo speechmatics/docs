@@ -27,7 +27,7 @@ Test out our Translation Feature for free in the [Speechmatics On-Demand Portal]
 
 Translation can be enabled when transcribing either a **file** or in **real-time**, by using the Speechmatics SaaS, or by deploying it [On-Prem](/deployments/container/translation).
 
-If you're new to Speechmatics, please see our guide on [Transcribing a File](/speech-to-text/batch-transcription/quickstart) or [Transcribing in Real-Time](/speech-to-text/real-time-transcription/quickstart). Once you are set up, include the following config to enable Translation:
+If you're new to Speechmatics, please see our guide on [Transcribing a File](/speech-to-text/batch/quickstart) or [Transcribing in Real-Time](/speech-to-text/real-time/quickstart). Once you are set up, include the following config to enable Translation:
 
 ```json
 {
@@ -105,7 +105,7 @@ with BatchClient(settings) as client:
 </TabItem>
   <TabItem value="real-time" label="Real-Time Translation">
 
-Python client example to translate a file in real-time, see [here](/speech-to-text/real-time-transcription/quickstart) for more examples of Real-Time Transcription
+Python client example to translate a file in real-time, see [here](/speech-to-text/real-time/quickstart) for more examples of Real-Time Transcription
 
 ```python showLineNumbers
 import speechmatics
@@ -382,7 +382,7 @@ Response:
 
 ### Unsupported Translation Pair
 
-When using [Language Identification](/speech-to-text/batch-transcription/language-identification), if one or more of the target languages are not [supported](./translation.mdx#supported-translation-pairs) for the identified transcription language, the job will be accepted and an error message will be included in the JSON output. No translations will be returned for that language pair. 
+When using [Language Identification](/speech-to-text/batch/language-identification), if one or more of the target languages are not [supported](./translation.mdx#supported-translation-pairs) for the identified transcription language, the job will be accepted and an error message will be included in the JSON output. No translations will be returned for that language pair. 
 
 This behaviour is different when the [transcription language is known](#unsupported-target-language) ahead of time.
 
@@ -467,4 +467,4 @@ ERROR:speechmatics.exceptions.TranscriptionError: translation_config.target_lang
 
 Do you have requests or feedback on translation? If so, please send us your thoughts via our [Translation Feedback Form](https://forms.office.com/e/haXSWcpf0C).
 
-If you want to report an issue or get Support more urgently [Raise an Issue](/speech-to-text/batch-transcription/troubleshooting) instead.
+If you want to report an issue or get Support more urgently [Raise an Issue](/speech-to-text/batch/troubleshooting) instead.

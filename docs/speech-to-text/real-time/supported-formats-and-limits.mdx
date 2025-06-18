@@ -11,7 +11,7 @@ import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
 
 :::info
 This page is about the **Real-time transcription API** (websocket).
-* For limits on Batch SaaS, see the [Batch SaaS supported formats and limits](/speech-to-text/batch-transcription/supported-files-and-limits).
+* For limits on Batch SaaS, see the [Batch SaaS supported formats and limits](/speech-to-text/batch/supported-files-and-limits).
 * For limits on Flow Voice AI, see the [Flow Voice AI supported formats and limits](/voice-agents-flow/supported-formats-and-limits).
 :::
 
@@ -48,7 +48,7 @@ Speechmatics Batch SaaS applies rate limiting and fair queueing to provide a con
 If you make a large number of requests in a short period of time, some of these requests may fail with the response `HTTP 429 - Rate Limited`. To minimize the possibility of encountering rate limiting errors, we recommend that you do not exceed the following rates:
 
 - 10 new jobs per second (<HTTPMethodBadge method="POST" /> API calls)
-- 50 job status requests per second (<HTTPMethodBadge method="GET" /> API calls). Note that Speechmatics recommends using [Notifications](/speech-to-text/batch-transcription/notifications) for job status updates in production
+- 50 job status requests per second (<HTTPMethodBadge method="GET" /> API calls). Note that Speechmatics recommends using [Notifications](/speech-to-text/batch/notifications) for job status updates in production
 
 Aside from rate limiting, there is no limit to the number of jobs that you can submit. However, Speechmatics Batch SaaS applies a fair queueing policy which means that if you have a large number of jobs in progress at one time, the most recently submitted jobs may take longer to complete.
 

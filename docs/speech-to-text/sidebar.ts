@@ -1,5 +1,5 @@
-import batchSidebar from "./batch-transcription/sidebar";
-import realtimeSidebar from "./real-time-transcription/sidebar";
+import batchSidebar from "./batch/sidebar";
+import realtimeSidebar from "./real-time/sidebar";
 
 export default {
   type: "category",
