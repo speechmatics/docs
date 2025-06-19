@@ -360,18 +360,20 @@ components:
           const: AddInput
         input:
           type: string
+          description: >
+            The information that the LLM must incorporate in the response
         interrupt_response:
           type: boolean
           default: false
           description: >
-            If true, the response will be interrupted by the new input. If false,
-            the response will continue until it is complete, defaults to false.
+            If true, the response will be interrupted by the new input. <br/>
+            If false, the response will continue until it is complete, defaults to false.
         immediate:
           type: boolean
           default: false
           description: >
-            If true, the input will be treated as urgent and will be sent to LLM immediately.
-            If false, new input will be added to current prompt and sent to LLM as a part of the next request.
+            If true, the input will be treated as urgent and will be sent to LLM immediately. <br/>
+            If false, new input will be added to current prompt and sent to LLM as a part of the next request. <br/>
       required:
         - message
         - input
