@@ -1,13 +1,14 @@
 ---
 sidebar_label: Setup
 ---
+# Flow setup
 
 :::warning
 This page is a work in progress
 :::
 
-# Flow setup
 A voice agent template covers multiple elements that typically need to be configured in concert to power a specific class of conversations in a human-facing application. 
+
 
 Flow can be configured using the following parameters:
 
