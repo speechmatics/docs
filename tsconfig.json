@@ -7,5 +7,5 @@
     "target": "ES2023",
     "types": ["docusaurus-theme-openapi-docs"]
   },
-  "exclude": [".docusaurus", "build"]
+  "exclude": [".docusaurus", "build", "**/*.example.{ts,tsx}"]
 }

@@ -1,0 +1,227 @@
+---
+sidebar_label: NextJS
+---
+
+import { Box, Card, Flex } from "@radix-ui/themes";
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+{/* -------------- Initial setup -------------- */}
+import postcssConfigExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/main/postcss.config.mjs";
+import globalsCssExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/main/app/globals.css";
+import nextjsConfigExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/main/next.config.ts";
+
+{/* -------------- Step 1 -------------- */}
+import providersStepOne from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-1/app/providers.tsx";
+import pageStepOneExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-1/app/page.tsx";
+
+{/* -------------- Step 2 -------------- */}
+import providersStepTwo from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-2/app/providers.tsx";
+import useAudioContextsExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-2/hooks/useAudioContexts.ts";
+
+{/* -------------- Step 3 -------------- */}
+import controlsExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-3/components/Controls.tsx";
+import microphoneSelectExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-3/components/MicrophoneSelect.tsx";
+import statusExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-3/components/Status.tsx";
+import transcriptViewExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-3/components/TranscriptView.tsx";
+import audioVisualizerExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-3/components/AudioVisualizer.tsx";
+import errorFallbackExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-3/components/ErrorFallback.tsx";
+import pageStepThreeExample from "?url=https://raw.githubusercontent.com/speechmatics/nextjs-flow-guide/refs/heads/step-3/app/page.tsx";
+
+# Build a conversational AI web app with Next.js and Flow
+
+In this guide, we will walk you through the process of building a conversational AI web application using Next.js and Flow.
+You will learn how to set up your development environment, create a Next.js project, integrate Flow and implement a simple conversational AI feature.
+
+## Prerequisites
+
+Before getting started, ensure you have:
+
+- [Node.js 18.18](https://nodejs.org/en) or later
+
+## Project Setup
+
+Start by creating a fresh Next.js app:
+
+```sh
+npx create-next-app@latest nextjs-flow-guide
+```
+
+It will ask you some questions about how to build your project. We'll follow the default suggestions for this tutorial.
+
+We'll cover the setup in three steps:
+  - [Installing functional dependencies](#1-install-functional-dependencies)
+  - [Installing UI dependencies](#2-install-ui-dependencies)
+  - [Configuring Webpack to handle AudioWorklet script](#3-configure-webpack-to-handle-audio-worklet). 
+
+### 1. Install functional dependencies
+
+```bash
+cd nextjs-flow-guide
+
+# Speechmatics Flow client for react based apps
+npm i @speechmatics/flow-client-react
+
+# Speechmatics browser audio input contains an audio worklet
+npm i @speechmatics/browser-audio-input
+
+# Speechmatics browser audio input for react based apps
+npm i @speechmatics/browser-audio-input-react
+
+# Package for playing PCM audio in the browser
+npm i @speechmatics/web-pcm-player-react
+
+# Speechmatics auth package
+npm i @speechmatics/auth
+
+# react-error-boundary (useful for handling errors gracefully)
+npm i react-error-boundary
+
+# Speechmatics Flow transcript utility
+npm i @speechmatics/use-flow-transcript
+```
+
+### 2. Install UI dependencies
+
+In this example we'll use DaisyUI for the UI components. You can find their [setup for NextJS here](https://daisyui.com/docs/install/nextjs/#2-install-tailwind-css-and-daisyui).
+
+```sh
+# Install DaisyUI and TailwindCSS
+npm install tailwindcss @tailwindcss/postcss daisyui@latest
+```
+
+Create a `postcss.config.mjs` file in the root of the project with the following content:
+
+<CodeBlock title="postcss.config.mjs" language="js">
+  {postcssConfigExample}
+</CodeBlock>
+
+Finally, remove all styles from the `globals.css` file, and replace it with the following content:
+
+<CodeBlock title="app/globals.css" language="css">
+  {globalsCssExample}
+</CodeBlock>
+
+### 3. Add your API key to `.env`
+
+Create a `.env` file in the root of the project, and add your API key:
+
+You can create an API key in the [Speechmatics Portal](https://portal.speechmatics.com/api-keys).
+
+This API key will live on the server, and be used to generate JWTs for the client to use.
+
+<CodeBlock title=".env" language="bash" showLineNumbers>
+{"API_KEY=your-api-key"}
+</CodeBlock>
+
+### 4. Configure Webpack to handle AudioWorklet
+
+To interface with the Flow API, we need to record and send raw audio. The `@speechmatics/browser-audio-input` package is designed to do this. It achieves this by providing a script which can be loaded by an [AudioWorklet](https://developer.mozilla.org/en-US/docs/Web/API/AudioWorklet), but how this script is consumed depends on the bundler being used.
+
+In order to use this package with NextJS, we need to configure Webpack to serve the provided script from a URL, rather than bundling it with the rest. We can leverage [Asset Modules](https://webpack.js.org/guides/asset-modules/) to achieve this.
+
+<CodeBlock title="next.config.ts" language="ts" showLineNumbers>
+  {nextjsConfigExample}
+</CodeBlock>
+
+
+Now that we've setup the project, we can start building the app!
+
+## Implementation
+
+### Step 1: Initialize `Providers`
+
+We'll use 3 context providers in the app:
+
+1. `FlowProvider` - Provides the Flow client to the app.
+2. `PCMAudioRecorderProvider` - Provides the browser audio input to the app.
+3. `PCMAudioPlayerProvider` - Provides the web PCM player to the app.
+
+We'll start by creating a `providers.tsx` file in the `app` directory, and adding the following content:
+
+<CodeBlock title="app/providers.tsx" language="tsx" showLineNumbers>
+  {providersStepOne}
+</CodeBlock>
+
+Now place the following code in the `app/page.tsx` file:
+
+<CodeBlock title="app/page.tsx" language="tsx" showLineNumbers>
+  {pageStepOneExample}
+</CodeBlock>
+
+### Step 2: Handle Audio context and Providers
+
+Dealing with audio in the browser can be tricky since we are both playing and recording audio. Ordinarily, a site should have a single `AudioContext`, but limitations in Firefox makes this difficult.
+To solve this, we'll add a hook which returns two separate `AudioContext` instances in Firefox, while sharing one for other browsers.
+
+<CodeBlock title="hooks/useAudioContexts.ts" language="tsx" showLineNumbers>
+  {useAudioContextsExample}
+</CodeBlock>
+
+
+Now we can update the `providers.tsx` file to use the new hook, as well as add the `PCMAudioRecorderProvider` and `PCMAudioPlayerProvider`. Note how we pass the `workletScriptURL` to the `PCMAudioRecorderProvider`. This is why we [confiured Webpack previously](#4-configure-webpack-to-handle-audioworklet).
+
+<CodeBlock title="app/providers.tsx" language="tsx" showLineNumbers>
+  {providersStepTwo}
+</CodeBlock>
+
+### Step 3: Implement the UI
+
+Our UI will follow this basic structure:
+
+<Box asChild mb="4">
+  <Card>
+    <Flex direction="column" gap="1">
+      <Flex width="100%" gap="1">
+        <Box asChild width="100%">
+          <Card>
+            <p>**Controls**</p>
+            <p>Where we can select the input device and persona, and start/stop the session.</p>
+          </Card>
+        </Box>
+        <Box asChild width="100%">
+          <Card>
+            <p>**Status**</p>
+            <p>Displays the current status of the connection.</p>
+          </Card>
+        </Box>
+      </Flex>
+        <Card>
+          <Flex direction="column" width="100%"  justify="center" align="center" style={{ height: "200px" }}>
+            <p>**TranscriptView**</p>
+            <p>Displays the transcript of the conversation.</p>
+          </Flex>
+        </Card>
+    </Flex>
+  </Card>
+</Box>
+
+We'll also create a few non-essential components to enhance the UI
+
+- **AudioVisualizer** - A component to visualize the audio waveform for the speaker and agent
+- **ErrorFallback** - A component to display an error message when the app encounters an error
+
+#### Controls
+
+For this section, we need to implement a form with a dropdown to select the input device, and a button to start/stop the session.
+
+We'll also need to implement an [Server Action](https://react.dev/reference/rsc/server-functions) to fetch a JWT token from the Flow API. Make sure you [configured your API key](#3-add-your-api-key-to-env) as detailed above.
+
+<Tabs>
+  <TabItem value="Server Action">
+    <CodeBlock title="app/actions.ts" language="ts" showLineNumbers>
+      TODO
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="Controls">
+    <CodeBlock title="components/Controls.tsx" language="tsx" showLineNumbers>
+      {controlsExample}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="MicrophoneSelect">
+    <CodeBlock title="components/MicrophoneSelect.tsx" language="tsx" showLineNumbers>
+      {microphoneSelectExample}
+    </CodeBlock>
+  </TabItem>
+</Tabs>

@@ -258,3 +258,8 @@ This cannot be done by Swizzling since it's not a Docusaurus component, it only 
   --accent-11: var(--teal-11);
   content: "WSS";
 }
+
+pre {
+  max-height: 65vh;
+  overflow-y: auto;
+}

@@ -3,6 +3,7 @@ import type { Config } from "@docusaurus/types";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import katex from "rehype-katex";
 import math from "remark-math";
+import path from "node:path";
 import { prismTheme } from "./prism-theme";
 import { sidebarItemsGenerator } from "./sidebar-generator";
 
@@ -135,7 +136,7 @@ const config: Config = {
                 },
                 {
                   // Load JS files as raw assets when requested with ?raw query
-                  test: /\.js$/,
+                  test: /\.js$|\.ts$|\.tsx$|\.mjs$/,
                   resourceQuery: /raw/,
                   // With Webpack 5 we shouldn't need raw-loader
                   // But because Docusaurus uses babel-loader for all JS files by default,
@@ -143,6 +144,11 @@ const config: Config = {
                   // TODO: Configure custom JS loader that isn't babel, and remove the raw-loader dependency
                   // one day it will be legacy.
                   use: "raw-loader",
+                },
+                {
+                  // Load content from URLs when requested with ?url= query
+                  resourceQuery: /url=/,
+                  use: path.resolve(__dirname, "scripts/url-loader.js"),
                 },
               ],
             },
