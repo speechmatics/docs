@@ -11,7 +11,7 @@ A voice agent template covers multiple elements that typically need to be config
 
 Flow can be configured using the following parameters:
 
-`template_id` - Required in the the StartConversation message in the Flow API. Generated from the Speechmatics [Portal](https://portal.speechmatics.com/). This maps to the [language supported](languages-supported.mdx), agent's prompt, LLM, TTS voice, & custom dictionary. These can be customised by creating or modifying agents in the [portal](https://portal.speechmatics.com/).
+`template_id` - Required in the the StartConversation message in the Flow API. Generated from the Speechmatics [Portal](https://portal.speechmatics.com/). This maps to the [language supported](/voice-agents-flow/supported-languages), agent's prompt, LLM, TTS voice, & custom dictionary. These can be customised by creating or modifying agents in the [portal](https://portal.speechmatics.com/).
 
 For more details, refer to [StartConversation API reference](/api-ref/flow-voice-ai-websocket#startconversation).
 
