@@ -729,7 +729,7 @@ components:
       title: "AudioFormatRaw"
       properties:
         type:
-          $ref: "#/components/schemas/AudioFormatRawTypeEnum"
+          const: raw
         encoding:
           $ref: "#/components/schemas/AudioFormatRawEncodingEnum"
         sample_rate:
@@ -744,7 +744,7 @@ components:
       title: "AudioFormatFile"
       properties:
         type:
-          $ref: "#/components/schemas/AudioFormatFileTypeEnum"
+          const: file
       required:
         - type
 
