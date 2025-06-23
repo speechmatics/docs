@@ -136,7 +136,7 @@ const config: Config = {
                 },
                 {
                   // Load JS files as raw assets when requested with ?raw query
-                  test: /\.js$|\.ts$|\.tsx$|\.mjs$/,
+                  test: /\.js$|\.ts$|\.tsx$|\.mjs$|\.html$/,
                   resourceQuery: /raw/,
                   // With Webpack 5 we shouldn't need raw-loader
                   // But because Docusaurus uses babel-loader for all JS files by default,
