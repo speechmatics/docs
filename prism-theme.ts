@@ -23,7 +23,7 @@ export const prismTheme = {
     {
       types: ["string", "attr-value"],
       style: {
-        color: "var(--amber-11)",
+        color: "var(--cyan-12)",
       },
     },
     {
@@ -47,19 +47,19 @@ export const prismTheme = {
         "class-name",
       ],
       style: {
-        color: "var(--crimson-11)",
+        color: "var(--cyan-11)",
       },
     },
     {
       types: ["atrule", "keyword", "attr-name", "selector"],
       style: {
-        color: "var(--blue-11)",
+        color: "var(--slate-11)",
       },
     },
     {
       types: ["deleted", "tag", "property"],
       style: {
-        color: "var(--cyan-11)",
+        color: "var(--gray-12)",
       },
     },
     {
@@ -71,7 +71,7 @@ export const prismTheme = {
     {
       types: ["tag", "selector", "keyword"],
       style: {
-        color: "var(--blue-11)",
+        color: "var(--crimson-11)",
       },
     },
   ],

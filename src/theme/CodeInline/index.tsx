@@ -7,7 +7,7 @@ import React, { type ReactNode } from "react";
 // MDX 1 used to have a inlineCode comp, see https://mdxjs.com/migrating/v2/
 export default function CodeInline(props: Props): ReactNode {
   return (
-    <Code asChild>
+    <Code asChild color="gray" highContrast>
       {/* Unset the default Docusaurus `code` styles */}
       <code {...props} style={{ border: "unset", verticalAlign: "unset" }} />
     </Code>

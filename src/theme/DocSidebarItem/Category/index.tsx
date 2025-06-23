@@ -161,12 +161,7 @@ export default function DocSidebarItemCategory({
     return (
       <Box mb="6">
         <Box asChild px="3" py="1">
-          <Text
-            size="1"
-            color="gray"
-            weight="bold"
-            style={{ textTransform: "uppercase" }}
-          >
+          <Text size="1" weight="bold" style={{ textTransform: "uppercase" }}>
             {label}
           </Text>
         </Box>
