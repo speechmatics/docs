@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import yaml from "yaml";
 
-const spec = yaml.parse(readFileSync("spec/jobs.yaml", "utf8"));
+const spec = yaml.parse(readFileSync("spec/batch.yaml", "utf8"));
 
 const METHODS = ["get", "post", "delete"] as const;
 
@@ -13,6 +13,8 @@ const LANGUAGES = {
 
 spec.basePath = "https://asr.api.speechmatics.com/v2";
 
+const projectRoot = `${__dirname}/..`;
+
 for (const [path, data] of Object.entries(spec.paths)) {
   if (!data || typeof data !== "object")
     throw new Error(`Unexpected path value under "${path}": ${data}`);
@@ -21,7 +23,9 @@ for (const [path, data] of Object.entries(spec.paths)) {
     if (method in data) {
       let sampleFiles: string[] = [];
       try {
-        sampleFiles = readdirSync(`./code-samples/jobs-api${path}`).filter(
+        sampleFiles = readdirSync(
+          `${projectRoot}/spec/code-samples/batch-api${path}`,
+        ).filter(
           // Regex match: e.g. "get.py", "post.js"
           (file) => file.match(new RegExp(`^${method}.[A-Za-z]+$`)),
         );
@@ -35,7 +39,10 @@ for (const [path, data] of Object.entries(spec.paths)) {
 
       data[method]["x-codeSamples"] = sampleFiles.map((file) => ({
         lang: LANGUAGES[file.split(".")[1] as keyof typeof LANGUAGES],
-        source: readFileSync(`./code-samples/jobs-api${path}/${file}`, "utf8"),
+        source: readFileSync(
+          `${projectRoot}/spec/code-samples/batch-api${path}/${file}`,
+          "utf8",
+        ),
       }));
     }
   }
@@ -47,4 +54,4 @@ for (const name of Object.keys(spec.definitions)) {
   spec.definitions[name].title = name;
 }
 
-writeFileSync("static/jobs.yaml", yaml.stringify(spec));
+writeFileSync("static/batch.yaml", yaml.stringify(spec));

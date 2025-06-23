@@ -92,10 +92,10 @@ html[data-theme="dark"] {
   --ifm-color-content: var(--ifm-color-emphasis-900);
   --ifm-color-content-secondary: var(--gray-11);
 
-  --ifm-background-color: transparent;
   --ifm-menu-color: var(--gray-11);
 
-  --color-background: var(--gray-1);
+  background-color: var(--color-background);
+
   --ifm-color-primary: var(--cyan-10);
   --ifm-color-primary-dark: var(--cyan-10);
   --ifm-color-primary-darker: var(--cyan-11);
@@ -118,6 +118,9 @@ html[data-theme="dark"] {
 
   --ifm-alert-color: var(--cyan-10);
   --ifm-alert-border-color: var(--cyan-10);
+
+  --docusaurus-highlighted-code-line-bg: var(--gray-4);
+  --docusaurus-details-decoration-color: var(--gray-11);
 }
 
 .radix-themes {
@@ -131,6 +134,9 @@ html[data-theme="dark"] {
   --ifm-color-primary-light: var(--accent-9);
   --ifm-color-primary-lighter: var(--accent-8);
   --ifm-color-primary-lightest: var(--accent-7);
+
+  --color-background: var(--gray-1);
+  --ifm-background-color: var(--gray-1);
 }
 
 html {

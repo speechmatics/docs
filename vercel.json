@@ -1,0 +1,13 @@
+{
+  "redirects": [
+    {
+      "source": "/introduction",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/features-other/notifications",
+      "destination": "/speech-to-text/batch/notifications"
+    }
+  ]
+}

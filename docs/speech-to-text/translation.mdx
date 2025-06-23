@@ -1,0 +1,470 @@
+---
+description: "Learn how to use the Speechmatics translation offering"
+keywords:
+  [
+    speechmatics,
+    features,
+    translation,
+    transcription,
+    speech recognition,
+    automatic speech recognition,
+    asr,
+    speech translation,
+    speech-to-text translation,
+    real-time speech translation,
+  ]
+sidebar_position: 4
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Translation
+
+Speechmatics enables you to translate your audio into multiple languages. Quickly add translation to your application through a single API call, with over 30 languages supported.
+
+Test out our Translation Feature for free in the [Speechmatics On-Demand Portal](https://portal.speechmatics.com/signup), no coding required.
+
+Translation can be enabled when transcribing either a **file** or in **real-time**, by using the Speechmatics SaaS, or by deploying it [On-Prem](/deployments/container/translation).
+
+If you're new to Speechmatics, please see our guide on [Transcribing a File](/speech-to-text/batch/quickstart) or [Transcribing in Real-Time](/speech-to-text/real-time/quickstart). Once you are set up, include the following config to enable Translation:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "operating_point": "enhanced",
+    "language": "en"
+  },
+  "translation_config": {
+    "target_languages": ["es", "de"] # Set languages here to enable translation
+  }
+}
+```
+
+## Example
+
+<Tabs groupId="transcription-types">
+  <TabItem value="batch" label="Batch Translation" default>
+Python client example to translate a file for batch.
+
+```python showLineNumbers
+from speechmatics.models import ConnectionSettings
+from speechmatics.batch_client import BatchClient
+from httpx import HTTPStatusError
+
+API_KEY = "YOUR_API_KEY"
+PATH_TO_FILE = "example.wav"
+LANGUAGE = "en" # Transcription language
+TRANSLATION_LANGUAGES = ["es","de"]
+
+settings = ConnectionSettings(
+    url="https://asr.api.speechmatics.com/v2",
+    auth_token=API_KEY,
+)
+
+# Define transcription parameters
+conf = {
+    "type": "transcription",
+    "transcription_config": {
+        "language": LANGUAGE
+    },
+    "translation_config": {
+        "target_languages":TRANSLATION_LANGUAGES
+    }
+}
+
+# Open the client using a context manager
+with BatchClient(settings) as client:
+    try:
+        job_id = client.submit_job(
+            audio=PATH_TO_FILE,
+            transcription_config=conf,
+        )
+        print(f'job {job_id} submitted successfully, waiting for transcript')
+
+        # Note that in production, you should set up notifications instead of polling.
+        # Notifications are described here: https://docs.speechmatics.com/features-other/notifications
+        transcript = client.wait_for_completion(job_id, transcription_format='json-v2')
+        for language in TRANSLATION_LANGUAGES:
+          # Print the translation for each language from the JSON
+          print(f"Translation for {language}")
+          translation = ""
+          for translated_segment in transcript["translations"][language]:
+              translation += translated_segment["content"] + " "
+          print(translation)
+    except HTTPStatusError as e:
+        if e.response.status_code == 401:
+            print('Invalid API key - Check your API_KEY at the top of the code!')
+        elif e.response.status_code == 400:
+            print(e.response.json()['detail'])
+        else:
+            raise e
+```
+
+</TabItem>
+  <TabItem value="real-time" label="Real-Time Translation">
+
+Python client example to translate a file in real-time, see [here](/speech-to-text/real-time/quickstart) for more examples of Real-Time Transcription
+
+```python showLineNumbers
+import speechmatics
+from httpx import HTTPStatusError
+
+API_KEY = "YOUR_API_KEY"
+PATH_TO_FILE = "example.wav"
+LANGUAGE = "en" # Transcription language
+TRANSLATION_LANGUAGES = ["es","de"]
+CONNECTION_URL = f"wss://eu2.rt.speechmatics.com/v2/{LANGUAGE}"
+
+# Create a transcription client
+ws = speechmatics.client.WebsocketClient(
+    speechmatics.models.ConnectionSettings(
+        url=CONNECTION_URL,
+        auth_token=API_KEY,
+    )
+)
+
+# Define an event handler to print the translations
+def print_translation(msg):
+    msg_type="Final"
+    if msg['message'] == "AddPartialTranslation":
+        msg_type="Partial"
+
+    language = msg['language'] # language for translation message
+    translations = []
+    for translation_segment in msg['results']:
+        translations.append(translation_segment['content'])
+
+    translation = " ".join(translations).strip()
+    print(f"{msg_type} translation for {language}: {translation}")
+
+# Register the event handler for partial translation
+ws.add_event_handler(
+    event_name=speechmatics.models.ServerMessageType.AddPartialTranslation,
+    event_handler=print_translation,
+)
+
+# Register the event handler for full translation
+ws.add_event_handler(
+    event_name=speechmatics.models.ServerMessageType.AddTranslation,
+    event_handler=print_translation,
+)
+
+settings = speechmatics.models.AudioSettings()
+
+# Define transcription parameters with translation
+# Full list of parameters described here: https://speechmatics.github.io/speechmatics-python/models
+
+translation_config = speechmatics.models.RTTranslationConfig(
+    target_languages=TRANSLATION_LANGUAGES,
+    #enable_partials=True # Optional argument to provide translation of partial sentences
+)
+
+transcription_config = speechmatics.models.TranscriptionConfig(
+    language=LANGUAGE,
+    translation_config=translation_config
+)
+
+print("Starting transcription (type Ctrl-C to stop):")
+with open(PATH_TO_FILE, 'rb') as fd:
+    try:
+        ws.run_synchronously(fd, transcription_config, settings)
+    except KeyboardInterrupt:
+        print("\nTranscription stopped.")
+    except HTTPStatusError as e:
+        if e.response.status_code == 401:
+            print('Invalid API key - Check your API_KEY at the top of the code!')
+        else:
+            raise e
+```
+
+  </TabItem>
+</Tabs>
+
+**Maximum number of translations**: Each transcription can have up to five translations configured.
+
+## Translation Response
+
+<Tabs groupId="transcription-types">
+  <TabItem value="batch" label="Batch Translation" default>
+The returned JSON will include a new property called `translations`, which contains a list of translated text for each target language requested (using the same <a href="https://docs.speechmatics.com/introduction/supported-languages#languages">ISO Language Codes</a> as for transcription).
+
+```json
+{
+    "format": "2.9",
+    "job": {
+        "created_at": "2023-01-23T19:31:19.354Z",
+        "data_name": "example.wav",
+        "duration": 15,
+        "id": "ggqjaazkqf"
+    },
+    "metadata": {
+        "created_at": "2023-01-23T19:31:44.766Z",
+        "type": "transcription",
+        "transcription_config": {
+            "language": "en",
+            "diarization": "speaker"
+        },
+        "translation_config": {
+            "target_languages": [
+                "es"
+            ]
+        }
+    },
+    "results": [
+        {
+            "start_time": 0.78,
+            "end_time": 1.32,
+            "type": "word",
+            "alternatives": [
+                {
+                    "content": "Welcome",
+                    "confidence": 1.0,
+                    "language": "en",
+                    "speaker": "S1"
+                }
+            ]
+        },
+        ...
+    ],
+    "translations": {
+        "es": [
+            {
+                "start_time": 0.78,
+                "end_time": 2.58,
+                "content": "Bienvenidos a Speechmatics.",
+                "speaker": "S1"
+            },
+            {
+                "start_time": 3.0,
+                "end_time": 7.94,
+                "content": "Esperamos que tengas un gran día.",
+                "speaker": "S1"
+            },
+            ...
+        ]
+      }
+}
+```
+
+</TabItem>
+  <TabItem value="real-time" label="Real-Time Translation">
+
+Real-time provides a stream of translation messages, per language requested. Translation messages will arrive after transcription messages, but won't delay transcription.
+
+As per transcription there are two types of messages, Partial translations (optional) and Final translations.
+
+<h3>Final Translation</h3>
+
+A Final translation, is a final best prediction for the translation (usually the end of a sentence). Once output, these translations are considered Final and will not be updated afterwards.
+
+Final translation example message
+
+```json
+{
+  "format": "2.9",
+  "message": "AddTranslation",
+  "language": "es",
+  "results": [
+    {
+      "start_time": 5.45999987795949,
+      "end_time": 6.189999870583415,
+      "content": "Bienvenidos a Speechmatics.",
+      "speaker": "S1"
+    }
+  ]
+}
+```
+
+<h3>Partial Translation (optional)</h3>
+
+A Partial translation, is a translation that can be updated at a later point in time as more context becomes available.
+
+By default, only Final translations are produced. Partials must be explicitly enabled using the `enable_partials` property in `translation_config` for the session.
+
+Partial translations are translations that can be updated, and often correspond to unfinished sentences. They have a lower latency than translation finals.
+
+Partial translation example message
+
+```json
+{
+  "format": "2.9",
+  "message": "AddPartialTranslation",
+  "language": "es",
+  "results": [
+    {
+      "start_time": 5.45999987795949,
+      "end_time": 5.889999870583415,
+      "content": "Bienvenidos a",
+      "speaker": "S1"
+    }
+  ]
+}
+```
+
+  </TabItem>
+</Tabs>
+
+Each translated section of text matches directly to one or more words in the native language transcription based on the start and end time. Each one has the following properties:
+
+- `language`: Real-time only. The translated language [ISO Language Code](/speech-to-text/supported-languages#languages)
+- `content`: The translated content
+- `start_time`: The start time of the translated content, which matches the start time of the first word in the transcript
+- `end_time`: The end time of the translated content, which matches the end time of the last word in the transcript
+- `speaker`: The speaker label when `diarization:speaker` is set - see [here](/speech-to-text/output-enhancements/diarization#speaker-diarization) about Speaker Diarization
+  - Speaker labels are only available on Final translations, not Partial translations
+- `channel`: The channel label when `diarization:channel` is set - see [here](/speech-to-text/output-enhancements/diarization#channel-diarization) about Channel Diarization
+  - Only available for Batch transcription
+
+## Supported Translation Pairs 
+
+Translation is supported for the majority of Speechmatics' languages. The supported translation pairs are listed below.
+
+| Transcription Language                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Translation Target Language                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| English (en)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Bulgarian (bg), Catalan (ca), Mandarin (cmn), Czech (cs), Danish (da), German (de), Greek (el), Spanish (es), Estonian (et), Finnish (fi), French (fr), Galician (gl), Hindi (hi), Croatian (hr), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Korean (ko), Lithuanian (lt), Latvian (lv), Malay (ms), Dutch (nl), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Slovakian (sk), Slovenian (sl), Swedish (sv), Turkish (tr), Ukrainian (uk), Vietnamese (vi) |
+| Bulgarian (bg), Catalan (ca), Mandarin (cmn), Czech (cs), Danish (da), German (de), Greek (el), Spanish (es), Estonian (et), Finnish (fi), French (fr), Galician (gl), Hindi (hi), Croatian (hr), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Korean (ko), Lithuanian (lt), Latvian (lv), Malay (ms), Dutch (nl), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Slovakian (sk), Slovenian (sl), Swedish (sv), Turkish (tr), Ukrainian (uk), Vietnamese (vi) | English (en)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Norwegian Bokmål (no)\*                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Norwegian Nynorsk (nn)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+
+\*Norwegian Bokmål to Nynorsk is only supported on Batch SaaS.
+
+## Considerations
+
+When using Translation, there are a few things to keep in mind:
+
+- **Accuracy of Transcription:** We recommended using the Enhanced Operating Point for the best Translation results. Transcription accuracy directly impacts the accuracy of translation
+- **Punctuation:** Punctuation plays a significant role in the accuracy of translation. It is therefore recommended to avoid disabling any [Punctuation Marks](/speech-to-text/output-enhancements/punctuation-settings) or reducing the [Punctuation Sensitivity](/speech-to-text/output-enhancements/punctuation-settings) to ensure the best possible results
+- **Formatting:** The translation is applied to the [written form](/speech-to-text/output-enhancements/numeral-formatting) transcript
+- **Transcription Time:** Enabling Translation for a file will increase the turnaround time of jobs. The amount of time it increases for a single translation will be small. The number of translation target languages directly affects turnaround time. This does not affect Real-time, except when closing a connection when there can be a delay of up to 5 seconds while we receive the final translation
+
+## Limitations
+
+- **Maximum Number of Translations**: Each transcription can have up to five translations
+- **Output Formats**: At this time, only the JSON transcript format is supported for translation. Text and SRT transcript formats are only available in the native language for Batch transcription
+- **Other Transcription Features**: The following transcription features are only available in the native language transcript, not the translation
+  - Single word timings
+  - Confidence scores
+  - Word tagging
+  - Output locale spelling
+
+## Batch Error Responses
+
+### Unsupported Target Language
+
+If one or more of the target languages are not [supported](./translation.mdx#supported-translation-pairs) for the transcription language, the job will be rejected with a HTTP 400 error response.
+
+This behaviour is different when the [transcription language is not known](./translation.mdx#unsupported-translation-pair) ahead of time.
+
+Example Bad Config:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en"
+  },
+  "translation_config": {
+    "target_languages": ["es", "zz"]
+  }
+}
+```
+
+Response:
+
+```json
+{
+  "code": 400,
+  "detail": "Job config JSON is invalid. Error: language zz is not a supported translation target for source language en",
+  "error": "Job rejected"
+}
+```
+
+### Unsupported Translation Pair
+
+When using [Language Identification](/speech-to-text/batch/language-identification), if one or more of the target languages are not [supported](./translation.mdx#supported-translation-pairs) for the identified transcription language, the job will be accepted and an error message will be included in the JSON output. No translations will be returned for that language pair. 
+
+This behaviour is different when the [transcription language is known](#unsupported-target-language) ahead of time.
+
+The below job config illustrates the response if the language was identified and transcribed as German (de) with the target translation language set to Spanish (es).
+
+```json
+{
+  "job": { ... },
+  "metadata": {
+    "created_at": "2023-05-26T15:01:48.412714Z",
+    "type": "transcription",
+    "transcription_config": {
+      "language": "auto"
+    },
+    "translation_config": {
+      "target_languages": [
+        "es"
+      ]
+    },
+    "translation_errors": [
+      {"type": "unsupported_translation_pair", "message": "Translation from de to es currently not supported"}
+    ],
+    ...
+  },
+  "results": [...]
+}
+```
+This enables the combination of automatic language identification and translation.
+
+### Too Many Target Languages
+
+Each transcription can have up to five translations. If you request more than five a HTTP 400 error response is returned.
+
+```json
+{
+  "code": 400,
+  "detail": "maximum number of target languages is 5 and requested count is 6",
+  "error": "Job rejected"
+}
+```
+
+### Translation Failure
+
+In the event that Translation fails for one or more languages, the transcription process will complete but the Translation will not be returned. An error message will be included in the final JSON output.
+
+```json
+{
+  "job": { ... },
+  "metadata": {
+    "created_at": "2023-05-26T15:01:48.412714Z",
+    "type": "transcription",
+    "transcription_config": {...},
+    "translation_config": {...},
+    "translation_errors": [
+      {"type": "translation_failed", "message": "Translation failed."}
+    ],
+    ...
+  },
+  "results": [...]
+}
+```
+
+## Real-Time Error Responses
+
+### Unsupported Target Language
+
+If one or more of the target languages are not [supported](./translation.mdx#supported-translation-pairs) for the source language, a warning is raised but transcription will continue. No translations will be returned for that language.
+
+```bash
+WARNING:speechmatics.client:Translation from en to ta currently not supported
+```
+
+### Too Many Target Languages
+
+Each transcription can have up to five translations. If you request more than five a error is returned and the websocket connection will fail.
+
+```bash
+ERROR:speechmatics.exceptions.TranscriptionError: translation_config.target_languages should have at most 5 items.
+```
+
+## Feedback
+
+Do you have requests or feedback on translation? If so, please send us your thoughts via our [Translation Feedback Form](https://forms.office.com/e/haXSWcpf0C).
+
+If you want to report an issue or get Support more urgently [Raise an Issue](/speech-to-text/batch/troubleshooting) instead.

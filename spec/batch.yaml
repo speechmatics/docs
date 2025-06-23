@@ -602,7 +602,7 @@ paths:
               error: Internal Server Error
       externalDocs:
         description: More details of our alignment service can be found here.
-        url: "https://docs.speechmatics.com/features-other/word-alignment"
+        url: "https://docs.speechmatics.com/speech-to-text/batch/word-alignment"
   "/jobs/{jobid}/log":
     parameters:
       - $ref: "#/parameters/AuthHeader"
@@ -1290,6 +1290,9 @@ definitions:
       default_language:
         type: string
   SummarizationConfig:
+    type: object
+    description: >-
+      Configuration options for summarization.
     properties:
       content_type:
         type: string
@@ -1297,11 +1300,27 @@ definitions:
           - auto
           - informative
           - conversational
+        default: auto
+        description: >-
+          Choose from three options:
+
+          - `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.
+
+          - `informative` - Recommended for more structured information delivered by one or more people, making it ideal for videos, podcasts, lectures, and presentations.
+
+          - `auto` - Automatically selects the most appropriate content type based on an analysis of the transcript.
       summary_length:
         type: string
         enum:
           - brief
           - detailed
+        default: brief
+        description: >-
+          Determines the depth of the summary:
+
+          - `brief` - Provides a succinct summary, condensing the content into just a few sentences.
+
+          - `detailed` - Provide a longer, structured summary. For _conversational_ content, it includes key topics and a summary of the entire conversation. For _informative_ content, it logically divides the audio into sections and provides a summary for each.
       summary_type:
         type: string
         enum:
@@ -1928,19 +1947,39 @@ definitions:
     type: object
     description: Represents a segment of text and its associated sentiment.
     properties:
-      text: { type: string }
-      start_time: { type: number, format: float }
-      end_time: { type: number, format: float }
-      sentiment: { type: string }
-      speaker: { type: string }
-      channel: { type: string }
-      confidence: { type: number, format: float }
+      text:
+        type: string
+        description: Represents the transcript of the analysed segment
+      sentiment:
+        type: string
+        description: The assigned sentiment to the segment, which can be positive, neutral or negative
+      start_time:
+        type: number
+        format: float
+        description: The timestamp corresponding to the beginning of the transcription segment
+      end_time:
+        type: number
+        format: float
+        description: The timestamp corresponding to the end of the transcription segment
+      speaker:
+        type: string
+        description: The speaker label for the segment, if speaker diarization is enabled
+      channel:
+        type: string
+        description: The channel label for the segment, if channel diarization is enabled
+      confidence:
+        {
+          type: number,
+          format: float,
+          description: A confidence score in the range of 0-1,
+          indicating the model's certainty in the predicted sentiment,
+        }
   SentimentSummary:
     type: object
     description: Holds overall sentiment information, as well as detailed per-speaker and per-channel sentiment data.
     properties:
       overall:
-        description: Summary of overall sentiment data.
+        description: Summary for all segments in the file
         $ref: "#/definitions/SentimentSummaryDetail"
       speakers:
         type: array
@@ -2053,12 +2092,16 @@ definitions:
     properties:
       title:
         type: string
+        description: The auto-generated title for the chapter
       summary:
         type: string
+        description: An auto-generated paragraph-style, short summary of the chapter
       start_time:
         type: number
+        description: The start time of the chapter in the audio file
       end_time:
         type: number
+        description: The end time of the chapter in the audio file
   AudioEventItem:
     type: object
     properties:

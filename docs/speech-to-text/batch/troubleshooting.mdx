@@ -1,0 +1,134 @@
+---
+description: "Guides to help with troubleshooting the Speechmatics API"
+keywords:
+  [speechmatics, transcription, speech recognition, asr, error, troubleshooting]
+---
+
+# Troubleshooting
+
+## Basics
+
+:::info
+For troubleshooting On-Prem deployments, please refer to the [On-Prem documentation](/deployments/container/cpu-speech-to-text-container).
+:::
+
+If you see errors when you submit a job or perform any other actions, we advise you to check a few things before raising a Support ticket:
+
+1. API endpoint
+2. Language code
+3. API key expiration
+
+## 401 Authorization Required
+
+A 401 Authorization Required error will be returned as HTML and means that an API Key has not been provided or the wrong API endpoint has been chosen.
+
+Your API key is linked to a specific region and must be used with any interaction with the Speechmatics API to authenticate to the service.
+
+For example:
+
+```html
+<html>
+  <head>
+    <title>401 Authorization Required</title>
+  </head>
+
+  <body>
+    <center>
+      <h1>401 Authorization Required</h1>
+    </center>
+    <hr />
+    <center>nginx</center>
+  </body>
+</html>
+```
+
+## 403 Entitlement Check Failed
+
+The below error indicates that the API Key being used to submit the job has either expired or does not have a requested feature in the config file that has been submitted:
+
+```json
+{
+  "code": 403,
+  "detail": "Entitlement check failed",
+  "error": "Forbidden"
+}
+```
+
+## 429 Rate Limited Requests
+
+A 429 error means that the request has been rate limited by our API. This situation could be avoided by adding a 1-second delay between requests of the same type, e.g., adding a 1-second delay between `GET /v2/jobs/{job_id}` requests.
+
+## 503 Service Unavailable
+
+In the rare event of a 503 error, the request can be retried immediately. If the issue persists, please [Raise an Incident](#raising-an-incident) with the Support team.
+
+## Terminating jobs
+If you want to terminate a job that is in progress, you can use the [Delete endpoint](/api-ref/batch/delete-a-job) with the `force` parameter. This could be helpful if job seems stuck, too long running, or the output is no longer needed.
+
+
+## Raising an Incident
+
+If you need to raise a Support ticket, then please reach out to [Support](https://support.speechmatics.com).
+
+As part of good practice always provide:
+
+- A thorough description of the error you encountered
+- Any relevant Job or Session IDs
+- The configuration information you used to submit the job request
+
+Please provide a Job ID where possible. A response for a successful job should look like this:
+
+```
+HTTP/1.1 201 Created
+Content-Length: 20
+Content-Type: application/json
+Request-Id: df6ec500191bf2c02ee42d519fbea34f
+Strict-Transport-Security: max-age=15724800; includeSubDomains
+X-Azure-Ref: 01mDmXAAAAABUtz6ZgS7QRI2F3f5B+19wTE9OMjFFREdFMDMxMgBhN2JjOWQ4MC02YjBiLTQ1NWEtYjE3MS01NGJkZmNiYWE0YTk=
+Date: Thu, 23 May 2019 08:59:08 GMT
+
+{"id":"z2jfp1jwu1"}
+```
+
+Here, the Job ID is `z2jfp1jwu1`. The Request-Id is `df6ec500191bf2c02ee42d519fbea34f`
+
+If you submitted a job, but did not receive a Job ID as expected please provide any Request-Id, and X-Azure-Ref headers that may have been returned to you in the HTTP response. An error will be reported as a 4XX or 5XX status code; instead of the job ID an error message will be returned. The Request-Id can be included in the ticket to support to help Support engineers troubleshoot the problem. Here's an example:
+
+```
+HTTP/1.1 401 Unauthorized
+Content-Length: 179
+Content-Type: text/html
+Request-Id: 00adae505fa8cb7c7f24c6bf52c60048
+Strict-Transport-Security: max-age=15724800; includeSubDomains
+X-Azure-Ref: 0LWLmXAAAAAB2mDIdAu7kSZ/kKszi7eH4TE9OMjFFREdFMDMwOQBhN2JjOWQ4MC02YjBiLTQ1NWEtYjE3MS01NGJkZmNiYWE0YTk=
+Date: Thu, 23 May 2019 09:04:49 GMT
+
+<html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx/1.15.8</center>
+</body>
+</html>
+```
+
+Please note that in the future the response for HTTP 401 and 429 responses will be content-type `application/json` rather than `text/html`.
+This is how an HTTP 401 request will now look:
+
+```
+HTTP/1.1 401 Unauthorized
+Content-Length: 179
+Content-Type: application/json
+Request-Id: 00adae505fa8cb7c7f24c6bf52c60048
+Strict-Transport-Security: max-age=15724800; includeSubDomains
+X-Azure-Ref: 0LWLmXAAAAAB2mDIdAu7kSZ/kKszi7eH4TE9OMjFFREdFMDMwOQBhN2JjOWQ4MC02YjBiLTQ1NWEtYjE3MS01NGJkZmNiYWE0YTk=
+Date: Thu, 23 May 2019 09:04:49 GMT
+
+{"code": 401, "error": "Unauthorized"}
+```
+
+Here, the Request-Id is `00adae505fa8cb7c7f24c6bf52c60048`. Please note the response here is in JSON format and is no longer an HTTP response.
+
+## Status Page
+
+Sometimes an issue you have could be caused by a problem on the server side. You can keep track of our service health status updates on our [Status Page](https://status.speechmatics.com/).

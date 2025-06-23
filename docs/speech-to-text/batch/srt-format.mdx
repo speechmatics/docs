@@ -1,0 +1,54 @@
+---
+description: 'Learn how to get Speechmatics transcriptions in an SRT format'
+keywords: [speechmatics, features, srt, transcription, speech recognition, asr]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# SRT formatting
+
+SubRip (SRT) is a subtitling format that can be used in to generate subtitles for video content or other workflows. Our SRT output will generate a transcript together with corresponding alignment timestamps. We follow best practice as recommended by major broadcasters in our default line length and number of lines output.
+
+To retrieve a transcript in SRT format, you should use the `format` query string parameter. For example:
+
+<Tabs>
+<TabItem value='unix' label='Unix'>
+
+```bash
+curl -L -X GET "https://asr.api.speechmatics.com/v2/jobs/${JOB_ID}/transcript?format=srt" \
+    -H "Authorization: Bearer ${API_KEY}"
+```
+
+</TabItem>
+<TabItem value='Windows' label='Windows'>
+
+```powershell
+curl -L -X GET "https://asr.api.speechmatics.com/v2/jobs/${JOB_ID}/transcript?format=srt" `
+    -H "Authorization: Bearer ${API_KEY}"
+```
+
+</TabItem>
+</Tabs>
+
+<br />
+
+Speechmatics provides a default configuration output for SRT files for both number of lines and line length in characters. You can change these parameters by passing the configuration options described below:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    ...
+  },
+  "output_config": {
+    "srt_overrides": {
+      "max_line_length": 37,
+      "max_lines": 2
+    }
+  }
+}
+```
+
+- `max_line_length`: sets maximum count of characters per subtitle line including white space (default: `37`)
+- `max_lines`: sets maximum count of lines in a subtitle section (default: `2`)

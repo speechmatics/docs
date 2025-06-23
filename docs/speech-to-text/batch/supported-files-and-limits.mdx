@@ -1,0 +1,68 @@
+---
+sidebar_label: 'Supported Files and Limits'
+keywords: [speechmatics, transcription, speech recognition, asr, api, limits]
+toc_max_heading_level: 2
+---
+
+import HTTPMethodBadge from '@theme/HTTPMethodBadge'
+
+# Supported Files and Limits (Batch)
+
+:::info
+This page documents limits, conditions and supported file types for transcription by **REST API** (a.k.a. Batch SaaS).
+* For Real-time transcription, see the [Real-time Transcription supported formats and limits](/speech-to-text/real-time/supported-formats-and-limits).
+* For Flow Voice AI, see the [Flow Voice AI supported formats and limits](/voice-agents-flow/supported-formats-and-limits).
+:::
+
+## Supported File Types
+
+The following file formats types are supported for transcription by REST API:
+
+- `wav`
+- `mp3`
+- `aac`
+- `ogg`
+- `mpeg`
+- `amr`
+- `m4a`
+- `mp4`
+- `flac`
+
+The list above is exhaustive - any file format outside the list above is explicitly not supported.
+
+Only files where the type can be determined by data inspection are supported. Raw audio formats where the codec is not embedded in the file cannot be processed in batch mode. This includes files commonly given extensions like ".raw" or ".g729" where the codec is only hinted at in the name.
+
+## Rate Limiting and Fair Usage
+
+Speechmatics Batch SaaS applies rate limiting and fair queueing to provide a consistently high quality of service to all users.
+
+If you make a large number of requests in a short period of time, some of these requests may fail with the response `HTTP 429 - Rate Limited`. To minimize the possibility of encountering rate limiting errors, we recommend that you do not exceed the following rates:
+
+- 10 new jobs per second (<HTTPMethodBadge method="POST"/> API calls)
+- 50 job status requests per second (<HTTPMethodBadge method="GET"/> API calls). Note that Speechmatics recommends using [Notifications](/speech-to-text/batch/notifications) for job status updates in production
+
+Aside from rate limiting, there is no limit to the number of jobs that you can submit. However, Speechmatics Batch SaaS applies a fair queueing policy which means that if you have a large number of jobs in progress at one time, the most recently submitted jobs may take longer to complete.
+
+
+## Hourly Usage Limits
+
+Speechmatics limits the number of hours of audio users can process each month to help manage load on our servers. The current limits (in hours) by account type are listed in the table below:
+
+|            | Batch standard    | Batch enhanced    |
+|------------| ------------------| ------------------|
+| Free Tier  | 2 hours/month     | 2 hours/month     |
+| Paid Tier  | 6,000 hours/month | 6,000 hours/month |
+| Enterprise | Custom            | Custom            |
+
+
+Please reach out to [Support](https://support.speechmatics.com) if you need to increase the above limits.
+
+
+## File Size Limits
+
+If you submit your media file in the body of the `/jobs` <HTTPMethodBadge method="POST" /> request to Speechmatics Batch SaaS, the file must be less than 1 GB in size or the job will be rejected.
+To process files larger than 1 GB, you can provide the URL of the audio file in the job config as described in the [Fetch URL documentation](/speech-to-text/batch/fetch-url).
+
+## Data Retention Limits
+
+Audio files, transcripts, and configuration data are stored in the Speechmatics Batch SaaS for 7 days. Any request to retrieve a transcript or file more than 7 days after it was processed will receive an HTTP 404 error message and a status of `expired`. You can delete audio or transcripts in advance of this 7 day period - see the [API Reference](/api-ref/batch/delete-a-job) for details.

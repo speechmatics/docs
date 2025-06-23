@@ -1,0 +1,78 @@
+---
+sidebar_position: 3
+description: 'Learn how to transcribe files from a URL'
+keywords: [speechmatics, fetch, url, transcription, speech recognition, asr]
+---
+
+# Fetch URL
+
+
+If you store your digital media in cloud storage (for example AWS S3 or Azure Blob Storage) you can also submit a job by providing the URL of the audio file. The configuration uses a `fetch_data` section, which looks like this:
+
+### Configuration Example
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "diarization": "speaker"
+  },
+  "fetch_data": {
+    "url": "${URL}/{FILENAME}"
+  }
+}
+```
+
+In SaaS, fetch requests made to the URL in `fetch_data` have user agent set to `Speechmatics-API/2.0`.
+
+### Fetch Failure
+
+If the Speechmatics Batch SaaS is unable to retrieve audio from the specified online location, the job will fail, with a `status` of `rejected`, and no transcript will be generated. Users can now retrieve failure information by making a GET /jobs/$JOBID request, and use that to carry out diagnostic information.
+
+If the job has failed, there will be an additional `errors` element, which will show all failure messages Speechmatics Batch SaaS encountered when carrying out the fetch request. Please note, there can be multiple failure attempts associated with one submitted job, as there is a retry mechanism in place.
+
+```json
+{
+  "job": {
+    "config": {
+      "fetch_data": {
+        "url": "https://example.com/average-files/punctuation1.mp3"
+      },
+      "notification_config": [
+        {
+          "contents": ["jobinfo"],
+          "url": "https://example.com/"
+        }
+      ],
+      "transcription_config": {
+        "language": "de"
+      },
+      "type": "transcription"
+    },
+    "created_at": "2021-07-19T12:55:03.754Z",
+    "data_name": "",
+    "duration": 0,
+    "errors": [
+      {
+        "message": "unable to fetch audio: http status code 404",
+        "timestamp": "2021-07-19T12:55:05.425Z"
+      },
+      {
+        "message": "unable to fetch audio: http status code 404",
+        "timestamp": "2021-07-19T12:55:07.649Z"
+      },
+      {
+        "message": "unable to fetch audio: http status code 404",
+        "timestamp": "2021-07-19T12:55:17.665Z"
+      },
+      {
+        "message": "unable to fetch audio: http status code 404",
+        "timestamp": "2021-07-19T12:55:37.643Z"
+      }
+    ],
+    "id": "a81ko4eqjl",
+    "status": "rejected"
+  }
+}
+```

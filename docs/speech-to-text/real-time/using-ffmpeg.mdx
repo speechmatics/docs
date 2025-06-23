@@ -1,0 +1,179 @@
+---
+toc_max_heading_level: 3
+description: 'Use ffmpeg to pipe microphone input into the Speechmatics Real-Time API'
+keywords: [real-time, ffmpeg, microphone, transcription, speech recognition, asr, transcription api]
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Using FFMPEG
+
+One of the most powerful use cases for ASR is real-time transcription of microphone inputs. However, working with audio devices can be hard. [FFMPEG](https://ffmpeg.org/) is the most popular tool for processing a wide range of media streams, including audio and video. In this tutorial, we'll walk you through installing and running ffmpeg as an input source for the Speechmatics CLI tool.
+
+### Install the Speechmatics CLI
+
+Before we move onto using FFMPEG, you'll need to install the speechmatics CLI in your local environment. In order to proceed with this installation, you will need Python version >= 3.7. Run the command:
+
+```cli
+pip install speechmatics-python
+```
+
+Once this command is complete, check the installation was a success by running:
+
+```
+speechmatics -h
+```
+
+### Install and Run FFMPEG
+
+Select your OS type from the tabs below and follow the provided guide to run FFMPEG with Speechmatics on your machine.
+
+<Tabs className="code-tabs" groupId="programming-language">
+    <TabItem value="linux" label="Linux">
+
+You will need to be running a version of linux compatible with the `apt` installation tool to follow this guide e.g. Ubuntu 22, Debian 11 etc. Alternatively, you can download it from source by following the links [here](https://ffmpeg.org/download.html#build-linux).
+
+#### Install FFMPEG
+
+Before you start, you'll need a valid install of FFMPEG. You can get this through the following steps.
+
+1. Update apt:
+
+```cli
+sudo apt update
+```
+
+2. Install the FFMPEG command and alsa-utils
+
+```cli
+sudo apt install ffmpeg libasound2 alsa-utils
+```
+
+3. Check the installation
+
+```cli
+ffmpeg -version
+```
+
+#### Run the CLI Commands
+
+Set up your local CLI environment with the following config command:
+
+```cli
+speechmatics config set --auth-token {YOUR_API_KEY} --generate-temp-token
+```
+
+Now run speechmatics CLI with FFMPEG microphone input piped in:
+
+```bash
+ffmpeg -loglevel quiet -f alsa -i hw:0 -f wav - | \
+    speechmatics transcribe --max-delay 2 -
+```
+
+The above example uses a default device index of zero. You can also choose a specific audio device by running:
+
+```
+arecord -l
+```
+
+To use the sound device of your choice, in the example above, replace `hw:0` with `hw:{CARD_NO},{DEVICE_NO},{OPTIONAL:SUB_DEVICE_NO}` e.g.:
+
+```bash
+ffmpeg -loglevel quiet -f alsa -i hw:{CARD_NO},{DEVICE_NO},{OPTIONAL:SUB_DEVICE_NO} -f wav - | \
+    speechmatics transcribe --max-delay 2 -
+```
+
+  </TabItem>
+   <TabItem value="mac" label="Mac">
+
+#### Install FFMPEG
+
+Assuming you have [Homebrew](https://brew.sh/) installed, run:
+
+1. Update all your Homebrew formulae:
+
+```cli
+brew update
+```
+
+2. Upgrade your outdated formulae:
+
+```cli
+brew upgrade
+```
+
+3. Install FFMPEG from Homebrew:
+
+```cli
+brew install ffmpeg
+```
+
+#### Run the CLI Commands
+
+Set up your local CLI environment with the following config command:
+
+```cli
+speechmatics config set --auth-token {YOUR_API_KEY} --generate-temp-token
+```
+
+Now run Speechmatics CLI with FFMPEG microphone input piped in:
+
+```cli
+ffmpeg -loglevel quiet -f avfoundation -i ":default" -f wav - | \
+    speechmatics transcribe --max-delay 2 -
+```
+
+The above example uses the default device index, which may not always work. To view all devices, run:
+
+```
+ffmpeg -f avfoundation -list_devices true -i ""
+```
+
+Then to select a different device replace `:default` in the example above with your device index of choice.
+
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+
+#### Install FFMPEG
+
+1. Download the zip file from a recommended source. You can find available sources on the FFMPEG site [here](https://ffmpeg.org/download.html#build-windows).
+
+2. Once you have successfully downloaded one of these zip files, extract it into a folder. You'll need a file archiver to unzip the file e.g. [7-zip](https://7-zip.org/download.html).
+
+3. Rename the folder that is created by unzipping the archive to `ffmpeg` and move it to a location on you computer where you are happy for it to remain e.g. `C:\ffmpeg`
+
+4. Add FFMPEG to your file path. Type **system variables** into the search bar and click **Edit the system environment variables**. Under **User variables**, select **Path** and click **Edit**. Click **New**, and add the _bin_ folder within your FFMPEG folder to the path e.g. `C:\ffmpeg\bin`. Click **OK**.
+
+5. Open a new CMD or PWD window and verify the installation with the command:
+
+```
+ffmpeg -version
+```
+
+You should see some output with the version, copyright and build information.
+
+#### Run the CLI Commands
+
+Set up your local CLI environment with the following config command:
+
+```cli
+speechmatics config set --auth-token {YOUR_API_KEY} --generate-temp-token
+```
+
+List the audio devices available on your Windows machine:
+
+```
+ffmpeg -list_devices true -f dshow -i dummy -
+```
+
+Now run Speechmatics CLI with FFMPEG microphone input piped in. Form the list of devices pick a device and input the id in the command below:
+
+```cli
+ffmpeg -loglevel quiet -f dshow -i audio="<audio device>" -f wav - | \
+    speechmatics transcribe --max-delay 2 -
+```
+
+  </TabItem>
+</Tabs>

@@ -1,0 +1,78 @@
+---
+description: "Learn how to utilize Audio Filtering to remove background speech" 
+keywords: 
+  [ 
+    speechmatics, 
+    features, 
+    audio filtering, 
+    speech recognition, 
+    automatic speech recognition, 
+    asr,
+    background speech, 
+  ]
+---
+
+import Tabs from "@theme/Tabs"; 
+import TabItem from "@theme/TabItem"; 
+
+# Audio Filtering 
+
+Audio Filtering pre-processes input audio to remove low-volume background speech which might otherwise be detected and transcribed.
+
+:::info
+This can be useful, for example, in a call center to avoid transcribing other agents' speech from the background.
+:::
+
+If you're new to Speechmatics, start by exploring our guides on [Transcribing a File](/speech-to-text/batch/quickstart) or [Transcribing in Real-Time](/speech-to-text/real-time/quickstart). 
+
+## Example
+
+To activate Audio Filtering, include the following configuration:  
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "audio_filtering_config": {
+        "volume_threshold": 3.4
+    },
+    "language": "en",
+    "operating_point": "enhanced"
+  }
+}
+```
+This will avoid processing any audio which is below the `3.4` volume threshold. For technical details on how this threshold is used see [here](#technical-details)
+
+`volume_threshold` supports a range of `0 - 100` where `0` does not filter any audio and `100` removes all audio.
+
+## Volume Labelling
+
+If Audio Filtering is configured, words will be labelled with their volume like this (range for `volume_threshold` is `0-100`):
+
+```json
+    {
+      "alternatives": [
+        {
+          "confidence": 0.99,
+          "content": "Hello",
+          "language": "en",
+        }
+      ],
+      "end_time": 0.39,
+      "start_time": 0.15,
+      "volume": 12.34,
+      "type": "word"
+    },
+```
+
+These values can be used as a guide to setting the volume threshold, but we recommend testing with your own domain-specific files to tune the parameter.
+
+To obtain volume labelling without filtering any audio, supply an empty config object (`{}`) or set the `volume_threshold` to `0.0`.
+
+## Technical Details
+
+Once the audio is in a raw format (16kHz 16bit mono), it is split into 0.01s chunks. For each chunk, the root mean square amplitude of the signal is calculated, and scaled to the range `0 - 100`. If the volume is less than the supplied cut-off, the chunk will be replaced with silence.
+
+To work successfully without degrading accuracy, the background speech must be significantly quieter than the foreground speech, otherwise the filtering process may remove small sections of the audio which should be transcribed. For this reason, the feature works better with the [Enhanced Operating Point](../features/accuracy-language-packs.mdx#accuracy), which is more robust against inadvertent damage to the audio.
+
+The word volume calculation takes the start and end times of words, and applies a weighted average of the volumes of each audio chunk which make up the word. The weighting attempts to ignore areas of silence within long words, and provide a better match with the volume classification a human listener would make.

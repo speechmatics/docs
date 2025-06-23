@@ -1,0 +1,212 @@
+---
+toc_max_heading_level: 3
+description: 'How to calculate Word Error Rate'
+keywords: [wer, word error rate, asr, transcription, speech recognition, benchmarking, tutorial, automatic speech recognition]
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Accuracy Benchmarking
+
+Word Error Rate (WER) is a metric commonly used for benchmarking transcription accuracy.
+
+In this tutorial, we show how to calculate WER and introduce some tools to help.
+
+## Overview
+
+To accurately benchmark the accuracy of an Automatic Speech Recognition (ASR) system, such as Speechmatics, we need a test set of audio representative of the audio for the intended use case.
+
+For each audio file, we need a perfect 'reference' transcript produced by a human that we can use to compare to the automatically generated 'hypothesis' transcript produced by the ASR engine.
+
+The WER is calculated by comparing the reference and hypothesis transcripts, to find the minimum number of edits required to get the two transcripts to match. This is called the Minimum Edit or [Levenshtein](https://en.wikipedia.org/wiki/Levenshtein_distance) distance.
+
+Today's state of the art ASR systems are able to achieve below 5 % on many test sets. This will depend a lot on the [audio](#audio-quality) and [speaker](#speaker-diversity).
+
+## Picking the test set
+
+Picking an appropriate test set is one of the most important aspects of benchmarking.
+
+### Audio Quality
+ASR performance can differ significantly on a host of factors, including:
+
+- background noise
+- codec (8-bit audio is lower quality)
+- cross-talk between speakers
+
+Test sets should be representative of your use case. For instance, contact centre audio is generally much noisier and tricker to transcribe than cleaner broadcast audio for captioning.
+
+[Librispeech](https://www.openslr.org/12) and [CallHome](https://ca.talkbank.org/access/CallHome/eng.html), two commonly cited ASR test sets, frequently exhibit up to a 10% Word Error Rate difference for the same engine. This is because Librispeech is comprised of high-quality audiobook narration whereas CallHome is made up of lower-quality conversational audio.
+
+We caution against using an open source corpus for benchmarking where possible. Many ASR models are trained on data from these open source corpora, and therefore results may not be representative (because the models can "remember" the training data).
+
+### Speaker Diversity
+Speaker specific characteristics can also significantly affect ASR performance. For example:
+
+- age
+- accent
+- gender
+
+Some test sets such as the [Casual Conversations Dataset](https://ai.meta.com/datasets/casual-conversations-dataset/) and [CORAAL](https://oraal.uoregon.edu/coraal) provide breakdowns by ethnic background and age.
+
+See [here](https://www.speechmatics.com/company/articles-and-news/achieving-accessibility-through-incredible-accuracy-with-ursa?utm_source=facebook&utm_medium=social&fbclid=IwAR1z7ZU4WowgDBs91MNKFTwPACD9gb7dkrQpkr1HmfsgXPv-Ndt5PeySjIk&restored=1676632411598&restored=1703167450586&restored=1703168349828&restored=1704210914246) for some benchmarking we've done across demographics. You can see that across the industry, women and older people are generally recognized less easily than men and younger people.
+
+### Dataset Size
+To ensure statistical significance in benchmarking Word Error Rate (WER) between engines, a sufficiently large dataset is crucial.
+
+As a rule of thumb, we recommend at least 10,000 words (or around 1 hour of continuous speech) for each language being tested.
+
+We'll skip over details of significance testing here, but a $\chi^2$ test for some competitive engines on a 5,000 word corpus would probably not show significant differences between them at a 95 % confidence interval, whereas there might be a significant difference on a 10,000 word corpus.
+
+## Calculating WER 
+
+### Formula
+
+The Word Error Rate quantifies errors in the hypothesis (insertions, deletions, substitutions) and is expressed as a percentage of errors normalized by the reference transcript's word count (N).
+
+Errors represent changes needed in the hypothesis to match with the reference transcript:
+
+- Insertions (I): Adding a word not in the reference to the hypothesis
+- Deletions (D): Removing a word present in the reference from the hypothesis
+- Substitutions (S): Replacing a word in the reference with an incorrect word in the hypothesis
+
+Mathematically, WER is calculated as:
+
+$$
+\LARGE
+\begin{align}
+\text{WER} & = \frac{I + D + S}{N} \times 100 \\
+\text{Accuracy} & = 100 - \text{WER}
+\end{align}
+$$
+
+So if an automatically generated transcript has a WER of 5 %, it has an accuracy of 95 %.
+
+### Example
+
+Let's take the following two transcripts as an example. The hypothesis here might represent an automatically generated transcript.
+
+| Reference| Hypothesis | Diff |
+| - | - | - |
+| The quick brown fox jumps over the lazy dog | quick black fox jumps over the lazy brown dog | <span class="highlight-deletion">The</span> quick <span class="highlight-substitution">black</span> fox jumps over the lazy <span class="highlight-insertion">brown</span> dog  |
+
+
+We can see here that the minimum number of edits required to get the hypothesis to match the reference: 1 <span class="highlight-deletion">deletion</span>, 1 <span class="highlight-substitution">substitution</span> and 1 <span class="highlight-insertion">insertion</span>.
+
+$$
+\large
+\text{WER}  = \frac{1 + 1 + 1}{9} \times 100 = 33 \space\%
+$$
+
+## Normalization
+
+Normalization minimizes differences in capitalization, punctuation, and formatting between reference and hypothesis transcripts.
+
+This must be done before evaluating the WER, since this can make it harder to see differences in word recognition accuracy.
+
+### Formatting Guidelines
+
+Normalization is inherently language specific, but here are some key themes:
+
+| Normalization | Example |
+| - | - |
+| Convert to lowercase | "Hello, my name is Dan" -> "hello, my name is dan" |
+| Replace symbols / digits with words                      | "my favourite number is 42" -> "my favourite number is forty-two" |
+| Collapse whitespace | "hello     my name is dan" -> "hello my name is dan" |
+| Expand contractions and abbreviations | "it's great to you see you dr. doom" -> "it is great to see you doctor doom" |
+| Standardize spellings | "colourise" -> "colorize" |
+| Remove Punctuation | "yeah, he went that way!" -> "yeah he went that way" |
+
+This is not an exhaustive list, and there will often be edge cases which need to be investigated.
+
+### Example Normalization
+
+For example, here are identical transcripts in terms of the spoken form:
+
+|   | Reference | Hypothesis | Diff |
+| - | - | - | - |
+| Raw | The Dr., who's from the US, worked part-time in London. He liked to get a £5 meal deal from Tescos for lunch. | The doctor, who is from the U.S., worked part time in London. He liked to get a five pound meal deal from Tescos for lunch! | The <span class="highlight-substitution">doctor</span>, <span class="highlight-substitution">who</span> <span class="highlight-insertion">is</span> from the <span class="highlight-substitution">U.S.</span>, worked <span class="highlight-substitution">part</span> <span class="highlight-insertion">time</span> in London. He liked to get a <span class="highlight-substitution">five</span> <span class="highlight-insertion">pound</span> meal deal from Tescos for <span class="highlight-substitution">lunch!</span> |
+| Normalized | the doctor who is from the us worked part time in london he liked to get a £5 meal deal from tescos for lunch | the doctor who is from the u s worked part time in london he liked to get a £5 meal deal from tescos for lunch   | the doctor who is from the <span class="highlight-substitution">u</span> <span class="highlight-insertion">s</span> worked part time in london he liked to get a £5 meal deal from tescos for lunch |
+
+Without any modifications to the transcripts, this will result in 9 errors and a WER of $\frac{9}{22} \times 100 = 41 \space \%$.
+
+After normalizing the transcripts using the [Word Error Rate Toolkit](#word-error-rate-toolkit), we get 2 errors, giving a WER rate of $\frac{2}{24} \times 100 = 8 \space \%$
+
+Note that the normalization isn't perfect. It's always worth spot checking to see where the errors occur.
+
+## Word Error Rate Toolkit
+
+Speechmatics have created a tool which helps with the normalization and WER calculations for a given test set. This is freely available to use can can be found through [PyPI](https://pypi.org/project/speechmatics-python/) or on our [GitHub](https://github.com/speechmatics/speechmatics-python). 
+
+This tool can:
+
+- Normalize transcripts
+- Calculate Word Error Rate and Character Error Rate
+- Calculate the number of substitutions, deletions and insertions for a given ASR transcript
+- Visualize the alignment and differences between a reference and ASR transcript
+
+For more information, see the [module source](https://github.com/speechmatics/speechmatics-python/tree/master/asr_metrics/wer).
+
+### Installation
+
+The package can be installed from PyPI as follows:
+
+```bash
+pip install speechmatics-python
+```
+
+### Usage
+
+Installation will build a `sm-metrics` binary which can be used from the command line.
+
+To compute the WER and show a transcript highlighting the difference between the Reference and the Hypothesis, run the following:
+
+```bash
+sm-metrics wer --diff <reference_path> <hypothesis_path>
+```
+
+The reference and hypothesis can either be plain '.txt' files containing the transcript, or '.dbl' files which are just plain text files where each line is a file path to a '.txt' transcript file. See below for an example:
+
+```text
+/audio_transcripts/audio1_reference.txt
+/audio_transcripts/audio2_reference.txt
+/audio_transcripts/audio3_reference.txt
+```
+
+You can find some sample reference and hypothesis files [here](https://github.com/speechmatics/speechmatics-python/tree/master/asr_metrics/examples).
+
+See below for an example output from the `sm-metrics` tool displaying the difference between the reference and hypothesis transcripts at a word level:
+
+[sm metrics example](/img/sm-metrics-example.png)
+
+The tool highlights differences between the reference and hypothesis, but it merges sections with different edit types into a single highlighted section for visual clarity. This does not affect the WER calculation. 
+
+In the above example, the reference is "do you know morten [esperson]" and the ASR system incorrectly recognizes it as "joe martin [espersen]," the `sm-metrics` tool displays this as a simple substitution. This simplifies the presentation compared to the WER calculation, where the edit would be shown as <span class="highlight-deletion">do you</span> <span class="highlight-substitution">know morten -> joe martin</span>.
+
+## Limitations
+
+Word Error Rate is still the gold standard when it comes to measuring the performance of Automatic Speech Recognition systems.
+
+There are some limitations however:
+
+- Reference transcripts are costly to produce. Manual transcription costs around $ 100 / hour!
+- WER treats all errors equally, but some significantly alter sentence meaning, while others are mere spelling mistakes. Explore further [here](https://www.speechmatics.com/company/articles-and-news/the-problem-with-word-error-rate-wer?utm_source=facebook&utm_medium=social&fbclid=IwAR1z7ZU4WowgDBs91MNKFTwPACD9gb7dkrQpkr1HmfsgXPv-Ndt5PeySjIk&restored=1676632411598&restored=1703167450586)
+- Punctuation, capitalization and diarization are not measured, but are very important for readability
+
+## Read More
+
+#### Blogs
+- [Speechmatics Ursa Model Benchmarking](https://www.speechmatics.com/company/articles-and-news/introducing-ursa-the-worlds-most-accurate-speech-to-text?utm_source=facebook&utm_medium=social&fbclid=IwAR1z7ZU4WowgDBs91MNKFTwPACD9gb7dkrQpkr1HmfsgXPv-Ndt5PeySjIk&restored=1676632411598&restored=1703167450586&restored=1703168349828&restored=1704210914246)
+- [Achieving Accessibility Through Incredible Accuracy with Ursa](https://www.speechmatics.com/company/articles-and-news/achieving-accessibility-through-incredible-accuracy-with-ursa?utm_source=facebook&utm_medium=social&fbclid=IwAR1z7ZU4WowgDBs91MNKFTwPACD9gb7dkrQpkr1HmfsgXPv-Ndt5PeySjIk&restored=1676632411598&restored=1703167450586&restored=1703168349828&restored=1704210914246)
+- [The Future of Word Error Rate](https://www.speechmatics.com/company/articles-and-news/the-future-of-word-error-rate?utm_source=faceboohttps://www.speechmatics.com/company/articles-and-news/the-problem-with-word-error-rate-wer?utm_source=facebook&utm_medium=social&fbclid=IwAR1z7ZU4WowgDBs91MNKFTwPACD9gb7dkrQpkr1HmfsgXPv-Ndt5PeySjIk&restored=1676632411598&restored=1703167450586k&utm_medium=social&fbclid=IwAR1z7ZU4WowgDBs91MNKFTwPACD9gb7dkrQpkr1HmfsgXPv-Ndt5PeySjIk&restored=1676632411598)
+
+#### Datasets
+- [Librispeech](https://www.openslr.org/12) 
+- [CallHome](https://ca.talkbank.org/access/CallHome/eng.html)
+- [Casual Conversations Dataset](https://ai.meta.com/datasets/casual-conversations-dataset/)
+- [CORAAL](https://oraal.uoregon.edu/coraal)
+
+#### Other
+- [Speech and Language Processing, Ch 2.](https://web.stanford.edu/~jurafsky/slp3/2.pdf) by Jurafsky and Martin
+- [Speechmatics Python Client](https://github.com/speechmatics/speechmatics-python)

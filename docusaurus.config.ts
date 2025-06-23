@@ -1,6 +1,8 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
+import katex from "rehype-katex";
+import math from "remark-math";
 import { prismTheme } from "./prism-theme";
 import { sidebarItemsGenerator } from "./sidebar-generator";
 
@@ -33,6 +35,10 @@ const config: Config = {
     locales: ["en"],
   },
 
+  markdown: {
+    mermaid: true,
+  },
+
   presets: [
     [
       "classic",
@@ -45,6 +51,8 @@ const config: Config = {
           routeBasePath: "/",
           sidebarPath: "./sidebars.ts",
           docItemComponent: "@theme/ApiItem", // Derived from docusaurus-theme-openapi
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
           sidebarItemsGenerator,
         },
         theme: {
@@ -89,6 +97,11 @@ const config: Config = {
       theme: prismTheme,
       darkTheme: prismTheme,
     },
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true,
+      },
+    },
   } satisfies Preset.ThemeConfig,
 
   plugins: [
@@ -99,19 +112,59 @@ const config: Config = {
         docsPluginId: "classic", // configured for preset-classic
         config: {
           jobs: {
-            specPath: "static/jobs.yaml",
-            outputDir: "docs/api-ref/jobs",
+            specPath: "static/batch.yaml",
+            outputDir: "docs/api-ref/batch",
             template: "templates/api.mustache",
           } satisfies OpenApiPlugin.Options,
         },
       },
     ],
+    () => {
+      return {
+        name: "source-loader-plugin",
+        configureWebpack(config) {
+          // console.log("Webpack Configuration:");
+          // console.log("Rules:", config.module.rules);
+          return {
+            module: {
+              rules: [
+                {
+                  // Load Python and text files as raw assets
+                  test: /\.py$|\.txt$|\.sh$/,
+                  type: "asset/source",
+                },
+                {
+                  // Load JS files as raw assets when requested with ?raw query
+                  test: /\.js$/,
+                  resourceQuery: /raw/,
+                  // With Webpack 5 we shouldn't need raw-loader
+                  // But because Docusaurus uses babel-loader for all JS files by default,
+                  // doing it like above for txt and py files strips line breaks and whitespace
+                  // TODO: Configure custom JS loader that isn't babel, and remove the raw-loader dependency
+                  // one day it will be legacy.
+                  use: "raw-loader",
+                },
+              ],
+            },
+          };
+        },
+      };
+    },
   ],
   themes: ["docusaurus-theme-openapi-docs"], // export theme components
   scripts: [
     {
       src: "/js/color-theme.js",
       async: true,
+    },
+  ],
+  stylesheets: [
+    {
+      href: "https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css",
+      type: "text/css",
+      integrity:
+        "sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM",
+      crossorigin: "anonymous",
     },
   ],
 };

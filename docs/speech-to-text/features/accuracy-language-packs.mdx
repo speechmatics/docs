@@ -1,0 +1,77 @@
+---
+description: 'Find out about the various operating points Speechmatics supports to help fulfill your transcription needs'
+keywords:
+  [speechmatics, operating points, accuracy, language pack, transcription, speech recognition, asr]
+---
+import { Card, DataList } from '@radix-ui/themes';
+
+# Accuracy and Language Packs
+
+For more information on the full range of language packs offered by Speechmatics, please refer to the guide on [Supported Language Packs](/speech-to-text/supported-languages).
+
+## Accuracy
+
+Speechmatics offers two operating points for transcription:
+
+<Card size="3" mb="4">
+  <DataList.Root size="3">
+    <DataList.Item>
+      <DataList.Label>**Enhanced**</DataList.Label>
+      <DataList.Value>Optimized for the highest accuracy possible.</DataList.Value>
+    </DataList.Item>
+    <DataList.Item>
+      <DataList.Label>**Standard**</DataList.Label>
+      <DataList.Value>Optimized for fast Batch turnaround time.</DataList.Value>
+    </DataList.Item>
+  </DataList.Root>
+</Card>
+
+Note that when transcribing in real-time, latency for both Standard and Enhanced operating points is controlled using the `max_delay` config option described [here](/speech-to-text/real-time/latency).
+
+**Note** that your choice of Operating Point will impact [pricing](https://www.speechmatics.com/our-technology/pricing), as well as the processing cost efficiency for On-Prem customers.
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "operating_point": "enhanced"
+  }
+}
+```
+
+## Multilingual speech-to-text
+
+These packs are ideal when transcribing multiple languages in the same media file or stream with high accuracy. For more information on the supported languages, please refer to [Supported Language Packs](/speech-to-text/supported-languages).
+
+Supported multilingual packs are:
+
+| Language Pack | Transcription config |
+|----------------|----------------------|
+| Mandarin and English |  `{"language": "cmn_en"}` |
+| Malay and English |  `{"language": "en_ms"}` |
+| Tamil and English |  `{"language": "en_ta"}` |
+| Spanish and English |  `{"language": "es", "domain": "bilingual-en"}` |
+
+Bilingual (excluding Spanish and English) example:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "cmn_en",
+  }
+}
+```
+
+Bilingual Spanish and English example:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "es",
+    "domain": "bilingual-en"
+  }
+}
+```

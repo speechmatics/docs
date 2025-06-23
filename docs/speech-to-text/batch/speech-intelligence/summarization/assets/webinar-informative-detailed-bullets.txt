@@ -1,0 +1,20 @@
+1. Speechmatics' ASR Revolution
+  - Speechmatics introduced new models named Ursa that focus on accuracy, speed, and efficiency.
+  - The new models are optimized for GPUs, which are more powerful and efficient for processing.
+  - Ursa has been benchmarked against competitors and found to be the most accurate ASR on the planet, with a 35% improvement for standard and a 22% improvement for enhanced.
+  - The models perform better with accents and noise and are three times more efficient than CPU-based models.
+  - The latency for real-time transcription has also been improved, with the new models showing little difference in accuracy even at small latencies.
+  - Beta customers have used the new models for live captioning at a major car racing event.
+
+2. Improvements to Speech Recognition Software
+  - Speechmatics released a new version of its speech recognition software that includes improvements to speaker diarization, batch processing, and readability.
+  - The software also includes automatic language identification and translation capabilities, with a single API call allowing translation to and from 34 languages.
+  - The company claims its transcription accuracy is the best available, and that its translation accuracy is ahead of Google's.
+  - The new version is available to enterprise customers and will be rolled out to other languages later this year.
+
+3. Using Speechmatics' Services
+  - The speaker demonstrates how to use Speechmatics' transcription and translation services through their portal or API.
+  - The user can select the language they want to translate their audio file to and choose between enhanced or standard translation speed.
+  - The portal also allows users to view previous jobs and real-time transcription with the option to add custom words and reduce latency.
+  - The speaker also addresses questions about the maximum file size for transcription, the accuracy of the system, and the support for speaker labels and multiple languages in real-time streams.
+  - The speaker concludes by encouraging users to try out Speechmatics' services and visit their website for more information.

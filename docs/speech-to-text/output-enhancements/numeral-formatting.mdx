@@ -1,0 +1,331 @@
+---
+description: 'Learn how Speechmatics handles numerical and entity formatting'
+keywords:
+  [
+    speechmatics,
+    entity formatting,
+    transcribe numbers,
+    transcript format,
+    transcription,
+    speech recognition,
+    asr
+  ]
+---
+
+# Numeral Formatting
+
+Speechmatics ensures readability of your transcripts by formatting numbers, dates, currencies and other important entities into their written form.
+
+You can also choose to receive entity metadata in the JSON output such as the spoken form, or the Entity Class.
+
+## Enable Entity Metadata
+
+Here is an example configuration file which enables the output of entity metadata:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "enable_entities": true
+  }
+}
+```
+
+By default, `enable_entities` is `false`, and only the written form of the word will be output. Changing `enable_entities` to `true` will result in the entity metadata being available in the JSON output only. SRT and TXT output are not affected. 
+
+After enabling, the JSON output will have the following changes:
+
+- A new `type` named `entity` will be in the JSON output when a numeric entity is formatted, in addition to word and punctuation.
+  - For example: "1.99" would have a type of `entity` and a corresponding entity_class of `decimal`
+- The `entity` will contain the full written form text in the `content` section.
+  - The `content` can include spaces, non-breaking spaces, and symbols (e.g., $/£/%)
+  - For example: `content`: "19th of January 2023"
+- A new output element, `entity_class`. This provides more detail about how the entity has been formatted. A full list of Entity Classes is provided below.
+- The start and end time of the entity will span all the words that make up that entity.
+- The entity JSON also contains two ways that the content can be output:
+  - `spoken_form` - Each spoken word of the entity, unformatted. Each individual word has its own start time, end time, and confidence score.
+    - For example: "one", "million", "dollars"
+  - `written_form` - The same output as within the `entity` content, split out as separate words.
+    - For example: "$1", "million"
+
+## Entity Classes
+
+The following values of `entity_class` can be returned. Entity Classes indicate how the numerals are formatted. In some cases, the choice of Class can be contextual and the Class may not be what was expected (for example "2001" may be a "cardinal" instead of "date"). Entity Classes may be added or removed in future.
+
+Please note that existing behaviour for English where numbers from zero to ten are output as **words** is unchanged (except where they are output as a decimal/money/percentage).
+
+| Entity Class | Formatting Behaviour                                                                                                 | Example of Spoken Word Form                                                 | Written Form Example |
+| ------------ | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
+| alphanum     | A series of three or more alphanumerics, where an alphanumeric is a digit less than 10, a character or symbol        | a z triple seven five four                                                  | AZ77754              |
+| cardinal     | Any number greater than ten is converted to numbers. Numbers ten or below remain as words. Includes negative numbers | nineteen                                                                    | 19                   |
+| decimal      | A series of numbers divided by a separator                                                                           | eighteen point one two                                                      | 18.12                |
+| fraction     | Small fractions are kept as words ("half"); complex fractions are converted to numbers separated by "/"              | three sixteenths                                                            | 3/16                 |
+| ordinal      | Ordinals greater than 10 are output as numbers                                                                       | forty second                                                                | 42nd                 |
+| money        | Currency words are converted to symbols before or after the number (depending on the language)                       | twenty dollars                                                              | $20                  |
+| percentage   | Numbers with a percent have the percent converted to a % symbol                                                      | two hundred percent                                                         | 200%                 |
+| date         | Day, month and year, or a year on its own. Any words spoken in the date are maintained (including "the" and "of")    | fifteenth of January twenty twenty two                                      | 15th of January 2022 |
+| time         | Times are converted to numbers                                                                                       | eleven forty a m                                                            | 11:40 a.m.           |
+| span         | A range expressed as "x to y" where x and y correspond to another Entity Class                                       | one hundred to two hundred million pounds                                   | 100 to £200 million  |
+| credit card  | A long series of spoken digits less than 10 are converted to numbers. Supports common credit cards                   | one one one one two two two two three three three three four four four four | 1111 2222 3333 4444  |
+| telephone    | Format common phone numbers                                                                                          | five five five four two nine triple two eight                               | (555) 429-2228       |
+| electronic   | Format common websites and email addresses                                                                           | bob at speechmatics dot com                                                 | bob@speechmatics.com |
+| measurement  | Format common measurements as short form                                                                             | ten kilometers per second                                                   | 10km/s               |
+
+## Language Specific Output
+
+Each language has a specific style applied to the written form of it's numerals. This is around the thousands, decimals and where the symbol is positioned for money or percentages.
+
+For example:
+
+- English contains commas as separators for numbers above 9999 (example: "20,000"), the money symbol at the start (example: "$10") and full stops for decimals (example: "10.5")
+- German contains full stops as separators for numbers above 9999 (example: "20.000"), the money symbol comes after with a non-breaking space (example: "10 $") and commas for decimals (example: "10,5")
+- French contains non-breaking spaces as separators for numbers above 9999 (example: "20 000"), the money symbol comes after with a non-breaking space (example: "10 $") and commas for decimals (example: "10,5")
+
+## Supported Languages
+
+Entity metadata is supported in the following languages:
+
+- Cantonese
+- Chinese Mandarin (Simplified and Traditional)
+- Dutch
+- English
+- French
+- German
+- Hindi
+- Italian
+- Japanese
+- Norwegian
+- Portuguese
+- Russian
+- Spanish
+- Swedish
+
+## Example Transcription Output
+
+Here is an example of a transcript requested with `enable_entities` set to true:
+
+- `content` that has "17th of January 2022", including spaces
+  - The start and end times span the entire entity
+  - An `entity_class` of `date`
+  - The `spoken_form` is split into the following individual words: "seventeenth", "of", "January", "twenty", "twenty", "two". Each word has its own start and end time
+  - the `written_form` split into the following individual words: "17th", "of", "January", "2022". Each word has its own start and end time
+
+:::info
+- By default and when Speaker Diarization is enabled, `speaker` parameter is added per word within the entity, spoken and written form
+- When Channel Diarization is enabled, `channel` parameter is only added on the `results` parent within the entity and not included in spoken and written form
+- When transcribing in Real-Time, [Partial transcripts](/speech-to-text/real-time/latency#partial-transcripts) will not include `entity` information.
+:::
+
+```json
+   "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.99,
+          "content": "17th of January 2022",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 3.14,
+      "entity_class": "date",
+      "spoken_form": [
+        {
+          "alternatives": [
+            {
+              "confidence": 1.0,
+              "content": "seventeenth",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 1.41,
+          "start_time": 0.72,
+          "type": "word"
+        },
+        {
+          "alternatives": [
+            {
+              "confidence": 1.0,
+              "content": "of",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 1.53,
+          "start_time": 1.41,
+          "type": "word"
+        },
+        {
+          "alternatives": [
+            {
+              "confidence": 1.0,
+              "content": "January",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 2.04,
+          "start_time": 1.53,
+          "type": "word"
+        },
+        {
+          "alternatives": [
+            {
+              "confidence": 1.0,
+              "content": "twenty",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 2.46,
+          "start_time": 2.04,
+          "type": "word"
+        },
+        {
+          "alternatives": [
+            {
+              "confidence": 1.0,
+              "content": "twenty",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 2.79,
+          "start_time": 2.46,
+          "type": "word"
+        },
+        {
+          "alternatives": [
+            {
+              "confidence": 0.97,
+              "content": "two",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 3.14,
+          "start_time": 2.79,
+          "type": "word"
+        }
+      ],
+      "start_time": 0.72,
+      "type": "entity",
+      "written_form": [
+        {
+          "alternatives": [
+            {
+              "confidence": 0.99,
+              "content": "17th",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 1.33,
+          "start_time": 0.72,
+          "type": "word"
+        },
+        {
+          "alternatives": [
+            {
+              "confidence": 0.99,
+              "content": "of",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 1.93,
+          "start_time": 1.33,
+          "type": "word"
+        },
+        {
+          "alternatives": [
+            {
+              "confidence": 0.99,
+              "content": "January",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 2.54,
+          "start_time": 1.93,
+          "type": "word"
+        },
+        {
+          "alternatives": [
+            {
+              "confidence": 0.99,
+              "content": "2022",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 3.14,
+          "start_time": 2.54,
+          "type": "word"
+        }
+      ]
+    }
+  ]
+```
+
+If `enable_entities` is set to `false`, the output is as below:
+
+```json
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.99,
+          "content": "17th",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 1.33,
+      "start_time": 0.72,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 0.99,
+          "content": "of",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 1.93,
+      "start_time": 1.33,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 0.99,
+          "content": "January",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 2.54,
+      "start_time": 1.93,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 0.99,
+          "content": "2022",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 3.14,
+      "start_time": 2.54,
+      "type": "word"
+    }
+  ]
+}
+```
