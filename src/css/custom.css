@@ -196,6 +196,10 @@ This cannot be done by Swizzling since it's not a Docusaurus component, it only 
   padding-left: 4em;
 }
 
+a.menu__link.menu__link--active {
+  font-weight: var(--font-weight-bold);
+}
+
 .radix-themes .badge,
 .api-method > .menu__link::before {
   font-size: var(--font-size-1);

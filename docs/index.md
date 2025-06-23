@@ -4,7 +4,13 @@ sidebar_position: 1
 
 # Welcome
 
-**TODO** this would be the first page users see when they navigate to `https://docs.speechmatics.com/`.
+**TODO** this would be the first page users see when they navigate to [`https://docs.speechmatics.com/`](/#).
+
+[Text link](/#)
+<br/>
+`code`
+<br/>
+[See the `code link` package](/#)
 
 ## Another section
 
