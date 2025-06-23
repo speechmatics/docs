@@ -637,7 +637,9 @@ components:
       properties:
         template_id:
           type: string
-          description: The id of the agent or persona to use during the conversation.
+          # description: The id of the agent or persona to use during the conversation.
+          description: |
+            Required in the the `StartConversation` message in the Flow API. Generated from the [Speechmatics Portal](https://portal.speechmatics.com/). This maps to the [language supported](/voice-agents-flow/supported-languages), agent's prompt, LLM, TTS voice, & custom dictionary. These can be customised by creating or modifying agents in the Portal.
         template_variables:
           type: object
           additionalProperties:

@@ -263,3 +263,7 @@ pre {
   max-height: 65vh;
   overflow-y: auto;
 }
+
+kbd {
+  all: unset;
+}

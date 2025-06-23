@@ -5,14 +5,22 @@ sidebar_label: React Native
 
 import AppScreenshotUrl from "@site/static/img/flow-react-native.png";
 import CodeBlock from "@theme/CodeBlock";
+import { Kbd } from "@radix-ui/themes";
+import { GithubIcon } from "lucide-react";
 
 import indexStepOne from "?url=https://raw.githubusercontent.com/speechmatics/flow-react-native-guide/refs/heads/step-1/app/index.tsx";
 import indexStepTwo from "?url=https://raw.githubusercontent.com/speechmatics/flow-react-native-guide/refs/heads/step-2/app/index.tsx";
+import indexStepThree from "?url=https://raw.githubusercontent.com/speechmatics/flow-react-native-guide/refs/heads/step-3/app/index.tsx";
+import volumeDisplay from "?url=https://raw.githubusercontent.com/speechmatics/flow-react-native-guide/refs/heads/step-4/app/volume-display.tsx";
+import indexStepFour from "?url=https://raw.githubusercontent.com/speechmatics/flow-react-native-guide/refs/heads/step-4/app/index.tsx";
 
 # Build a conversational AI app with React Native and Flow
 
+
 Learn how to create a mobile application that integrates Speechmatics Flow service using React Native.
 This guide demonstrates how to build the app using the Expo framework, implementing real-time audio communication with Flow's servers.
+
+You can find the complete code on [GitHub <GithubIcon size={16} />](https://github.com/speechmatics/flow-react-native-guide).
 
 <img
   src={AppScreenshotUrl}
@@ -90,7 +98,13 @@ npx expo run ios
 npx expo run android
 ```
 
-This will launch the Metro Bundler and show up some options. If it shows the following: `Using Expo Go` **we need to switch to a development build. This can be done by pressing** `s`. Then press `r` to reload the app. Some features that we are going to include, like the native module for handling audio, don't work properly in Expo Go.
+This will launch the Metro Bundler and show up some options.
+
+:::info
+#### Expo Go is not supported
+If it shows the following: `Using Expo Go`, **we need to switch to a development build by pressing** <Kbd size="5">s</Kbd>. Then press <Kbd size="5">r</Kbd> to reload the app.
+Some features that we are going to include, like the native module for handling audio, don't work properly in Expo Go.
+:::
 
 ## Implementing Flow Connection
 
@@ -133,190 +147,32 @@ We'll use the Speechmatics Expo Two Way Audio module to handle these requirement
 In order to allow microphone access we need to add some configuration to the `app.json` file in the root of our project.
 For iOS we add an `infoPlist` entry and for Android a `permissions` entry.
 
-```json
+<CodeBlock language="json" title="app.json">
+{`
 {
-  "expo": {
-    ...
-    "ios": {
-      "infoPlist": {
+    "expo": {
+      // ...
+      "ios": {
+        "infoPlist": {
         "NSMicrophoneUsageDescription": "Allow Speechmatics to access your microphone"
       },
-	  ...
-    },
-	"android": {
-		"permissions": ["RECORD_AUDIO", "MODIFY_AUDIO_SETTINGS"],
-		...
-	}
-  }
-	...
+      // ...
+      },
+      "android": {
+        "permissions": ["RECORD_AUDIO", "MODIFY_AUDIO_SETTINGS"],
+        // ...
+      }
+    }
+    // ...
 }
-
-```
+`}
+</CodeBlock>
 
 Now we will update the code to handle these microphone adjustments. Our `/app/index.tsx` file should look as follows:
 
-```jsx showLineNumbers
-// The polyfill should be the first import in the whole app
-import "event-target-polyfill";
-import { useCallback, useEffect, useState } from "react";
-import { Button, StyleSheet, View, Text } from "react-native";
-import {
-	FlowProvider,
-	useFlow,
-	useFlowEventListener,
-} from "@speechmatics/flow-client-react";
-
-import { createSpeechmaticsJWT } from "@speechmatics/auth";
-
-import {
-	type MicrophoneDataCallback,
-	initialize,
-	playPCMData,
-	toggleRecording,
-	useExpoTwoWayAudioEventListener,
-	useIsRecording,
-	useMicrophonePermissions,
-} from "@speechmatics/expo-two-way-audio";
-
-export default function Index() {
-	const [micPermission, requestMicPermission] = useMicrophonePermissions();
-	if (!micPermission?.granted) {
-		return (
-			<View style={styles.container}>
-				<Text>Mic permission: {micPermission?.status}</Text>
-				<Button
-					title={
-						micPermission?.canAskAgain
-							? "Request permission"
-							: "Cannot request permissions"
-					}
-					disabled={!micPermission?.canAskAgain}
-					onPress={requestMicPermission}
-				/>
-			</View>
-		);
-	}
-	return (
-		<FlowProvider
-			appId="react-native-flow-guide"
-			websocketBinaryType="arraybuffer"
-		>
-			<Flow />
-		</FlowProvider>
-	);
-}
-
-function Flow() {
-	const [audioInitialized, setAudioInitialized] = useState(false);
-	const { startConversation, endConversation, sendAudio, socketState } =
-		useFlow();
-	const isRecording = useIsRecording();
-
-	// Initialize Expo Two Way Audio
-	useEffect(() => {
-		const initializeAudio = async () => {
-			await initialize();
-			setAudioInitialized(true);
-		};
-
-		initializeAudio();
-	}, []);
-
-	// Setup a handler for the "agentAudio" event from Flow API
-	useFlowEventListener("agentAudio", (audio) => {
-		// Even though Int16Array is a more natural representation for PCM16_sle,
-		// Expo Modules API uses a convertible type for arrays of bytes and it needs Uint8Array in the JS side.
-		// This is converted to a `Data` type in Swift and to a `kotlin.ByteArray` in Kotlin.
-		// More info here: https://docs.expo.dev/modules/module-api/#convertibles
-		// For this reason, the Expo Two Way Audio library requires a Uint8Array argument for the `playPCMData` function.
-		const byteArray = new Uint8Array(audio.data.buffer);
-		playPCMData(byteArray);
-	});
-
-	// Setup a handler for the "onMicrophoneData" event from Expo Two Way Audio module
-	useExpoTwoWayAudioEventListener(
-		"onMicrophoneData",
-		useCallback<MicrophoneDataCallback>(
-			(event) => {
-				// We send the audio bytes to the Flow API
-				sendAudio(event.data.buffer);
-			},
-			[sendAudio],
-		),
-	);
-
-	const obtainJwt = async () => {
-		const apiKey = process.env.EXPO_PUBLIC_SPEECHMATICS_API_KEY;
-		if (!apiKey) {
-			throw new Error("API key not found");
-		}
-		// WARNING: This is just an example app.
-		// In a real app you should obtain the JWT from your server.
-		// `createSpeechmaticsJWT` could be used on a server running JS.
-		// Otherwise, you will expose your API key to the client.
-		return await createSpeechmaticsJWT({
-			type: "flow",
-			apiKey,
-			ttl: 60,
-		});
-	};
-
-	const handleToggleConnect = async () => {
-		if (socketState === "open") {
-			endConversation();
-		} else {
-			try {
-				const jwt = await obtainJwt();
-				await startConversation(jwt, {
-					config: {
-						template_id: "flow-service-assistant-humphrey",
-						template_variables: {
-							timezone: "Europe/London",
-						},
-					},
-				});
-			} catch (e) {
-				console.log("Error connecting to Flow: ", e);
-			}
-		}
-	};
-
-	// Handle clicks to the 'Mute/Unmute' button
-	const handleToggleMute = useCallback(() => {
-		toggleRecording(!isRecording);
-	}, [isRecording]);
-
-	return (
-		<View style={styles.container}>
-			<Text>
-				{socketState === "open"
-					? isRecording
-						? "Try saying something to Flow"
-						: "Tap 'Unmute' to start talking to Flow"
-					: "Tap 'Connect' to connect to Flow"}
-			</Text>
-			<Button
-				title={socketState === "open" ? "Disconnect" : "Connect"}
-				disabled={socketState === "connecting" || socketState === "closing"}
-				onPress={handleToggleConnect}
-			/>
-			<Button
-				title={isRecording ? "Mute" : "Unmute"}
-				disabled={socketState !== "open" || !audioInitialized}
-				onPress={handleToggleMute}
-			/>
-		</View>
-	);
-}
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-});
-```
+<CodeBlock language="tsx" title="app/index.tsx" showLineNumbers>
+  {indexStepThree}
+</CodeBlock>
 
 Since we've introduced some app configuration changes in app.json, let's build the app from scratch (cleaning the `ios` or `android` folders):
 
@@ -355,313 +211,17 @@ This library is often included by default in Expo apps, but if it's not, you can
 
 To keep things organised, let’s create a new file inside the app folder to house our custom volume indicator component.
 
-```
-/app/volume-display.tsx
-```
+<CodeBlock language="tsx" title="app/volume-display.tsx" showLineNumbers>
+  {volumeDisplay}
+</CodeBlock>
 
-```tsx
-import { StyleSheet, View } from "react-native";
-import Animated, {
-  Easing,
-  interpolate,
-  useAnimatedStyle,
-  withTiming,
-  type SharedValue,
-} from "react-native-reanimated";
-
-export default function VolumeDisplay({
-  volumeLevel,
-  color,
-  minSize,
-  maxSize,
-}: {
-  volumeLevel: SharedValue<number>;
-  color: string;
-  minSize: number;
-  maxSize: number;
-}) {
-  const animatedStyle = useAnimatedStyle(() => {
-    const size = interpolate(volumeLevel.value, [0, 1], [minSize, maxSize]);
-
-    return {
-      width: withTiming(size, {
-        duration: 100,
-        easing: Easing.linear,
-      }),
-      height: withTiming(size, {
-        duration: 100,
-        easing: Easing.linear,
-      }),
-      borderRadius: withTiming(size / 2, {
-        duration: 100,
-        easing: Easing.linear,
-      }),
-    };
-  });
-
-  return (
-    <View style={styles.container}>
-      <Animated.View style={[{ backgroundColor: color }, animatedStyle]} />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
-```
-
-Next, we’ll integrate our volume indicator component into the app.
+Next, we'll integrate our volume indicator component into the app.
 
 Our `/app/index.tsx` file should look as follows:
 
-```tsx
-// The polyfill should be the first import in the whole app
-import "event-target-polyfill";
-import { useCallback, useEffect, useState } from "react";
-import { Button, StyleSheet, View, Text } from "react-native";
-import {
-  FlowProvider,
-  useFlow,
-  useFlowEventListener,
-} from "@speechmatics/flow-client-react";
-
-import { createSpeechmaticsJWT } from "@speechmatics/auth";
-
-import {
-  type MicrophoneDataCallback,
-  type VolumeLevelCallback,
-  initialize,
-  playPCMData,
-  toggleRecording,
-  useExpoTwoWayAudioEventListener,
-  useIsRecording,
-  useMicrophonePermissions,
-} from "@speechmatics/expo-two-way-audio";
-import { useSharedValue } from "react-native-reanimated";
-import VolumeDisplay from "./volume-display";
-
-export default function Index() {
-  const [micPermission, requestMicPermission] = useMicrophonePermissions();
-  if (!micPermission?.granted) {
-    return (
-      <View style={styles.container}>
-        <Text>Mic permission: {micPermission?.status}</Text>
-        <Button
-          title={
-            micPermission?.canAskAgain
-              ? "Request permission"
-              : "Cannot request permissions"
-          }
-          disabled={!micPermission?.canAskAgain}
-          onPress={requestMicPermission}
-        />
-      </View>
-    );
-  }
-  return (
-    <FlowProvider
-      appId="react-native-flow-guide"
-      websocketBinaryType="arraybuffer"
-    >
-      <Flow />
-    </FlowProvider>
-  );
-}
-
-function Flow() {
-  const [audioInitialized, setAudioInitialized] = useState(false);
-  const inputVolumeLevel = useSharedValue(0.0);
-  const outputVolumeLevel = useSharedValue(0.0);
-  const { startConversation, endConversation, sendAudio, socketState } =
-    useFlow();
-  const isRecording = useIsRecording();
-
-  // Initialize Expo Two Way Audio
-  useEffect(() => {
-    const initializeAudio = async () => {
-      await initialize();
-      setAudioInitialized(true);
-    };
-
-    initializeAudio();
-  }, []);
-
-  // Setup a handler for the "agentAudio" event from Flow API
-  useFlowEventListener("agentAudio", (audio) => {
-    // Even though Int16Array is a more natural representation for PCM16_sle,
-    // Expo Modules API uses a convertible type for arrays of bytes and it needs Uint8Array in the JS side.
-    // This is converted to a `Data` type in Swift and to a `kotlin.ByteArray` in Kotlin.
-    // More info here: https://docs.expo.dev/modules/module-api/#convertibles
-    // For this reason, the Expo Two Way Audio library requires a Uint8Array argument for the `playPCMData` function.
-    const byteArray = new Uint8Array(audio.data.buffer);
-    playPCMData(byteArray);
-  });
-
-  // Setup a handler for the "onMicrophoneData" event from Expo Two Way Audio module
-  useExpoTwoWayAudioEventListener(
-    "onMicrophoneData",
-    useCallback<MicrophoneDataCallback>(
-      (event) => {
-        // We send the audio bytes to the Flow API
-        sendAudio(event.data.buffer);
-      },
-      [sendAudio]
-    )
-  );
-
-  const obtainJwt = async () => {
-    const apiKey = process.env.EXPO_PUBLIC_SPEECHMATICS_API_KEY;
-    if (!apiKey) {
-      throw new Error("API key not found");
-    }
-    // WARNING: This is just an example app.
-    // In a real app you should obtain the JWT from your server.
-    // `createSpeechmaticsJWT` could be used on a server running JS.
-    // Otherwise, you will expose your API key to the client.
-    return await createSpeechmaticsJWT({
-      type: "flow",
-      apiKey,
-      ttl: 60,
-    });
-  };
-
-  const handleToggleConnect = async () => {
-    if (socketState === "open") {
-      endConversation();
-    } else {
-      try {
-        const jwt = await obtainJwt();
-        await startConversation(jwt, {
-          config: {
-            template_id: "flow-service-assistant-humphrey",
-            template_variables: {
-              timezone: "Europe/London",
-            },
-          },
-        });
-      } catch (e) {
-        console.log("Error connecting to Flow: ", e);
-      }
-    }
-  };
-
-  // Handle clicks to the 'Mute/Unmute' button
-  const handleToggleMute = useCallback(() => {
-    toggleRecording(!isRecording);
-  }, [isRecording]);
-
-  // Setup a handler for the "onInputVolumeLevelData" event from Expo Two Way Audio module.
-  // This event is triggered when the input volume level changes.
-  useExpoTwoWayAudioEventListener(
-    "onInputVolumeLevelData",
-    useCallback<VolumeLevelCallback>(
-      (event) => {
-        // We update the react-native-reanimated shared value for the input volume (microphone).
-        // This allow us to create animations for the microphone volume based on this shared value.
-        inputVolumeLevel.value = event.data;
-      },
-      [inputVolumeLevel]
-    )
-  );
-
-  // Setup a handler for the "onOutputVolumeLevelData" event from Expo Two Way Audio module.
-  // This event is triggered when the output volume level changes.
-  useExpoTwoWayAudioEventListener(
-    "onOutputVolumeLevelData",
-    useCallback<VolumeLevelCallback>(
-      (event) => {
-        // We update the react-native-reanimated shared value for the output volume (speaker).
-        // This allow us to create animations for the speaker volume based on this shared value.
-        outputVolumeLevel.value = event.data;
-      },
-      [outputVolumeLevel]
-    )
-  );
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.VolumeDisplayContainer}>
-        <View style={styles.volumeDisplay}>
-          <VolumeDisplay
-            volumeLevel={outputVolumeLevel}
-            color="#7ECFBD"
-            minSize={130}
-            maxSize={180}
-          />
-        </View>
-        <View style={styles.volumeDisplay}>
-          <VolumeDisplay
-            volumeLevel={inputVolumeLevel}
-            color="#4CBBA5"
-            minSize={70}
-            maxSize={120}
-          />
-        </View>
-      </View>
-      <View>
-        <Text style={{ fontSize: 18 }}>
-          {socketState === "open"
-            ? isRecording
-              ? "Try saying something to Flow"
-              : "Tap 'Unmute' to start talking to Flow"
-            : "Tap 'Connect' to connect to Flow"}
-        </Text>
-      </View>
-      <View style={styles.bottomBar}>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={socketState === "open" ? "Disconnect" : "Connect"}
-            disabled={socketState === "connecting" || socketState === "closing"}
-            onPress={handleToggleConnect}
-          />
-          <Button
-            title={isRecording ? "Mute" : "Unmute"}
-            disabled={socketState !== "open" || !audioInitialized}
-            onPress={handleToggleMute}
-          />
-        </View>
-      </View>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    padding: 50,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-    marginBottom: 20,
-  },
-  bottomBar: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    padding: 20,
-    borderTopWidth: 1,
-    borderTopColor: "lightgray",
-  },
-  VolumeDisplayContainer: {
-    position: "relative",
-    width: 150,
-    height: 150,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  volumeDisplay: {
-    position: "absolute",
-  },
-});
-```
+<CodeBlock language="tsx" title="app/index.tsx" showLineNumbers>
+  {indexStepFour}
+</CodeBlock>
 
 We have successfully completed our conversational AI application! You can connect to Flow services and unmute the microphone to start a conversation.
 
@@ -689,7 +249,6 @@ Dive deeper into the tools used in this guide:
 ### Speechmatics JS SDK
 
 - [Repository](https://github.com/speechmatics/speechmatics-js-sdk)
-- [Examples](https://github.com/speechmatics/speechmatics-js-sdk/tree/main/examples)
 
 ### Expo Two Way Audio
 

@@ -1,19 +1,20 @@
 ---
 sidebar_label: Setup
 ---
-# Flow setup
 
-:::warning
-This page is a work in progress
-:::
+import SchemaNode from "@theme/Schema";
+import flowSchema from "!openapi-schema-loader!@site/spec/flow-api.yaml";
+
+# Flow setup
 
 A voice agent template covers multiple elements that typically need to be configured in concert to power a specific class of conversations in a human-facing application. 
 
 
 Flow can be configured using the following parameters:
 
-`template_id` - Required in the the StartConversation message in the Flow API. Generated from the Speechmatics [Portal](https://portal.speechmatics.com/). This maps to the [language supported](/voice-agents-flow/supported-languages), agent's prompt, LLM, TTS voice, & custom dictionary. These can be customised by creating or modifying agents in the [portal](https://portal.speechmatics.com/).
+<SchemaNode schema={flowSchema.components.schemas.ConversationConfig} />
 
+<br/>
 For more details, refer to [StartConversation API reference](/api-ref/flow-voice-ai-websocket#startconversation).
 
 ### Function Calling
@@ -24,9 +25,11 @@ This could involve needing real-time information such as opening/closing times o
 
 
 ### Moderating & controlling Conversations
+
 You might want to control ongoing conversation based on what's spoken by the user or the output by the LLM. This could involve situations where the agent is asked to do things out of scope or the conversation is heading in unintentional directions. We enable this through sharing the real-time transcript from speech (AddPartialTranscript/ AddTranscript) and the entire response from the LLM just before it begins to speak (ResponseStarted). We recommend building monitoring on top of these streams and to use either AudioEnded to end the session, or close the WebSocket directly if the final transcript is unimportant.
 
 #### Steering the conversation
+
 [Application Inputs](/voice-agents-flow/features/application-inputs) allow you to steer the conversation by adding helpful updates & information asynchronously to Flow
 
 ### Managing call recordings & transcripts
