@@ -2,6 +2,8 @@ import CodeBlock from '@theme/CodeBlock';
 import pythonFunctionCallingExample from './assets/function-calling.py';
 import SchemaNode from '@theme/Schema';
 import flowSpec from '!openapi-schema-loader!@site/spec/flow-api.yaml';
+import { Callout, Flex, Text } from '@radix-ui/themes';
+import { ConstructionIcon } from 'lucide-react';
 
 # Function Calling
 
@@ -46,14 +48,22 @@ For example, you may want Flow to add reminders in a user's calendar:
 
 An agent can be configured to use function calling in two ways:
 
-1. **In code**: when starting a session with the [StartConversation message](/api-ref/flow-voice-ai-websocket#startconversation)
+1. **In code**: when starting a session with the [`StartConversation` message](/api-ref/flow-voice-ai-websocket#startconversation)
 2. (_coming soon_) **In the portal**: when configuring an agent
 
 ### In the portal
 
-:::warning
-This feature is not yet available in the portal.
-:::
+<Callout.Root color="yellow">
+    <Flex gap="2" align="center">
+        <Callout.Icon>
+            <ConstructionIcon size={16} />
+        </Callout.Icon>
+        <Text weight="bold">COMING SOON</Text>
+    </Flex>
+  <Callout.Text>
+    Function Calling will be configurable on a per-agent basis [in the Portal](https://portal.speechmatics.com/create-agent).
+  </Callout.Text>
+</Callout.Root>
 
 ### In `StartConversation`
 
