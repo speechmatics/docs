@@ -16,6 +16,10 @@ export default {
     },
     {
       type: "doc",
+      id: "speech-to-text/real-time/end-of-turn",
+    },
+    {
+      type: "doc",
       id: "speech-to-text/real-time/using-ffmpeg",
     },
     {
