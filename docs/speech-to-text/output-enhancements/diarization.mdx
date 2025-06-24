@@ -56,13 +56,13 @@ When enabled, every `word` and `punctuation` object in the output results will b
 indicating who said that word. There are two kinds of labels you will see:
 
 - `S#` - S stands for speaker and the # will be an incrementing integer identifying an individual speaker. S1 will appear first in the results, followed by S2, S3, etc.
-- `UU` - Diarization is disabled or individual speakers cannot be identified. `UU` can appear for example if some background noise is transcribed as speech, but the diarization system does not recognise it as a speaker.
+- `UU` - Diarization is disabled or individual speakers cannot be identified (which only applies when running batch mode on CPU operating points). `UU` can appear for example if some background noise is transcribed as speech, but the diarization system does not recognise it as a speaker.
 
 **Considerations**
 - Enabling diarization for a file increases the amount of time taken to transcribe an audio file. In general, we expect the use of Diarization to increase the overall processing time by 10-50%.
-- When transcribing in Real-Time, [Partial transcripts](/speech-to-text/real-time/latency#partial-transcripts) will not include speaker information.
 
-The example below shows relevant parts of a transcript with 2 speakers:
+You can configure the sensitivity of speaker detection by using the `speaker_sensitivity`
+setting in the `speaker_diarization_config` section of the job config object as shown below:
 
 ```json
   "results": [
@@ -121,6 +121,26 @@ This takes a value between 0 and 1 (the default is 0.5). A higher sensitivity wi
 increase the likelihood of more unique speakers returning.
 
 For Real-Time Transcription, you can configure the [maximum number of speakers](#max-speakers).
+
+### Prefer Current Speaker
+
+You can reduce the likelihood of incorrectly switching between similar sounding speakers by setting the `prefer_current_speaker` flag in the `speaker_diarization_config`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      "prefer_current_speaker": true
+    }
+  }
+}
+```
+By default this flag is `false`.  When this flag is set to `true`, the system will stay with the speaker of the previous word, if they closely match the speaker of the new word.
+
+This may result in some shorter speaker turn changes between similar speakers being missed.
 
 ### Max. Speakers
 
