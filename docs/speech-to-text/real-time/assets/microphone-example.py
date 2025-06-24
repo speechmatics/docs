@@ -96,7 +96,8 @@ ws = speechmatics.client.WebsocketClient(conn)
 conf = speechmatics.models.TranscriptionConfig(
     language=LANGUAGE,
     enable_partials=True,
-    max_delay=5,
+    operating_point="enhanced",
+    max_delay=1,
 )
 
 
