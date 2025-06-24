@@ -11,8 +11,10 @@ plain text
 ```
 
 
-```javascript
+```javascript showLineNumbers
+// highlight-start
 function foo() {
+// highlight-end
   return "bar";
 }
 ```
