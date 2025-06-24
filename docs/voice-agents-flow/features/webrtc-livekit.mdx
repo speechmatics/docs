@@ -8,16 +8,15 @@ Flow uses the WebRTC setup provided by LiveKit to enable support for the protoco
 
 ## API
 
-Client makes a HTTP POST request to `/v1/flow/livekit` endpoint, with body containing StartConversation message as described in the [Flow API reference](/). "audio_format" field must not be used in this scenario as LiveKit WebRTC takes control of the audio format.
+Client makes a HTTP POST request to `/v1/flow/livekit` endpoint, with body containing StartConversation message as described in the [Flow API reference](/api-ref/flow-voice-ai-websocket#startconversation). "audio_format" field must not be used in this scenario as LiveKit WebRTC takes control of the audio format.
 
 ```json
 {
-    "message": "StartConversation",
-    "conversation_config": {
-      "template_id": "flow-service-assistant-one",
-      "template_variables": {
-        "timezone": "Europe/London"
-      }
+  "message": "StartConversation",
+  "conversation_config": {
+    "template_id": "flow-service-assistant-one",
+    "template_variables": {
+      "timezone": "Europe/London"
     }
   }
 }

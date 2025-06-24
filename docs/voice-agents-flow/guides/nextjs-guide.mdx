@@ -5,8 +5,6 @@ title: Build a conversational AI web app with Next.js and Flow
 
 import { Box, Card, Flex } from "@radix-ui/themes";
 import CodeBlock from "@theme/CodeBlock";
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
 import { GithubIcon } from "lucide-react";
 
 {/* -------------- Step 1-------------- */}
@@ -60,7 +58,7 @@ npx create-next-app@latest nextjs-flow-guide --typescript --eslint --app
 # Official Flow API client for React
 npm install @speechmatics/flow-client-react
 
-# Lets is request JWTs to authenticate with the API
+# Used for requesting JWTs for API authentication
 npm install @speechmatics/auth
 
 # These let us capture and play raw audio in the browser easily
@@ -118,16 +116,6 @@ In order to use this package with NextJS, we need to configure Webpack to serve 
 
 ### Audio and Context providers
 
-:::info
-#### A note about `AudioContext` and sample rates in Firefox
-
-[AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext) is the WebAPI for handling audio recording and playback. Under normal circumstances, you should aim to have [one resusable instance](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext#:~:text=It%27s%20recommended%20to%20create%20one%20AudioContext%20and%20reuse%20it%20instead%20of%20initializing%20a%20new%20one%20each%20time) of an `AudioContext` in your app. In most browsers, an `AudioContext` can freely record and play back audio at different sample rates, but this is not the case in Firefox (see outstanding [bug here](https://bugzilla.mozilla.org/show_bug.cgi?id=1725336)).
-
-
-To handle this, we can create a utility hook to expose separate `AudioContext` instances for recording and playback in Firefox, while sharing a single instance for other browsers (see below).
-
-:::
-
 #### Context providers
 
 We will be using 3 context providers in the app:
@@ -138,19 +126,24 @@ We will be using 3 context providers in the app:
 
 We'll start by creating a `providers.tsx` file in the `app` directory, and adding the following content:
 
-<Tabs>
-  <TabItem value="providers.tsx">
-    Here we add the 3 context providers to the app, passing the `AudioContext` instances to both the audio providers, and the `workletScriptURL` to `PCMAudioRecorderProvider`.
-    <CodeBlock title="app/providers.tsx" language="tsx" showLineNumbers>
-      {providersStepTwo}
-    </CodeBlock>
-  </TabItem>
-  <TabItem value="useAudioContexts.ts">
-    <CodeBlock title="hooks/useAudioContexts.ts" language="tsx" showLineNumbers>
-      {useAudioContextsExample}
-    </CodeBlock>
-  </TabItem>
-</Tabs>
+Here we add the 3 context providers to the app, passing the `AudioContext` instances to both the audio providers, and the `workletScriptURL` to `PCMAudioRecorderProvider`.
+<CodeBlock title="app/providers.tsx" language="tsx" showLineNumbers>
+  {providersStepTwo}
+</CodeBlock>
+
+:::info
+#### A note about `AudioContext` and sample rates in Firefox
+
+[AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext) is the WebAPI for handling audio recording and playback. Under normal circumstances, you should aim to have [one resusable instance](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext#:~:text=It%27s%20recommended%20to%20create%20one%20AudioContext%20and%20reuse%20it%20instead%20of%20initializing%20a%20new%20one%20each%20time) of an `AudioContext` in your app. In most browsers, an `AudioContext` can freely record and play back audio at different sample rates, but this is not the case in Firefox (see outstanding [bug here](https://bugzilla.mozilla.org/show_bug.cgi?id=1725336)).
+
+
+To handle this, we can create a utility hook to expose separate `AudioContext` instances for recording and playback in Firefox, while sharing a single instance for other browsers (see below).
+
+:::
+
+<CodeBlock title="hooks/useAudioContexts.ts" language="tsx" showLineNumbers>
+  {useAudioContextsExample}
+</CodeBlock>
 
 Now place the following code in the `app/page.tsx` file:
 
@@ -214,29 +207,23 @@ This component will contain:
 
 To connect to the API, we will also need to setup a [Server Action](https://react.dev/reference/rsc/server-functions) to request a JWT from the backend. We can then call this server action in our component.
 
-<Tabs>
-  <TabItem value="Controls.tsx">
-    Here we define the controls component:
-      - `form` contains the dropdowns and buttons
-      - When the form is submitted, we call the `getJWT` server action, then pass the JWT to the `startConversation` function, along with the config from the FormData.
+Here we define the controls component:
+  - `form` contains the dropdowns and buttons
+  - When the form is submitted, we call the `getJWT` server action, then pass the JWT to the `startConversation` function, along with the config from the FormData.
 
-    <CodeBlock title="components/Controls.tsx" language="tsx" showLineNumbers>
-      {controlsExample}
-    </CodeBlock>
-  </TabItem>
-  <TabItem value="MicrophoneSelect.tsx">
-    Helper component to render the microphone select dropdown. It also handles prompting the user for permission to use the microphone.
-    <CodeBlock title="components/MicrophoneSelect.tsx" language="tsx" showLineNumbers>
-      {microphoneSelectExample}
-    </CodeBlock>
-  </TabItem>
-  <TabItem value="actions.ts">
-    Here we define the server action to request a JWT from the backend.
-    <CodeBlock title="app/actions.ts" language="ts" showLineNumbers>
-      {serverActionExample}
-    </CodeBlock>
-  </TabItem>
-</Tabs>
+<CodeBlock title="components/Controls.tsx" language="tsx" showLineNumbers>
+  {controlsExample}
+</CodeBlock>
+
+We also create a utility component to render the microphone select dropdown. It also handles prompting the user for permission to use the microphone.
+<CodeBlock title="components/MicrophoneSelect.tsx" language="tsx" showLineNumbers>
+  {microphoneSelectExample}
+</CodeBlock>
+
+Finally we define the server action to request a JWT from the backend.
+<CodeBlock title="app/actions.ts" language="ts" showLineNumbers>
+  {serverActionExample}
+</CodeBlock>
 
 
 ### `Status` component

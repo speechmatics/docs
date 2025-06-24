@@ -1,9 +1,9 @@
+import path from "node:path";
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import katex from "rehype-katex";
 import math from "remark-math";
-import path from "node:path";
 import { prismTheme } from "./prism-theme";
 import { sidebarItemsGenerator } from "./sidebar-generator";
 
