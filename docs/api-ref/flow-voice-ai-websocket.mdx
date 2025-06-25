@@ -1,0 +1,66 @@
+---
+title: Flow API Reference
+hide_title: true
+---
+import SchemaNode from "@theme/Schema";
+import Details from "@theme/Details";
+import Heading from "@theme/Heading";
+import { Flex, Text } from "@radix-ui/themes";
+
+import flowSchema from "!asyncapi-schema-loader!@site/spec/flow-api.yaml";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Flow API Reference"}
+>
+</Heading>
+
+<pre className="openapi__method-endpoint">
+  <span className="badge badge--primary">GET</span>
+  <h2 className="openapi__method-endpoint-path">wss://flow.api.speechmatics.com/</h2>
+</pre>
+
+<div className="openapi__divider"></div>
+## Sent messages
+
+<Flex direction="column" gap="2">
+{Object.entries(flowSchema.channels.publish.messages).map(([messageName, message]) => {
+  return <Flex key={message.name} direction="column">
+      <Heading as="h3" id={messageName.toLowerCase()} style={{scrollMarginTop: "calc(var(--ifm-navbar-height) + 0.5rem)"}}>{messageName}</Heading>
+      <Flex direction="column" gap="2">
+        <Text>{message.summary || "No summary"}</Text>
+        <SchemaNode schema={message.payload} />
+      </Flex>
+    </Flex>
+  })}
+</Flex>
+
+## Received messages
+
+<Flex direction="column" gap="2">
+  {Object.entries(flowSchema.channels.subscribe.messages).map(([messageName, message]) => {
+    return <Flex key={message.name} direction="column">
+      <Heading as="h3" id={messageName.toLowerCase()} style={{scrollMarginTop: "calc(var(--ifm-navbar-height) + 0.5rem)"}}>{messageName}</Heading>
+      <Flex direction="column" gap="2">
+        <Text>{message.summary || "No summary"}</Text>
+        <SchemaNode schema={message.payload} />
+      </Flex>
+    </Flex>
+  })}
+</Flex>
+
+export const toc = [
+  {value: "Sent messages", id: "sent-messages", level: 2},
+  ...Object.entries(flowSchema.channels.publish.messages).map(([messageName, message]) => ({
+    "value": messageName,
+    "id": messageName.toLowerCase(),
+    "level": 3
+  })),
+  {value: "Received messages", id: "received-messages", level: 2},
+  ...Object.entries(flowSchema.channels.subscribe.messages).map(([messageName, message]) => ({
+    "value": messageName,
+    "id": messageName.toLowerCase(),
+    "level": 3
+  })),
+]

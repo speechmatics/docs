@@ -22,6 +22,5 @@ yarn-error.log*
 # Auto generated API ref pages
 docs/api-ref/jobs
 docs/api-ref/batch
-docs/api-ref/flow-voice-ai-websocket.mdx
 docs/api-ref/realtime-transcription-websocket.mdx
 static/*.yaml
