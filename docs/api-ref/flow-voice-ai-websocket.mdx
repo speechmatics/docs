@@ -5,7 +5,8 @@ hide_title: true
 import SchemaNode from "@theme/Schema";
 import Details from "@theme/Details";
 import Heading from "@theme/Heading";
-import { Flex, Text } from "@radix-ui/themes";
+import { Flex, Text, Separator, Card } from "@radix-ui/themes";
+import WebsocketMessageArrow from "@site/src/theme/WebsocketMessageArrow";
 
 import flowSchema from "!asyncapi-schema-loader!@site/spec/flow-api.yaml";
 
@@ -21,36 +22,92 @@ import flowSchema from "!asyncapi-schema-loader!@site/spec/flow-api.yaml";
   <h2 className="openapi__method-endpoint-path">wss://flow.api.speechmatics.com/</h2>
 </pre>
 
+## Protocol overview
+A basic Flow session will have the following message exchanges:
+
+<WebsocketMessageArrow direction="up" /> Indicates messages sent by the client
+
+<WebsocketMessageArrow direction="down" /> Indicates messages sent by the service
+
+### Session Start
+Once-only at conversation start:
+
+- <Text align="center"><WebsocketMessageArrow direction="up" /> StartConversation</Text>
+- <WebsocketMessageArrow direction="down" /> ConversationStarted
+
+### Audio Input/Output and Transcripts
+Repeating during the conversation to cover the audio stream from the client and corresponding transcripts:
+
+- <WebsocketMessageArrow direction="up" /> AddAudio (inbound binary messages)
+- <WebsocketMessageArrow direction="down" /> AudioAdded
+- <WebsocketMessageArrow direction="down" /> AddTranscript / AddPartialTranscript
+- <WebsocketMessageArrow direction="up" /> AddAudio (outbound binary messages)
+- <WebsocketMessageArrow direction="down" /> AudioReceived
+
+### TTS Response Management
+
+- <WebsocketMessageArrow direction="down" /> ResponseStarted (when TTS begins)
+- <WebsocketMessageArrow direction="down" /> ResponseCompleted (when TTS finishes normally)
+- <WebsocketMessageArrow direction="down" /> ResponseInterrupted (when TTS is interrupted)
+
+### Function Calling
+Exchanged during function calling over the websocket:
+
+- <WebsocketMessageArrow direction="down" /> ToolInvoke (when function call is triggered)
+- <WebsocketMessageArrow direction="up" /> ToolResult (client response to function call)
+
+### Session Termination
+Once-only at conversation end:
+
+- <WebsocketMessageArrow direction="up" /> AudioEnded (client ending session)
+- <WebsocketMessageArrow direction="down" /> ConversationEnding (agent ending session)
+- <WebsocketMessageArrow direction="down" /> ConversationEnded (final message before connection close)
+
+Info (Details), Warning(Details) and Error(Details) messages will be sent as appropriate.
+
 <div className="openapi__divider"></div>
 ## Sent messages
 
-<Flex direction="column" gap="2">
+<Flex direction="column" gap="4">
 {Object.entries(flowSchema.channels.publish.messages).map(([messageName, message]) => {
-  return <Flex key={message.name} direction="column">
-      <Heading as="h3" id={messageName.toLowerCase()} style={{scrollMarginTop: "calc(var(--ifm-navbar-height) + 0.5rem)"}}>{messageName}</Heading>
-      <Flex direction="column" gap="2">
-        <Text>{message.summary || "No summary"}</Text>
-        <SchemaNode schema={message.payload} />
+  return (
+    <Card style={{overflow: "unset"}} key={messageName}>
+      <Flex direction="column">
+        <Heading as="h3" id ={messageName.toLowerCase()} style={{scrollMarginTop: "calc(var(--ifm-navbar-height) + 0.5rem)"}}>
+          <WebsocketMessageArrow direction="up" /> {messageName}
+        </Heading>
+        <Flex direction="column" gap="2">
+          <Text>{message.summary || "No summary"}</Text>
+          <SchemaNode schema={message.payload} />
+        </Flex>
       </Flex>
-    </Flex>
+    </Card>
+  )
   })}
 </Flex>
 
 ## Received messages
 
-<Flex direction="column" gap="2">
+<Flex direction="column" gap="4">
   {Object.entries(flowSchema.channels.subscribe.messages).map(([messageName, message]) => {
-    return <Flex key={message.name} direction="column">
-      <Heading as="h3" id={messageName.toLowerCase()} style={{scrollMarginTop: "calc(var(--ifm-navbar-height) + 0.5rem)"}}>{messageName}</Heading>
-      <Flex direction="column" gap="2">
-        <Text>{message.summary || "No summary"}</Text>
-        <SchemaNode schema={message.payload} />
-      </Flex>
-    </Flex>
+    return ( 
+      <Card size="3"style={{overflow: "unset"}} key={messageName}>
+        <Flex direction="column">
+          <Heading as="h3" id={messageName.toLowerCase()} style={{scrollMarginTop: "calc(var(--ifm-navbar-height) + 0.5rem)"}}>
+            <WebsocketMessageArrow direction="down" /> {messageName}
+          </Heading>
+          <Flex direction="column" gap="2">
+            <Text>{message.summary || "No summary"}</Text>
+            <SchemaNode schema={message.payload} />
+          </Flex>
+        </Flex>
+      </Card>
+   )
   })}
 </Flex>
 
 export const toc = [
+  {value: "Protocol overview", id: "protocol-overview", level: 2},
   {value: "Sent messages", id: "sent-messages", level: 2},
   ...Object.entries(flowSchema.channels.publish.messages).map(([messageName, message]) => ({
     "value": messageName,
