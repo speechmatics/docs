@@ -38,32 +38,32 @@ Once-only at conversation start:
 ### Audio Input/Output and Transcripts
 Repeating during the conversation to cover the audio stream from the client and corresponding transcripts:
 
-- <WebsocketMessageArrow direction="up" /> AddAudio (inbound binary messages)
-- <WebsocketMessageArrow direction="down" /> AudioAdded
-- <WebsocketMessageArrow direction="down" /> AddTranscript / AddPartialTranscript
-- <WebsocketMessageArrow direction="down" /> AddAudio (outbound binary messages)
-- <WebsocketMessageArrow direction="up" /> AudioReceived
+- <WebsocketMessageArrow direction="up" /> `AddAudio` (client sending audio)
+- <WebsocketMessageArrow direction="down" /> `AudioAdded` (server received audio)
+- <WebsocketMessageArrow direction="down" /> `AddTranscript` / `AddPartialTranscript` (server sent transcript)
+- <WebsocketMessageArrow direction="down" /> `AddAudio` (server sending audio)
+- <WebsocketMessageArrow direction="up" /> `AudioReceived` (client received audio)
 
 ### TTS Response Management
 
-- <WebsocketMessageArrow direction="down" /> ResponseStarted (when TTS begins)
-- <WebsocketMessageArrow direction="down" /> ResponseCompleted (when TTS finishes normally)
-- <WebsocketMessageArrow direction="down" /> ResponseInterrupted (when TTS is interrupted)
+- <WebsocketMessageArrow direction="down" /> `ResponseStarted` (when TTS begins)
+- <WebsocketMessageArrow direction="down" /> `ResponseCompleted` (when TTS finishes normally)
+- <WebsocketMessageArrow direction="down" /> `ResponseInterrupted` (when TTS is interrupted)
 
 ### Function Calling
 Exchanged during function calling over the websocket:
 
-- <WebsocketMessageArrow direction="down" /> ToolInvoke (when function call is triggered)
-- <WebsocketMessageArrow direction="up" /> ToolResult (client response to function call)
+- <WebsocketMessageArrow direction="down" /> `ToolInvoke` (when function call is triggered)
+- <WebsocketMessageArrow direction="up" /> `ToolResult` (client response to function call)
 
 ### Session Termination
 Once-only at conversation end:
 
-- <WebsocketMessageArrow direction="up" /> AudioEnded (client ending session)
-- <WebsocketMessageArrow direction="down" /> ConversationEnding (agent ending session)
-- <WebsocketMessageArrow direction="down" /> ConversationEnded (final message before connection close)
+- <WebsocketMessageArrow direction="up" /> `AudioEnded` (client ending session)
+- <WebsocketMessageArrow direction="down" /> `ConversationEnding` (agent ending session)
+- <WebsocketMessageArrow direction="down" /> `ConversationEnded` (final message before connection close)
 
-Info (Details), Warning(Details) and Error(Details) messages will be sent as appropriate.
+`Info`, `Warning` and `Error` messages will be sent as appropriate.
 
 ## Sent messages
 

@@ -16,16 +16,20 @@ export function AsyncAPIMessage({
   return (
     <Card style={{ overflow: "unset" }}>
       <Flex direction="column">
-        <Heading
-          as="h3"
-          id={messageName.toLowerCase()}
-          style={{ scrollMarginTop: "calc(var(--ifm-navbar-height) + 0.5rem)" }}
-        >
-          <WebsocketMessageArrow
-            direction={channel === "publish" ? "up" : "down"}
-          />{" "}
-          {messageName}
-        </Heading>
+        <Flex asChild gap="1" align="center">
+          <Heading
+            as="h3"
+            id={messageName.toLowerCase()}
+            style={{
+              scrollMarginTop: "calc(var(--ifm-navbar-height) + 0.5rem)",
+            }}
+          >
+            <WebsocketMessageArrow
+              direction={channel === "publish" ? "up" : "down"}
+            />{" "}
+            {messageName}
+          </Heading>
+        </Flex>
         <Flex direction="column" gap="2">
           <Text>{message.summary || "No summary"}</Text>
           <SchemaNode schema={message.payload} />
