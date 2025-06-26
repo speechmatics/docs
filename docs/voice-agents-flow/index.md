@@ -12,8 +12,6 @@ Try Flow free for up to 50 hours per month. Production pricing starts from $0.08
 
 Flow is engineered to engage in natural and fluid conversations by automatically handling interruptions, responding to multiple speakers, and understanding different dialects and accents.
 
-This page will show you how to use the Flow API for the most natural and intuitive voice agents, using an easy to use interactive code editor.
-
 ## How Flow Works
 
 Built on-top of Speechmatics' [industry-leading ASR](/speech-to-text/real-time/quickstart), the latest LLMs and text-to-speech, Flow is engineered to engage in natural and fluid conversations. 
