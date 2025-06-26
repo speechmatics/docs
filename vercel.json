@@ -332,7 +332,7 @@
       "source": "/release-notes/usage-container-release-notes",
       "destination": "/not-found"
     },
-    { "source": "/rt-api-ref", "destination": "/not-found" },
+    { "source": "/rt-api-ref", "destination": "/api-ref/realtime-transcription-websocket" },
     { "source": "/sdk/", "destination": "/not-found" },
     {
       "source": "/sdk/batch-jobs-javascript-sdk",
@@ -351,14 +351,14 @@
       "destination": "/not-found"
     },
     { "source": "/sdk/real-time-react-sdk", "destination": "/not-found" },
-    { "source": "/speech-capabilities", "destination": "/not-found" },
+    { "source": "/speech-capabilities", "destination": "/speech-to-text/" },
     { "source": "/tutorials", "destination": "/not-found" },
     {
       "source": "/tutorials/accuracy-benchmarking",
-      "destination": "/not-found"
+      "destination": "/speech-to-text/accuracy-benchmarking"
     },
-    { "source": "/tutorials/calculating-wer", "destination": "/not-found" },
-    { "source": "/tutorials/using-ffmpeg", "destination": "/not-found" },
-    { "source": "/tutorials/using-mic", "destination": "/not-found" }
+    { "source": "/tutorials/calculating-wer", "destination": "/speech-to-text/accuracy-benchmarking" },
+    { "source": "/tutorials/using-ffmpeg", "destination": "/speech-to-text/real-time/using-ffmpeg" },
+    { "source": "/tutorials/using-mic", "destination": "/speech-to-text/real-time/using-microphone" }
   ]
 }
