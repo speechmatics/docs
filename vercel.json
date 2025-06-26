@@ -1,259 +1,349 @@
 {
   "redirects": [
-    { "source": "/jobsapi/", "target": "/api-ref/batch/create-a-new-job" },
-    { "source": "/search", "target": "/todo-migrate/" },
-    { "source": "/features", "target": "/speech-to-text/" },
-    { "source": "/features-other", "target": "/speech-to-text/" },
+    { "source": "/jobsapi/", "destination": "/api-ref/batch/create-a-new-job" },
+    { "source": "/search", "destination": "/todo-migrate/" },
+    { "source": "/features", "destination": "/speech-to-text/" },
+    { "source": "/features-other", "destination": "/speech-to-text/" },
     {
       "source": "/features-other/auto-chapters",
-      "target": "/speech-to-text/batch/speech-intelligence/auto-chapters/"
+      "destination": "/speech-to-text/batch/speech-intelligence/auto-chapters/"
     },
     {
       "source": "/features-other/feature-discovery",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/features-other/fetch-url",
-      "target": "/speech-to-text/batch/fetch-url"
+      "destination": "/speech-to-text/batch/fetch-url"
     },
     {
       "source": "/features-other/lang-id",
-      "target": "/speech-to-text/batch/language-identification"
+      "destination": "/speech-to-text/batch/language-identification"
     },
     {
       "source": "/features-other/notifications",
-      "target": "/speech-to-text/batch/notifications"
+      "destination": "/speech-to-text/batch/notifications"
     },
     {
       "source": "/features-other/sentiment-analysis",
-      "target": "/speech-to-text/batch/speech-intelligence/sentiment-analysis"
+      "destination": "/speech-to-text/batch/speech-intelligence/sentiment-analysis"
     },
-    { "source": "/features-other/srt-format", "target": "/speech-to-text/batch/srt-format" },
+    {
+      "source": "/features-other/srt-format",
+      "destination": "/speech-to-text/batch/srt-format"
+    },
     {
       "source": "/features-other/summarization",
-      "target": "/speech-to-text/batch/speech-intelligence/summarization"
+      "destination": "/speech-to-text/batch/speech-intelligence/summarization"
     },
     {
       "source": "/features-other/topic-detection",
-      "target": "/speech-to-text/batch/speech-intelligence/topic-detection"
+      "destination": "/speech-to-text/batch/speech-intelligence/topic-detection"
     },
-    { "source": "/features-other/tracking", "target": "/speech-to-text/batch/tracking" },
+    {
+      "source": "/features-other/tracking",
+      "destination": "/speech-to-text/batch/tracking"
+    },
     {
       "source": "/features-other/translation",
-      "target": "/speech-to-text/translation"
+      "destination": "/speech-to-text/translation"
     },
-    { "source": "/features-other/word-alignment", "target": "/speech-to-text/batch/alignment" },
+    {
+      "source": "/features-other/word-alignment",
+      "destination": "/speech-to-text/batch/alignment"
+    },
     {
       "source": "/features/accuracy-language-packs",
-      "target": "/speech-to-text/features/accuracy-language-packs"
+      "destination": "/speech-to-text/features/accuracy-language-packs"
     },
-    { "source": "/features/audio-events", "target": "/speech-to-text/features/audio-events" },
-    { "source": "/features/audio-filtering", "target": "/speech-to-text/features/audio-filtering" },
-    { "source": "/features/custom-dictionary", "target": "/speech-to-text/features/custom-dictionary" },
-    { "source": "/features/diarization", "target": "/speech-to-text/output-enhancements/diarization" },
-    { "source": "/features/end-of-turn", "target": "/todo-migrate" },
-    { "source": "/features/entities", "target": "/speech-to-text/output-enhancements/numeral-formatting" },
-    { "source": "/features/punctuation-settings", "target": "/speech-to-text/output-enhancements/punctuation-settings" },
-    { "source": "/features/realtime-latency", "target": "/speech-to-text/real-time/latency" },
-    { "source": "/features/word-tagging", "target": "/speech-to-text/output-enhancements/output-formatting" },
-    { "source": "/flow-api-ref", "target": "/api-ref/flow-voice-ai-websocket" },
-    { "source": "/flow/application-inputs", "target": "/voice-agents-flow/features/application-inputs" },
-    { "source": "/flow/config", "target": "/voice-agents-flow/setup" },
-    { "source": "/flow/function-calling", "target": "/voice-agents-flow/features/function-calling" },
-    { "source": "/flow/introduction", "target": "/voice-agents-flow" },
-    { "source": "/flow/languages-supported", "target": "/voice-agents-flow/supported-languages" },
-    { "source": "/flow/livekit-webrtc", "target": "/voice-agents-flow/features/webrtc-livekit" },
-    { "source": "/flow/nextjs-guide", "target": "/voice-agents-flow/guides/nextjs-guide" },
-    { "source": "/flow/react-native-guide", "target": "/todo-migrate" },
-    { "source": "/introduction", "target": "/todo-migrate" },
-    { "source": "/introduction/additional-info", "target": "/todo-migrate" },
-    { "source": "/introduction/authentication", "target": "/todo-migrate" },
-    { "source": "/introduction/batch-guide", "target": "/todo-migrate" },
-    { "source": "/introduction/errors-rate-limits", "target": "/todo-migrate" },
-    { "source": "/introduction/rt-guide", "target": "/todo-migrate" },
+    {
+      "source": "/features/audio-events",
+      "destination": "/speech-to-text/features/audio-events"
+    },
+    {
+      "source": "/features/audio-filtering",
+      "destination": "/speech-to-text/features/audio-filtering"
+    },
+    {
+      "source": "/features/custom-dictionary",
+      "destination": "/speech-to-text/features/custom-dictionary"
+    },
+    {
+      "source": "/features/diarization",
+      "destination": "/speech-to-text/output-enhancements/diarization"
+    },
+    { "source": "/features/end-of-turn", "destination": "/todo-migrate" },
+    {
+      "source": "/features/entities",
+      "destination": "/speech-to-text/output-enhancements/numeral-formatting"
+    },
+    {
+      "source": "/features/punctuation-settings",
+      "destination": "/speech-to-text/output-enhancements/punctuation-settings"
+    },
+    {
+      "source": "/features/realtime-latency",
+      "destination": "/speech-to-text/real-time/latency"
+    },
+    {
+      "source": "/features/word-tagging",
+      "destination": "/speech-to-text/output-enhancements/output-formatting"
+    },
+    {
+      "source": "/flow-api-ref",
+      "destination": "/api-ref/flow-voice-ai-websocket"
+    },
+    {
+      "source": "/flow/application-inputs",
+      "destination": "/voice-agents-flow/features/application-inputs"
+    },
+    { "source": "/flow/config", "destination": "/voice-agents-flow/setup" },
+    {
+      "source": "/flow/function-calling",
+      "destination": "/voice-agents-flow/features/function-calling"
+    },
+    { "source": "/flow/introduction", "destination": "/voice-agents-flow" },
+    {
+      "source": "/flow/languages-supported",
+      "destination": "/voice-agents-flow/supported-languages"
+    },
+    {
+      "source": "/flow/livekit-webrtc",
+      "destination": "/voice-agents-flow/features/webrtc-livekit"
+    },
+    {
+      "source": "/flow/nextjs-guide",
+      "destination": "/voice-agents-flow/guides/nextjs-guide"
+    },
+    { "source": "/flow/react-native-guide", "destination": "/todo-migrate" },
+    { "source": "/introduction", "destination": "/todo-migrate" },
+    {
+      "source": "/introduction/additional-info",
+      "destination": "/todo-migrate"
+    },
+    {
+      "source": "/introduction/authentication",
+      "destination": "/todo-migrate"
+    },
+    { "source": "/introduction/batch-guide", "destination": "/todo-migrate" },
+    {
+      "source": "/introduction/errors-rate-limits",
+      "destination": "/todo-migrate"
+    },
+    { "source": "/introduction/rt-guide", "destination": "/todo-migrate" },
     {
       "source": "/introduction/supported-languages",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
-    { "source": "/introduction/troubleshooting", "target": "/todo-migrate" },
-    { "source": "/introduction/usage", "target": "/todo-migrate" },
-    { "source": "/on-prem/containers", "target": "/todo-migrate" },
+    {
+      "source": "/introduction/troubleshooting",
+      "destination": "/todo-migrate"
+    },
+    { "source": "/introduction/usage", "destination": "/todo-migrate" },
+    { "source": "/on-prem/containers", "destination": "/todo-migrate" },
     {
       "source": "/on-prem/containers/accessing-images",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/containers/additional-security",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/containers/cpu-container",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/containers/gpu-inference-container",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/containers/lang-id-container",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
-    { "source": "/on-prem/containers/licensing", "target": "/todo-migrate" },
-    { "source": "/on-prem/containers/translation", "target": "/todo-migrate" },
+    {
+      "source": "/on-prem/containers/licensing",
+      "destination": "/todo-migrate"
+    },
+    {
+      "source": "/on-prem/containers/translation",
+      "destination": "/todo-migrate"
+    },
     {
       "source": "/on-prem/containers/troubleshooting",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
-    { "source": "/on-prem/containers/usage", "target": "/todo-migrate" },
-    { "source": "/on-prem/kubernetes", "target": "/todo-migrate" },
-    { "source": "/on-prem/kubernetes/flow", "target": "/todo-migrate" },
+    { "source": "/on-prem/containers/usage", "destination": "/todo-migrate" },
+    { "source": "/on-prem/kubernetes", "destination": "/todo-migrate" },
+    { "source": "/on-prem/kubernetes/flow", "destination": "/todo-migrate" },
     {
       "source": "/on-prem/kubernetes/prerequisites",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
-    { "source": "/on-prem/kubernetes/realtime", "target": "/todo-migrate" },
-    { "source": "/on-prem/usage/", "target": "/todo-migrate" },
-    { "source": "/on-prem/usage/usage-collector", "target": "/todo-migrate" },
-    { "source": "/on-prem/usage/usage-container", "target": "/todo-migrate" },
-    { "source": "/on-prem/usage/what-data", "target": "/todo-migrate" },
+    {
+      "source": "/on-prem/kubernetes/realtime",
+      "destination": "/todo-migrate"
+    },
+    { "source": "/on-prem/usage/", "destination": "/todo-migrate" },
+    {
+      "source": "/on-prem/usage/usage-collector",
+      "destination": "/todo-migrate"
+    },
+    {
+      "source": "/on-prem/usage/usage-container",
+      "destination": "/todo-migrate"
+    },
+    { "source": "/on-prem/usage/what-data", "destination": "/todo-migrate" },
     {
       "source": "/on-prem/virtual-appliance/administration",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/adding-languages",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/gpu",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/lang-id",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/logcli-help",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/monitoring",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/networking",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/remote-access",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/scaling",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/security",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/services",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/ssl",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/administration/usage",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/installation",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/installation/downloading-import",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/installation/licensing/license-features",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/installation/licensing/usage-and-licensing",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/installation/network-config",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/installation/system-requirements",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/on-prem/virtual-appliance/installation/verify",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
-    { "source": "/private/example-file", "target": "/todo-migrate" },
-    { "source": "/private/preview-mode", "target": "/todo-migrate" },
-    { "source": "/release-notes", "target": "/todo-migrate" },
+    { "source": "/private/example-file", "destination": "/todo-migrate" },
+    { "source": "/private/preview-mode", "destination": "/todo-migrate" },
+    { "source": "/release-notes", "destination": "/todo-migrate" },
     {
       "source": "/release-notes/batch-appliance-release-notes",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/release-notes/batch-container-release-notes",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/release-notes/batch-saas-release-notes",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/release-notes/gpu-inference-container-release-notes",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/release-notes/gpu-translation-inference-container-release-notes",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/release-notes/lang-id-container-release-notes",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/release-notes/real-time-appliance-release-notes",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/release-notes/real-time-container-release-notes",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/release-notes/real-time-saas-release-notes",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
     {
       "source": "/release-notes/usage-container-release-notes",
-      "target": "/todo-migrate"
+      "destination": "/todo-migrate"
     },
-    { "source": "/rt-api-ref", "target": "/todo-migrate" },
-    { "source": "/sdk/", "target": "/todo-migrate" },
-    { "source": "/sdk/batch-jobs-javascript-sdk", "target": "/todo-migrate" },
-    { "source": "/sdk/flow-javascript-sdk", "target": "/todo-migrate" },
-    { "source": "/sdk/flow-python-sdk", "target": "/todo-migrate" },
-    { "source": "/sdk/flow-react-sdk", "target": "/todo-migrate" },
-    { "source": "/sdk/javascript-authentication", "target": "/todo-migrate" },
-    { "source": "/sdk/python-sdk", "target": "/todo-migrate" },
-    { "source": "/sdk/real-time-javascript-sdk", "target": "/todo-migrate" },
-    { "source": "/sdk/real-time-react-sdk", "target": "/todo-migrate" },
-    { "source": "/speech-capabilities", "target": "/todo-migrate" },
-    { "source": "/tutorials", "target": "/todo-migrate" },
-    { "source": "/tutorials/accuracy-benchmarking", "target": "/todo-migrate" },
-    { "source": "/tutorials/calculating-wer", "target": "/todo-migrate" },
-    { "source": "/tutorials/using-ffmpeg", "target": "/todo-migrate" },
-    { "source": "/tutorials/using-mic", "target": "/todo-migrate" }
+    { "source": "/rt-api-ref", "destination": "/todo-migrate" },
+    { "source": "/sdk/", "destination": "/todo-migrate" },
+    {
+      "source": "/sdk/batch-jobs-javascript-sdk",
+      "destination": "/todo-migrate"
+    },
+    { "source": "/sdk/flow-javascript-sdk", "destination": "/todo-migrate" },
+    { "source": "/sdk/flow-python-sdk", "destination": "/todo-migrate" },
+    { "source": "/sdk/flow-react-sdk", "destination": "/todo-migrate" },
+    {
+      "source": "/sdk/javascript-authentication",
+      "destination": "/todo-migrate"
+    },
+    { "source": "/sdk/python-sdk", "destination": "/todo-migrate" },
+    {
+      "source": "/sdk/real-time-javascript-sdk",
+      "destination": "/todo-migrate"
+    },
+    { "source": "/sdk/real-time-react-sdk", "destination": "/todo-migrate" },
+    { "source": "/speech-capabilities", "destination": "/todo-migrate" },
+    { "source": "/tutorials", "destination": "/todo-migrate" },
+    {
+      "source": "/tutorials/accuracy-benchmarking",
+      "destination": "/todo-migrate"
+    },
+    { "source": "/tutorials/calculating-wer", "destination": "/todo-migrate" },
+    { "source": "/tutorials/using-ffmpeg", "destination": "/todo-migrate" },
+    { "source": "/tutorials/using-mic", "destination": "/todo-migrate" }
   ]
 }

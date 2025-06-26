@@ -1,6 +1,5 @@
-import fs from "node:fs";
-import { redirects } from "../vercel.json" with { type: "json" };
 import { readFile } from "node:fs/promises";
+import { redirects } from "../vercel.json" with { type: "json" };
 
 export async function checkRedirects([...newSitePaths]: string[]) {
   newSitePaths = newSitePaths.map(normalizePath);
@@ -12,7 +11,7 @@ export async function checkRedirects([...newSitePaths]: string[]) {
   // and that the target exists in newSitePaths
   for (const redirect of redirects) {
     const oldPath = normalizePath(redirect.source);
-    const newPath = normalizePath(redirect.target);
+    const newPath = normalizePath(redirect.destination);
 
     if (!newSitePaths.includes(newPath)) {
       throw new Error(
