@@ -142,7 +142,7 @@
     },
     {
       "source": "/introduction/supported-languages",
-      "destination": "/speech-to-text/batch/supported-languages"
+      "destination": "/speech-to-text/supported-languages"
     },
     {
       "source": "/introduction/troubleshooting",
