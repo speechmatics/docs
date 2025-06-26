@@ -72,7 +72,7 @@
       "source": "/features/diarization",
       "destination": "/speech-to-text/output-enhancements/diarization"
     },
-    { "source": "/features/end-of-turn", "destination": "/not-found" },
+    { "source": "/features/end-of-turn", "destination": "/speech-to-text/real-time/end-of-turn" },
     {
       "source": "/features/entities",
       "destination": "/speech-to-text/output-enhancements/numeral-formatting"
