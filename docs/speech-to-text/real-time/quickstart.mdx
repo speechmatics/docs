@@ -107,9 +107,10 @@ settings = speechmatics.models.AudioSettings()
 # Define transcription parameters
 # Full list of parameters described here: https://speechmatics.github.io/speechmatics-python/models
 conf = speechmatics.models.TranscriptionConfig(
+    operating_point="enhanced",
     language=LANGUAGE,
     enable_partials=True,
-    max_delay=2,
+    max_delay=1,
 )
 
 print("Starting transcription (type Ctrl-C to stop):")
@@ -185,9 +186,10 @@ settings = speechmatics.models.AudioSettings()
 # Define transcription parameters
 # Full list of parameters described here: https://speechmatics.github.io/speechmatics-python/models
 conf = speechmatics.models.TranscriptionConfig(
+    operating_point="enhanced",
     language=LANGUAGE,
     enable_partials=True,
-    max_delay=2,
+    max_delay=1,
 )
 
 print("Starting transcription (type Ctrl-C to stop):")
@@ -282,6 +284,8 @@ async function transcribeFileRealTime() {
     transcription_config: {
       language: 'en',
       enable_partials: true,
+      operating_point: "enhanced",
+      max_delay: 1,
     },
   });
 

@@ -1,0 +1,101 @@
+---
+description: 'Learn how Speechmatics detects end of utterances'
+keywords:
+  [
+    speechmatics,
+    end of utterance,
+    end of turn,
+    transcription,
+    speech recognition,
+    asr
+  ]
+toc_max_heading_level: 2
+---
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import eouStreamingPythonExample from "./assets/end-of-utterance-streaming-example.py"
+import eouFilePythonExample from "./assets/end-of-utterance-file-example.py"
+
+# End of Turn Detection
+
+To improve user experience in responsive real-time scenarios it important to know when a person has finished speaking. This is especially important for voice AI, translation, and dictation use cases. Detecting an 'End of Turn' can be used to trigger actions such as generating a response in a Voice AI agent.
+
+To get started, check out the [Configuration Example](#end-of-utterance-configuration) below.
+
+## Use Cases
+
+**Voice AI & Conversational Systems**: Enable voice assistants and chatbots to detect when the user has finished speaking, allowing the system to respond promptly without awkward delays.
+
+**Real-time Translation**: Critical for live interpretation services where translations need to be delivered as soon as the speaker completes their thought, maintaining the flow of conversation.
+
+**Dictation & Transcription**: Helps dictation software determine when users have completed their input, improving speed of final transcription and user experience.
+
+
+## End of Utterance Configuration
+Speechmatics' Speech-To-Text allows you to use a period of silence to determine when a user has finished speaking. This is known as **End of Utterance** detection and is one way to detect End of Turn.
+
+To enable End of Utterance detection, include the following in the [StartRecognition](/api-ref/realtime-transcription-websocket#startrecognition) message:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "conversation_config": {
+        "end_of_utterance_silence_trigger": 0.5
+    },
+    "language": "en",
+  }
+}
+```
+* `end_of_utterance_silence_trigger` (Number): Allowed between 0 and 2 seconds. Setting to 0 seconds disables detection. This is the number of seconds of non-speech (silence) to wait before an End of Utterance is identified. When this happens, speechmatics will send a [`Final` transcript](/speech-to-text/real-time/quickstart#final-transcripts) message, followed by an extra `EndOfUtterance` message
+
+**Notes** 
+
+- We recommend 0.5-0.8 seconds for most voice AI applications. Longer values (0.8-1.2s) may be better for dictation applications.
+- Keep the `end_of_utterance_silence_trigger` lower than the max_delay value.
+- `EndOfUtterance` messages are only sent after some speech is recognised and duplicate `EndOfUtterance` messages will never be sent for the same period of silence. 
+- The `EndOfUtterance` message is not related to any specific individual identified by [Diarization](/speech-to-text/output-enhancements/diarization) and will not contain speaker information.
+
+### Example End of Utterance Message
+
+```json
+{
+  "message": "EndOfUtterance",
+  "format": "2.9",
+  "metadata": {
+    "start_time": 1.07,
+    "end_time": 1.07
+  }
+}
+```
+
+## Semantic End of Turn
+
+While silence-based End of Utterance is enough for many use cases, it is often improved by combining it with the context of the conversation. This is known as 'Semantic End of Turn Detection'. You can try Semantic End of Turn right away with our free [Flow service demo](https://www.speechmatics.com/flow)! 
+
+{/* TODO add anchor here when flow docs are merged */}
+Semantic End of Turn comes [already included](/voice-agents-flow/overview) in Flow to provide the best experience for your users. You can also check out our [Semantic End-of-Turn detection "how to"](https://blog.speechmatics.com/semantic-turn-detection) guide for more details on how to implement this in your own application.
+
+## Code Examples
+
+<Tabs groupId="eou-examples">
+    <TabItem value="streaming" label="Python - Live Streaming">
+
+      Real-time streaming from microphone - ideal for voice AI applications.
+
+      <CodeBlock language="python" showLineNumbers>
+      {eouStreamingPythonExample}
+      </CodeBlock>
+
+    </TabItem>
+    <TabItem value="file" label="Python - File">
+
+    Copy in your API key and file name to get started.
+
+    <CodeBlock language="python" showLineNumbers>
+      {eouFilePythonExample}
+    </CodeBlock>
+
+    </TabItem>
+</Tabs>
