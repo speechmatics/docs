@@ -1,0 +1,113 @@
+---
+title: Flow API Reference
+hide_title: true
+---
+import SchemaNode from "@theme/Schema";
+import Details from "@theme/Details";
+import Heading from "@theme/Heading";
+import { Flex, Text, Separator, Card, DataList } from "@radix-ui/themes";
+import WebsocketMessageArrow from "@site/src/theme/WebsocketMessageArrow";
+import { AsyncAPIMessage } from "@site/src/theme/AsyncAPIMessage";
+import flowSchema from "!asyncapi-schema-loader!@site/spec/flow-api.yaml";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Flow API Reference"}
+>
+</Heading>
+
+<pre className="openapi__method-endpoint">
+  <span className="badge badge--primary">GET</span>
+  <h2 className="openapi__method-endpoint-path">wss://flow.api.speechmatics.com/</h2>
+</pre>
+
+## Protocol overview
+A basic Flow session will have the following message exchanges:
+
+<WebsocketMessageArrow direction="up" /> Indicates messages sent by the client
+
+<WebsocketMessageArrow direction="down" /> Indicates messages sent by the service
+
+### Session Start
+Once-only at conversation start:
+
+- <Text align="center"><WebsocketMessageArrow direction="up" /> StartConversation</Text>
+- <WebsocketMessageArrow direction="down" /> ConversationStarted
+
+### Audio Input/Output and Transcripts
+Repeating during the conversation to cover the audio stream from the client and corresponding transcripts:
+
+- <WebsocketMessageArrow direction="up" /> `AddAudio` (client sending audio)
+- <WebsocketMessageArrow direction="down" /> `AudioAdded` (server received audio)
+- <WebsocketMessageArrow direction="down" /> `AddTranscript` / `AddPartialTranscript` (server sent transcript)
+- <WebsocketMessageArrow direction="down" /> `AddAudio` (server sending audio)
+- <WebsocketMessageArrow direction="up" /> `AudioReceived` (client received audio)
+
+### TTS Response Management
+
+- <WebsocketMessageArrow direction="down" /> `ResponseStarted` (when TTS begins)
+- <WebsocketMessageArrow direction="down" /> `ResponseCompleted` (when TTS finishes normally)
+- <WebsocketMessageArrow direction="down" /> `ResponseInterrupted` (when TTS is interrupted)
+
+### Function Calling
+Exchanged during function calling over the websocket:
+
+- <WebsocketMessageArrow direction="down" /> `ToolInvoke` (when function call is triggered)
+- <WebsocketMessageArrow direction="up" /> `ToolResult` (client response to function call)
+
+### Session Termination
+Once-only at conversation end:
+
+- <WebsocketMessageArrow direction="up" /> `AudioEnded` (client ending session)
+- <WebsocketMessageArrow direction="down" /> `ConversationEnding` (agent ending session)
+- <WebsocketMessageArrow direction="down" /> `ConversationEnded` (final message before connection close)
+
+`Info`, `Warning` and `Error` messages will be sent as appropriate.
+
+## Sent messages
+
+<Flex direction="column" gap="4">
+{Object.entries(flowSchema.channels.publish.messages).map(([messageName, message]) => {
+  return (
+    <AsyncAPIMessage
+      key={messageName}
+      messageName={messageName}
+      message={message}
+      channel="publish"
+    />
+  )
+  })}
+</Flex>
+
+## Received messages
+
+<Flex direction="column" gap="4">
+  {Object.entries(flowSchema.channels.subscribe.messages).map(([messageName, message]) => {
+    return (
+      <AsyncAPIMessage
+        key={messageName}
+        messageName={messageName}
+        message={message}
+        channel="subscribe"
+      />
+    )
+  })}
+</Flex>
+
+{/* Manually generated TOC, since we're using JSX sections */}
+export const toc = [
+  {value: "Protocol overview", id: "protocol-overview", level: 2},
+  {value: "Sent messages", id: "sent-messages", level: 2},
+  ...Object.entries(flowSchema.channels.publish.messages).map(([messageName, message]) => ({
+    "value": messageName,
+    "id": messageName.toLowerCase(),
+    "level": 3
+  })),
+  {value: "Received messages", id: "received-messages", level: 2},
+  ...Object.entries(flowSchema.channels.subscribe.messages).map(([messageName, message]) => ({
+    "value": messageName,
+    "id": messageName.toLowerCase(),
+    "level": 3
+  })),
+]

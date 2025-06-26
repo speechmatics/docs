@@ -3,9 +3,8 @@ description: 'Find out about the various operating points Speechmatics supports 
 keywords:
   [speechmatics, operating points, accuracy, language pack, transcription, speech recognition, asr]
 ---
-import { Card, DataList } from '@radix-ui/themes';
 
-# Accuracy and Language Packs
+# Accuracy and Language
 
 For more information on the full range of language packs offered by Speechmatics, please refer to the guide on [Supported Language Packs](/speech-to-text/supported-languages).
 
@@ -13,18 +12,8 @@ For more information on the full range of language packs offered by Speechmatics
 
 Speechmatics offers two operating points for transcription:
 
-<Card size="3" mb="4">
-  <DataList.Root size="3">
-    <DataList.Item>
-      <DataList.Label>**Enhanced**</DataList.Label>
-      <DataList.Value>Optimized for the highest accuracy possible.</DataList.Value>
-    </DataList.Item>
-    <DataList.Item>
-      <DataList.Label>**Standard**</DataList.Label>
-      <DataList.Value>Optimized for fast Batch turnaround time.</DataList.Value>
-    </DataList.Item>
-  </DataList.Root>
-</Card>
+- Enhanced - Optimized for the highest accuracy possible.
+- Standard - (Default) Optimized for fast Batch turnaround time. 
 
 Note that when transcribing in real-time, latency for both Standard and Enhanced operating points is controlled using the `max_delay` config option described [here](/speech-to-text/real-time/latency).
 
