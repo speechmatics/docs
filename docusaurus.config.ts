@@ -5,6 +5,7 @@ import katex from "rehype-katex";
 import math from "remark-math";
 import { prismTheme } from "./prism-theme";
 import { sidebarItemsGenerator } from "./sidebar-generator";
+import { checkRedirects } from "./scripts/check-redirects";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -151,6 +152,15 @@ const config: Config = {
               ],
             },
           };
+        },
+      };
+    },
+
+    () => {
+      return {
+        name: "check-redirects-plugin",
+        async postBuild({ routesPaths }) {
+          await checkRedirects(routesPaths);
         },
       };
     },
