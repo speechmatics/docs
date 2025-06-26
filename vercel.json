@@ -154,7 +154,7 @@
     },
     {
       "source": "/on-prem/containers",
-      "destination": "/deployments/container"
+      "destination": "/not-found"
     },
     {
       "source": "/on-prem/containers/accessing-images",
