@@ -7,7 +7,7 @@ import Details from "@theme/Details";
 import Heading from "@theme/Heading";
 import { Flex, Text, Separator, Card, DataList } from "@radix-ui/themes";
 import WebsocketMessageArrow from "@site/src/theme/WebsocketMessageArrow";
-
+import { AsyncAPIMessage } from "@site/src/theme/AsyncAPIMessage";
 import flowSchema from "!asyncapi-schema-loader!@site/spec/flow-api.yaml";
 
 <Heading
@@ -70,17 +70,12 @@ Info (Details), Warning(Details) and Error(Details) messages will be sent as app
 <Flex direction="column" gap="4">
 {Object.entries(flowSchema.channels.publish.messages).map(([messageName, message]) => {
   return (
-    <Card style={{overflow: "unset"}} key={messageName}>
-      <Flex direction="column">
-        <Heading as="h3" id ={messageName.toLowerCase()} style={{scrollMarginTop: "calc(var(--ifm-navbar-height) + 0.5rem)"}}>
-          <WebsocketMessageArrow direction="up" /> {messageName}
-        </Heading>
-        <Flex direction="column" gap="2">
-          <Text>{message.summary || "No summary"}</Text>
-          <SchemaNode schema={message.payload} />
-        </Flex>
-      </Flex>
-    </Card>
+    <AsyncAPIMessage
+      key={messageName}
+      messageName={messageName}
+      message={message}
+      channel="publish"
+    />
   )
   })}
 </Flex>
@@ -89,22 +84,18 @@ Info (Details), Warning(Details) and Error(Details) messages will be sent as app
 
 <Flex direction="column" gap="4">
   {Object.entries(flowSchema.channels.subscribe.messages).map(([messageName, message]) => {
-    return ( 
-      <Card style={{overflow: "unset"}} key={messageName}>
-        <Flex direction="column">
-          <Heading as="h3" id={messageName.toLowerCase()} style={{scrollMarginTop: "calc(var(--ifm-navbar-height) + 0.5rem)"}}>
-            <WebsocketMessageArrow direction="down" /> {messageName}
-          </Heading>
-          <Flex direction="column" gap="2">
-            <Text>{message.summary || "No summary"}</Text>
-            <SchemaNode schema={message.payload} />
-          </Flex>
-        </Flex>
-      </Card>
-   )
+    return (
+      <AsyncAPIMessage
+        key={messageName}
+        messageName={messageName}
+        message={message}
+        channel="subscribe"
+      />
+    )
   })}
 </Flex>
 
+{/* Manually generated TOC, since we're using JSX sections */}
 export const toc = [
   {value: "Protocol overview", id: "protocol-overview", level: 2},
   {value: "Sent messages", id: "sent-messages", level: 2},
