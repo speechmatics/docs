@@ -1,364 +1,3699 @@
 {
   "redirects": [
-    { "source": "/jobsapi/", "destination": "/api-ref/batch/create-a-new-job" },
-    { "source": "/search", "destination": "/not-found/" },
-    { "source": "/features", "destination": "/speech-to-text/" },
-    { "source": "/features-other", "destination": "/speech-to-text/" },
+    {
+      "source": "/jobsapi/",
+      "destination": "/api-ref/batch/create-a-new-job",
+      "permanent": true
+    },
+    {
+      "source": "/search",
+      "destination": "/not-found/",
+      "permanent": true
+    },
+    {
+      "source": "/features",
+      "destination": "/speech-to-text/",
+      "permanent": true
+    },
+    {
+      "source": "/features-other",
+      "destination": "/speech-to-text/",
+      "permanent": true
+    },
     {
       "source": "/features-other/auto-chapters",
-      "destination": "/speech-to-text/batch/speech-intelligence/auto-chapters/"
+      "destination": "/speech-to-text/batch/speech-intelligence/auto-chapters/",
+      "permanent": true
     },
     {
       "source": "/features-other/feature-discovery",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/features-other/fetch-url",
-      "destination": "/speech-to-text/batch/fetch-url"
+      "destination": "/speech-to-text/batch/fetch-url",
+      "permanent": true
     },
     {
       "source": "/features-other/lang-id",
-      "destination": "/speech-to-text/batch/language-identification"
+      "destination": "/speech-to-text/batch/language-identification",
+      "permanent": true
     },
     {
       "source": "/features-other/notifications",
-      "destination": "/speech-to-text/batch/notifications"
+      "destination": "/speech-to-text/batch/notifications",
+      "permanent": true
     },
     {
       "source": "/features-other/sentiment-analysis",
-      "destination": "/speech-to-text/batch/speech-intelligence/sentiment-analysis"
+      "destination": "/speech-to-text/batch/speech-intelligence/sentiment-analysis",
+      "permanent": true
     },
     {
       "source": "/features-other/srt-format",
-      "destination": "/speech-to-text/batch/srt-format"
+      "destination": "/speech-to-text/batch/srt-format",
+      "permanent": true
     },
     {
       "source": "/features-other/summarization",
-      "destination": "/speech-to-text/batch/speech-intelligence/summarization"
+      "destination": "/speech-to-text/batch/speech-intelligence/summarization",
+      "permanent": true
     },
     {
       "source": "/features-other/topic-detection",
-      "destination": "/speech-to-text/batch/speech-intelligence/topic-detection"
+      "destination": "/speech-to-text/batch/speech-intelligence/topic-detection",
+      "permanent": true
     },
     {
       "source": "/features-other/tracking",
-      "destination": "/speech-to-text/batch/tracking"
+      "destination": "/speech-to-text/batch/tracking",
+      "permanent": true
     },
     {
       "source": "/features-other/translation",
-      "destination": "/speech-to-text/translation"
+      "destination": "/speech-to-text/translation",
+      "permanent": true
     },
     {
       "source": "/features-other/word-alignment",
-      "destination": "/speech-to-text/batch/alignment"
+      "destination": "/speech-to-text/batch/alignment",
+      "permanent": true
     },
     {
       "source": "/features/accuracy-language-packs",
-      "destination": "/speech-to-text/features/accuracy-language-packs"
+      "destination": "/speech-to-text/features/accuracy-language-packs",
+      "permanent": true
     },
     {
       "source": "/features/audio-events",
-      "destination": "/speech-to-text/features/audio-events"
+      "destination": "/speech-to-text/features/audio-events",
+      "permanent": true
     },
     {
       "source": "/features/audio-filtering",
-      "destination": "/speech-to-text/features/audio-filtering"
+      "destination": "/speech-to-text/features/audio-filtering",
+      "permanent": true
     },
     {
       "source": "/features/custom-dictionary",
-      "destination": "/speech-to-text/features/custom-dictionary"
+      "destination": "/speech-to-text/features/custom-dictionary",
+      "permanent": true
     },
     {
       "source": "/features/diarization",
-      "destination": "/speech-to-text/output-enhancements/diarization"
+      "destination": "/speech-to-text/output-enhancements/diarization",
+      "permanent": true
     },
-    { "source": "/features/end-of-turn", "destination": "/speech-to-text/real-time/end-of-turn" },
+    {
+      "source": "/features/end-of-turn",
+      "destination": "/speech-to-text/real-time/end-of-turn",
+      "permanent": true
+    },
     {
       "source": "/features/entities",
-      "destination": "/speech-to-text/output-enhancements/numeral-formatting"
+      "destination": "/speech-to-text/output-enhancements/numeral-formatting",
+      "permanent": true
     },
     {
       "source": "/features/punctuation-settings",
-      "destination": "/speech-to-text/output-enhancements/punctuation-settings"
+      "destination": "/speech-to-text/output-enhancements/punctuation-settings",
+      "permanent": true
     },
     {
       "source": "/features/realtime-latency",
-      "destination": "/speech-to-text/real-time/latency"
+      "destination": "/speech-to-text/real-time/latency",
+      "permanent": true
     },
     {
       "source": "/features/word-tagging",
-      "destination": "/speech-to-text/output-enhancements/output-formatting"
+      "destination": "/speech-to-text/output-enhancements/output-formatting",
+      "permanent": true
     },
     {
       "source": "/flow-api-ref",
-      "destination": "/api-ref/flow-voice-ai-websocket"
+      "destination": "/api-ref/flow-voice-ai-websocket",
+      "permanent": true
     },
     {
       "source": "/flow/application-inputs",
-      "destination": "/voice-agents-flow/features/application-inputs"
+      "destination": "/voice-agents-flow/features/application-inputs",
+      "permanent": true
     },
-    { "source": "/flow/config", "destination": "/voice-agents-flow/setup" },
+    {
+      "source": "/flow/config",
+      "destination": "/voice-agents-flow/setup",
+      "permanent": true
+    },
     {
       "source": "/flow/function-calling",
-      "destination": "/voice-agents-flow/features/function-calling"
+      "destination": "/voice-agents-flow/features/function-calling",
+      "permanent": true
     },
-    { "source": "/flow/introduction", "destination": "/voice-agents-flow" },
+    {
+      "source": "/flow/introduction",
+      "destination": "/voice-agents-flow",
+      "permanent": true
+    },
     {
       "source": "/flow/languages-supported",
-      "destination": "/voice-agents-flow/supported-languages"
+      "destination": "/voice-agents-flow/supported-languages",
+      "permanent": true
     },
     {
       "source": "/flow/livekit-webrtc",
-      "destination": "/voice-agents-flow/features/webrtc-livekit"
+      "destination": "/voice-agents-flow/features/webrtc-livekit",
+      "permanent": true
     },
     {
       "source": "/flow/nextjs-guide",
-      "destination": "/voice-agents-flow/guides/nextjs-guide"
+      "destination": "/voice-agents-flow/guides/nextjs-guide",
+      "permanent": true
     },
     {
       "source": "/flow/react-native-guide",
-      "destination": "/voice-agents-flow/guides/react-native"
+      "destination": "/voice-agents-flow/guides/react-native",
+      "permanent": true
     },
-    { "source": "/introduction", "destination": "/" },
+    {
+      "source": "/introduction",
+      "destination": "/",
+      "permanent": true
+    },
     {
       "source": "/introduction/additional-info",
-      "destination": "/speech-to-text/batch/check-job-status"
+      "destination": "/speech-to-text/batch/check-job-status",
+      "permanent": true
     },
     {
       "source": "/introduction/authentication",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/introduction/batch-guide",
-      "destination": "/speech-to-text/batch/quickstart"
+      "destination": "/speech-to-text/batch/quickstart",
+      "permanent": true
     },
     {
       "source": "/introduction/errors-rate-limits",
-      "destination": "/speech-to-text/batch/supported-files-and-limits"
+      "destination": "/speech-to-text/batch/supported-files-and-limits",
+      "permanent": true
     },
     {
       "source": "/introduction/rt-guide",
-      "destination": "/speech-to-text/real-time/quickstart"
+      "destination": "/speech-to-text/real-time/quickstart",
+      "permanent": true
     },
     {
       "source": "/introduction/supported-languages",
-      "destination": "/speech-to-text/supported-languages"
+      "destination": "/speech-to-text/supported-languages",
+      "permanent": true
     },
     {
       "source": "/introduction/troubleshooting",
-      "destination": "/speech-to-text/batch/troubleshooting"
+      "destination": "/speech-to-text/batch/troubleshooting",
+      "permanent": true
     },
     {
       "source": "/introduction/usage",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/containers",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/containers/accessing-images",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/containers/additional-security",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/containers/cpu-container",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/containers/gpu-inference-container",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/containers/lang-id-container",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/containers/licensing",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/containers/translation",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/containers/troubleshooting",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
-    { "source": "/on-prem/containers/usage", "destination": "/not-found" },
-    { "source": "/on-prem/kubernetes", "destination": "/not-found" },
-    { "source": "/on-prem/kubernetes/flow", "destination": "/not-found" },
+    {
+      "source": "/on-prem/containers/usage",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/kubernetes",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/kubernetes/flow",
+      "destination": "/not-found",
+      "permanent": true
+    },
     {
       "source": "/on-prem/kubernetes/prerequisites",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/kubernetes/realtime",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
-    { "source": "/on-prem/usage/", "destination": "/not-found" },
+    {
+      "source": "/on-prem/usage/",
+      "destination": "/not-found",
+      "permanent": true
+    },
     {
       "source": "/on-prem/usage/usage-collector",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/usage/usage-container",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
-    { "source": "/on-prem/usage/what-data", "destination": "/not-found" },
+    {
+      "source": "/on-prem/usage/what-data",
+      "destination": "/not-found",
+      "permanent": true
+    },
     {
       "source": "/on-prem/virtual-appliance/administration",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/adding-languages",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/gpu",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/lang-id",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/logcli-help",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/monitoring",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/networking",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/remote-access",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/scaling",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/security",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/services",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/ssl",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/usage",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/downloading-import",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/licensing/license-features",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/licensing/usage-and-licensing",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/network-config",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/system-requirements",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/verify",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
-    { "source": "/private/example-file", "destination": "/not-found" },
-    { "source": "/private/preview-mode", "destination": "/not-found" },
-    { "source": "/release-notes", "destination": "/not-found" },
+    {
+      "source": "/private/example-file",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/private/preview-mode",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/release-notes",
+      "destination": "/not-found",
+      "permanent": true
+    },
     {
       "source": "/release-notes/batch-appliance-release-notes",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/release-notes/batch-container-release-notes",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/release-notes/batch-saas-release-notes",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/release-notes/gpu-inference-container-release-notes",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/release-notes/gpu-translation-inference-container-release-notes",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/release-notes/lang-id-container-release-notes",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/release-notes/real-time-appliance-release-notes",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/release-notes/real-time-container-release-notes",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/release-notes/real-time-saas-release-notes",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
     {
       "source": "/release-notes/usage-container-release-notes",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
-    { "source": "/rt-api-ref", "destination": "/api-ref/realtime-transcription-websocket" },
-    { "source": "/sdk/", "destination": "/not-found" },
+    {
+      "source": "/rt-api-ref",
+      "destination": "/api-ref/realtime-transcription-websocket",
+      "permanent": true
+    },
+    {
+      "source": "/sdk/",
+      "destination": "/not-found",
+      "permanent": true
+    },
     {
       "source": "/sdk/batch-jobs-javascript-sdk",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
-    { "source": "/sdk/flow-javascript-sdk", "destination": "/not-found" },
-    { "source": "/sdk/flow-python-sdk", "destination": "/not-found" },
-    { "source": "/sdk/flow-react-sdk", "destination": "/not-found" },
+    {
+      "source": "/sdk/flow-javascript-sdk",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/sdk/flow-python-sdk",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/sdk/flow-react-sdk",
+      "destination": "/not-found",
+      "permanent": true
+    },
     {
       "source": "/sdk/javascript-authentication",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
-    { "source": "/sdk/python-sdk", "destination": "/not-found" },
+    {
+      "source": "/sdk/python-sdk",
+      "destination": "/not-found",
+      "permanent": true
+    },
     {
       "source": "/sdk/real-time-javascript-sdk",
-      "destination": "/not-found"
+      "destination": "/not-found",
+      "permanent": true
     },
-    { "source": "/sdk/real-time-react-sdk", "destination": "/not-found" },
-    { "source": "/speech-capabilities", "destination": "/speech-to-text/" },
-    { "source": "/tutorials", "destination": "/not-found" },
+    {
+      "source": "/sdk/real-time-react-sdk",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/speech-capabilities",
+      "destination": "/speech-to-text/",
+      "permanent": true
+    },
+    {
+      "source": "/tutorials",
+      "destination": "/not-found",
+      "permanent": true
+    },
     {
       "source": "/tutorials/accuracy-benchmarking",
-      "destination": "/speech-to-text/accuracy-benchmarking"
+      "destination": "/speech-to-text/accuracy-benchmarking",
+      "permanent": true
     },
-    { "source": "/tutorials/calculating-wer", "destination": "/speech-to-text/accuracy-benchmarking" },
-    { "source": "/tutorials/using-ffmpeg", "destination": "/speech-to-text/real-time/using-ffmpeg" },
-    { "source": "/tutorials/using-mic", "destination": "/speech-to-text/real-time/using-microphone" }
+    {
+      "source": "/tutorials/calculating-wer",
+      "destination": "/speech-to-text/accuracy-benchmarking",
+      "permanent": true
+    },
+    {
+      "source": "/tutorials/using-ffmpeg",
+      "destination": "/speech-to-text/real-time/using-ffmpeg",
+      "permanent": true
+    },
+    {
+      "source": "/tutorials/using-mic",
+      "destination": "/speech-to-text/real-time/using-microphone",
+      "permanent": true
+    },
+    {
+      "source": "/en",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/real-time-saas/overview/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/cloud/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/cloud/configuring-job-request/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/cloud/release-notes/",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/en/real-time-saas/release-notes/",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/en/cloud/introduction/",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/en/cloud/understanding-saas-usage/",
+      "destination": "/speech-to-text/batch/supported-files-and-limits",
+      "permanent": true
+    },
+    {
+      "source": "/en/cloud/troubleshooting/",
+      "destination": "/speech-to-text/batch/supported-files-and-limits",
+      "permanent": true
+    },
+    {
+      "source": "/en/usage-container/",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/en/usage-container/release-notes/",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/en/usage-container/intro/",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/en/usage-container/api/",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/en/language-identification-container/",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/en/language-identification-container/quick-start-guide/",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/en/language-identification-container/release-notes/",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/en/alignment-service/",
+      "destination": "/speech-to-text/batch/alignment",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/container/installation/accessing-image",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/cpu-container/accessing-image",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/container/installation",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/cpu-container/additional-security",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/container/installation/additional-security",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/container/installation/healthcheck",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/cpu-container/healthcheck",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/cpu-container/parallel-processing",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/installation/parallel-processing",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/cpu-container/system-requirements",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/container/installation/system-requirements",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/cpu-container/using-container",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/container/installation/using-container",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/gpu-container/linking-to-gpu-inference-engine",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/cpu-container/licensing",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/container/installation/licensing",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/container/installation/troubleshooting",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/cpu-container/troubleshooting",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/gpu-container/gpu-inference-container",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/gpu-container/gpu-inference-performance",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/gpu-container/gpu-inference-reference-implementation",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/gpu-container/deploying-on-kubernetes",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/containers/gpu-container",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/features/diarization/diarization/speaker-diarization",
+      "destination": "/speech-to-text/output-enhancements/diarization",
+      "permanent": true
+    },
+    {
+      "source": "/features/diarization/speaker-diarization",
+      "destination": "/speech-to-text/output-enhancements/diarization",
+      "permanent": true
+    },
+    {
+      "source": "/features/diarization/channel-diarization",
+      "destination": "/speech-to-text/output-enhancements/diarization",
+      "permanent": true
+    },
+    {
+      "source": "/features/diarization/speaker-change",
+      "destination": "/speech-to-text/output-enhancements/diarization",
+      "permanent": true
+    },
+    {
+      "source": "/features/diarization/speaker-change-channel",
+      "destination": "/speech-to-text/output-enhancements/diarization",
+      "permanent": true
+    },
+    {
+      "source": "/on-prem/virtual-appliance",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/flow",
+      "destination": "/voice-agents-flow",
+      "permanent": true
+    },
+    {
+      "source": "/flow/getting-started",
+      "destination": "/voice-agents-flow",
+      "permanent": true
+    },
+    {
+      "source": "/flow/node-sdk",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/flow/python-sdk",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/flow/react-sdk",
+      "destination": "/not-found",
+      "permanent": true
+    },
+    {
+      "source": "/flow/flow-api-ref",
+      "destination": "/api-ref/flow-voice-ai-websocket",
+      "permanent": true
+    },
+    {
+      "source": "en/cloud/howto",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/v4.2.0",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/v4.1.0",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/v4.0.0",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/v3.8.0",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/v3.7.1",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/v3.7.0",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/v3.6.0",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/v3.5.0",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/v3.4.0",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/v3.3.0",
+      "destination": "/introduction/batch-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/cloud/entities",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-saas/entities",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/entities/v4.2.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/entities/v4.1.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/entities/v4.0.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/entities/v3.8.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/entities/v3.7.1",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/entities/v3.7.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/entities/v3.6.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/entities/v3.5.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/entities/v3.4.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/entities/v3.3.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/entities/v4.2.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/entities/v4.1.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/entities/v4.0.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/entities/v3.8.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/entities/v3.7.1",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/entities/v3.7.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/entities/v3.6.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/entities/v3.5.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/entities/v3.4.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/entities/v3.3.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/entities/v9.0.1",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/entities/v9.0.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/entities/v8.2.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/entities/v8.1.2",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/entities/v8.1.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/entities/v8.0.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/entities/v7.0.3",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/entities/v6.3.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/entities/v2.0.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/entities/v1.4.1",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/entities/v1.4.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/entities/v1.3.1",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/entities/v1.3.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/entities/v1.2.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/entities/v1.1.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/entities/v1.0.0",
+      "destination": "/features/entities",
+      "permanent": true
+    },
+    {
+      "source": "en/cloud/saasv2api",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/v4.2.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/v4.1.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/v4.0.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/v3.8.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/v3.7.1",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/v3.7.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/v3.6.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/v3.5.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/v3.4.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/v3.3.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/speech-api/v4.2.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/speech-api/v4.1.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/speech-api/v4.0.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/speech-api/v3.8.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/speech-api/v3.7.1",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/speech-api/v3.7.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/speech-api/v3.6.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/speech-api/v3.5.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/speech-api/v3.4.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/api-guide/api-howto/speech-api/v3.3.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/error-codes/v4.2.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/error-codes/v4.1.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/error-codes/v4.0.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/error-codes/v3.8.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/error-codes/v3.7.1",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/error-codes/v3.7.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/error-codes/v3.6.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/error-codes/v3.5.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/error-codes/v3.4.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/error-codes/v3.3.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/v4.2.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/v4.1.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/v4.0.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/v3.8.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/v3.7.1",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/v3.7.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/v3.6.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/v3.5.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/v3.4.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/v3.3.0",
+      "destination": "/jobsapi/",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-saas/user-guide",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/speech-api-guide/v4.2.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/speech-api-guide/v4.1.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/speech-api-guide/v4.0.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/speech-api-guide/v3.8.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/speech-api-guide/v3.7.1",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/speech-api-guide/v3.7.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/speech-api-guide/v3.6.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/speech-api-guide/v3.5.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/speech-api-guide/v3.4.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/speech-api-guide/v3.3.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/api-example-usage/v4.2.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/api-example-usage/v4.1.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/api-example-usage/v4.0.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/api-example-usage/v3.8.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/api-example-usage/v3.7.1",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/api-example-usage/v3.7.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/api-example-usage/v3.6.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/api-example-usage/v3.5.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/api-example-usage/v3.4.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/api-v2/api-example-usage/v3.3.0",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-saas",
+      "destination": "/introduction/rt-guide",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/release-notes/v4.2.0",
+      "destination": "/release-notes/batch-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/release-notes/v4.1.0",
+      "destination": "/release-notes/batch-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/release-notes/v4.0.0",
+      "destination": "/release-notes/batch-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/release-notes/v3.8.0",
+      "destination": "/release-notes/batch-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/release-notes/v3.7.1",
+      "destination": "/release-notes/batch-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/release-notes/v3.7.0",
+      "destination": "/release-notes/batch-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/release-notes/v3.6.0",
+      "destination": "/release-notes/batch-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/release-notes/v3.5.0",
+      "destination": "/release-notes/batch-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/release-notes/v3.4.0",
+      "destination": "/release-notes/batch-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/release-notes/v3.3.0",
+      "destination": "/release-notes/batch-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/release-notes/v4.2.0",
+      "destination": "/release-notes/real-time-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/release-notes/v4.1.0",
+      "destination": "/release-notes/real-time-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/release-notes/v4.0.0",
+      "destination": "/release-notes/real-time-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/release-notes/v3.8.0",
+      "destination": "/release-notes/real-time-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/release-notes/v3.7.1",
+      "destination": "/release-notes/real-time-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/release-notes/v3.7.0",
+      "destination": "/release-notes/real-time-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/release-notes/v3.6.0",
+      "destination": "/release-notes/real-time-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/release-notes/v3.5.0",
+      "destination": "/release-notes/real-time-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/release-notes/v3.4.0",
+      "destination": "/release-notes/real-time-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/release-notes/v3.3.0",
+      "destination": "/release-notes/real-time-appliance-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/introduction/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/introduction/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/introduction/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/introduction/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/introduction/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/introduction/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/introduction/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/introduction/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/introduction/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/introduction/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/system-requirements/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/system-requirements/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/system-requirements/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/system-requirements/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/system-requirements/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/system-requirements/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/system-requirements/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/system-requirements/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/system-requirements/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/system-requirements/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/downloading/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/downloading/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/downloading/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/downloading/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/downloading/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/downloading/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/downloading/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/downloading/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/downloading/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/downloading/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/importing/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/importing/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/importing/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/importing/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/importing/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/importing/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/importing/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/importing/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/importing/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/importing/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/networking/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/networking/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/networking/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/networking/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/networking/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/networking/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/networking/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/networking/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/networking/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/networking/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/licensing/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/licensing/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/licensing/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/licensing/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/licensing/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/licensing/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/licensing/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/licensing/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/licensing/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/licensing/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/goverify-ba/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/goverify-ba/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/goverify-ba/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/goverify-ba/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/goverify-ba/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/goverify-ba/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/goverify-ba/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/goverify-ba/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/goverify-ba/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/goverify-ba/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/ssl/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/ssl/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/ssl/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/ssl/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/ssl/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/ssl/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/ssl/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/ssl/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/ssl/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/ssl/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/networking-admin/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/networking-admin/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/networking-admin/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/networking-admin/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/networking-admin/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/networking-admin/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/networking-admin/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/networking-admin/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/networking-admin/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/networking-admin/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/scaling/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/scaling/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/scaling/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/scaling/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/scaling/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/scaling/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/scaling/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/scaling/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/scaling/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/scaling/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/monitoring-admin/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/monitoring-admin/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/monitoring-admin/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/services/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/services/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/services/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/services/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/services/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/services/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/services/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/services/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/services/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/services/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/security/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/security/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/security/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/security/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/security/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/security/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/security/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/security/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/security/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-appliance/install-admin-guide/administration/security/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/introduction/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/introduction/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/introduction/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/introduction/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/introduction/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/introduction/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/introduction/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/introduction/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/introduction/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/introduction/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/system-requirements/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/system-requirements/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/system-requirements/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/system-requirements/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/system-requirements/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/system-requirements/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/system-requirements/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/system-requirements/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/system-requirements/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/system-requirements/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/downloading/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/downloading/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/downloading/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/downloading/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/downloading/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/downloading/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/downloading/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/downloading/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/downloading/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/downloading/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/importing/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/importing/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/importing/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/importing/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/importing/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/importing/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/importing/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/importing/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/importing/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/importing/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/networking/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/networking/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/networking/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/networking/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/networking/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/networking/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/networking/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/networking/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/networking/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/networking/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/licensing/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/licensing/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/licensing/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/licensing/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/licensing/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/licensing/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/licensing/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/licensing/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/licensing/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/licensing/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/goverify-rta/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/goverify-rta/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/goverify-rta/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/goverify-rta/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/goverify-rta/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/goverify-rta/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/goverify-rta/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/goverify-rta/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/goverify-rta/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/goverify-rta/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/ssl/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/ssl/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/ssl/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/ssl/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/ssl/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/ssl/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/ssl/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/ssl/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/ssl/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/ssl/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/networking-admin/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/networking-admin/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/networking-admin/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/scaling/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/scaling/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/scaling/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/scaling/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/scaling/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/scaling/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/scaling/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/scaling/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/scaling/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/scaling/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/services/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/services/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/services/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/services/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/services/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/services/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/services/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/services/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/services/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/services/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/security/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/security/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/security/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/security/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/security/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/security/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/security/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/security/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/security/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/security/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/demo/v4.2.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/demo/v4.1.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/demo/v4.0.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/demo/v3.8.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/demo/v3.7.1",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/demo/v3.7.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/demo/v3.6.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/demo/v3.5.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/demo/v3.4.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-appliance/demo/v3.3.0",
+      "destination": "/on-prem/virtual-appliance/installation",
+      "permanent": true
+    },
+    {
+      "source": "on-prem/container",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/v9.0.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/v9.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/v8.2.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/v8.1.2",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/v8.1.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/v8.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/v7.0.3",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/v6.3.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/parallel-processing/v9.0.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/parallel-processing/v9.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/parallel-processing/v8.2.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/parallel-processing/v8.1.2",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/parallel-processing/v8.1.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/parallel-processing/v8.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/parallel-processing/v7.0.3",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/speech-api/parallel-processing/v6.3.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/technical-guide-migration/v9.0.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/technical-guide-migration/v9.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/technical-guide-migration/v8.2.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/technical-guide-migration/v8.1.2",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/technical-guide-migration/v8.1.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/technical-guide-migration/v8.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/technical-guide-migration/v7.0.3",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/technical-guide-migration/v6.3.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/quick-start/v9.0.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/quick-start/v9.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/quick-start/v8.2.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/quick-start/v8.1.2",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/quick-start/v8.1.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/quick-start/v8.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/quick-start/v7.0.3",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/quick-start/v6.3.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/demo/v9.0.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/demo/v9.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/demo/v8.2.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/demo/v8.1.2",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/demo/v8.1.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/demo/v8.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/demo/v7.0.3",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/demo/v6.3.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api/parallel-processing",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/technical-guide-migration",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/v2.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/v1.4.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/v1.4.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/v1.3.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/v1.3.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/v1.2.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/v1.1.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/v1.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/v2.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/v1.4.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/v1.4.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/v1.3.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/v1.3.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/v1.2.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/v1.1.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/v1.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/health-checks/v2.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/health-checks/v1.4.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/health-checks/v1.4.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/health-checks/v1.3.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/health-checks/v1.3.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/health-checks/v1.2.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/health-checks/v1.1.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/health-checks/v1.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/troubleshooting/v2.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/troubleshooting/v1.4.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/troubleshooting/v1.4.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/troubleshooting/v1.3.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/troubleshooting/v1.3.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/troubleshooting/v1.2.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/troubleshooting/v1.1.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/quick-start/troubleshooting/v1.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/api-howto/v2.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/api-howto/v1.4.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/api-howto/v1.4.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/api-howto/v1.3.1",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/api-howto/v1.3.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/api-howto/v1.2.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/api-howto/v1.1.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/speech-api-guide/api-howto/v1.0.0",
+      "destination": "/on-prem/containers/cpu-container",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/release-notes/v9.0.1",
+      "destination": "/release-notes/batch-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/release-notes/v9.0.0",
+      "destination": "/release-notes/batch-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/release-notes/v8.2.0",
+      "destination": "/release-notes/batch-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/release-notes/v8.1.2",
+      "destination": "/release-notes/batch-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/release-notes/v8.1.0",
+      "destination": "/release-notes/batch-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/release-notes/v8.0.0",
+      "destination": "/release-notes/batch-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/release-notes/v7.0.3",
+      "destination": "/release-notes/batch-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/batch-container/release-notes/v6.3.0",
+      "destination": "/release-notes/batch-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/release-notes/v2.0.0",
+      "destination": "/release-notes/real-time-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/release-notes/v1.4.1",
+      "destination": "/release-notes/real-time-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/release-notes/v1.4.0",
+      "destination": "/release-notes/real-time-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/release-notes/v1.3.1",
+      "destination": "/release-notes/real-time-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/release-notes/v1.3.0",
+      "destination": "/release-notes/real-time-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/release-notes/v1.2.0",
+      "destination": "/release-notes/real-time-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/release-notes/v1.1.0",
+      "destination": "/release-notes/real-time-container-release-notes",
+      "permanent": true
+    },
+    {
+      "source": "en/real-time-container/release-notes/v1.0.0",
+      "destination": "/release-notes/real-time-container-release-notes",
+      "permanent": true
+    }
   ]
 }
