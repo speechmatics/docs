@@ -137,6 +137,19 @@ html[data-theme="dark"] {
 
   --color-background: var(--gray-1);
   --ifm-background-color: var(--gray-1);
+  --base-card-surface-hover-box-shadow: 0 0 0 1px
+    color-mix(in oklab, var(--gray-a8), var(--gray-8) 25%);
+}
+
+.rt-BaseCard {
+  box-shadow: 0px 2px 3px -2px var(--gray-a5);
+}
+
+a.rt-BaseCard:hover,
+a.rt-BaseCard:focus,
+a.rt-BaseCard:active {
+  box-shadow: 0px 3px 12px -4px rgb(0, 0, 0, 0.1), 0px 2px 3px -2px
+    var(--gray-a3);
 }
 
 html {
