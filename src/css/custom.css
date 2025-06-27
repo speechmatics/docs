@@ -262,3 +262,12 @@ a.menu__link.menu__link--active {
   --accent-11: var(--teal-11);
   content: "WSS";
 }
+
+pre {
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+kbd {
+  all: unset;
+}
