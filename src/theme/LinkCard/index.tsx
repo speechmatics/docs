@@ -1,4 +1,5 @@
-import { Card, Flex, Heading, Text } from "@radix-ui/themes";
+import Link from "@docusaurus/Link";
+import { Badge, Box, Card, Flex, Heading, Text } from "@radix-ui/themes";
 import { forwardRef } from "react";
 import styles from "./LinkCard.module.css";
 
@@ -19,19 +20,15 @@ const LinkCardRoot = forwardRef(
   ) => {
     const href = "href" in props ? props.href : undefined;
     return (
-      <Card
-        asChild
-        ref={ref}
-        size="3"
-        {...props}
-        className={styles.linkCardRoot}
-      >
-        <a href={href}>
-          <Flex direction={props.direction} gap="4">
-            {children}
-          </Flex>
-        </a>
-      </Card>
+      <Box asChild ref={ref} {...props} width="100%" minWidth="200px">
+        <Card asChild size="3" className={styles.linkCardRoot}>
+          <Link href={href}>
+            <Flex direction={props.direction} gap="4">
+              {children}
+            </Flex>
+          </Link>
+        </Card>
+      </Box>
     );
   },
 );
@@ -45,7 +42,7 @@ const LinkCardTitle = forwardRef(
     ref: React.Ref<HTMLHeadingElement>,
   ) => {
     return (
-      <Flex asChild gap="2">
+      <Flex asChild gap="2" align="center">
         <Heading as="h3" ref={ref} {...props}>
           {children}
         </Heading>
@@ -60,9 +57,30 @@ const LinkCardIcon = forwardRef(
     ref: React.Ref<HTMLDivElement>,
   ) => {
     return (
-      <Flex ref={ref} style={{ color: "var(--accent-11)" }} {...props}>
+      <Flex ref={ref} style={{ color: "var(--accent-8)" }} {...props}>
         {children}
       </Flex>
+    );
+  },
+);
+
+const LinkCardBadge = forwardRef(
+  (
+    { children, ...props }: { children: React.ReactNode },
+    ref: React.Ref<HTMLDivElement>,
+  ) => {
+    return (
+      <Badge
+        ref={ref}
+        radius="full"
+        color="gray"
+        variant="solid"
+        highContrast
+        size="1"
+        {...props}
+      >
+        {children}
+      </Badge>
     );
   },
 );
@@ -92,7 +110,7 @@ const LinkCardDescription = forwardRef(
     ref: React.Ref<HTMLParagraphElement>,
   ) => {
     return (
-      <Text ref={ref} {...props}>
+      <Text ref={ref} {...props} color="gray">
         {children}
       </Text>
     );
@@ -102,20 +120,24 @@ const LinkCardDescription = forwardRef(
 type LinkCardCompositeProps = LinkCardRootProps & {
   icon: React.ReactNode;
   title: string;
-  content: string;
+  description: string;
+  badgeText?: string;
 };
 
 const LinkCardComposite = forwardRef(
   (
-    { icon, title, content, ...props }: LinkCardCompositeProps,
+    { icon, title, badgeText, description, ...props }: LinkCardCompositeProps,
     ref: React.Ref<HTMLDivElement>,
   ) => {
     return (
       <LinkCardRoot ref={ref} {...props}>
-        <LinkCardIcon>{icon}</LinkCardIcon>
+        {!icon ? null : <LinkCardIcon>{icon}</LinkCardIcon>}
         <LinkCardContent>
-          <LinkCardTitle>{title}</LinkCardTitle>
-          <LinkCardDescription>{content}</LinkCardDescription>
+          <LinkCardTitle>
+            {title}
+            {badgeText ? <LinkCardBadge>{badgeText}</LinkCardBadge> : null}
+          </LinkCardTitle>
+          <LinkCardDescription>{description}</LinkCardDescription>
         </LinkCardContent>
       </LinkCardRoot>
     );

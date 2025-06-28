@@ -1,0 +1,23 @@
+.theme-doc-sidebar-container {
+  background-color: var(--gray-2);
+}
+
+.navbar {
+  --ifm-navbar-background-color: var(--gray-2);
+}
+
+main {
+  min-height: 100vh;
+}
+
+.navbar__logo {
+  color: red;
+}
+
+footer.footer,
+footer.footer--dark {
+  --ifm-footer-background-color: var(--gray-2);
+  --ifm-footer-color: var(--gray-11);
+  --ifm-footer-link-color: var(--gray-11);
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
