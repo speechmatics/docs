@@ -1,18 +1,29 @@
 ---
 sidebar_position: 0
 sidebar_label: Overview
+pagination_prev: null
+pagination_next: null
 ---
 import { LinkCard } from "@site/src/theme/LinkCard";
-import { Flex } from "@radix-ui/themes";
-import { ChevronsRightIcon, FileAudio } from "lucide-react";
+import { Flex, Grid } from "@radix-ui/themes";
+import {
+  ChevronsRightIcon,
+  FileAudio,
+  Languages,
+  Calculator,
+  Globe,
+  BookPlus,
+  Speech,
+  ChartLine,
+} from "lucide-react";
 
 # Speech to text overview
 
 Learn how to turn audio into text.
 
 Use speech to text to transcribe using one of the modes:
-- [Real-time processing](/speech-to-text/real-time): Stream audio from an input device or file and receive instant updates of the transcription as it happens
-- [Batch processing](/speech-to-text/batch): Submit an audio file and receive a complete text transcription once the processing is finished
+- [Real-time processing](#real-time-processing): Stream audio from an input device or file and receive instant updates of the transcription as it happens
+- [Batch processing](#batch-processing): Submit an audio file and receive a complete text transcription once the processing is finished
 
 ## Developer quickstart
 
@@ -43,10 +54,102 @@ The quickest way to transcribe voice from audio is in our [web portal](https://p
 
 Speechmatics provides flexible deployment options tailored to your requirements. You can host the platform in your own environment, use our managed service, or choose a hybrid approach.
 
-For deploying our API in your environment, contact sales or see our [on-prem documentation](/deployments).
+For deploying our API in your environment, [contact sales](https://www.speechmatics.com/speak-to-sales), or see our [on-prem documentation](/deployments).
 
 ## Real-time processing
 
 Turn live audio into accurate transcripts — instantly.
 
-The Speechmatics real-time speech to text API [link: RT API ref] converts spoken audio into text with low latency and high accuracy.
+The [Speechmatics real-time speech to text API](/api-ref/realtime-transcription-websocket) converts spoken audio into text with low latency and high accuracy.
+
+:::info
+- Use when speed matters
+- Transcribe live broadcasts or events
+- Caption webinars, meetings, or podcasts in real time
+- Power voice assistants or AI agents with live input
+- Monitor contact center calls as they happen
+- Build accessibility features like live captions
+:::
+
+### Operating points
+
+Choose between two accuracy models when configuring your real-time session:
+- **Standard** — fast, efficient, and suitable for most use cases
+- **Enhanced** — offers improved accuracy, especially for complex audio (e.g. noisy environments, varied accents), with slightly higher resource usage
+
+## Batch processing
+
+Create transcripts from pre-recorded audio or video.
+
+The [Speechmatics batch speech to text API](/api-ref/batch/create-a-new-job) processes pre-recorded files asynchronously, returning highly accurate transcripts in a range of formats.
+
+:::info
+- Transcribe recorded meetings or interviews
+- Caption on-demand videos and podcasts
+- Generate searchable transcripts for media archives
+- Process customer service recordings for compliance or insights
+- Automate subtitles across large video libraries
+:::
+
+
+### What is a job?
+
+Behind the scenes, each transcription request is handled as a job — a self-contained unit representing a single transcription task.
+
+A job includes:
+- The audio or video file to be transcribed
+- Configuration settings (e.g. language, formatting, diarization)
+- Metadata and status tracking
+- The resulting transcript(s)
+
+You submit a job to the API, monitor its progress, and retrieve results once it's complete. Jobs can be created via direct upload or by referencing a URL.
+
+### Operating points
+
+Choose between two accuracy models to fit the use case for your Batch job:
+- **Standard** — Optimised for faster turnaround with strong accuracy; ideal for compliance workflows and routine file-based transcription
+- **Enhanced** — our highest-accuracy model for when precision is critical; recommended for captioning or content destined for public use
+
+Both modes support the same input/output formats and features — only the underlying model differs.
+
+
+## Quicklinks
+
+<Grid columns="2" gap="3">
+  <LinkCard
+    title="Languages"
+    icon={<Globe/>}
+    href="/speech-to-text/supported-languages"
+    description="See which languages are supported"
+  />
+  <LinkCard
+    title="Pricing"
+    icon={<Calculator/>}
+    description="Compare our pricing options"
+    href="https://www.speechmatics.com/pricing"
+  />
+  <LinkCard
+    title="Translation"
+    icon={<Languages/>}
+    description="Translate your transcript to another language"
+    href="/speech-to-text/translation"
+  />
+  <LinkCard
+    title="Custom dictionary"
+    icon={<BookPlus/>}
+    description="Add custom words to your transcript"
+    href="/speech-to-text/features/custom-dictionary"
+  />
+  <LinkCard
+    title="Diarization"
+    icon={<Speech/>}
+    description="Identify speakers in your transcript"
+    href="/speech-to-text/output-enhancements/diarization"
+  />
+  <LinkCard
+    title="Accuracy benchmarking"
+    icon={<ChartLine/>}
+    description="Benchmark the accuracy of our models"
+    href="/speech-to-text/accuracy-benchmarking"
+  />
+</Grid>

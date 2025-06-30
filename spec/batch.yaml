@@ -1698,6 +1698,7 @@ definitions:
         items:
           type: string
   RecognitionResult:
+    title: RecognitionResult
     description: >-
       An ASR job output item. The primary item types are `word` and `punctuation`. Other item types may be present, for example to provide semantic information of different forms.
     required:
@@ -1820,6 +1821,7 @@ definitions:
       - alternatives
     type: "object"
   RetrieveTranscriptResponse:
+    title: RetrieveTranscriptResponse
     type: object
     required:
       - format

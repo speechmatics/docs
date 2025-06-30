@@ -4,11 +4,6 @@ export default {
   items: [
     {
       type: "doc",
-      id: "speech-to-text/real-time/index",
-      label: "Overview",
-    },
-    {
-      type: "doc",
       id: "speech-to-text/real-time/quickstart",
     },
     {
