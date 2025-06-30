@@ -107,6 +107,9 @@ const config: Config = {
         autoCollapseCategories: true,
       },
     },
+    mermaid: {
+      theme: { light: "neutral", dark: "neutral" },
+    },
   } satisfies Preset.ThemeConfig,
 
   plugins: [
@@ -161,7 +164,7 @@ const config: Config = {
       };
     },
   ],
-  themes: ["docusaurus-theme-openapi-docs"], // export theme components
+  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"], // export theme components
   scripts: [
     {
       src: "/js/color-theme.js",

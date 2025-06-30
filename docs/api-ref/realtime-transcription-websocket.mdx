@@ -1,0 +1,170 @@
+---
+title: Realtime API Reference
+hide_title: true
+---
+import SchemaNode from "@theme/Schema";
+import Details from "@theme/Details";
+import Heading from "@theme/Heading";
+import { Flex, Text, Separator, Card, DataList } from "@radix-ui/themes";
+import WebsocketMessageArrow from "@site/src/theme/WebsocketMessageArrow";
+import { AsyncAPIMessage } from "@site/src/theme/AsyncAPIMessage";
+import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Realtime API Reference"}
+>
+</Heading>
+
+<pre className="openapi__method-endpoint">
+  <span className="badge badge--primary">GET</span>
+  <h2 className="openapi__method-endpoint-path">wss://eu2.rt.speechmatics.com/v2/</h2>
+</pre>
+
+## Protocol overview
+
+A basic Realtime session will have the following message exchanges:
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant API
+  Client->>API: Handshake request - GET /v2/<language-code> with Auth Token
+  API-->>Client: 404 Not Found
+  API-->>Client: 401 Unauthorized
+  API-->>Client: 101 Switching Protocol
+  Client->>API: StartRecognition
+  API-->>Client: RecognitionStarted
+  loop Audio Stream
+    Client->>API: AddAudio
+    API-->>Client: AudioAdded
+    API-->>Client: AddPartialTranscript (optional)
+    API-->>Client: AddTranscript (optional)
+  end
+  Client->>API: EndOfStream
+  API-->>Client: EndOfTranscript
+```
+
+:::warning
+#### Browser based transcription
+
+When starting a Real-Time transcription session **in the browser**, [temporary keys](/getting-started/authentication) should be used to avoid exposing your long-lived API key.
+
+To do so, you must provide the temporary key as a part of a query parameter. This is due to a browser limitation. For example:
+
+```url
+ wss://eu2.rt.speechmatics.com/v2?jwt=<temporary-key>
+```
+:::
+
+
+### Handshake Responses
+
+**Successful Response**
+
+- `101 Switching Protocols` - Switch to WebSocket protocol
+
+Here is an example for a successful WebSocket handshake:
+
+```
+GET /v2/en HTTP/1.1
+Host: eu2.rt.speechmatics.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: ujRTbIaQsXO/0uCbjjkSZQ==
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+Authorization: Bearer wmz9fkLJM6U5NdyaG3HLHybGZj65PXp
+User-Agent: Python/3.8 websockets/8.1
+```
+
+A successful response should look like:
+
+```
+HTTP/1.1 101 Switching Protocols
+Server: nginx/1.17.8
+Date: Wed, 06 Jan 2021 11:01:05 GMT
+Connection: upgrade
+Upgrade: WebSocket
+Sec-WebSocket-Accept: 87kiC/LI5WgXG52nSylnfXdz260=
+```
+
+**Malformed Request**
+
+A malformed handshake request will result in one of the following HTTP responses:
+
+- `400 Bad Request`
+- `401 Unauthorized` - when the API key is not valid
+- `405 Method Not Allowed` - when the request method is not GET
+
+**Client Retry**
+
+Following a successful handshake and switch to the WebSocket protocol, the client could receive an immediate error message and WebSocket close handshake from the server.
+For the following errors only, we recommend adding a client retry interval of at least 5-10 seconds:
+
+- `4005 quota_exceeded`
+- `4013 job_error`
+- `1011 internal_error`
+
+## Message Handling
+
+Each message that the **Server** accepts is a stringified JSON object with the following fields:
+
+- `message` (String): The name of the message we are sending. Any other fields depend on the value of the `message` and are described below.
+
+The messages sent by the **Server** to a **Client** are stringified JSON objects as well.
+
+The only exception is a binary message sent from the **Client** to the **Server** containing a chunk of audio which will be referred to as `AddAudio`.
+
+The following values of the `message` field are supported:
+
+## Sent messages
+
+
+<Flex direction="column" gap="4">
+{Object.entries(realtimeSchema.channels.publish.messages).map(([messageName, message]) => {
+  return (
+    <AsyncAPIMessage
+      key={messageName}
+      messageName={messageName}
+      message={message}
+      channel="publish"
+    />
+  )
+  })}
+</Flex>
+
+## Received messages
+
+<Flex direction="column" gap="4">
+{Object.entries(realtimeSchema.channels.subscribe.messages).map(([messageName, message]) => {
+  return (
+    <AsyncAPIMessage
+      key={messageName}
+      messageName={messageName}
+      message={message}
+      channel="subscribe"
+    />
+  )
+  })}
+</Flex>
+
+{/* Manually generated TOC, since we're using JSX sections */}
+export const toc = [
+  {value: "Protocol overview", id: "protocol-overview", level: 2},
+  {value: "Handshake Responses", id: "handshake-responses", level: 2},
+  {value: "Message Handling", id: "message-handling", level: 2},
+  {value: "Sent messages", id: "sent-messages", level: 2},
+  ...Object.entries(realtimeSchema.channels.publish.messages).map(([messageName, message]) => ({
+    "value": messageName,
+    "id": messageName.toLowerCase(),
+    "level": 3
+  })),
+  {value: "Received messages", id: "received-messages", level: 2},
+  ...Object.entries(realtimeSchema.channels.subscribe.messages).map(([messageName, message]) => ({
+    "value": messageName,
+    "id": messageName.toLowerCase(),
+    "level": 3
+  })),
+]

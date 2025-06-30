@@ -1,6 +1,6 @@
-import { RealtimeClient } from "@speechmatics/real-time-client";
 import https from "node:https";
 import { createSpeechmaticsJWT } from "@speechmatics/auth";
+import { RealtimeClient } from "@speechmatics/real-time-client";
 
 const apiKey = YOUR_API_KEY;
 

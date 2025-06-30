@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "run-p build:jobs-api-ref build:realtime-api-ref && docusaurus start",
-    "build": "run-p build:jobs-api-ref build:realtime-api-ref && docusaurus build",
+    "start": "run-p build:jobs-api-ref && docusaurus start",
+    "build": "run-p build:jobs-api-ref && docusaurus build",
     "build:jobs-spec": "tsx scripts/generate-batch-spec.ts",
     "build:jobs-api-ref": "rm -rf docs/api-ref/jobs && npm run build:jobs-spec && docusaurus gen-api-docs jobs",
-    "build:realtime-api-ref": "tsx scripts/generate-websocket-api-ref.ts ./spec/realtime.yaml ./docs/api-ref/realtime-transcription-websocket.mdx",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -22,6 +21,7 @@
   "dependencies": {
     "@docusaurus/core": "^3.8.1",
     "@docusaurus/preset-classic": "^3.8.1",
+    "@docusaurus/theme-mermaid": "^3.8.1",
     "@mdx-js/react": "^3.0.0",
     "@radix-ui/themes": "^3.2.1",
     "asyncapi-schema-loader": "^0.0.1",
