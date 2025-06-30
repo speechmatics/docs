@@ -1,0 +1,52 @@
+---
+sidebar_position: 0
+sidebar_label: Overview
+---
+import { LinkCard } from "@site/src/theme/LinkCard";
+import { Flex } from "@radix-ui/themes";
+import { ChevronsRightIcon, FileAudio } from "lucide-react";
+
+# Speech to text overview
+
+Learn how to turn audio into text.
+
+Use speech to text to transcribe using one of the modes:
+- [Real-time processing](/speech-to-text/real-time): Stream audio from an input device or file and receive instant updates of the transcription as it happens
+- [Batch processing](/speech-to-text/batch): Submit an audio file and receive a complete text transcription once the processing is finished
+
+## Developer quickstart
+
+<Flex gap="3" mt="3" mb="5">
+  <LinkCard
+    icon={<ChevronsRightIcon/>}
+    direction="column"
+    title="Transcribe in real-time"
+    description="Instantly convert streaming audio to text with Real-time processing"
+    href="/speech-to-text/real-time/quickstart"
+  />
+
+  <LinkCard
+    icon={<FileAudio/>}
+    direction="column"
+    title="Transcribe a file"
+    description="Submit an audio file and receive a complete text transcription once the processing is finished"
+    href="/speech-to-text/batch/quickstart"
+  />
+</Flex>
+
+
+:::tip
+The quickest way to transcribe voice from audio is in our [web portal](https://portal.speechmatics.com/jobs/create/batch).
+:::
+
+## Deployments
+
+Speechmatics provides flexible deployment options tailored to your requirements. You can host the platform in your own environment, use our managed service, or choose a hybrid approach.
+
+For deploying our API in your environment, contact sales or see our [on-prem documentation](/deployments).
+
+## Real-time processing
+
+Turn live audio into accurate transcripts — instantly.
+
+The Speechmatics real-time speech to text API [link: RT API ref] converts spoken audio into text with low latency and high accuracy.
