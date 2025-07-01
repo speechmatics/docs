@@ -22,5 +22,4 @@ yarn-error.log*
 # Auto generated API ref pages
 docs/api-ref/jobs
 docs/api-ref/batch
-docs/api-ref/realtime-transcription-websocket.mdx
 static/*.yaml

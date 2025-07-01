@@ -73,6 +73,6 @@ To obtain volume labelling without filtering any audio, supply an empty config o
 
 Once the audio is in a raw format (16kHz 16bit mono), it is split into 0.01s chunks. For each chunk, the root mean square amplitude of the signal is calculated, and scaled to the range `0 - 100`. If the volume is less than the supplied cut-off, the chunk will be replaced with silence.
 
-To work successfully without degrading accuracy, the background speech must be significantly quieter than the foreground speech, otherwise the filtering process may remove small sections of the audio which should be transcribed. For this reason, the feature works better with the [Enhanced Operating Point](../features/accuracy-language-packs.mdx#accuracy), which is more robust against inadvertent damage to the audio.
+To work successfully without degrading accuracy, the background speech must be significantly quieter than the foreground speech, otherwise the filtering process may remove small sections of the audio which should be transcribed. For this reason, the feature works better with the [Enhanced Operating Point](/speech-to-text/features/accuracy-language-packs#accuracy), which is more robust against inadvertent damage to the audio.
 
 The word volume calculation takes the start and end times of words, and applies a weighted average of the volumes of each audio chunk which make up the word. The weighting attempts to ignore areas of silence within long words, and provide a better match with the volume classification a human listener would make.

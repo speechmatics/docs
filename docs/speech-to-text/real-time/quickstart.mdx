@@ -1,321 +1,98 @@
----
-sidebar_label: Quickstart
-sidebar_position: 0
-toc_max_heading_level: 3
-description: 'Learn how to use the Speechmatics Real-Time websocket API to transcribe audio'
-keywords: [speechmatics, rt, realtime, real-time, transcription, speech recognition, asr]
----
-
 import Admonition from '@theme/Admonition';
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Transcribe in Real-Time
+import javascriptRadioExample from "./assets/javascript-radio-example.js?raw"
+import pythonRadioExample from "./assets/url-example.py?raw"
 
-The quickest way to try transcribing for free is by creating a Speechmatics account and using our [Real-Time Demo](https://portal.speechmatics.com/jobs/create/output/transcription) in your browser.
+# Quickstart
 
-This page will show you how to use the Speechmatics Real-Time SaaS WebSocket API to transcribe your voice in real-time by speaking into your microphone.
+Learn how to convert streaming audio to text.
 
-You can also learn about [On-Prem](/deployments/container/cpu-speech-to-text-container) deployments by following our guides.
-
-## Set Up
-
-1. Create an account on the Speechmatics On-Demand Portal [here](https://portal.speechmatics.com/signup).
-2. Navigate to Manage > [API Keys](https://portal.speechmatics.com/manage-access/) page in the Speechmatics On-Demand Portal.
-3. Enter a name for your API key and store your API key somewhere safe.
-
-:::info
-Enterprise customers should speak to [Support](https://support.speechmatics.com) to get your API keys.
-:::
-
-## Real-Time Transcription Examples
-
-The examples below will help you get started by using the official Speechmatics CLI, Python and JavaScript libraries. You can of course integrate using the programming language of your choice by referring to the [Real-Time API Reference](/api-ref/realtime-transcription-websocket).
-
-
-<Tabs groupId="rt-examples">
-    <TabItem value="CLI" label="CLI" default>
-<>
-
-The Speechmatics Python library and CLI can found on [GitHub](https://github.com/speechmatics/speechmatics-python) and installed using pip:
-
-```bash
-pip3 install speechmatics-python
-```
-<br/>
-Transcribe a file in real-time using the Speechmatics Python library. Just copy in your API key and file name to get started!<br/><br/>
-
-```bash
-speechmatics config set --auth-token $API_KEY
-speechmatics rt transcribe example.wav
-```
-
-</>
-    </TabItem>
-    <TabItem value="file" label="Python - File">
-
-The Speechmatics Python library and CLI can found on [GitHub](https://github.com/speechmatics/speechmatics-python) and installed using pip:
-
-```bash
-pip3 install speechmatics-python
-```
-
-<br/>
-Transcribe a file in real-time using the Speechmatics Python library. Just copy in your API key and file name to get started!<br/><br/>
-<>
-
-```python showLineNumbers
-import speechmatics
-from httpx import HTTPStatusError
-
-API_KEY = "YOUR_API_KEY"
-PATH_TO_FILE = "example.wav"
-LANGUAGE = "en"
-CONNECTION_URL = f"wss://eu2.rt.speechmatics.com/v2"
-
-# Create a transcription client
-ws = speechmatics.client.WebsocketClient(
-    speechmatics.models.ConnectionSettings(
-        url=CONNECTION_URL,
-        auth_token=API_KEY,
-    )
-)
-
-# Define an event handler to print the partial transcript
-def print_partial_transcript(msg):
-    print(f"[partial] {msg['metadata']['transcript']}")
-
-# Define an event handler to print the full transcript
-def print_transcript(msg):
-    print(f"[   FULL] {msg['metadata']['transcript']}")
-
-# Register the event handler for partial transcript
-ws.add_event_handler(
-    event_name=speechmatics.models.ServerMessageType.AddPartialTranscript,
-    event_handler=print_partial_transcript,
-)
-
-# Register the event handler for full transcript
-ws.add_event_handler(
-    event_name=speechmatics.models.ServerMessageType.AddTranscript,
-    event_handler=print_transcript,
-)
-
-settings = speechmatics.models.AudioSettings()
-
-# Define transcription parameters
-# Full list of parameters described here: https://speechmatics.github.io/speechmatics-python/models
-conf = speechmatics.models.TranscriptionConfig(
-    operating_point="enhanced",
-    language=LANGUAGE,
-    enable_partials=True,
-    max_delay=1,
-)
-
-print("Starting transcription (type Ctrl-C to stop):")
-with open(PATH_TO_FILE, 'rb') as fd:
-    try:
-        ws.run_synchronously(fd, conf, settings)
-    except KeyboardInterrupt:
-        print("\nTranscription stopped.")
-    except HTTPStatusError as e:
-        if e.response.status_code == 401:
-            print('Invalid API key - Check your API_KEY at the top of the code!')
-        else:
-            raise e
-```
-
-</>
-    </TabItem>
-    <TabItem value="python-url" label="Python - URL">
-
-The Speechmatics Python library and CLI can found on [GitHub](https://github.com/speechmatics/speechmatics-python) and installed using pip:
-
-```bash
-pip3 install speechmatics-python
-```
-<br/>
-Transcribe an audio stream in real-time using the Speechmatics Python library. Just copy in your API key to get started!<br/><br/>
-<>
-
-```python showLineNumbers
-import speechmatics
-from httpx import HTTPStatusError
-from urllib.request import urlopen
-
-API_KEY = "YOUR_API_KEY"
-LANGUAGE = "en"
-CONNECTION_URL = f"wss://eu2.rt.speechmatics.com/v2"
-
-# The raw audio stream will be a few seconds ahead of the radio
-AUDIO_STREAM_URL="https://media-ice.musicradio.com/LBCUKMP3"  # LBC Radio stream
-
-audio_stream = urlopen(AUDIO_STREAM_URL)
-
-# Create a transcription client
-ws = speechmatics.client.WebsocketClient(
-    speechmatics.models.ConnectionSettings(
-        url=CONNECTION_URL,
-        auth_token=API_KEY,
-    )
-)
-
-# Define an event handler to print the partial transcript
-def print_partial_transcript(msg):
-    print(f"[partial] {msg['metadata']['transcript']}")
-
-# Define an event handler to print the full transcript
-def print_transcript(msg):
-    print(f"[   FULL] {msg['metadata']['transcript']}")
-
-# Register the event handler for partial transcript
-ws.add_event_handler(
-    event_name=speechmatics.models.ServerMessageType.AddPartialTranscript,
-    event_handler=print_partial_transcript,
-)
-
-# Register the event handler for full transcript
-ws.add_event_handler(
-    event_name=speechmatics.models.ServerMessageType.AddTranscript,
-    event_handler=print_transcript,
-)
-
-settings = speechmatics.models.AudioSettings()
-
-# Define transcription parameters
-# Full list of parameters described here: https://speechmatics.github.io/speechmatics-python/models
-conf = speechmatics.models.TranscriptionConfig(
-    operating_point="enhanced",
-    language=LANGUAGE,
-    enable_partials=True,
-    max_delay=1,
-)
-
-print("Starting transcription (type Ctrl-C to stop):")
-try:
-    ws.run_synchronously(audio_stream, conf, settings)
-except KeyboardInterrupt:
-    print("\nTranscription stopped.")
-except HTTPStatusError as e:
-    if e.response.status_code == 401:
-        print('Invalid API key - Check your API_KEY at the top of the code!')
-    else:
-        raise e
-```
-
-</>
-    </TabItem> 
-    <TabItem value="nodejs-file" label="Javascript - File">
-<>
-
-The Speechmatics JavaScript library can be found on [GitHub](https://github.com/speechmatics/speechmatics-js-sdk) and installed using NPM:
-
-```
-npm install @speechmatics/real-time-client
-```
+This guide will show you how to use WebSocket API to transcribe voice.
 
 :::tip
-This library can be used in the browser and backend runtimes like NodeJS and Bun!
-[Check out our examples on Github](https://github.com/speechmatics/speechmatics-js-sdk/tree/main/examples).
+The easiest way to try real-time transcription is via the [web portal](https://portal.speechmatics.com/jobs/create/real-time).
 :::
 
-  
-Transcribe a file in real-time using the Speechmatics JavaScript library. Just copy in your API key and file name to get started!
+## Using the Real-time SaaS WebSocket API
 
-```js showLineNumbers        
-// This example transcribes a file in NodeJS.
-// For examples in other environments, see the link above
+### 1. Create an API key
 
-import fs from 'node:fs';
-import { RealtimeClient } from '@speechmatics/real-time-client';
+[Create an API key in the portal here](https://portal.speechmatics.com/settings/api-keys), which you'll use to securely access the API.
+Store the key as a managed secret.
 
-const client = new RealtimeClient();
+:::info
+Enterprise customers may need to speak to [Support](https://support.speechmatics.com) to get your API keys.
+:::
 
-async function fetchJWT(): Promise<string> {
-  const apiKey = YOUR_API_KEY;
+### 2. Pick and install a library
 
-  const resp = await fetch('https://mp.speechmatics.com/v1/api_keys?type=rt', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.API_KEY}`,
-    },
-    body: JSON.stringify({
-      ttl: 3600,
-    }),
-  });
-  if (!resp.ok) {
-    throw new Error('Bad response from API', { cause: resp });
-  }
-  return (await resp.json()).key_value;
-}
+Check out our [Javascript client](https://www.npmjs.com/package/@speechmatics/real-time-client) or [Python client](https://pypi.org/project/speechmatics-python/) to get started.
 
-let finalText = '';
-
-client.addEventListener('receiveMessage', ({ data }) => {
-  if (data.message === 'AddPartialTranscript') {
-    const partialText = data.results
-      .map((r) => r.alternatives?.[0].content)
-      .join(' ');
-    process.stdout.write(`\r${finalText} \x1b[3m${partialText}\x1b[0m`);
-  } else if (data.message === 'AddTranscript') {
-    const text = data.results.map((r) => r.alternatives?.[0].content).join(' ');
-    finalText += text;
-    process.stdout.write(`\r${finalText}`);
-  } else if (data.message === 'EndOfTranscript') {
-    process.stdout.write('\n');
-    process.exit(0);
-  }
-});
-
-async function transcribeFileRealTime() {
-  const jwt = await fetchJWT();
-  const PATH_TO_FILE = path.join(__dirname, './example.wav'),
-
-  const fileStream = fs.createReadStream(
-    PATH_TO_FILE,
-    {
-      highWaterMark: 4096, //avoid sending faster than realtime
-    },
-  );
-
-  await client.start(jwt, {
-    transcription_config: {
-      language: 'en',
-      enable_partials: true,
-      operating_point: "enhanced",
-      max_delay: 1,
-    },
-  });
-
-  //send audio data from file stream
-  fileStream.on('data', (sample) => {
-    client.sendAudio(sample);
-  });
-
-  //end the session
-  fileStream.on('end', () => {
-    client.stopRecognition();
-  });
-}
-
-transcribeFileRealTime();
-
-```
-
-</>
-    </TabItem>
+<Tabs groupId="language">
+  <TabItem value="javascript" label="Javascript">
+    ```
+    npm install @speechmatics/real-time-client @speechmatics/auth
+    ```
+  </TabItem>
+  <TabItem value="python" label="Python">
+    ```
+    pip3 install speechmatics-python
+    ```
+  </TabItem>
 </Tabs>
 
-## Transcript Outputs
 
-The output format from the Speech API is JSON. There are two types of transcript that are provided: Final transcripts and Partial transcripts. Which one you decide to consume will depend on your use case, latency and accuracy requirements.
+### 3. Insert your API key
 
-### Final Transcripts
+Paste your API key into `YOUR_API_KEY` in the code.
 
-A `Final` is the final best transcription for the words spoken. Once output, these transcripts are considered final and will not be updated afterwards. Words will be returned incrementally with a delay. The latency can be adjusted using the `max_delay` property in `transcription_config` when starting the recognition session. Final transcripts are more accurate than partial transcripts, and larger values of `max_delay` increase the accuracy.
+<Tabs groupId="language">
+  <TabItem value="javascript" label="Javascript">
+    <CodeBlock language="javascript">
+      {javascriptRadioExample}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="python" label="Python">
+    <CodeBlock language="python">
+      {pythonRadioExample}
+    </CodeBlock>
+  </TabItem>
+</Tabs>
 
-### Partial Transcripts
 
-A `Partial`, is a transcript that can be updated at a later point in time as more context arrives. By default, Partial transcripts are not produced. Partials must be explicitly enabled using the `enable_partials` property in `transcription_config` for the session. After a Partial transcript is first output, the Speechmatics ASR engine can use additional audio data and context to update the Partial. Hence, Partials are therefore available at very low latency but with lower initial accuracy. Partials typically provide a latency (the time between audio input and initial output) of less than 500ms. Partials can be used in conjunction with Final transcripts to provide low-latency transcripts which are adjusted over time.
+
+## Transcript outputs
+
+The API returns transcripts in JSON format. You can receive two types of output: [Final](#final-transcripts) and [Partial](#partial-transcripts) transcripts. Choose the type based on your latency and accuracy needs.
+
+### Final transcripts
+
+Final transcripts are the definitive result.
+- They reflect the best transcription for the spoken audio.
+- Once displayed, they are not updated.
+- Words arrive incrementally, with some delay.
+
+You control the latency and accuracy tradeoff [using the `max_delay` setting](/speech-to-text/real-time/latency) in your `transcription_config`.
+Larger values of `max_delay` increase accuracy by giving the system more time to process audio context.
+
+:::tip
+Best for accurate, completed transcripts where some delay is acceptable
+:::
+
+### Partial transcripts
+
+Partial transcripts are low-latency and can update later as more conversation context arrives.
+- You must enable them using `enable_partials` in your `transcription_config`.
+- Partials are emitted quickly (typically less than 500ms).
+- The engine may revise them as more audio is processed.
+
+You can combine partials with finals for a responsive user experience — show partials first, then replace them with finals as they arrive.
+
+You control the latency and accuracy tradeoff using the [`max_delay` setting](/speech-to-text/real-time/latency) in your `transcription_config`.
+
+:::tip
+Use partials for: real-time captions, voice interfaces, or any case where speed matters
+:::

@@ -4,11 +4,6 @@ export default {
   items: [
     {
       type: "doc",
-      id: "speech-to-text/batch/index",
-      label: "Overview",
-    },
-    {
-      type: "doc",
       id: "speech-to-text/batch/quickstart",
     },
     {
