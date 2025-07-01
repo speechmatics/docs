@@ -1,0 +1,11 @@
+{
+  "dictionaries": ["custom-words", "en-gb", "es"],
+  "ignorePaths": ["docs/api-ref/batch"],
+  "dictionaryDefinitions": [
+    {
+      "name": "custom-words",
+      "path": "./custom-words.txt",
+      "addWords": true
+    }
+  ]
+}

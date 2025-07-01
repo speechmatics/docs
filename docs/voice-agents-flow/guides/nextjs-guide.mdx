@@ -134,7 +134,7 @@ Here we add the 3 context providers to the app, passing the `AudioContext` insta
 :::info
 #### A note about `AudioContext` and sample rates in Firefox
 
-[AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext) is the WebAPI for handling audio recording and playback. Under normal circumstances, you should aim to have [one resusable instance](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext#:~:text=It%27s%20recommended%20to%20create%20one%20AudioContext%20and%20reuse%20it%20instead%20of%20initializing%20a%20new%20one%20each%20time) of an `AudioContext` in your app. In most browsers, an `AudioContext` can freely record and play back audio at different sample rates, but this is not the case in Firefox (see outstanding [bug here](https://bugzilla.mozilla.org/show_bug.cgi?id=1725336)).
+[AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext) is the WebAPI for handling audio recording and playback. Under normal circumstances, you should aim to have [one reusable instance](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext#:~:text=It%27s%20recommended%20to%20create%20one%20AudioContext%20and%20reuse%20it%20instead%20of%20initializing%20a%20new%20one%20each%20time) of an `AudioContext` in your app. In most browsers, an `AudioContext` can freely record and play back audio at different sample rates, but this is not the case in Firefox (see outstanding [bug here](https://bugzilla.mozilla.org/show_bug.cgi?id=1725336)).
 
 
 To handle this, we can create a utility hook to expose separate `AudioContext` instances for recording and playback in Firefox, while sharing a single instance for other browsers (see below).
