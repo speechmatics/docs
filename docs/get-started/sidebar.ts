@@ -7,7 +7,7 @@ export default {
     {
       type: "doc",
       id: "index",
-      label: "Welcome",
+      label: "Introduction",
     },
     {
       type: "doc",
@@ -16,6 +16,11 @@ export default {
     {
       type: "doc",
       id: "get-started/authentication",
+    },
+    {
+      type: "link",
+      href: "https://speechmatics.featurebase.app/en/changelog",
+      label: "Release notes",
     },
     {
       type: "link",

@@ -4,7 +4,7 @@ pagination_next: null
 ---
 import { LinkCard } from "@site/src/theme/LinkCard";
 import { Flex, Grid } from "@radix-ui/themes";
-import { ChevronsRightIcon, FileAudio, BotMessageSquare, BookOpen } from "lucide-react";
+import { ChevronsRightIcon, FileAudio, BotMessageSquare, BookOpen, Braces } from "lucide-react";
 
 # Quickstart
 
@@ -47,5 +47,11 @@ The easiest way to try our products is via the [web portal](https://portal.speec
     description="Reference documentation for all our APIs"
     icon={<BookOpen/>}
     href="/api-ref"
+  />
+  <LinkCard
+    title="JavaScript SDK"
+    description="Use our JavaScript SDK to access all of our APIs"
+    icon={<Braces/>}
+    href="https://github.com/speechmatics/speechmatics-js-sdk"
   />
 </Grid>
