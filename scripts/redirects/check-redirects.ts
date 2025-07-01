@@ -14,8 +14,6 @@ export function checkRedirects([...newSitePaths]: string[]) {
     ]),
   );
 
-  console.log(vercelRedirects);
-
   // Check Vercel.json and ensure it has an entry for each old site path
   // and that the target exists in newSitePaths
   for (const oldRoute of oldSiteRoutes.map(normalizePath)) {
