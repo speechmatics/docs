@@ -12,9 +12,9 @@ Your API key must be used with any interaction with the Speechmatics API to auth
 
 It is recommended that you store and provide access to the API key on the principle of least privilege. If you believe that your key has been compromised, please reach out to [Support](https://support.speechmatics.com).
 
-## Get your API Key
+## Get your API key
 
-Navigate to Manage > [API Keys](https://portal.speechmatics.com/settings/api-keys/) page of the Speechmatics On-Demand Portal to create an API key. You may need to register and sign in if you haven't already.
+Navigate to [Settings > API Keys](https://portal.speechmatics.com/settings/api-keys/) page of the Speechmatics Portal to create an API key. You may need to register and sign in if you haven't already.
 
 Enter a name for your API key and then store it somewhere safe when you have generated it.
 
@@ -43,7 +43,7 @@ wss://eu2.rt.speechmatics.com/v2
 </Tabs>
 
 
-## Supported Endpoints
+## Supported endpoints
 
 Speechmatics Batch SaaS supports the following endpoints for production use:
 
@@ -72,7 +72,7 @@ Note that jobs are created in the environment corresponding to the endpoint used
 
 If you attempt to use an endpoint for a region you are not contracted to use, that request will be unsuccessful. If you want to use a different region, please contact your Account Manager.
 
-## Temporary Keys
+## Temporary keys
 
 Speechmatics allows you to generate temporary keys to authenticate your requests instead of your long-lived API key. This can improve end-user experience by reducing latency, and can also reduce development effort and complexity.
 
@@ -80,7 +80,7 @@ Speechmatics allows you to generate temporary keys to authenticate your requests
 If you are an enterprise customer and would like to use temporary keys, reach out to [Support](https://support.speechmatics.com) or speak to your Account Manager.
 :::
 
-### Real-Time Transcription
+### Real-time transcription
 
 For Real-Time transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription as well as development effort. 
 
@@ -96,7 +96,7 @@ curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
 Note that when starting a Real-Time transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
 
 
-### Batch Transcription
+### Batch transcription
 
 For batch jobs, temporary keys allow your end-users to upload their audio to Speechmatics directly, without exposing your long-lived API key. In situations where you don't need to store the original audio on your server, this can reduce development effort and the costs associated with storing and transferring media files. 
 
@@ -126,7 +126,7 @@ curl -X GET "https://asr.api.speechmatics.com/v2/jobs/" \
   -H "Authorization: Bearer $TEMP_KEY"
 ```
 
-### Temporary Key Configuration
+### Temporary key configuration
 
 
 | URL query parameter    | Required | Description                                                                                                                                                                                                                                                                                                                                                      |

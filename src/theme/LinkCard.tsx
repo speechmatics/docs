@@ -6,6 +6,7 @@ import { forwardRef } from "react";
 export type LinkCardRootProps = React.ComponentProps<typeof Card> & {
   direction?: "row" | "column";
   children: React.ReactNode;
+  as?: React.ComponentType<{ href: string }>;
 } & (
     | { href: string }
     | {
@@ -15,18 +16,19 @@ export type LinkCardRootProps = React.ComponentProps<typeof Card> & {
 
 const LinkCardRoot = forwardRef(
   (
-    { children, ...props }: LinkCardRootProps,
+    { children, as, ...props }: LinkCardRootProps,
     ref: React.Ref<HTMLDivElement>,
   ) => {
     const href = "href" in props ? props.href : undefined;
+    const Comp = as ?? Link;
     return (
       <Box asChild ref={ref} {...props} width="100%" minWidth="200px">
         <Card asChild size="3">
-          <Link href={href}>
+          <Comp href={href}>
             <Flex direction={props.direction} gap="4">
               {children}
             </Flex>
-          </Link>
+          </Comp>
         </Card>
       </Box>
     );
