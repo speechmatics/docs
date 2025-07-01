@@ -1,0 +1,377 @@
+[
+  { "source": "/jobsapi/", "destination": "/api-ref/batch/create-a-new-job" },
+  { "source": "/search", "destination": "/not-found/" },
+  { "source": "/features", "destination": "/speech-to-text/" },
+  { "source": "/features-other", "destination": "/speech-to-text/" },
+  {
+    "source": "/features-other/auto-chapters",
+    "destination": "/speech-to-text/batch/speech-intelligence/auto-chapters/"
+  },
+  {
+    "source": "/features-other/feature-discovery",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/features-other/fetch-url",
+    "destination": "/speech-to-text/batch/fetch-url"
+  },
+  {
+    "source": "/features-other/lang-id",
+    "destination": "/speech-to-text/batch/language-identification"
+  },
+  {
+    "source": "/features-other/notifications",
+    "destination": "/speech-to-text/batch/notifications"
+  },
+  {
+    "source": "/features-other/sentiment-analysis",
+    "destination": "/speech-to-text/batch/speech-intelligence/sentiment-analysis"
+  },
+  {
+    "source": "/features-other/srt-format",
+    "destination": "/speech-to-text/batch/srt-format"
+  },
+  {
+    "source": "/features-other/summarization",
+    "destination": "/speech-to-text/batch/speech-intelligence/summarization"
+  },
+  {
+    "source": "/features-other/topic-detection",
+    "destination": "/speech-to-text/batch/speech-intelligence/topic-detection"
+  },
+  {
+    "source": "/features-other/tracking",
+    "destination": "/speech-to-text/batch/tracking"
+  },
+  {
+    "source": "/features-other/translation",
+    "destination": "/speech-to-text/translation"
+  },
+  {
+    "source": "/features-other/word-alignment",
+    "destination": "/speech-to-text/batch/alignment"
+  },
+  {
+    "source": "/features/accuracy-language-packs",
+    "destination": "/speech-to-text/features/accuracy-language-packs"
+  },
+  {
+    "source": "/features/audio-events",
+    "destination": "/speech-to-text/features/audio-events"
+  },
+  {
+    "source": "/features/audio-filtering",
+    "destination": "/speech-to-text/features/audio-filtering"
+  },
+  {
+    "source": "/features/custom-dictionary",
+    "destination": "/speech-to-text/features/custom-dictionary"
+  },
+  {
+    "source": "/features/diarization",
+    "destination": "/speech-to-text/output-enhancements/diarization"
+  },
+  {
+    "source": "/features/end-of-turn",
+    "destination": "/speech-to-text/real-time/end-of-turn"
+  },
+  {
+    "source": "/features/entities",
+    "destination": "/speech-to-text/output-enhancements/numeral-formatting"
+  },
+  {
+    "source": "/features/punctuation-settings",
+    "destination": "/speech-to-text/output-enhancements/punctuation-settings"
+  },
+  {
+    "source": "/features/realtime-latency",
+    "destination": "/speech-to-text/real-time/latency"
+  },
+  {
+    "source": "/features/word-tagging",
+    "destination": "/speech-to-text/output-enhancements/output-formatting"
+  },
+  {
+    "source": "/flow-api-ref",
+    "destination": "/api-ref/flow-voice-ai-websocket"
+  },
+  {
+    "source": "/flow/application-inputs",
+    "destination": "/voice-agents-flow/features/application-inputs"
+  },
+  { "source": "/flow/config", "destination": "/voice-agents-flow/setup" },
+  {
+    "source": "/flow/function-calling",
+    "destination": "/voice-agents-flow/features/function-calling"
+  },
+  { "source": "/flow/introduction", "destination": "/voice-agents-flow" },
+  {
+    "source": "/flow/languages-supported",
+    "destination": "/voice-agents-flow/supported-languages"
+  },
+  {
+    "source": "/flow/livekit-webrtc",
+    "destination": "/voice-agents-flow/features/webrtc-livekit"
+  },
+  {
+    "source": "/flow/nextjs-guide",
+    "destination": "/voice-agents-flow/guides/nextjs-guide"
+  },
+  {
+    "source": "/flow/react-native-guide",
+    "destination": "/voice-agents-flow/guides/react-native"
+  },
+  { "source": "/introduction", "destination": "/" },
+  {
+    "source": "/introduction/additional-info",
+    "destination": "/speech-to-text/batch/check-job-status"
+  },
+  {
+    "source": "/introduction/authentication",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/introduction/batch-guide",
+    "destination": "/speech-to-text/batch/quickstart"
+  },
+  {
+    "source": "/introduction/errors-rate-limits",
+    "destination": "/speech-to-text/batch/supported-files-and-limits"
+  },
+  {
+    "source": "/introduction/rt-guide",
+    "destination": "/speech-to-text/real-time/quickstart"
+  },
+  {
+    "source": "/introduction/supported-languages",
+    "destination": "/speech-to-text/supported-languages"
+  },
+  {
+    "source": "/introduction/troubleshooting",
+    "destination": "/speech-to-text/batch/troubleshooting"
+  },
+  {
+    "source": "/introduction/usage",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/containers",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/containers/accessing-images",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/containers/additional-security",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/containers/cpu-container",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/containers/gpu-inference-container",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/containers/lang-id-container",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/containers/licensing",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/containers/translation",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/containers/troubleshooting",
+    "destination": "/not-found"
+  },
+  { "source": "/on-prem/containers/usage", "destination": "/not-found" },
+  { "source": "/on-prem/kubernetes", "destination": "/not-found" },
+  { "source": "/on-prem/kubernetes/flow", "destination": "/not-found" },
+  {
+    "source": "/on-prem/kubernetes/prerequisites",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/kubernetes/realtime",
+    "destination": "/not-found"
+  },
+  { "source": "/on-prem/usage/", "destination": "/not-found" },
+  {
+    "source": "/on-prem/usage/usage-collector",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/usage/usage-container",
+    "destination": "/not-found"
+  },
+  { "source": "/on-prem/usage/what-data", "destination": "/not-found" },
+  {
+    "source": "/on-prem/virtual-appliance/administration",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/adding-languages",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/gpu",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/lang-id",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/logcli-help",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/monitoring",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/networking",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/remote-access",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/scaling",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/security",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/services",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/ssl",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/administration/usage",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/installation",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/installation/downloading-import",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/installation/licensing/license-features",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/installation/licensing/usage-and-licensing",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/installation/network-config",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/installation/system-requirements",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/on-prem/virtual-appliance/installation/verify",
+    "destination": "/not-found"
+  },
+  { "source": "/private/example-file", "destination": "/not-found" },
+  { "source": "/private/preview-mode", "destination": "/not-found" },
+  { "source": "/release-notes", "destination": "/not-found" },
+  {
+    "source": "/release-notes/batch-appliance-release-notes",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/release-notes/batch-container-release-notes",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/release-notes/batch-saas-release-notes",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/release-notes/gpu-inference-container-release-notes",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/release-notes/gpu-translation-inference-container-release-notes",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/release-notes/lang-id-container-release-notes",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/release-notes/real-time-appliance-release-notes",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/release-notes/real-time-container-release-notes",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/release-notes/real-time-saas-release-notes",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/release-notes/usage-container-release-notes",
+    "destination": "/not-found"
+  },
+  {
+    "source": "/rt-api-ref",
+    "destination": "/api-ref/realtime-transcription-websocket"
+  },
+  { "source": "/sdk/", "destination": "/not-found" },
+  {
+    "source": "/sdk/batch-jobs-javascript-sdk",
+    "destination": "/not-found"
+  },
+  { "source": "/sdk/flow-javascript-sdk", "destination": "/not-found" },
+  { "source": "/sdk/flow-python-sdk", "destination": "/not-found" },
+  { "source": "/sdk/flow-react-sdk", "destination": "/not-found" },
+  {
+    "source": "/sdk/javascript-authentication",
+    "destination": "/not-found"
+  },
+  { "source": "/sdk/python-sdk", "destination": "/not-found" },
+  {
+    "source": "/sdk/real-time-javascript-sdk",
+    "destination": "/not-found"
+  },
+  { "source": "/sdk/real-time-react-sdk", "destination": "/not-found" },
+  { "source": "/speech-capabilities", "destination": "/speech-to-text/" },
+  { "source": "/tutorials", "destination": "/not-found" },
+  {
+    "source": "/tutorials/accuracy-benchmarking",
+    "destination": "/speech-to-text/accuracy-benchmarking"
+  },
+  {
+    "source": "/tutorials/calculating-wer",
+    "destination": "/speech-to-text/accuracy-benchmarking"
+  },
+  {
+    "source": "/tutorials/using-ffmpeg",
+    "destination": "/speech-to-text/real-time/using-ffmpeg"
+  },
+  {
+    "source": "/tutorials/using-mic",
+    "destination": "/speech-to-text/real-time/using-microphone"
+  }
+]

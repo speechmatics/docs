@@ -1,0 +1,146 @@
+[
+  {
+    "to": "/introduction",
+    "from": [
+      "/en",
+      "/en/real-time-saas/overview/",
+      "/en/cloud/",
+      "/en/cloud/configuring-job-request/"
+    ]
+  },
+  {
+    "to": "/release-notes/batch-saas-release-notes",
+    "from": ["/en/cloud/release-notes/"]
+  },
+  {
+    "to": "/release-notes/real-time-saas-release-notes",
+    "from": ["/en/real-time-saas/release-notes/"]
+  },
+  {
+    "to": "/introduction/authentication",
+    "from": "/en/cloud/introduction/"
+  },
+  {
+    "to": "/introduction/errors-rate-limits",
+    "from": [
+      "/en/cloud/understanding-saas-usage/",
+      "/en/cloud/troubleshooting/"
+    ]
+  },
+  {
+    "to": "/on-prem/usage/",
+    "from": "/en/usage-container/"
+  },
+  {
+    "to": "/release-notes/usage-container-release-notes",
+    "from": [
+      "/en/usage-container/release-notes/",
+      "/en/usage-container/intro/",
+      "/en/usage-container/api/"
+    ]
+  },
+  {
+    "to": "/on-prem/containers/lang-id-container",
+    "from": [
+      "/en/language-identification-container/",
+      "/en/language-identification-container/quick-start-guide/"
+    ]
+  },
+  {
+    "to": "/release-notes/lang-id-container-release-notes",
+    "from": "/en/language-identification-container/release-notes/"
+  },
+  {
+    "to": "/features-other/word-alignment",
+    "from": "/en/alignment-service/"
+  },
+  {
+    "to": "/on-prem/containers/accessing-images",
+    "from": [
+      "/on-prem/container/installation/accessing-image",
+      "/on-prem/containers/cpu-container/accessing-image",
+      "/on-prem/container/installation",
+      "/on-prem/containers",
+      "/on-prem"
+    ]
+  },
+  {
+    "to": "/on-prem/containers/additional-security",
+    "from": [
+      "/on-prem/containers/cpu-container/additional-security",
+      "/on-prem/container/installation/additional-security"
+    ]
+  },
+  {
+    "to": "/on-prem/containers/cpu-container",
+    "from": [
+      "/on-prem/container/installation/healthcheck",
+      "/on-prem/containers/cpu-container/healthcheck",
+      "/on-prem/containers/cpu-container/parallel-processing",
+      "/on-prem/containers/installation/parallel-processing",
+      "/on-prem/containers/cpu-container/system-requirements",
+      "/on-prem/container/installation/system-requirements",
+      "/on-prem/containers/cpu-container/using-container",
+      "/on-prem/container/installation/using-container",
+      "/on-prem/containers/gpu-container/linking-to-gpu-inference-engine"
+    ]
+  },
+  {
+    "to": "/on-prem/containers/licensing",
+    "from": [
+      "/on-prem/containers/cpu-container/licensing",
+      "/on-prem/container/installation/licensing"
+    ]
+  },
+  {
+    "to": "/on-prem/containers/troubleshooting",
+    "from": [
+      "/on-prem/container/installation/troubleshooting",
+      "/on-prem/containers/cpu-container/troubleshooting"
+    ]
+  },
+  {
+    "to": "/on-prem/containers/gpu-inference-container",
+    "from": [
+      "/on-prem/containers/gpu-container/gpu-inference-container",
+      "/on-prem/containers/gpu-container/gpu-inference-performance",
+      "/on-prem/containers/gpu-container/gpu-inference-reference-implementation",
+      "/on-prem/containers/gpu-container/deploying-on-kubernetes",
+      "/on-prem/containers/gpu-container"
+    ]
+  },
+  {
+    "to": "/features/diarization",
+    "from": [
+      "/features/diarization/diarization/speaker-diarization",
+      "/features/diarization/speaker-diarization",
+      "/features/diarization/channel-diarization",
+      "/features/diarization/speaker-change",
+      "/features/diarization/speaker-change-channel"
+    ]
+  },
+  {
+    "to": "/on-prem/virtual-appliance/installation",
+    "from": "/on-prem/virtual-appliance"
+  },
+  {
+    "to": "/flow/introduction",
+    "from": ["/flow", "/flow/getting-started"]
+  },
+  {
+    "to": "/sdk/flow-javascript-sdk",
+    "from": ["/flow/node-sdk"]
+  },
+  {
+    "to": "/sdk/flow-python-sdk",
+    "from": ["/flow/python-sdk"]
+  },
+  {
+    "to": "/sdk/flow-react-sdk",
+    "from": ["/flow/react-sdk"]
+  },
+  {
+    "to": "/flow-api-ref",
+    "from": ["/flow/flow-api-ref"]
+  }
+]

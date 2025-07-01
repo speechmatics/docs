@@ -5,6 +5,7 @@ import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import katex from "rehype-katex";
 import math from "remark-math";
 import { prismTheme } from "./prism-theme";
+import { checkRedirects } from "./scripts/redirects/check-redirects";
 import { sidebarItemsGenerator } from "./sidebar-generator";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -157,6 +158,15 @@ const config: Config = {
               ],
             },
           };
+        },
+      };
+    },
+
+    () => {
+      return {
+        name: "check-redirects-plugin",
+        async postBuild({ routesPaths }) {
+          checkRedirects(routesPaths);
         },
       };
     },
