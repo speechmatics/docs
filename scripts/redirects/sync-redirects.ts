@@ -3,7 +3,7 @@ import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import vercelJSON from "../../vercel.json" with { type: "json" };
 import { normalizePath } from "./check-redirects";
-import newRedirects from "./new-redirects.json" with { type: "json" };
+import oldRedirects from "./old-redirects.json" with { type: "json" };
 import superOldRedirects from "./super-old-redirects.json" with {
   type: "json",
 };
@@ -15,7 +15,7 @@ const vercelRedirects = [];
 
 const newRedirectLookup = new Map<string, string>();
 
-for (const redirect of newRedirects) {
+for (const redirect of oldRedirects) {
   vercelRedirects.push({ ...redirect, permanent: true });
   newRedirectLookup.set(redirect.source, redirect.destination);
 }

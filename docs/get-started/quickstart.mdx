@@ -1,9 +1,10 @@
 ---
 pagination_prev: null
+pagination_next: null
 ---
 import { LinkCard } from "@site/src/theme/LinkCard";
-import { Flex } from "@radix-ui/themes";
-import { ChevronsRightIcon, FileAudio, BotMessageSquare } from "lucide-react";
+import { Flex, Grid } from "@radix-ui/themes";
+import { ChevronsRightIcon, FileAudio, BotMessageSquare, BookOpen } from "lucide-react";
 
 # Quickstart
 
@@ -34,6 +35,17 @@ The easiest way to try our products is via the [web portal](https://portal.speec
     title="Build a voice agent"
     description="Build conversational AI agents with ease using the Flow API"
     icon={<BotMessageSquare/>}
-    href="/voice-agents-flow/quickstart"
+    href="/voice-agents-flow/"
   />
 </Flex>
+
+## Quicklinks
+
+<Grid columns="2" gap="3">
+  <LinkCard
+    title="API reference"
+    description="Reference documentation for all our APIs"
+    icon={<BookOpen/>}
+    href="/api-ref"
+  />
+</Grid>

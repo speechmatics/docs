@@ -368,10 +368,10 @@
   },
   {
     "source": "/tutorials/using-ffmpeg",
-    "destination": "/speech-to-text/real-time/using-ffmpeg"
+    "destination": "/speech-to-text/real-time/guides/python-using-ffmpeg"
   },
   {
     "source": "/tutorials/using-mic",
-    "destination": "/speech-to-text/real-time/using-microphone"
+    "destination": "/speech-to-text/real-time/guides/python-using-microphone"
   }
 ]
