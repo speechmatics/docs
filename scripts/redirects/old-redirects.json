@@ -9,7 +9,7 @@
   },
   {
     "source": "/features-other/feature-discovery",
-    "destination": "/speech-to-text/feature-discovery"
+    "destination": "/speech-to-text/features/feature-discovery"
   },
   {
     "source": "/features-other/fetch-url",
