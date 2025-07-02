@@ -30,7 +30,7 @@ A basic Realtime session will have the following message exchanges:
 sequenceDiagram
   participant Client
   participant API
-  Client->>API: Handshake request - GET /v2/<language-code> with Auth Token
+  Client->>API: Handshake request - GET /v2/ with Auth Token
   API-->>Client: 404 Not Found
   API-->>Client: 401 Unauthorized
   API-->>Client: 101 Switching Protocol
@@ -68,7 +68,7 @@ To do so, you must provide the temporary key as a part of a query parameter. Thi
 Here is an example for a successful WebSocket handshake:
 
 ```
-GET /v2/en HTTP/1.1
+GET /v2/ HTTP/1.1
 Host: eu2.rt.speechmatics.com
 Upgrade: websocket
 Connection: Upgrade
