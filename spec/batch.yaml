@@ -748,7 +748,7 @@ paths:
       - $ref: "#/parameters/AuthHeader"
       - $ref: "#/parameters/EARTag"
     get:
-      summary: Get the usage statistics.
+      summary: Get usage statistics.
       produces:
         - application/json
       parameters:

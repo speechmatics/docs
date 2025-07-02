@@ -9,7 +9,7 @@
   },
   {
     "source": "/features-other/feature-discovery",
-    "destination": "/not-found"
+    "destination": "/speech-to-text/features/feature-discovery"
   },
   {
     "source": "/features-other/fetch-url",
@@ -128,7 +128,7 @@
   },
   {
     "source": "/introduction/authentication",
-    "destination": "/not-found"
+    "destination": "/get-started/authentication"
   },
   {
     "source": "/introduction/batch-guide",
@@ -152,7 +152,7 @@
   },
   {
     "source": "/introduction/usage",
-    "destination": "/not-found"
+    "destination": "/speech-to-text/batch/usage"
   },
   {
     "source": "/on-prem/containers",
@@ -291,54 +291,57 @@
     "source": "/on-prem/virtual-appliance/installation/verify",
     "destination": "/not-found"
   },
-  { "source": "/private/example-file", "destination": "/not-found" },
+  { "source": "/private/example-file", "destination": "/" },
   { "source": "/private/preview-mode", "destination": "/not-found" },
-  { "source": "/release-notes", "destination": "/not-found" },
+  {
+    "source": "/release-notes",
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
+  },
   {
     "source": "/release-notes/batch-appliance-release-notes",
-    "destination": "/not-found"
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
   },
   {
     "source": "/release-notes/batch-container-release-notes",
-    "destination": "/not-found"
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
   },
   {
     "source": "/release-notes/batch-saas-release-notes",
-    "destination": "/not-found"
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
   },
   {
     "source": "/release-notes/gpu-inference-container-release-notes",
-    "destination": "/not-found"
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
   },
   {
     "source": "/release-notes/gpu-translation-inference-container-release-notes",
-    "destination": "/not-found"
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
   },
   {
     "source": "/release-notes/lang-id-container-release-notes",
-    "destination": "/not-found"
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
   },
   {
     "source": "/release-notes/real-time-appliance-release-notes",
-    "destination": "/not-found"
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
   },
   {
     "source": "/release-notes/real-time-container-release-notes",
-    "destination": "/not-found"
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
   },
   {
     "source": "/release-notes/real-time-saas-release-notes",
-    "destination": "/not-found"
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
   },
   {
     "source": "/release-notes/usage-container-release-notes",
-    "destination": "/not-found"
+    "destination": "https://speechmatics.featurebase.app/en/changelog"
   },
   {
     "source": "/rt-api-ref",
     "destination": "/api-ref/realtime-transcription-websocket"
   },
-  { "source": "/sdk/", "destination": "/not-found" },
+  { "source": "/sdk/", "destination": "/" },
   {
     "source": "/sdk/batch-jobs-javascript-sdk",
     "destination": "/not-found"
@@ -357,7 +360,7 @@
   },
   { "source": "/sdk/real-time-react-sdk", "destination": "/not-found" },
   { "source": "/speech-capabilities", "destination": "/speech-to-text/" },
-  { "source": "/tutorials", "destination": "/not-found" },
+  { "source": "/tutorials", "destination": "/" },
   {
     "source": "/tutorials/accuracy-benchmarking",
     "destination": "/speech-to-text/accuracy-benchmarking"

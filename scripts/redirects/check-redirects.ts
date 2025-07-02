@@ -22,6 +22,10 @@ export function checkRedirects([...newSitePaths]: string[]) {
     }
 
     if (!newSitePaths.includes(vercelRedirects[oldRoute])) {
+      if (vercelRedirects[oldRoute].startsWith("https://")) {
+        continue;
+      }
+
       throw new Error(
         `Target redirect ${vercelRedirects[oldRoute]} does not exist for old URL ${oldRoute}`,
       );
@@ -32,6 +36,10 @@ export function checkRedirects([...newSitePaths]: string[]) {
   for (const superOldRoute of superOldSiteRoutes.map(normalizePath)) {
     if (!vercelRedirects[superOldRoute]) {
       throw new Error(`Missing redirect for ${superOldRoute}`);
+    }
+
+    if (vercelRedirects[superOldRoute].startsWith("https://")) {
+      continue;
     }
 
     if (!newSitePaths.includes(vercelRedirects[superOldRoute])) {

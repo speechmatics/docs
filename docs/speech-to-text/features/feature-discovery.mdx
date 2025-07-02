@@ -1,13 +1,29 @@
 ---
 description: "Learn how to use Speechmatics' Discovery API."
-sidebar_label: 'Feature Discovery (TODO)'
 sidebar_position: 0
 ---
-import SchemaNode from '@theme/Schema'
-// import discoverySchema from '!openapi-schema-loader!./assets/feature-discovery.schema.json'
 
-# Feature Discovery (SaaS)
+# Feature Discovery
 
-:::warning
-**TODO**: We will put this in the API reference section
-:::
+The Feature Discovery endpoint enables you to dynamically update your system with the latest capabilities offered by Speechmatics. This allows you to deliver new languages and capabilities to your users with less effort and time delay.
+
+## Quickstart
+
+To use the Feature Discovery endpoint, you simply need to make a GET request on the below endpoint. For example: 
+```
+curl "https://asr.api.speechmatics.com/v1/discovery/features"
+```
+
+## Understanding the Response
+
+The Feature Discovery endpoint will include an object with the following properties:
+- `metadata`
+    - `language_pack_info` - For each of our [supported languages](/speech-to-text/supported-languages), give the full name of the language, as well as any [Domain Language Optimizations](/speech-to-text/features/accuracy-language-packs#domain-language-optimization) or [Output Locales](/speech-to-text/output-enhancements/output-formatting#output-locale)
+- `batch` - Capabilities relating to our Batch API
+    - `transcription` - Capabilities relating to transcription
+        - `languages` - Includes a list of supported ISO language codes
+        - `locales` - Includes any languages with a supported [Output Locale](/speech-to-text/output-enhancements/output-formatting#output-locale)
+        - `domains` - Includes any languages with a supported [Domain Language Optimizations](/speech-to-text/features/accuracy-language-packs#domain-language-optimization)
+    - `translation` - Includes all supported [translation pairs](/speech-to-text/translation#supported-translation-pairs)
+    - `languageid` - List of languages supported by [Language Identification](/speech-to-text/batch/language-identification)
+

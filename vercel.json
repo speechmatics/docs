@@ -27,7 +27,7 @@
     },
     {
       "source": "/features-other/feature-discovery",
-      "destination": "/not-found",
+      "destination": "/speech-to-text/features/feature-discovery",
       "permanent": true
     },
     {
@@ -187,7 +187,7 @@
     },
     {
       "source": "/introduction/authentication",
-      "destination": "/not-found",
+      "destination": "/get-started/authentication",
       "permanent": true
     },
     {
@@ -217,7 +217,7 @@
     },
     {
       "source": "/introduction/usage",
-      "destination": "/not-found",
+      "destination": "/speech-to-text/batch/usage",
       "permanent": true
     },
     {
@@ -412,7 +412,7 @@
     },
     {
       "source": "/private/example-file",
-      "destination": "/not-found",
+      "destination": "/",
       "permanent": true
     },
     {
@@ -422,57 +422,57 @@
     },
     {
       "source": "/release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/release-notes/batch-appliance-release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/release-notes/batch-container-release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/release-notes/batch-saas-release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/release-notes/gpu-inference-container-release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/release-notes/gpu-translation-inference-container-release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/release-notes/lang-id-container-release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/release-notes/real-time-appliance-release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/release-notes/real-time-container-release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/release-notes/real-time-saas-release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/release-notes/usage-container-release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
@@ -482,7 +482,7 @@
     },
     {
       "source": "/sdk/",
-      "destination": "/not-found",
+      "destination": "/",
       "permanent": true
     },
     {
@@ -532,7 +532,7 @@
     },
     {
       "source": "/tutorials",
-      "destination": "/not-found",
+      "destination": "/",
       "permanent": true
     },
     {
@@ -577,17 +577,17 @@
     },
     {
       "source": "/en/cloud/release-notes/",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-saas/release-notes/",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/cloud/introduction/",
-      "destination": "/not-found",
+      "destination": "/get-started/authentication",
       "permanent": true
     },
     {
@@ -607,17 +607,17 @@
     },
     {
       "source": "/en/usage-container/release-notes/",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/usage-container/intro/",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/usage-container/api/",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
@@ -632,7 +632,7 @@
     },
     {
       "source": "/en/language-identification-container/release-notes/",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
@@ -1442,112 +1442,112 @@
     },
     {
       "source": "/en/batch-appliance/release-notes/v4.2.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v4.1.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v4.0.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.8.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.7.1",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.7.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.6.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.5.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.4.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.3.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v4.2.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v4.1.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v4.0.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.8.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.7.1",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.7.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.6.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.5.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.4.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.3.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
@@ -3902,92 +3902,92 @@
     },
     {
       "source": "/en/batch-container/release-notes/v9.0.1",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-container/release-notes/v9.0.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-container/release-notes/v8.2.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-container/release-notes/v8.1.2",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-container/release-notes/v8.1.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-container/release-notes/v8.0.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-container/release-notes/v7.0.3",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-container/release-notes/v6.3.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/batch-container/release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/release-notes/v2.0.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.4.1",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.4.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.3.1",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.3.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.2.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.1.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.0.0",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/release-notes",
-      "destination": "/not-found",
+      "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     }
   ]
