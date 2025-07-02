@@ -38,6 +38,10 @@ export function checkRedirects([...newSitePaths]: string[]) {
       throw new Error(`Missing redirect for ${superOldRoute}`);
     }
 
+    if (vercelRedirects[superOldRoute].startsWith("https://")) {
+      continue;
+    }
+
     if (!newSitePaths.includes(vercelRedirects[superOldRoute])) {
       throw new Error(
         `Target redirect ${vercelRedirects[superOldRoute]} does not exist for old URL ${superOldRoute}`,
