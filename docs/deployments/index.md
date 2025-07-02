@@ -28,18 +28,18 @@ Feature availability varies depending on the deployment method you choose. Below
 |-----------------------------------------------|----------------------|----------------------------|
 | [Accuracy Language Packs](/speech-to-text/features/accuracy-language-packs) | Batch, Real-Time | SaaS, On-Prem |
 | [Alignment](/speech-to-text/batch/alignment) | Batch | SaaS |
-| [Auto Chapters](/speech-to-text/batch/speech-intelligence/auto-chapters) | Batch | SaaS |
 | [Audio Events](/speech-to-text/features/audio-events) | Batch, Real-Time | SaaS, On-Prem |
 | [Audio Filtering](/speech-to-text/features/audio-filtering) | Batch, Real-Time | SaaS, On-Prem |
+| [Auto Chapters](/speech-to-text/batch/speech-intelligence/auto-chapters) | Batch | SaaS |
 | [Custom Dictionary](/speech-to-text/features/custom-dictionary) | Batch, Real-Time | SaaS, On-Prem |
 | [Diarization](/speech-to-text/output-enhancements/diarization) | Batch, Real-Time | SaaS, On-Prem |
 | [Disfluencies and Word Replacement](/speech-to-text/output-enhancements/output-formatting) | Batch, Real-Time | SaaS, On-Prem |
 | [End-of-Turn](/speech-to-text/real-time/end-of-turn) | Real-Time | SaaS, On-Prem |
-| [Numeral Formatting](/speech-to-text/output-enhancements/numeral-formatting) | Batch, Real-Time | SaaS, On-Prem |
 | [Feature Discovery](/speech-to-text/features/feature-discovery) | Batch, Real-Time | SaaS |
 | [Fetch URL](/speech-to-text/batch/fetch-url) | Batch | SaaS, On-Prem |
 | [Language Identification](/speech-to-text/batch/language-identification) | Batch | SaaS |
 | [Notifications](/speech-to-text/batch/notifications.md) | Batch | SaaS, On-Prem |
+| [Numeral Formatting](/speech-to-text/output-enhancements/numeral-formatting) | Batch, Real-Time | SaaS, On-Prem |
 | [Punctuation Settings](/speech-to-text/output-enhancements/punctuation-settings) | Batch, Real-Time | SaaS, On-Prem |
 | [Sentiment Analysis](/speech-to-text/batch/speech-intelligence/sentiment-analysis/index.mdx) | Batch | SaaS, On-Prem |
 | [Summarization](/speech-to-text/batch/speech-intelligence/summarization) | Batch | SaaS |
