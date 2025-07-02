@@ -61,10 +61,6 @@ channels:
         $ref: "#/components/messages/Warning"
       Error:
         $ref: "#/components/messages/Error"
-      StartSessionTerminate:
-        $ref: "#/components/messages/StartSessionTerminate"
-      EndSessionTerminate:
-        $ref: "#/components/messages/EndSessionTerminate"
 operations:
   publish:
     action: send
