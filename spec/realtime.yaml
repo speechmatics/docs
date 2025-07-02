@@ -32,8 +32,6 @@ channels:
         $ref: "#/components/messages/EndOfStream"
       SetRecognitionConfig:
         $ref: "#/components/messages/SetRecognitionConfig"
-      SessionTransfer:
-        $ref: "#/components/messages/SessionTransfer"
   subscribe:
     address: /
     messages:
@@ -77,7 +75,6 @@ operations:
       - $ref: "#/channels/publish/messages/AddAudio"
       - $ref: "#/channels/publish/messages/EndOfStream"
       - $ref: "#/channels/publish/messages/SetRecognitionConfig"
-      - $ref: "#/channels/publish/messages/SessionTransfer"
   subscribe:
     action: receive
     channel:
@@ -96,8 +93,6 @@ operations:
       - $ref: "#/channels/subscribe/messages/Info"
       - $ref: "#/channels/subscribe/messages/Warning"
       - $ref: "#/channels/subscribe/messages/Error"
-      - $ref: "#/channels/subscribe/messages/StartSessionTerminate"
-      - $ref: "#/channels/subscribe/messages/EndSessionTerminate"
 components:
   messages:
     StartRecognition:
@@ -117,10 +112,6 @@ components:
       summary: Allows the client to re-configure the recognition session.
       payload:
         $ref: "#/components/schemas/SetRecognitionConfig"
-    SessionTransfer:
-      summary: Allows to continue with session transfed from other transcriber
-      payload:
-        $ref: "#/components/schemas/SessionTransfer"
     RecognitionStarted:
       summary: Server response to StartRecognition, acknowledging that a recognition session has started.
       payload:
@@ -173,14 +164,6 @@ components:
       summary: Error messages sent from the server to the client.
       payload:
         $ref: "#/components/schemas/Error"
-    StartSessionTerminate:
-      summary: Indicates starting of the session transfer procedure
-      payload:
-        $ref: "#/components/schemas/StartSessionTerminate"
-    EndSessionTerminate:
-      summary: Indicates finish of the session transfer procedure
-      payload:
-        $ref: "#/components/schemas/EndSessionTerminate"
   schemas:
     StartRecognition:
       type: object
@@ -222,29 +205,6 @@ components:
       required:
         - message
         - transcription_config
-    SessionTransfer:
-      type: object
-      properties:
-        message:
-          const: SessionTransfer
-        next_seq_no:
-          type: integer
-        end_time:
-          type: number
-          format: float
-        speech_duration:
-          type: number
-          format: float
-        session_id:
-          type: string
-        transcription_config:
-          $ref: "#/components/schemas/TranscriptionConfig"
-      required:
-        - message
-        - next_seq_no
-        - end_time
-        - speech_duration
-        - session_id
     RecognitionStarted:
       type: object
       properties:
@@ -449,37 +409,6 @@ components:
         - message
         - type
         - reason
-    StartSessionTerminate:
-      type: object
-      properties:
-        message:
-          const: StartSessionTerminate
-        reason:
-          type: string
-      required:
-        - message
-        - reason
-    EndSessionTerminate:
-      type: object
-      properties:
-        message:
-          const: EndSessionTerminate
-        session_id:
-          type: string
-        next_seq_no:
-          type: integer
-        end_time:
-          type: number
-          format: float
-        speech_duration:
-          type: number
-          format: float
-      required:
-        - message
-        - session_id
-        - next_seq_no
-        - end_time
-        - speech_duration
     AudioFormat:
       type: object
       required:
