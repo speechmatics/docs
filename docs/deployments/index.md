@@ -21,7 +21,7 @@ Deploy Speechmatics services in your own environment using containers. This opti
 
 - [CPU Speech-to-Text Container](/deployments/container/cpu-speech-to-text-container): Deploy the Speechmatics speech-to-text engine as a containerized service on your own hardware.
 - [Language ID Container](/deployments/container/language-id): Identify the language spoken in your audio using the Language ID container.
-- [Translation Container](/deployments/container/translation): Translate audio from one language to another using the Translation container.
+- [Translation Container](/deployments/container/gpu-translation-container): Translate audio from one language to another using the Translation container.
 
 
 ## Feature Availability
