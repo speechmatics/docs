@@ -102,6 +102,7 @@ const config: Config = {
     prism: {
       theme: prismTheme,
       darkTheme: prismTheme,
+      additionalLanguages: ["docker"],
     },
     docs: {
       sidebar: {
@@ -109,7 +110,7 @@ const config: Config = {
       },
     },
     mermaid: {
-      theme: { light: "neutral", dark: "neutral" },
+      theme: { light: "neutral", dark: "dark" },
     },
   } satisfies Preset.ThemeConfig,
 

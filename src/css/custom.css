@@ -10,6 +10,8 @@
 @import "./cards.css";
 @import "./navbar.css";
 @import "./badge.css";
+@import "./details.css";
+@import "./scroll.css";
 
 /* OpenAPI docs plugin customization */
 .radix-themes .openapi-explorer__form-item-input {

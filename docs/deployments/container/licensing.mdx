@@ -1,0 +1,60 @@
+---
+toc_max_heading_level: 3
+---
+
+import { smVariables } from '/sm-variables';
+import CodeBlock from '@theme/CodeBlock';
+
+# Licensing
+
+**To** run our containers you need a license. To get a license you need to speak to [Support](https://support.speechmatics.com).
+
+The license is easy to pass into the container deployment either as a file or a environment variable. Licensing does not require network access and works in offline deployments.
+
+## License Structure
+
+The contents of the file received should look similar to this:
+
+```json
+{
+  "contractid": 1,
+  "creationdate": "2020-03-24 17:43:35",
+  "customer": "Speechmatics",
+  "id": "c18a4eb990b143agadeb384cbj7b04c3",
+  "is_trial": true,
+  "metadata": {
+    "key_pair_id": 1,
+    "request": {
+      "customer": "Speechmatics",
+      "features": ["MAPBA", "LANY"],
+      "isTrial": true,
+      "notValidAfter": "2021-01-01",
+      "validFrom": "2020-01-01"
+    }
+  },
+  "signedclaimstoken": "exampleClaimsToken"
+}
+```
+
+The `validFrom` and `notValidAfter` keys in the license file specify the start and end dates for the validity of your license. The license is valid from 00:00 UTC on the start date to 00:00 UTC on the expiry date. After the expiry date, the Container will continue to run but will not transcribe audio. You should apply for a new license before this happens.
+
+## Volume Mapping in a License File
+
+The license file should be mapped to the path `/license.json` within the Container.
+
+For example:
+
+<CodeBlock>
+  {`docker run -v ./my_license.json:/license.json batch-asr-transcriber-en:${smVariables.latestContainerVersion}
+`}
+</CodeBlock>
+
+## Setting the License with an Environment Variable
+
+For example, copy the `signedclaimstoken` value from the license file and set the `LICENSE_TOKEN` environment variable:
+
+<CodeBlock>
+  {`docker run -e LICENSE_TOKEN=exampleClaimsToken batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+There should be no reason to do this, but if both a volume-mapped file and an environment variable are provided simultaneously then the volume-mapped file will be ignored.

@@ -1,0 +1,161 @@
+---
+toc_max_heading_level: 3
+---
+
+import { smVariables } from '/sm-variables';
+import CodeBlock from '@theme/CodeBlock';
+
+# Troubleshooting
+
+## Batch troubleshooting
+
+### Enabling Logging
+
+If you are seeing problems then we recommend that you enable logging and [reach out to Support](https://support.speechmatics.com).
+
+The following example shows how to enable logging, using the `-stderr` argument to output the logs to `stderr`:
+
+<CodeBlock>
+  {`docker run --rm -e SM_JOB_ID=123 -e SM_LOG_DIR=/logs \\
+    -v ~/$AUDIO_FILE:/input.audio \\
+    -e LICENSE_TOKEN=f787b0051e2768b1f619d75faab97f23ee9b7931890c05f97e9f550702 \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion} \\
+    -stderr`}
+</CodeBlock>
+
+To store the output of logs, add two environment variables:
+
+- `SM_JOB_ID`: - a job id, for example: 1
+- `SM_LOG_DIR`: - the directory inside the container where to write the logs, for example: `/logs`
+
+When raising a Support Ticket it is normally easier to write the log output to a specific file. You can do this by creating a volume mount where the logs will be accessible from after the Container has finished. Before running the Container you need to create a directory for the log file and ensure it has the correct permissions. In this example we use a local logs directory to store the output of the log for a job with ID 124:
+
+```bash
+mkdir -p logs/124 /
+sudo chown -R nobody:nogroup logs/
+sudo chmod -R a+rwx logs/
+```
+
+then
+
+<CodeBlock>
+  {`docker run --rm -v \${PWD}/logs:/logs -e SM_JOB_ID=124 -e SM_JOB_ID=/logs \\
+    -v ~/sm_audio.wav:/input.audio \\
+    -e LICENSE_TOKEN=f787b0051e2768b1f619d75faab97f23ee9b7931890c05f97e9f550702 \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion}
+    tail logs/124/sigurd.log`}
+</CodeBlock>
+
+### Common Problems
+
+There are occasions where the transcription container will fail to transcribe the media file provided and will exit without error code 0 (success). Speechmatics heavily advise enabling logging (see instruction above). The logs will show the reasons for the failed job especially when multiple errors can cause the same error code. Below are some errors with suggestions and how they can be revolved.
+
+| Error Code | Error | Resolution |
+|-----------|-------|------------|
+| 1 | “err: signal: illegal instruction” | This means that the models couldn't be loaded within the Container. Please ensure that the host that's running the Docker engine has an AVX compatible CPU.<br /><br />The following can also be done inside the Container to check that AVX is listed in the CPU flags.<br /><br />`$ docker run -it --entrypoint /bin/bash batch-asr-transcriber-en:{smVariables.latestContainerVersion}`<br /><br />`$ cat /proc/cpuinfo \| grep flags` |
+| 1 | “Unable to set up logging” | This can occur when a directory is volume mapped into the Containers and a log file cannot be created into that directory.<br /><br />Example command to map in a tmp directory inside the container to /xxx path:<br /><br />`$ docker run --rm -e SM_LOG_DIR=/xxx -e SM_JOB_ID=1 -v $PWD/tmp:/xxx batch-asr-transcriber-en:{smVariables.latestContainerVersion}` |
+| 1 | “/input.audio is not valid” | If volume mapping the file into the Container, ensure that a valid audio file is being mapped in. |
+| 1 | “failed to get sample rate” | The sample rate from the audio file that was passed for recognition did not have a sample rate. Check the audio file is valid and that a sample rate can be read.<br /><br />The following ffmpeg can be used to identify if there is a valid sample rate:<br /><br />`$ ffmpeg -i /home/user/example.wav` |
+| 1 | “exit status 1” | If the container is memory (RAM) starved it can quit during the transcription process. Verify the minimum resource (CPU and RAM) requirements are being assigned to a Transcription Container.<br /><br />The inspect command in Docker can be useful to identify if the lack of memory shutdown the container. Look out for the “OOMKilled” value. Here is an example.<br /><br />`$ docker inspect --format='{{json.state}}' $containerID` |
+| 1 | "License Error: illegal base64 data at input byte $NUMBER" | The license token value has been truncated or otherwise altered from the initial value generated. Please ensure that you have copied token value correctly or that the license file is not corrupt |
+| 1 | "ERROR sentryserver could not load license: stat /license.json: no such file or directory" | The license file or license token has not been passed when attempting to run the Container. Please ensure that the license file or license token value is passed as documented |
+| 2 | --parallel/-parallel: invalid check_parallel value: '0' | If using the parallel option to speed up the processing time on files more than 5 minutes in length the -–parallel switch needs to have an integer at least 1. A non-zero value must be provided if the parallel command is to be used.<br /><br />The example below shows a valid command:<br /><br />`$ docker run -i -v /home/user/config.json:/config.json -v /home/user/example.wav:/input.audio -e LICENSE_TOKEN=$TOKEN_VALUE batch-asr-transcriber-en:{smVariables.latestContainerVersion} --parallel 2` |
+
+If you still continue to face issues, please [reach out to Support](https://support.speechmatics.com).
+
+## Real-Time Troubleshooting
+
+### Enabling Logging
+
+If you are seeing problems then we recommend that you [reach out to Support](https://support.speechmatics.com). Please include the logging output from the Container if you do open a ticket, and ideally enable verbose logging.
+
+Verbose logging is enabled by running the Container with the environment variable `DEBUG` set to `true`.
+
+e.g.
+
+<CodeBlock>
+  {`docker run -e DEBUG=true rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+### Licensing
+
+The best way to identify licensing errors with the Container is to look at the container logs. See https://docs.docker.com/config/containers/logging/ for more information about doing this. If licensing is successful then the logs upon startup should look similar to this:
+
+```
+INFO:__main__:Starting health service
+INFO:orchestrator.health:Health check server starting...
+INFO:__main__:Health service started.
+INFO:orchestrator.license:Starting sentry server...
+time="2020-03-27T11:50:18.9774596Z" level=info msg="Listening to port 52000, secure mode = false"
+time="2020-03-27T11:50:18.9776369Z" level=info msg="Reading license from /license.json"
+time="2020-03-27T11:50:18.9866595Z" level=info msg="Read token eyJkbGciOjJS..."
+INFO:orchestrator.license:Sentry server started
+time="2020-03-27T11:50:18.990334Z" level=info msg="License : licensed=true, customer=Speechmatics, contract_id=0, expires_at=2021-03-16 00:00:00 +0000 UTC, trial=false, features=MAPRT,MAPBA,AMCC,APD,APR,ASS"
+time="2020-03-27T11:50:18.9904803Z" level=info msg="Starting server 3.0.0 [master]"
+time="2020-03-27T11:50:18.9918058Z" level=info msg="Monitoring parent pid 1"
+2020-03-27 11:50:19,005 orchestrator.transport.ws.common        INFO    Waiting for the model to be ready - checking /model/manifest.json
+2020-03-27 11:50:20,673 orchestrator.transport.ws.common        INFO    Loading model en
+2020-03-27 11:50:26,107 orchestrator.transport.ws.ws    INFO    transport websocket listening at ws://0.0.0.0:9000
+2020-03-27 11:50:26,107 orchestrator.transport.ws.health_update INFO    Transport marked as started for health updates.
+```
+
+If your Container is not licensed, or has an invalid license then it will exit upon startup with an error message similar to this:
+
+```
+RuntimeError: Failed to launch sentry server licensing process on port 52000
+```
+
+Please ensure that you have correctly followed the instructions in the quick start guide for setting up licensing, and that have you a license file which has not expired (the `metadata` section in the file tells you when the license is valid until).
+
+There can be several reasons for a licensing error:
+
+- No license has been provided
+
+If you see the following message in the container logs then the most likely cause is that no license file has been provided:
+
+```
+level=error msg="could not load license file data: stat /license.json: no such file or directory"
+```
+
+Please review the quick start guide and ensure that the license has been provided properly, either as a volume-mapped file or as an environment variable.
+
+- The license has expired
+
+```
+level=info msg="License : licensed=false, customer=Speechmatics, contract_id=99, expires_at=2020-03-26 00:00:00 +0000 UTC, trial=false, features="
+level=error msg="Error in license : token is expired by 36h6m37s"
+```
+
+This message indicates that your license has expired. Please request a new license from Speechmatics Support.
+
+- You are attempting to use a feature for which you are not licensed
+
+Not all licenses are valid for all features of our product. If you are not licensed for a feature which you attempt to use for transcription, then transcription will not be performed. Please [get in touch with Speechmatics Support](https://support.speechmatics.com) if you are interested in using a feature which you are not licensed for.
+
+If this error case happens you should see a log message similar to this one:
+
+```
+2020-03-27 12:11:04,230 orchestrator.transport.ws.protocol      WARNING Sending an error to client: not_allowed - Unable to use provided configuration: No license for requested language - LEN; session ID de1ec62d-a22d-47a3-8f03-def025a52f60
+```
+
+- An improperly formatted license file has been provided
+
+_Only relevant if using a volume-mapped file to license the container_
+
+```
+level=error msg="could not load license file data: unexpected end of JSON input"
+```
+
+or
+
+```
+level=error msg="could not load license file data: No valid signedclaimstoken field found in license (too short)"
+```
+
+Please ensure that you are using the license file which has been provided to you by the Speechmatics support team, and that no changes have been made to the file accidentally.
+
+The license file should be a valid JSON file and should contain a key named `signedclaimstoken` which is your license token.
+
+### Common Problems
+
+You should ensure, when using the config object in the `StartRecognition` message, that the JSON is correctly formatted.
