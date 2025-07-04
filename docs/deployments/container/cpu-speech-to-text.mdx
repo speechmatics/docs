@@ -55,19 +55,19 @@ There are two different methods for passing an audio file into a container.
 
 Stream the audio through the container via standard input (STDIN):
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`cat ~/example.wav | docker run -i \\
-  -e LICENSE_TOKEN=$TOKEN_VALUE \\
-  batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
 Pull an audio file from a mapped directory into the `input.audio` file within the container:
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`docker run \\
-  -v ~/example.wav:/input.audio \\
-  -e LICENSE_TOKEN=$TOKEN_VALUE \\
-  batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+    -v ~/example.wav:/input.audio \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
 See [Docker docs](https://docs.docker.com/engine/reference/commandline/run/) for a full list of the available options.
@@ -130,8 +130,8 @@ Here is an example output:
 
 The exit code of the Container will also determine if the transcription was successful. There are two exit code possibilities:
 
-- Exit Code == 0 : The transcript was a success; the output will contain a JSON output defining the transcript (more info below)
-- Exit Code != 0 : the output will contain a stack trace and other useful information. This output should be used in any communication with Speechmatics Support to aid understanding and resolution of any problems that may occur
+- `Exit Code == 0` : The transcript was a success; the output will contain a JSON output defining the transcript (more info below)
+- `Exit Code != 0` : the output will contain a stack trace and other useful information. This output should be used in any communication with Speechmatics Support to aid understanding and resolution of any problems that may occur
 
 If you encounter any issues refer to the [troubleshooting](/deployments/container/troubleshooting) documentation, which includes more detailed exit codes.
 
@@ -182,11 +182,11 @@ Once the above image is built, and a Container instantiated from it, a script ca
 
 For customers who are looking to improve job turnaround time and who are able to assign sufficient resources, it is possible to pass a parallel transcription parameter to the container to take advantage of multiple CPUs. The parameter is called parallel and the following example shows how it can be used. In this case to use 4 cores to process the audio you would run the Container like this:
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`docker run -i \\
-  -v ~/example.wav:/input.audio \\
-  batch-asr-transcriber-en:${smVariables.latestContainerVersion} \\
-  --parallel=4
+    -v ~/example.wav:/input.audio \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion} \\
+    --parallel=4
 `}
 </CodeBlock>
 
@@ -210,13 +210,13 @@ This directory must be mounted into the container so the transcripts can be retr
 
 The following example shows how to use `--all-formats` parameter. In this scenario, after processing the file, three separate transcripts would be found in the `~/tmp/output` directory. These transcripts would be in JSON, TXT, and SRT format.
 
-<CodeBlock>
+<CodeBlock language="bash">
 {`docker run \\
-  -v ~/example.wav:/input.audio \\
-  -v ~/tmp/output:/output_dir_name \\
-  -e LICENSE_TOKEN=$TOKEN_VALUE \\
-  batch-asr-transcriber-en:${smVariables.latestContainerVersion} \\
-  --all-formats /output_dir_name`}
+    -v ~/example.wav:/input.audio \\
+    -v ~/tmp/output:/output_dir_name \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion} \\
+    --all-formats /output_dir_name`}
 </CodeBlock>
 
 
@@ -229,12 +229,12 @@ The Real-time container provides the ability to transcribe speech data in a pred
 
 Here's an example of how to start the Container from the command line:
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`docker run \\
-  -p 9000:9000 \\
-  -p 8001:8001 \\
-  -e LICENSE_TOKEN=$TOKEN_VALUE \\
-  rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+    -p 9000:9000 \\
+    -p 8001:8001 \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
 See [Docker docs](https://docs.docker.com/engine/reference/commandline/run/) for a full list of the available options.
@@ -313,26 +313,26 @@ Consider using the following regular expression to extract just the seconds part
 
 Users may wish to run the Container in read-only mode. This may be necessary due to their regulatory environment, or a requirement not to write any media file to disk. An example of how to do this is below.
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`docker run -it --read-only \\
-   -p 9000:9000 \\
-   --tmpfs /tmp \\
-   -e LICENSE_TOKEN=$TOKEN_VALUE \\
-   rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+    -p 9000:9000 \\
+    --tmpfs /tmp \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
 The Container still requires a temporary directory with write permissions. Users can provide a directory (e.g `/tmp`) by using the `--tmpfs` Docker argument. A tmpfs mount is temporary, and only persisted in the host memory. When the Container stops, the tmpfs mount is removed, and files written there won’t be persisted.
 
 If customers want to use the shared Custom Dictionary Cache feature, they must also specify the location of cache and mount it as a volume
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`docker run -it --read-only \\
-  -p 9000:9000 \\
-  --tmpfs /tmp \\
-  -v /cachelocation:/cache \\
-  -e LICENSE_TOKEN=$TOKEN_VALUE \\
-  -e SM_CUSTOM_DICTIONARY_CACHE_TYPE=shared \\
-  rt-asr-transcriber-en:${smVariables.latestContainerVersion}
+    -p 9000:9000 \\
+    --tmpfs /tmp \\
+    -v /cachelocation:/cache \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    -e SM_CUSTOM_DICTIONARY_CACHE_TYPE=shared \\
+    rt-asr-transcriber-en:${smVariables.latestContainerVersion}
 `}
 </CodeBlock>
 
@@ -344,15 +344,15 @@ Users may specify the non-root command by the `docker run –-user $USERNUMBER:$
 
 An example is below:
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`docker run -it --user 100:100 \\
-   -p 9000:9000 \\
-   -e LICENSE_TOKEN=$TOKEN_VALUE \\
-   rt-asr-transcriber-en:${smVariables.latestContainerVersion}
+    -p 9000:9000 \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    rt-asr-transcriber-en:${smVariables.latestContainerVersion}
 `}
 </CodeBlock>
 
-## How to use a Shared Custom Dictionary Cache
+## How to use a shared Custom Dictionary cache
 
 The Speechmatics Real-Time Container includes an optional [Custom Dictionary](/speech-to-text/features/custom-dictionary) cache mechanism to reduce session initialisation times. 
 
@@ -367,7 +367,7 @@ For more information about how the shared cache storage management works, please
 
 We highly recommend you ensure any location you use for the shared cache has enough space for the number of Custom Dictionaries you plan to allocate there. How to allocate Custom Dictionaries to the shared cache is documented below.
 
-**How to Set Up the Shared Cache**
+### How to set up the shared cache
 
 The shared cache is enabled by setting the following value when running transcription:
 
@@ -379,7 +379,7 @@ The shared cache is enabled by setting the following value when running transcri
   - A value of `-1` will allow **every** Custom Dictionary to be stored within the shared cache. This is the **default** assumed value
   - A Custom Dictionary Cache entry **larger** than the `SM_CUSTOM_DICTIONARY_CACHE_ENTRY_MAX_SIZE` will still be used in transcription, but will not be cached
 
-#### Maintaining the shared cache
+### Maintaining the shared cache
 
 If you specify the shared cache to be used and your Custom Dictionary is within the permitted size, Speechmatics Real-Time Container will always try to cache the Custom Dictionary. If a Custom Dictionary cannot occupy the shared cache due to other cached Custom Dictionaries within the allocated cache, then older Custom Dictionaries will be removed from the cache to free up as much space as necessary for the new Custom Dictionary. This is carried out in order of the least recent Custom Dictionary to be used.
 
@@ -387,7 +387,7 @@ Therefore, you must ensure your cache allocation large enough to handle the numb
 
 It is recommended to use a Docker volume with a dedicated filesystem with a limited size. If a user decides to use a volume that shares filesystem with the host, it is the user's responsibility to purge the cache if necessary.
 
-**Creating the Shared Cache**
+### Creating the shared cache
 
 In the example below, transcription is run where an example local docker volume is created for the shared cache. It will allow a Custom Dictionary of up to 5MB to be cached.
 

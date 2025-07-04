@@ -68,12 +68,12 @@ Currently, each Translation Container can only run on a single GPU.
 If a system has more than one GPU, the device must be specified using `CUDA_VISIBLE_DEVICES`
 or selecting the device using the `--gpus` argument. See [Nvidia/CUDA documentation for details](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#cuda-environment-variables).
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`docker run --rm -it \\
-  --gpus '"device=0"' \\
-  -e CUDA_VISIBLE_DEVICES \\
-  -p 8001:8001 \\ # the grpc endpoint uses port 8001, can be mapped to any host port
-  speechmaticspublic.azurecr.io/sm-translation-inference-server:${smVariables.latestContainerVersion}
+    --gpus '"device=0"' \\
+    -e CUDA_VISIBLE_DEVICES \\
+    -p 8001:8001 \\ # the grpc endpoint uses port 8001, can be mapped to any host port
+    speechmaticspublic.azurecr.io/sm-translation-inference-server:${smVariables.latestContainerVersion}
 `}
 </CodeBlock>
 
@@ -119,21 +119,21 @@ Assuming the following config file:
 
 You can run Batch Transcription and Translation with:
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`cat ~/$AUDIO_FILE | docker run -i \\
-  -v ~/$CONFIG_FILE:/config.json \\
-  -e LICENSE_TOKEN=eyJhbGciOiJ... \\
-  -e SM_TRANSLATION_ENDPOINT=<server>:<port> \\
-  batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+    -v ~/$CONFIG_FILE:/config.json \\
+    -e LICENSE_TOKEN=eyJhbGciOiJ... \\
+    -e SM_TRANSLATION_ENDPOINT=<server>:<port> \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
 Or start a Translation enabled Real-Time Container with:
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`docker run -p 9000:9000 -e LICENSE_TOKEN=eyJhbGciOiJ... \\
-    -e SM_TRANSLATION_ENDPOINT=<server>:<port> \\
-    -e SM_TRANSLATION_MAX_TARGET_LANGUAGES=10 \\ # raise the allowed number of target languages
-    rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+      -e SM_TRANSLATION_ENDPOINT=<server>:<port> \\
+      -e SM_TRANSLATION_MAX_TARGET_LANGUAGES=10 \\ # raise the allowed number of target languages
+      rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
 ### Monitoring the Server

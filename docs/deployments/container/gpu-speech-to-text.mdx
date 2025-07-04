@@ -8,12 +8,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { smVariables } from '/sm-variables';
 import CodeBlock from '@theme/CodeBlock';
+import gpuSttDockerCompose from './assets/gpu-stt-docker-compose.yml?raw';
 
 # GPU Speech to text container
 
 ## Prerequisites
 
-- [A license file or a license token]/deployments/container/licensing)
+- [A license file or a license token](/deployments/container/licensing)
   - There is no specific license for the GPU Inference Container, it will run using an existing Speechmatics license for the Real-Time or Batch
     Container
 - [Access to our Docker repository](/deployments/container/accessing-images)
@@ -32,14 +33,14 @@ The system must have:
 
 The raw image size of the GPU Inference Container is around 15GB.
 
-### Nvidia Drivers
+### Nvidia drivers
 
 The GPU Inference Container is based on CUDA 12.3.2, which requires NVIDIA Driver release 545 or later.
 If you are running on a data center GPU (e.g, a T4) you can use drivers: 470.57 (or later R470), 525.85 (or later R525), 535.86 (or later R535), or 545.23 (or later R545).
 
 Driver installation can be validated by running `nvidia-smi`. This command should return the Nvidia driver version and show additional information about the GPU(s).
 
-#### Azure Instances
+#### Azure instances
 
 The GPU node can be provisioned in the cloud. Our SaaS deployment uses
 
@@ -47,19 +48,19 @@ The GPU node can be provisioned in the cloud. Our SaaS deployment uses
 
 but any `NC` or `ND` series with sufficient memory should work.
 
-## Running the Image
+## Running the image
 
 Currently, each GPU Inference Container can only run on a single GPU.
 If a system has more than one GPU, the device must be specified using `CUDA_VISIBLE_DEVICES`
 or selecting the device using the `--gpus` argument. See [Nvidia/CUDA documentation for details](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#cuda-environment-variables).
 
-<CodeBlock>
+<CodeBlock language="bash">
   {`docker run --rm -it \\
-  -v $PWD/license.json:/license.json \\
-  --gpus '"device=0"' \\
-  -e CUDA_VISIBLE_DEVICES \\
-  -p 8001:8001 \\
-  speechmaticspublic.azurecr.io/sm-gpu-inference-server-en:${smVariables.latestContainerVersion}
+    -v $PWD/license.json:/license.json \\
+    --gpus '"device=0"' \\
+    -e CUDA_VISIBLE_DEVICES \\
+    -p 8001:8001 \\
+    speechmaticspublic.azurecr.io/sm-gpu-inference-server-en:${smVariables.latestContainerVersion}
 `}
 </CodeBlock>
 
@@ -89,7 +90,7 @@ I1215 11:43:57.375473 1 http_server.cc:3477] Started HTTPService at 0.0.0.0:8000
 I1215 11:43:57.417749 1 http_server.cc:184] Started Metrics Service at 0.0.0.0:8002
 ```
 
-### Batch and Real-Time Inference
+### Batch and Real-time inference
 
 The Inference server can run in two modes: _batch_, for processing whole files and returning the transcript at the end, and _real-time_ for
 processing audio streams. The default mode is batch. To configure the GPU server for real-time, set the environment variable
@@ -102,11 +103,11 @@ The modes correspond to the two types of client speech Container, which are dist
 
 The server can only support one of these modes at once.
 
-### Linking to a GPU Inference Container
+### Linking to a GPU inference container
 
 Once the GPU Server is running, follow the [Instructions for Linking a CPU Container](/deployments/container/cpu-speech-to-text#linking-to-a-gpu-inference-container).
 
-### Running Only One Operating Point
+### Running only one operating point
 
 [Operating Points](/speech-to-text/features/accuracy-language-packs#accuracy) represent different levels of model complexity.
 To save GPU memory for throughput, you can run the server with only one Operating Point loaded. To do this, pass the
@@ -116,59 +117,24 @@ To save GPU memory for throughput, you can run the server with only one Operatin
 When running the all language standard Operating Point GPU inference server you must set the `SM_OPERATING_POINT` environment variable to `standard`
 :::
 
-### Monitoring the Server
+### Monitoring the server
 
 The inference server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such
 can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP APIs. To expose these, configure an external mapping for port
 8002(Prometheus) or 8000(HTTP).
 
-### Operating Points in GPU Inference
+### Operating points in GPU inference
 
 When inference is outsourced to a GPU server, alternative GPU-specific models are used, so you should not expect to see identical results compared to CPU-based inference. For convenience, the GPU models are also designated as 'standard' and 'enhanced'.
 
 ## Docker Compose example
 
-This docker-compose file will create a Speechmatics GPU Inference Server:
+This Docker Compose file will create a Speechmatics GPU Inference Server:
 
 (assumes your `license.json` file is in the current working directory)
 
-<CodeBlock language='yaml'>
-  {`---
-version: '3.8'
-\0
-networks:
-  transcriber:
-    driver: bridge
-\0
-services:
-  triton:
-    image: speechmaticspublic.azurecr.io/sm-gpu-inference-server-en:${smVariables.latestContainerVersion}
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              ### Limit to N GPUs
-              # count: 1
-              ### Pick specific GPUs by device ID
-              # device_ids:
-              #   - 0
-              #   - 3
-              capabilities:
-                - gpu
-    container_name: triton
-    networks:
-      - transcriber
-    expose:
-      - 8000/tcp
-      - 8001/tcp
-      - 8002/tcp
-    environment:
-      - NVIDIA_DRIVER_CAPABILITIES=all
-      - NVIDIA_VISIBLE_DEVICES=all
-      - CUDA_VISIBLE_DEVICES=0
-    volumes:
-      - $PWD/license.json:/license.json:ro`}
+<CodeBlock language="yaml" title="docker-compose.yml">
+{gpuSttDockerCompose.replace('{{ CONTAINER_VERSION }}', smVariables.latestContainerVersion)}
 </CodeBlock>
 
 ## GPU Inference Performance
@@ -176,9 +142,10 @@ services:
 This is a comparison of the performance and estimated running costs of transcription executing on
 standard Azure VMs.
 
-| Benchmark Metrics                          |              |              |              |              |
-| ------------------------------------------ | ------------ | ------------ | ------------ | ------------ |
+### Benchmark metrics
+
 | Operating Point                            | CPU Standard | CPU Enhanced | GPU Standard | GPU Enhanced |
+|--------------------------------------------|--------------|--------------|--------------|--------------|
 | Lowest Processing Cost (US ¢ per hour)     | 1.7          | 3.8          | 0.71         | 2.21         |
 | Cost vs CPU Standard (%)                   | -            | 224%         | 42%          | 130%         |
 | Cost vs CPU Enhanced (%)                   | 45%          | -            | 19%          | 58%          |
