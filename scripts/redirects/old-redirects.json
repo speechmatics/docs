@@ -353,21 +353,21 @@
   { "source": "/sdk/", "destination": "/" },
   {
     "source": "/sdk/batch-jobs-javascript-sdk",
-    "destination": "/not-found"
+    "destination": "https://www.npmjs.com/package/@speechmatics/batch-client"
   },
-  { "source": "/sdk/flow-javascript-sdk", "destination": "/not-found" },
-  { "source": "/sdk/flow-python-sdk", "destination": "/not-found" },
-  { "source": "/sdk/flow-react-sdk", "destination": "/not-found" },
+  { "source": "/sdk/flow-javascript-sdk", "destination": "https://www.npmjs.com/package/@speechmatics/flow-client" },
+  { "source": "/sdk/flow-python-sdk", "destination": "https://pypi.org/project/speechmatics-flow/" },
+  { "source": "/sdk/flow-react-sdk", "destination": "https://www.npmjs.com/package/@speechmatics/flow-client-react" },
   {
     "source": "/sdk/javascript-authentication",
-    "destination": "/not-found"
+    "destination": "https://www.npmjs.com/package/@speechmatics/auth"
   },
-  { "source": "/sdk/python-sdk", "destination": "/not-found" },
+  { "source": "/sdk/python-sdk", "destination": "https://github.com/speechmatics/speechmatics-python-sdk" },
   {
     "source": "/sdk/real-time-javascript-sdk",
-    "destination": "/not-found"
+    "destination": "https://www.npmjs.com/package/@speechmatics/real-time-client"
   },
-  { "source": "/sdk/real-time-react-sdk", "destination": "/not-found" },
+  { "source": "/sdk/real-time-react-sdk", "destination": "https://www.npmjs.com/package/@speechmatics/real-time-client-react" },
   { "source": "/speech-capabilities", "destination": "/speech-to-text/" },
   { "source": "/tutorials", "destination": "/" },
   {
