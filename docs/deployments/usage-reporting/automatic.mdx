@@ -64,6 +64,8 @@ Automatic usage reporting is turned ON by default, starting from version `10.6.0
 
 ### Virtual Appliance
 
+For virtual appliances, automatic usage reporting is turned ON by default and is currently opt out.
+
 The usage mode can be set via the Management API
 
 ```bash
@@ -73,7 +75,4 @@ curl -L -u admin:admin -X 'POST' \
 ```
 
 where mode is one of `offline` | `online`
-
-When the usage mode is set to `online`, usage will be periodically sent via HTTPS request to Speechmatics over the course of a transcription session. Information recorded includes the job configuration, the duration of transcription, and the amount of audio being transcribed.
-
 
