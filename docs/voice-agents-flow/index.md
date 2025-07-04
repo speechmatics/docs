@@ -1,7 +1,5 @@
 ---
 title: Flow Voice AI — Overview
-sidebar_label: Overview
-sidebar_position: 0
 ---
 
 # Overview

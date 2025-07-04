@@ -1,0 +1,48 @@
+# Example docker-compose file using multiple telemetry Containers.
+#
+version: "3.4"
+
+# Common setup for ASR Usage Containers
+x-usage-template: &usage-template
+  image: asr-usage:x.y.z
+  labels:
+    - "traefik.enable=true"
+    - "traefik.tcp.routers.usage.rule=HostSNI(`*`)"
+    - "traefik.tcp.routers.usage.entrypoints=custom"
+    - "traefik.tcp.routers.usage.tls=true"
+    - "traefik.tcp.routers.usage.tls.passthrough=true"
+    - "traefik.tcp.routers.usage.service=telemeter"
+    - "traefik.tcp.services.usage.loadbalancer.server.port=9090"
+  depends_on:
+    - proxy
+
+services:
+  # Traefik reverse proxy, to route telemetry events to multiple ASR Usage Container
+  # containers
+  proxy:
+    image: traefik:v2.4
+    command: --providers.docker --providers.docker.exposedByDefault=false --entrypoints.custom.address=:9090
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  usagecontainer1:
+    <<: *usage-template
+    ports:
+      - "8001:8000"
+
+  usagecontainer2:
+    <<: *usage-template
+    ports:
+      - "8002:8000"
+
+  transcriber-batch:
+    image: batch-asr-transcriber-en:x.y.z
+    environment:
+      SM_EATS_URL: proxy:9090
+    volumes:
+      - ./input/10_sec_news.wav:/input.audio
+      - ./input/license.json:/license.json
+    depends_on:
+      - proxy
+      - usagecontainer1
+      - usagecontainer2

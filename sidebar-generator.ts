@@ -18,18 +18,35 @@ export const sidebarItemsGenerator: SidebarItemsGeneratorOption = async ({
   defaultSidebarItemsGenerator,
   ...args
 }) => {
-  const docs = args.docs.filter((doc) => {
-    if (doc.frontMatter.api_path) {
-      return batchAPIPaths.includes(doc.frontMatter.api_path as string);
-    }
-    // TODO we can also filter schema docs we don't want here.
-    if (doc.frontMatter.sidebar_exclude) {
-      return false;
-    }
+  const docs = args.docs
+    .filter((doc) => {
+      if (doc.frontMatter.api_path) {
+        return batchAPIPaths.includes(doc.frontMatter.api_path as string);
+      }
+      // TODO we can also filter schema docs we don't want here.
+      if (doc.frontMatter.sidebar_exclude) {
+        return false;
+      }
 
-    return true;
-  });
+      return true;
+    })
+    .map((doc) => {
+      // All index pages should be called "Overview" and be the first item in the sidebar
+      if (doc.id.match(/index$/)) {
+        const ret = {
+          ...doc,
+          frontMatter: {
+            ...doc.frontMatter,
+            sidebar_label: "Overview",
+          },
+          sidebarPosition: 0,
+        };
+        return ret;
+      }
+      return doc;
+    });
   const defaults = await defaultSidebarItemsGenerator({ ...args, docs });
+
   return defaults.map((item) => withNormalizedLabel(item));
 };
 

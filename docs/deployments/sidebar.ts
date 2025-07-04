@@ -1,4 +1,5 @@
 import containerSidebar from "./container/sidebar";
+import usageReportingSidebar from "./usage-reporting/sidebar";
 
 export default {
   type: "category",
@@ -15,5 +16,6 @@ export default {
       id: "deployments/index",
     },
     containerSidebar,
+    usageReportingSidebar,
   ],
 } as const;

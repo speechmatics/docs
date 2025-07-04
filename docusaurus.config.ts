@@ -102,7 +102,7 @@ const config: Config = {
     prism: {
       theme: prismTheme,
       darkTheme: prismTheme,
-      additionalLanguages: ["docker"],
+      additionalLanguages: ["docker", "bash"],
     },
     docs: {
       sidebar: {
@@ -145,7 +145,7 @@ const config: Config = {
                 },
                 {
                   // Load JS files as raw assets when requested with ?raw query
-                  test: /\.js$|\.ts$|\.tsx$|\.mjs$|\.html$/,
+                  test: /\.js$|\.ts$|\.tsx$|\.mjs$|\.html$|\.yml$|\.yaml$/,
                   resourceQuery: /raw/,
                   // With Webpack 5 we shouldn't need raw-loader
                   // But because Docusaurus uses babel-loader for all JS files by default,
