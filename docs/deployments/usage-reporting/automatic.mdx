@@ -38,7 +38,7 @@ If, after this retry period (which takes up to 3 seconds), the transcriber is st
 
 For Batch transcribers, the transcriber will exit immediately after this.
 
-For Real-Time transcribers, usage reporting will be disabled for a fixed time period (currently 60 seconds). This is to minimize the impact on the duration of transcription jobs. This retry mechanism will cause a small hit to the speed of transcription, so in the event of a network outage, you may wish to temporarily disable usage reporting by setting the SM_ENABLE_USAGE_REPORTING variable to false when running the container.
+For Real-Time transcribers, usage reporting will be disabled for a fixed time period (currently 60 seconds). This is to minimize the impact on the duration of transcription jobs. This retry mechanism will cause a small hit to the speed of transcription, so in the event of a network outage, you may wish to temporarily disable usage reporting by setting the `SM_ENABLE_USAGE_REPORTING` variable to false when running the container.
 
 We ask that you inform our Finance Team about the duration and timing of any such outage.
 
