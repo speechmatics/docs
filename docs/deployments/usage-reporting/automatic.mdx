@@ -48,21 +48,19 @@ We ask that you inform our Finance Team about the duration and timing of any suc
 
 For container deployments, automatic usage reporting is turned ON by default and is currently opt out. It is turned off by setting the environment variable `SM_ENABLE_USAGE_REPORTING=false` (`false`, `no` or `0` are equally valid) when running the transcriber. For example:
 
-To enable automatic usage reporting, you must be running one of the following ASR Container versions:
-
-- Batch Container `10.1.0` onwards
-- Real-Time Container `10.1.0` onwards
-
-Automatic usage reporting is turned ON by default, starting from version `10.6.0`.
-
-To run a container with automatic usage reporting disabled, you can use the following command:
-
 <CodeBlock>
   {`docker run -i -v ~/$AUDIO_FILE:/input.audio \\
 	-e LICENSE_TOKEN=eyJhbGciOiJ... \\
 	-e SM_ENABLE_USAGE_REPORTING=false \\
 	batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
+
+To enable automatic usage reporting, you must be running one of the following ASR Container versions:
+
+- Batch Container `10.1.0` onwards
+- Real-Time Container `10.1.0` onwards
+
+Automatic usage reporting is turned ON by default, starting from version `10.6.0`.
 
 ### Virtual Appliance
 
