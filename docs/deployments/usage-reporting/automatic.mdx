@@ -13,7 +13,7 @@ We will **never** send customer audio data over the network. See [What Data Do W
 
 The Batch transcriber will report one `TRANSCRIBER_DONE` event at the event of transcription.
 
-The Real-time transcriber will report one `SESSION_ENDED` event at the end of each session. During a session, the real-time transcriber also sends `SESSION_STATUS` every few minutes.
+The Real-time transcriber will report one `SESSION_ENDED` event at the end of each session. During a session, the Real-time transcriber also sends `SESSION_STATUS` every few minutes.
 
 The payload size is only several KB, so it won’t have a meaningful impact on the duration of transcription or your bandwidth costs.
 
