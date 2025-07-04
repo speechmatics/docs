@@ -66,7 +66,7 @@ When the usage mode is set to `offline`, usage will be collected via a Container
 
 The following workflow is recommended:
 
-- The user downloads and runs one or more of the Batch Virtual Appliances
+- The user downloads and runs one or more of the Virtual Appliances
 - Before running any jobs, the user sets the usage mode to `offline` see [above](#setting-the-usage-mode)
 - At intervals of no more than a calendar month, the user will extract usage data processed in that interval from each running Appliance via the Management API, see [below](#exporting-usage-data)
 - The user will then send this data to a designated Speechmatics email address at [billing-reporting@speechmatics.com](mailto:billing-reporting@speechmatics.com).
@@ -80,7 +80,7 @@ Speechmatics will request a new unmodified data export if it is found that data 
 
 Data is retained in the appliance for **90 days**, after which point it is purged. Exported data needs to be sent to via email to [billing-reporting@speechmatics.com](mailto:billing-reporting@speechmatics.com).
 
-A zip of the usage data can be retrieved via the Management API
+A compressed archive of the usage data can be retrieved via the Management API
 
 :::info
 In `realtime` mode you may see usage for contract id `-77777777777777`, this is a prewarming job that runs during the transcriber first startup, and will not be included in your billed usage.
@@ -94,9 +94,9 @@ curl -X 'GET' \
 
 Where `start_time` and `end_time` are inclusive and are timestamps in the ISO-8601 format (YYYY-MM-DDTHH:MM:SSZ).
 
-To remain under the 25MB email attachment limit, we recommend changing `start_time` and `end_time` to chunk exports into 25MB files (usually around 10,000 batch jobs).
+To remain under the 25MB email attachment limit, we recommend changing `start_time` and `end_time` to chunk exports into 25MB files (usually around 10,000 batch jobs or 1250 real-time sessions of one hour).
 
-Data is exported in compressed `json.gz` format. All files must be sent in this format to Speechmatics. The name of the file does not matter.
+Data is exported in compressed `json.gz` format. All files must be sent in this format to Speechmatics. The name of the file does not matter. You can send multiple attachments per email, or each email as a separate attachment, so long as you are under email provider limits for sending files.
 
 ### Container
 
@@ -362,15 +362,13 @@ Speechmatics strongly recommend against disabling secure connections.
 The exported data must not be modified in any way before sending to Speechmatics.
 Speechmatics will request a new unmodified data export if it is found that data has been altered.
 :::
-Data is retained in the Usage Container for **90 days**, after which point it is purged.
+Data is retained in the Usage Container for **90 days**, after which point it is purged. Exported data needs to be sent to via email to [billing-reporting@speechmatics.com](mailto:billing-reporting@speechmatics.com).
 
-Currently, Speechmatics requires data to be sent via email to [billing-reporting@speechmatics.com](mailto:billing-reporting@speechmatics.com).
+The data must be exported from each ASR Usage Container you have used, and then sent to Speechmatics for calculation. The ASR Usage Container has a REST API to export transcription data. You will need to send at least as many reports as you have from ASR Usage Containers. Based on heavy transcription usage, you may have to provide multiple reports per single ASR Usage Container.
 
-The data must be exported from each ASR Usage Container you have used, and then sent to Speechmatics for calculation. The ASR Usage Container has a REST API to export transcription data. You will need to send at least as many reports as you have from ASR Usage Containers. Based on heavy transcription usage, you may have to provide multiple reports per single ASR Usage Container. You can send multiple attachments per email, or each email as a separate attachment, so long as you are under email provider limits for sending files.
+To remain under the 25MB email attachment limit, we recommend changing `start_time` and `end_time` to chunk exports into 25MB files (usually around 10,000 batch jobs or 1250 real-time sessions of one hour).
 
-To remain under the 25MB email attachment limit, we recommend compressed files with no more than 10,000 batch jobs or 1250 Real-Time sessions of one hour.
-
-Data is exported in compressed `json.gz` format. All files must be sent in this format to Speechmatics. The name of the file does not matter.
+Data is exported in compressed `json.gz` format. All files must be sent in this format to Speechmatics. The name of the file does not matter. You can send multiple attachments per email, or each email as a separate attachment, so long as you are under email provider limits for sending files.
 
 The complete API reference for extracting usage data can be found in the [API Reference](/api-ref/batch/get-usage-statistics) section.
 
