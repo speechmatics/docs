@@ -156,11 +156,11 @@
   },
   {
     "source": "/on-prem/containers",
-    "destination": "/not-found"
+    "destination": "/deployments/container"
   },
   {
     "source": "/on-prem/containers/accessing-images",
-    "destination": "/not-found"
+    "destination": "/deployments/container/accessing-images"
   },
   {
     "source": "/on-prem/containers/additional-security",
@@ -168,29 +168,32 @@
   },
   {
     "source": "/on-prem/containers/cpu-container",
-    "destination": "/not-found"
+    "destination": "/deployments/container/cpu-speech-to-text"
   },
   {
     "source": "/on-prem/containers/gpu-inference-container",
-    "destination": "/not-found"
+    "destination": "/deployments/container/gpu-speech-to-text"
   },
   {
     "source": "/on-prem/containers/lang-id-container",
-    "destination": "/not-found"
+    "destination": "/deployments/container/language-id"
   },
   {
     "source": "/on-prem/containers/licensing",
-    "destination": "/not-found"
+    "destination": "/deployments/container/licensing"
   },
   {
     "source": "/on-prem/containers/translation",
-    "destination": "/not-found"
+    "destination": "/deployments/container/gpu-translation"
   },
   {
     "source": "/on-prem/containers/troubleshooting",
-    "destination": "/not-found"
+    "destination": "/deployments/container/troubleshooting"
   },
-  { "source": "/on-prem/containers/usage", "destination": "/not-found" },
+  {
+    "source": "/on-prem/containers/usage",
+    "destination": "/deployments/usage-reporting"
+  },
   { "source": "/on-prem/kubernetes", "destination": "/not-found" },
   { "source": "/on-prem/kubernetes/flow", "destination": "/not-found" },
   {
@@ -201,16 +204,22 @@
     "source": "/on-prem/kubernetes/realtime",
     "destination": "/not-found"
   },
-  { "source": "/on-prem/usage/", "destination": "/not-found" },
+  {
+    "source": "/on-prem/usage/",
+    "destination": "/deployments/usage-reporting"
+  },
   {
     "source": "/on-prem/usage/usage-collector",
-    "destination": "/not-found"
+    "destination": "/deployments/usage-reporting/automatic"
   },
   {
     "source": "/on-prem/usage/usage-container",
-    "destination": "/not-found"
+    "destination": "/deployments/usage-reporting/offline"
   },
-  { "source": "/on-prem/usage/what-data", "destination": "/not-found" },
+  {
+    "source": "/on-prem/usage/what-data",
+    "destination": "/deployments/usage-reporting#what-data-do-we-record"
+  },
   {
     "source": "/on-prem/virtual-appliance/administration",
     "destination": "/not-found"

@@ -32,7 +32,7 @@ import CodeBlock from "@theme/CodeBlock";
 
 ## System Requirements
 
-_Note: System requirements for the Translation inference server are the same as for the [GPU Inference Container](/deployments/container/gpu-speech-to-text-container) for transcription, except for RAM and CPU requirements which are lower. The two servers cannot use the same GPU. _
+_Note: System requirements for the Translation inference server are the same as for the [GPU Inference Container](/deployments/container/gpu-speech-to-text) for transcription, except for RAM and CPU requirements which are lower. The two servers cannot use the same GPU. _
 
 The system must have:
 
@@ -87,7 +87,7 @@ Available GPU memory after models loaded: 35GB
 
 ## Sending Requests
 
-Batch and Real-Time (RT) transcribers handle sending requests to the Translation Inference Server. To run a transcription job with Translation, follow the [instructions for running the CPU Container](/deployments/container/cpu-speech-to-text-container) and additionally:
+Batch and Real-Time (RT) transcribers handle sending requests to the Translation Inference Server. To run a transcription job with Translation, follow the [instructions for running the CPU Container](/deployments/container/cpu-speech-to-text) and additionally:
 
 - Set the environment variable `SM_TRANSLATION_ENDPOINT` in the transcriber to the GRPC endpoint of the running Translation Inference Server, in the form `<server_ip_address>:<port>` where the port is the one bound to port 8001 of the Translation Docker Container (see [running the image](#running-the-image))
 - Include a `translation_config` inside of your job config. [More details](/speech-to-text/translation)
@@ -186,7 +186,7 @@ services:
 
 ## Deploying on Kubernetes
 
-See the [instructions](/deployments/container/gpu-speech-to-text-container#deploying-on-kubernetes) for deploying the Transcription GPU Inference Server.
+See the [instructions](/deployments/container/gpu-speech-to-text#deploying-on-kubernetes) for deploying the Transcription GPU Inference Server.
 
 ## Error Handling
 
