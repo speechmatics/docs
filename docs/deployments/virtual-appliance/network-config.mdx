@@ -1,0 +1,130 @@
+# Network Configuration
+
+Before starting the Virtual Appliance for the first time, it is important to consider the network settings that will be used. The section below describes the options.
+
+## Network Interface Mapping
+
+Whilst the Virtual Appliance is powered off, the virtual network adapter should be mapped to the correct physical adapter on the host. The virtual interface must be mapped to a physical adapter on which the Speechmatics Virtual Appliance will be contacted. Steps are provided below for the supported hypervisors.
+
+### VMware ESXi
+
+There is nothing to configure here. The network as specified during the import stage described in the [Download and Import](downloading-import.mdx) section will be used.
+
+### VMware Workstation
+
+Speechmatics recommends using the bridged network mode. To ensure bridged networking is selected:
+
+- Open VMware Workstation
+- Right-click on the Virtual Appliance e.g. `SM_App_01`, and select `Settings...`
+- Select `Network Adapter` in the devices list
+  - Select `Bridged: Connected directly to the physical network`
+- Click `OK`
+
+This will result in the VM using an IP Address that is independent to that of the host.
+
+:::info **Note**
+If you experience poor networking performance in VMware Workstation we recommended trying the following:
+- Open VMware Workstation
+- Select `Edit` -> `Virtual Network Editor...`
+- Select `Change Settings`
+- Find and select the relevant network where the `Type` is `Bridged`
+- In the `VMnet Information` section ensure the `Bridged to:` option is set to a specific interface rather than `Automatic`
+:::
+
+## IP Configuration
+
+When the Speechmatics Virtual Appliance is started, the default behavior will be to dynamically acquire an IP address using DHCP.
+
+If you need to configure a static IP address you can either:
+
+- Manually specify the network configuration
+- Use cloud-init
+- Use a DHCP reservation
+
+Each of these options are described in the sections below.
+
+### Manually specify the network configuration
+
+First, gain terminal access to the appliance, either via the console or ssh.
+
+Find the interface name of the relevant interface, like so:
+
+```
+$ ip link show | grep 'en.*:'
+2: ens256: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+```
+
+Here, the interface name we’re interested in is `ens256` - but this may vary depending on your hypervisor. We’ll use this interface name later on.
+
+The remaining commands require you to run as the root user:
+
+```
+sudo -i
+```
+
+Delete the cloud-init generated network config, if present:
+
+```
+rm -vf /etc/netplan/50-cloud-init.yaml
+```
+
+Stop cloud-init managing your network configuration. This prevents the file we’ve just deleted coming back at next boot.
+
+```
+echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99_disable_network.cfg
+```
+
+Create the file `/etc/netplan/99-static.yaml` with the following content, being careful to fill in your desired values as per the comments:
+
+```
+network:
+  version: 2
+  ethernets:
+    ens256:  # This MUST match the interface name you found earlier
+      addresses:
+        - 192.168.1.202/24  # Set your desired ip and subnet
+      routes:
+        - to: default
+          via: 192.168.1.1  # Set your desired default gateway
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]  # A list of your desired dns servers
+```
+
+Finally, reboot the box:
+
+```
+reboot
+```
+
+It should come back up with the network configuration you just specified.
+
+For more details please refer to the official documentation here:
+
+- [Ubuntu documentation](https://ubuntu.com/server/docs/configuring-networks)
+- [Netplan documentation](https://netplan.readthedocs.io/en/latest/netplan-yaml/)
+
+### Use cloud-init
+
+Using cloud-init it's possible to pass the netplan config shown in the section above through to the appliance boot process such that it'll be applied at startup with no manual intervention required.
+
+How you use cloud-init will depend on your hypervisor. Here are some helpful links:
+
+- [Cloud-init documentation](https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v2.html)
+- [VMware ESXi documentation](https://knowledge.broadcom.com/external/article/311895/how-to-customize-virtual-machine-using-c.html)
+- [Proxmox documentation](https://pve.proxmox.com/wiki/Cloud-Init_Support)
+
+### Use a DHCP reservation
+
+If you have administrative access to your DHCP solution you can use a DHCP reservation to achieve a similar outcome to that of setting a static IP, but without having to make any modifications to the appliance.
+
+To add a DHCP reservation you will need the MAC address of the appliance's primary interface, which you can get either directly from your hypervisor or by gaining terminal access to the appliance and running the following:
+
+```
+$ ip link show | grep -A 1 'en.*:'
+2: ens256: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 00:50:56:b9:4e:e4 brd ff:ff:ff:ff:ff:ff
+```
+
+In this example the MAC address of the primary interface is `00:50:56:b9:4e:e4`
+
+The exact specifics of how you create a reservation will depend on your DHCP solution, please refer to the vendor's documentation.
