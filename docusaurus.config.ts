@@ -118,7 +118,7 @@ const config: Config = {
       // Public API key: it is safe to commit it
       apiKey: '4192375eb6e5980b954ea3a77a14ff99',
 
-      indexName: 'beta_docs',
+      indexName: 'beta_Beta docs',
 
       // Optional: see doc section below
       contextualSearch: true,
