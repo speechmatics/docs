@@ -7,6 +7,24 @@ import voiceAgentsFlowSidebar from "./docs/voice-agents-flow/sidebar";
 export default {
   docs: [
     gettingStartedSidebar,
+    {
+      type: "category",
+      label: "Use SDKs",
+      collapsible: false,
+      collapsed: false,
+      items: [
+        {
+          type: "link",
+          href: "https://github.com/speechmatics/speechmatics-python-sdk",
+          label: "Python",
+        },
+        {
+          type: "link",
+          href: "https://github.com/speechmatics/speechmatics-js-sdk",
+          label: "JavaScript",
+        },
+      ],
+    },
     speechToTextSidebar,
     voiceAgentsFlowSidebar,
     deploymentsSidebar,
