@@ -10,6 +10,12 @@ Balance speed and accuracy in your Realtime transcription by adjusting latency s
 
 ## Configuration options
 
+Configure real-time latency with the following parameters:
+
+- `max_delay`: Maximum time in seconds (0.7-4.0, default: 4.0) between what's said and final transcript delivery
+- `max_delay_mode`: Mode setting (`fixed` or `flexible`, default: `flexible`) for handling [numeral formatting](#numeral-formatting)
+- `enable_partials`: Boolean (default: false) to enable [partial transcripts](#partial-transcripts) for faster feedback
+
 Add these parameters to your [StartRecognition](/api-ref/realtime-transcription-websocket#startrecognition) message:
 
 ```json
@@ -27,9 +33,6 @@ Add these parameters to your [StartRecognition](/api-ref/realtime-transcription-
 }
 ```
 
-- `max_delay`: Time in seconds (0.7-4.0, default: 4.0) between speech end and final transcript delivery
-- `max_delay_mode`: Mode setting (`fixed` or `flexible`, default: `flexible`) for handling [numeral formatting](#numeral-formatting)
-- `enable_partials`: Boolean (default: false) to enable [partial transcripts](#partial-transcripts) for faster feedback
 
 ## Speed vs. accuracy trade-offs
 
