@@ -1,10 +1,10 @@
 ---
 description: 'Control response time in Realtime transcription'
 keywords: [speechmatics, real-time, rt, latency, low latency, fast, transcription, speech recognition, asr]
-sidebar_label: Realtime latency
+sidebar_label: Latency
 ---
 
-# Latency control
+# Latency settings
 
 Balance speed and accuracy in your Realtime transcription by adjusting latency settings.
 
@@ -19,8 +19,8 @@ Add these parameters to your [StartRecognition](/api-ref/realtime-transcription-
     // highlight-start
     "max_delay": 0.7,
     "max_delay_mode": "flexible",
-    // highlight-end
     "enable_partials": true,
+    // highlight-end
     "language": "en",
     "operating_point": "enhanced"
   }
@@ -37,12 +37,13 @@ Choose the right `max_delay` setting for your use case:
 
 | Setting | Accuracy Impact | Recommended Use Cases |
 |---------|----------------|----------------------|
-| 0.7-1.5s | <5% degradation | Conversational AI, voice assistants |
+| 0.7-1.5s | < 5% degradation | Conversational AI, voice assistants |
 | 2.0s | ~1% degradation | Live captioning, broadcast media |
 | 4.0s | No degradation | Highest accuracy needs with partial transcripts |
 
-⚠️ Warning
-  Lower latency settings trade some accuracy for speed. Test thoroughly with your specific audio.
+:::warning
+Lower latency settings trade some accuracy for speed. Test thoroughly with your specific audio.
+:::
 
 ## Partial transcripts
 
@@ -56,7 +57,6 @@ Get preliminary results faster while waiting for final, more accurate transcript
 
 ### Limitations
 
-ℹ️ Info
   - Accuracy is typically 10-25% lower than final transcripts
   - Punctuation and capitalization may be incorrect
   - Confidence scores are not meaningful and should be ignored
@@ -78,8 +78,9 @@ For applications with strict latency requirements:
 - Set `max_delay_mode: "fixed"` to enforce consistent timing
 - System won't wait for entities to complete before returning results
 
-⚠️ Warning
-  Fixed mode reduces accuracy and readability of numbers, currencies, and dates.
+:::warning
+Fixed mode reduces accuracy and readability of numbers, currencies, and dates.
+:::
 
 ## Example output comparison
 
@@ -118,4 +119,4 @@ With `enable_partials: true` and `max_delay_mode: "fixed"`:
 (Final): five.
 ```
 
-Final output: "I am 30 five." (number not properly formatted)
+Final output: "I am 30 five." Note how the number isn't properly formatted.
