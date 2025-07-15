@@ -232,7 +232,7 @@
     },
     {
       "source": "/on-prem/containers/additional-security",
-      "destination": "/not-found",
+      "destination": "/deployments/container/additional-security",
       "permanent": true
     },
     {
@@ -667,12 +667,12 @@
     },
     {
       "source": "/on-prem/containers/cpu-container/additional-security",
-      "destination": "/not-found",
+      "destination": "/deployments/container/additional-security",
       "permanent": true
     },
     {
       "source": "/on-prem/container/installation/additional-security",
-      "destination": "/not-found",
+      "destination": "/deployments/container/additional-security",
       "permanent": true
     },
     {
