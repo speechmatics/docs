@@ -112,6 +112,21 @@ const config: Config = {
     mermaid: {
       theme: { light: "neutral", dark: "dark" },
     },
+    algolia: {
+      // The application ID provided by Algolia
+      appId: 'K9Y1459LXK',
+
+      // Public API key: it is safe to commit it
+      apiKey: '4192375eb6e5980b954ea3a77a14ff99',
+
+      indexName: 'beta_Beta docs',
+
+      // Optional: see doc section below
+      contextualSearch: true,
+
+      // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
+      insights: false,
+    },
   } satisfies Preset.ThemeConfig,
 
   plugins: [

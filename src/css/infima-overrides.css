@@ -133,6 +133,13 @@ html[data-theme="dark"] {
     color-mix(in oklab, var(--gray-a8), var(--gray-8) 25%);
 }
 
+.DocSearch {
+  --default-font-family: "DM Sans", sans-serif;
+  --ifm-font-family-base: var(--default-font-family);
+
+  font-family: var(--default-font-family);
+}
+
 html {
   --ifm-font-family-base: unset;
 }
