@@ -1,0 +1,305 @@
+# Using a GPU
+
+## Enabling GPU inference
+
+### Batch Mode
+
+If the host machine has the capability to pass-through a GPU to a VM, then the Appliance can use it to speed up transcription. By default, GPU mode is disabled; to enable it run the following command from the Management API:
+
+```bash
+curl -sSL -u admin:admin -X 'POST' \
+  "http://${APPLIANCE_HOST}/v2/management/host/gpu" \
+  -H 'Content-Type: application/json' \
+  -d '{"gpu_enabled": true}'
+```
+
+To query the GPU mode, run the similar command
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+  "http://${APPLIANCE_HOST}/v2/management/host/gpu"
+```
+
+The response will be a JSON object.
+
+- `gpu_enabled` - `true/false` GPU inference enabled
+- `languages` - List of languages available for GPU inference
+- `primary_operating_point` - Primary Operating Point to assume when controlling the GPU load
+- `max_jobs` - Maximum number of jobs of the chosen `primary_operating_point` that will be allowed to run concurrently (before `adaptive` scaling is applied)
+
+```json
+{
+  "gpu_enabled": true,
+  "languages": [
+    "en"
+  ],
+  "primary_operating_point": "standard",
+  "max_jobs": 48
+}
+```
+
+### Realtime Mode
+
+```bash
+curl -sSL -u admin:admin -X 'POST' \
+  "http://${APPLIANCE_HOST}/v2/management/host/realtime/gpu" \
+  -H 'Content-Type: application/json' \
+  -d '{"gpu_enabled": true}'
+```
+
+To query the GPU mode, run the similar command
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+  "http://${APPLIANCE_HOST}/v2/management/host/realtime/gpu"
+```
+
+This will return a json object. 
+
+- `gpu_enabled` - `true/false` GPU inference enabled
+- `max_streams` - the maximum number of concurrent streams for realtime inference. For `realtime` mode, there is no concept of GPU only languages and all the languages installed on the appliance will run on GPU if enabled, hence a list of languages is not returned here. To query for a list of languages installed in the appliance see [About](/deployments/virtual-appliance/administration/services#about)
+
+```json
+{
+  "gpu_enabled": false,
+  "max_streams": 9
+}
+```
+
+## Hardware Requirements for GPU
+
+These are the same as the requirements for the [GPU Inference Container](/deployments/container/gpu-speech-to-text#system-requirements), please see that section for details.
+
+Because the OVA is self-contained, you only need to consider the GPU memory, driver version on the host, and CUDA capability level.
+
+## GPU Configuration
+
+To help protect the performance of the GPU, configuration options for the GPU have been provided. This configuration can be fetched/updated via the Appliance Management API.
+
+### Batch Mode
+
+#### Get the current configuration
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+  "http://${APPLIANCE_HOST}/v2/management/host/gpu/config"
+```
+
+Example Response
+
+```json
+{
+  "primary_operating_point": "enhanced",
+  "max_jobs": 12
+}
+```
+
+- `primary_operating_point` - Primary operating point to assume when controlling the GPU load.
+- `max_jobs` - Maximum number of jobs of the chosen `primary_operating_point` that will be allowed to run concurrently (before `adaptive` scaling is applied).
+
+
+ #### Update the configuration
+
+```bash
+curl -sSL -u admin:admin -X 'POST' \
+  "http://${APPLIANCE_HOST}/v2/management/host/gpu/config" \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "primary_operating_point": "standard",
+  "max_jobs": 1
+}'
+```
+
+- `primary_operating_point` - Primary operating point to assume when controlling the GPU load
+- `max_jobs` - Maximum number of jobs of the chosen `primary_operating_point` that will be allowed to run concurrently (before `adaptive` scaling is applied).
+
+When controlling gpu load, we require a primary operating point to be set; this is the main operating point you are using for the majority of your jobs.
+As different operating points apply differing levels of load, setting primary operating point ahead of time helps us to schedule jobs efficiently.
+If you set the primary operating point to one value, it will not stop you from running other operating points (one enhanced job is roughly equivalent to six standard jobs).
+
+Some appropriate settings for `max_jobs` are listed below, we found these to produce a good balance of throughput, cost and stability during our benchmarking tests.
+Depending on the audio files being processed, it may be appropriate to optimise these values to better fit a given use case.
+
+These values would typically be optimised for max throughput, i.e. how many hours of input data can be processed per clock hour.
+
+***Standard Operating Point***
+
+  - `max_jobs` - 48
+
+
+***Enhanced Operating Point***
+
+  - `max_jobs` - 28
+
+:::info **Note**
+When scaling mode is set to adaptive, depending on the file length, one job may be split up into 4 or more `simple` jobs (i.e., a job that uses a single thread) (see [Scaling](/deployments/virtual-appliance/administration/scaling))
+the `max_jobs` above refers to these `simple` jobs before `adaptive` scaling is applied.
+:::
+
+e.g., if max jobs was set to 12, you could run up to
+
+3x adaptive jobs with file lengths of > 15 min
+
+OR
+
+12x simple jobs
+
+OR
+
+2x adaptive jobs with file lengths of > 15 min AND 4x simple jobs
+
+
+### Realtime Mode
+
+For realtime mode, we limit the total number of realtime streams running concurrently - this helps to protect running sessions from poor performance and/or crashes.
+
+:::info **Note**
+In the Real-Time Virtual Appliance there is no setting to limit sessions based on operating point. To avoid poor performance, we advise not to mix operating points.
+:::
+
+#### Get the current configuration
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+  "http://${APPLIANCE_HOST}/v2/management/host/realtime/gpu/config"
+```
+
+Example Response
+
+```json
+{
+  "max_streams": 9
+}
+```
+
+- `max_streams` - the maximum number of concurrent realtime connections of either operating point (see note above on operating points in `realtime`)
+
+#### Update the configuration
+
+```bash
+curl -X 'POST' \
+  'https://${APPLIANCE_HOST}/v2/management/host/realtime/gpu/config' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "max_streams": 30
+}'
+```
+
+#### Recommended Configuration
+
+For real-time, we recommend the following as a starting point. Based on your audio data and/or hardware, these values may need to be optimised. When optimising these values, typically the Final Lag would be used as a measure of performance and the `max_streams` would be increased until the Final Lag becomes unacceptable; see [Monitoring](/deployments/virtual-appliance/administration/monitoring#useful-loki-queries) for more info.
+
+***Standard Operating Point***
+
+- `max_streams` - 64
+
+***Enhanced Operating Point***
+
+- `max_streams` - 16
+
+:::info **Note**
+The above recommended configuration was based on a 8-Core 32GB machine with a T4 GPU running English transcriptions with a single operating point and transcription config. Based on your hardware/requirements, there may be more appropriate values that provide a higher throughput. 
+:::
+
+
+## Querying the GPU
+
+You can log on to the Appliance and run detailed queries with `nvidia-smi`, the Nvidia GPU utility, but basic information is available via the Management API.
+
+```bash
+curl -L -u admin:admin -X 'GET' \
+  "http://${APPLIANCE_HOST}/v2/management/nodeinfo"
+```
+
+This command will return the labels on the Kubernetes node. If a GPU has been successfully detected, there will be labels relating to the GPU, prefixed with `nvidia.com`.
+
+
+```json
+{
+  "author": "Speechmatics",
+  "beta.kubernetes.io/arch": "amd64",
+  "beta.kubernetes.io/instance-type": "k3s",
+  "beta.kubernetes.io/os": "linux",
+  "feature.node.kubernetes.io/cpu-cpuid.ADX": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.AESNI": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.AVX": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.AVX2": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.AVX512BW": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.AVX512CD": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.AVX512DQ": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.AVX512F": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.AVX512VL": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.AVX512VNNI": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.CMPXCHG8": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.FLUSH_L1D": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.FMA3": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.FXSR": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.FXSROPT": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.HYPERVISOR": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.IA32_ARCH_CAP": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.IBPB": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.LAHF": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.MD_CLEAR": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.MOVBE": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.OSXSAVE": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.SPEC_CTRL_SSBD": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.STIBP": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.SYSCALL": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.SYSEE": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.X87": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.XGETBV1": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.XSAVE": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.XSAVEC": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.XSAVEOPT": "true",
+  "feature.node.kubernetes.io/cpu-cpuid.XSAVES": "true",
+  "feature.node.kubernetes.io/cpu-hardware_multithreading": "false",
+  "feature.node.kubernetes.io/cpu-model.family": "6",
+  "feature.node.kubernetes.io/cpu-model.id": "85",
+  "feature.node.kubernetes.io/cpu-model.vendor_id": "Intel",
+  "feature.node.kubernetes.io/kernel-config.NO_HZ": "true",
+  "feature.node.kubernetes.io/kernel-config.NO_HZ_IDLE": "true",
+  "feature.node.kubernetes.io/kernel-version.full": "5.15.0-76-generic",
+  "feature.node.kubernetes.io/kernel-version.major": "5",
+  "feature.node.kubernetes.io/kernel-version.minor": "15",
+  "feature.node.kubernetes.io/kernel-version.revision": "0",
+  "feature.node.kubernetes.io/pci-10de.present": "true",
+  "feature.node.kubernetes.io/pci-15ad.present": "true",
+  "feature.node.kubernetes.io/storage-nonrotationaldisk": "true",
+  "feature.node.kubernetes.io/system-os_release.ID": "ubuntu",
+  "feature.node.kubernetes.io/system-os_release.VERSION_ID": "22.04",
+  "feature.node.kubernetes.io/system-os_release.VERSION_ID.major": "22",
+  "feature.node.kubernetes.io/system-os_release.VERSION_ID.minor": "04",
+  "kubernetes.io/arch": "amd64",
+  "kubernetes.io/hostname": "appliance",
+  "kubernetes.io/os": "linux",
+  "node-role.kubernetes.io/control-plane": "true",
+  "node-role.kubernetes.io/master": "true",
+  "node.kubernetes.io/instance-type": "k3s",
+  "nvidia.com/cuda.driver.major": "525",
+  "nvidia.com/cuda.driver.minor": "116",
+  "nvidia.com/cuda.driver.rev": "04",
+  "nvidia.com/cuda.runtime.major": "12",
+  "nvidia.com/cuda.runtime.minor": "0",
+  "nvidia.com/gfd.timestamp": "1688727340",
+  "nvidia.com/gpu.compute.major": "7",
+  "nvidia.com/gpu.compute.minor": "5",
+  "nvidia.com/gpu.count": "1",
+  "nvidia.com/gpu.deploy.container-toolkit": "true",
+  "nvidia.com/gpu.deploy.dcgm": "true",
+  "nvidia.com/gpu.deploy.dcgm-exporter": "true",
+  "nvidia.com/gpu.deploy.device-plugin": "true",
+  "nvidia.com/gpu.deploy.driver": "true",
+  "nvidia.com/gpu.deploy.gpu-feature-discovery": "true",
+  "nvidia.com/gpu.deploy.node-status-exporter": "true",
+  "nvidia.com/gpu.deploy.operator-validator": "true",
+  "nvidia.com/gpu.family": "turing",
+  "nvidia.com/gpu.machine": "VMware-Virtual-Platform",
+  "nvidia.com/gpu.memory": "15360",
+  "nvidia.com/gpu.present": "true",
+  "nvidia.com/gpu.product": "Tesla-T4",
+  "nvidia.com/gpu.replicas": "1",
+  "nvidia.com/mig.capable": "false",
+  "nvidia.com/mig.strategy": "single"
+}
+```

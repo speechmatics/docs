@@ -164,7 +164,7 @@
   },
   {
     "source": "/on-prem/containers/additional-security",
-    "destination": "/not-found"
+    "destination": "/deployments/container/additional-security"
   },
   {
     "source": "/on-prem/containers/cpu-container",
@@ -222,7 +222,7 @@
   },
   {
     "source": "/on-prem/virtual-appliance/administration",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/adding-languages",
@@ -230,7 +230,7 @@
   },
   {
     "source": "/on-prem/virtual-appliance/administration/gpu",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/using-a-gpu"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/lang-id",
@@ -238,67 +238,67 @@
   },
   {
     "source": "/on-prem/virtual-appliance/administration/logcli-help",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/logcli-help"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/monitoring",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/monitoring"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/networking",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/networking"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/remote-access",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/remote-access"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/scaling",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/scaling"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/security",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/security"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/services",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/services"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/ssl",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/ssl-configuration"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/usage",
-    "destination": "/not-found"
+    "destination": "/deployments/usage-reporting"
   },
   {
     "source": "/on-prem/virtual-appliance/installation",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/downloading-import",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/installation/download-and-import"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/licensing/license-features",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/installation/license-features"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/licensing/usage-and-licensing",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/installation/licensing"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/network-config",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/installation/network-config"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/system-requirements",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/installation/system-requirements"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/verify",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/installation/verify-and-go"
   },
   { "source": "/private/example-file", "destination": "/" },
   { "source": "/private/preview-mode", "destination": "/not-found" },
@@ -355,19 +355,34 @@
     "source": "/sdk/batch-jobs-javascript-sdk",
     "destination": "https://www.npmjs.com/package/@speechmatics/batch-client"
   },
-  { "source": "/sdk/flow-javascript-sdk", "destination": "https://www.npmjs.com/package/@speechmatics/flow-client" },
-  { "source": "/sdk/flow-python-sdk", "destination": "https://pypi.org/project/speechmatics-flow/" },
-  { "source": "/sdk/flow-react-sdk", "destination": "https://www.npmjs.com/package/@speechmatics/flow-client-react" },
+  {
+    "source": "/sdk/flow-javascript-sdk",
+    "destination": "https://www.npmjs.com/package/@speechmatics/flow-client"
+  },
+  {
+    "source": "/sdk/flow-python-sdk",
+    "destination": "https://pypi.org/project/speechmatics-flow/"
+  },
+  {
+    "source": "/sdk/flow-react-sdk",
+    "destination": "https://www.npmjs.com/package/@speechmatics/flow-client-react"
+  },
   {
     "source": "/sdk/javascript-authentication",
     "destination": "https://www.npmjs.com/package/@speechmatics/auth"
   },
-  { "source": "/sdk/python-sdk", "destination": "https://github.com/speechmatics/speechmatics-python-sdk" },
+  {
+    "source": "/sdk/python-sdk",
+    "destination": "https://github.com/speechmatics/speechmatics-python-sdk"
+  },
   {
     "source": "/sdk/real-time-javascript-sdk",
     "destination": "https://www.npmjs.com/package/@speechmatics/real-time-client"
   },
-  { "source": "/sdk/real-time-react-sdk", "destination": "https://www.npmjs.com/package/@speechmatics/real-time-client-react" },
+  {
+    "source": "/sdk/real-time-react-sdk",
+    "destination": "https://www.npmjs.com/package/@speechmatics/real-time-client-react"
+  },
   { "source": "/speech-capabilities", "destination": "/speech-to-text/" },
   { "source": "/tutorials", "destination": "/" },
   {

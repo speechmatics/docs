@@ -1,0 +1,97 @@
+---
+toc_max_heading_level: 3
+---
+
+# Licensing
+
+The Speechmatics Virtual Appliance is licensed using an identical license to the Speechmatics Containers.
+
+## Applying a license
+
+Upload a license file using this command, or paste the license file into the Management API.
+
+```bash
+curl -L -u admin:admin -X 'POST' \
+  "http://${APPLIANCE_HOST}/v2/management/license" -d @license.json
+```
+
+## Usage reporting
+
+If the Appliance is online and `usage.speechmatics.com` is accessible, then usage reports will be submitted to that endpoint. See [Automatic usage reporting](/deployments/usage-reporting/automatic) for details.
+
+If the Appliance is offline, you must configure the appliance to run in offline mode. See [Offline usage reporting](/deployments/usage-reporting/offline) for details.
+
+## Checking an Appliance License
+
+:::info **Note**
+All requests to the management API require authentication unless it is explicitly turned off. The default username and password are 'admin' and 'admin'.
+:::
+
+You can check whether the Appliance is licensed by using a GET request to the `/license` endpoint on the Management API. For example:
+
+```bash
+curl -L -u admin:admin -X 'GET' "http://${APPLIANCE_HOST}/v2/management/license" | jq
+```
+
+If no license is present, a 404 will be returned.
+If the Appliance has been licensed, then you will see a return like this:
+
+```json
+{
+  "comment": "",
+  "contractid": 1001,
+  "creationdate": "2022-10-24 11:11:49",
+  "customer": "Speechmatics",
+  "id": "bb6df75951b14855ab654a09e6d00d80",
+  "licensetype": "Evaluation",
+  "metadata": {
+    "key_pair_id": 1,
+    "request": {
+      "comment": "",
+      "contractid": 1001,
+      "customer": "Speechmatics",
+      "features": ["MAPRT", "MAPBA", "LANY"],
+      "notValidAfter": "2024-10-16",
+      "validFrom": "2022-10-24"
+    }
+  },
+  "signedclaimstoken": "ey..._w",
+  "unitquantity": "",
+  "unittype": "",
+  "version": 1
+}
+```
+
+This shows that the Appliance has been licensed with a license with the unique id `bb6df75951b14855ab654a09e6d00d80`. The license is due to expire on the 16th October 2024, and is entitled to use batch (MAPBA) and realtime (MAPRT) modes in any language (LANY). The full list of codes is documented [here](/deployments/virtual-appliance/installation/license-features).
+
+## Removing a License
+
+If you wish to prevent an Appliance from transcribing anymore, the license can be removed with an HTTP DELETE:
+
+```bash
+curl -L -u admin:admin -X 'DELETE' \
+    "http://${APPLIANCE_HOST}/v2/management/license" \
+    | jq
+```
+
+## Using a Proxy Server
+
+As part of the `usagereporting` call, a proxy can be set for reaching `usage.speechmatics.com`:
+
+```bash
+curl -L -u admin:admin -X 'POST' \
+  "https://${APPLIANCE_HOST}/v2/management/usagereporting" \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "mode": "online",
+  "proxy": "https://proxy.example.com:3128/"
+}'
+```
+
+Internally this will set the well-known `http_proxy` and `https_proxy` environment variables when launching the transcription process. When choosing `offline` mode, the proxy setting will have no effect. The proxy url can include credentials in the format `https://USER:PASS@proxy.example.com/`.
+
+## Licensing Troubleshooting
+
+### Invalid License
+
+Only basic license validation is performed when the license is applied. Any runtime errors will be reported from the Transcriber Container running inside the Appliance. If this occurs please [reach out to Support](https://support.speechmatics.com), sending back the full output from the job log and the license as reported by the Appliance.

@@ -1,0 +1,187 @@
+---
+toc_max_heading_level: 3
+---
+import { smVariables } from "/sm-variables";
+import CodeBlock from '@theme/CodeBlock';
+
+# Services
+
+## About
+
+Summary information of the appliance can be accessed via the About Endpoint of the appliance management API. 
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+   "http://${APPLIANCE_HOST}/v2/management/host/about"
+```
+
+This will respond with a json with summary information including, 
+
+- `appliance_version` - the version of the appliance 
+- `appliance_variant` - the specific build and mode of the appliance 
+- `languages` - the list of languages installed in the appliance.
+
+<CodeBlock language="json">
+{`{
+  "appliance_version": "${smVariables.latestApplianceVersion}",
+  "appliance_variant": "sm-realtime-appliance-${smVariables.latestApplianceVersion}-xxxxxxx",
+  "languages": [
+    "en"
+  ]
+}`}
+</CodeBlock>
+
+
+
+## Health 
+
+If you want to monitor/assess the health of the appliance you can call the health endpoint under the appliance management api.
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+   "http://${APPLIANCE_HOST}/v2/management/health"
+```
+
+This will respond with a summary of the different components of the appliance and their status. Status can be one of `healthy`|`disabled`|`unhealthy`, if a component is unhealthy some related error(s) will be provided
+
+```json
+{
+  "status": "healthy",
+  "database": {
+    "status": "healthy"
+  },
+  "batch_inference": {
+    "status": "healthy"
+  },
+  "monitoring": {
+    "status": "healthy"
+  },
+  "storage": {
+    "status": "healthy"
+  },
+  "realtime_inference": {
+    "status": "disabled"
+  },
+  "gpu_inference": {
+    "status": "unhealthy"
+    "errors": ["expected deployment: sm-gpu to have 1 ready replicas have: 0"]
+  }
+}
+```
+
+## Access Logs
+
+If you want to download logs (to provide information for a support ticket for instance) as a ZIP file, then it is possible to do this using the following command:
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+    "http://${APPLIANCE_HOST}/v2/management/logs/zip?limit=1h" \
+    -o ./speechmatics.zip
+```
+
+where limit is the maximum age of logs, specified by a duration.
+
+It is also possible to do this directly from the Management Interface by going to the following URL to your browser: `http://${APPLIANCE_HOST}/docs/#/Management/ZipLogs`, and then clicking on the download link when the ZIP file is ready.
+
+![Download log files (ZIP) from the Management Interface](/img/appliance-images/download-log-zip.png)
+
+To dig deeper into the logs to help Support diagnose problems, you can log on to the Appliance and use `kubectl` and `journald` commands directly.
+
+## System Restart and Shutdown
+
+If the Virtual Appliance becomes unresponsive, there might be a need to restart it. If this is the case, it's recommended that the system is restarted through a remote SSH session or via the hypervisor console, however, the legacy restart and shutdown commands are still available in the Management API.
+
+```bash
+# reboot
+curl -sSL -u admin:admin -X 'DELETE' "http://${APPLIANCE_HOST}/v2/management/reboot"
+# shutdown
+curl -sSL -u admin:admin -X 'DELETE' "http://${APPLIANCE_HOST}/v2/management/shutdown"
+```
+
+There will be a one minute delay between requesting a shutdown or reboot via the Management API and the action occurring.
+
+## Job Artefacts Cleanup
+
+During job execution various artefacts are saved to disk, such as the job config and or audio file, these artefacts are automatically cleared every 24 hours. This cleanup interval can be configured via the Appliance Management API.
+
+```bash
+curl -sSL -u admin:admin -X 'POST' \
+  "http://${APPLIANCE_HOST}/v2/management/cleanupinterval" \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "minutes": 1
+}'
+```
+
+This is also possible through the Management Interface via `http://${APPLIANCE_HOST}/#/Management/Management_SetCleanupInterval`
+
+:::info **Note**
+This cleanup process removes _all_ job data including processed transcriptions; as a result,
+it is best to retrieve all processed transcription data to store externally before it is deleted.
+:::
+
+## Troubleshooting
+
+There may be times unexpected behavior is observed with the Virtual Appliance.
+If this is the case, the following should be performed/checked:
+
+- Check appliance health (see [Health](#health))
+- Check the license is valid (see [licensing](/deployments/virtual-appliance/installation/licensing))
+- Check the worker services are running
+- Check the resources (CPU, memory & disk) to ensure they are not exhausted
+- Restart the Virtual Appliance
+- [Collect logs](#access-logs) and reach out to [Support](https://support.speechmatics.com).
+
+### Transcription Job Failure
+
+If your transcription job fails with an `error` job status,
+more information can be found by looking at the logs from the _api_ container
+(using the Management API, as previously described).
+Search the logs for the job id corresponding with your failure.
+If you see a `SoftTimeLimitExceeded` exception,
+this indicates that the job took longer than expected and as such was terminated.
+This is typically caused by poor VM performance, in particular slow disk IO operations (IOPS).
+If issues persist, it may be necessary to improve the disk IO performance on the underlying host,
+or you may need to increase the RAM available to the VM such that memory caches can be taken advantage of.
+Please consult the section on [System Requirements](/deployments/virtual-appliance/installation/system-requirements#virtual-appliance-system-requirements),
+and the optimization advice specific to your hypervisor to ensure that you are not over-committing your compute resources.
+
+### Illegal Instruction Errors
+
+If jobs fail repeatedly, and you see `Illegal instruction` errors in the log information for these jobs then it is likely that the host hardware you are running on does not support AVX. This is important because these chipsets (and later ones) support Advanced Vector Extensions (AVX). The machine learning algorithms used by Speechmatics ASR require the performance optimizations that AVX provides.
+
+Please consult the section on [System Requirements](/deployments/virtual-appliance/installation/system-requirements#virtual-appliance-system-requirements), and the optimization advice specific to your hypervisor.
+
+You can check this by calling the `cpuinfo` endpoint.
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+  "http://${APPLIANCE_HOST}/v2/management/cpuinfo"
+```
+
+Check the `flags` field in the response. If `avx` isn't present, then your host's CPU does not support AVX, or that your hypervisor does not have AVX support.
+
+### AVX2 Warning
+
+Speechmatics Appliance is optimized for running on hardware that supports the AVX2 flag. If you see the below message, your hardware is not optimised, and you may see slower performance of jobs
+
+```
+WARNING ([5.5.675~1-0c22]:SetupMathLibrary():asrengine/asrengine.cc:356) Unable to set CNR mode to 10 (AVX2); falling back to 9. The transcription might be slower and/or use more CPU resource.
+```
+
+Please consult the section on [System Requirements](/deployments/virtual-appliance/installation/system-requirements#virtual-appliance-system-requirements), and the optimization advice specific to your hypervisor.
+
+### Pending Jobs
+
+If jobs enter a pending state within Kubernetes, it may be that the machine doesn't currently have enough resources to schedule the job. Check the current number of running jobs, the job should begin to run once the running jobs complete and sufficient resources have been made available.
+
+### Jobs Storage Full
+
+By default, job artifacts are stored for 24hrs after job completion, in cases where a high volume of jobs are being ran it is possible that the local storage for job artefacts will become full and jobs will begin to fail, to avoid this it is best to monitor the status of the job storage via Prometheus and reduce the cleanup interval if job storage is filling up too quickly (see [Monitoring](/deployments/virtual-appliance/administration/monitoring#useful-prometheus-queries)).
+
+Individual jobs can also be deleted via the jobs API e.g.
+
+```bash
+curl -sSL -u admin:admin -X 'DELETE' \
+  "https://${APPLIANCE_HOST}/v2/jobs/${job_id}"
+```

@@ -46,7 +46,6 @@ export const sidebarItemsGenerator: SidebarItemsGeneratorOption = async ({
       return doc;
     });
   const defaults = await defaultSidebarItemsGenerator({ ...args, docs });
-
   return defaults.map((item) => withNormalizedLabel(item));
 };
 
