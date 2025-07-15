@@ -107,7 +107,7 @@ Heavy usage of the Appliance at scale can sometimes result in very high usage of
 
 Increasing the IOPS also will result in an increase in cost for resource usage. If you use AWS, we recommend in all cases to set the `volume type` to `gp3` as it costs less and has better performance than `gp2`.
 
-Low IOPS can also result in longer startup times in for the appliance, in cases where the IOPS is too low the first few transcription request on a fresh VM may fail see [troubleshooting](../administration/services.mdx#troubleshooting).
+Low IOPS can also result in longer startup times in for the appliance, in cases where the IOPS is too low the first few transcription request on a fresh VM may fail see [troubleshooting](/deployments/virtual-appliance/administration/services#troubleshooting).
 
 How to change the maximum IOPS supported by your hardware is documented [here for AWS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/requesting-ebs-volume-modifications.html), [here for Microsoft Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/disks-performance-tiers-portal), and [here for VMware](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-25C3D9FE-3A9D-4739-AC75-16A9E0A3D9F0.html). You may need to do this if:
 

@@ -1,0 +1,226 @@
+---
+toc_max_heading_level: 3
+---
+
+# SSL Configuration
+
+When the Appliance is imported, it contains a default self-signed certificate,
+so you can use HTTPS to access the Appliance via the Management, Monitoring and Speech APIs.
+However, we recommend replacing this default SSL certificate with your own certificate,
+signed by your Organisation or a trusted third-party Certificate Authority (CA).
+
+## Default Behaviour
+
+By default, our Appliances allow connections over HTTP. The services on the Appliance expose several ports for HTTP access, such as 80 for the Management API and 9001 for the Monitoring API.
+
+Since version 3.4.0 of the Appliances,
+we also support HTTPS access to these services over port 443. To use HTTPS change the protocol
+used for API calls from `'http'` to `'https'`, and remove the port from the URL.
+If you are copying the examples from this document you can set the `$APPLIANCE_HOST` environment variable like this:
+`export APPLIANCE_HOST=localhost`.
+
+### Management API Examples
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+  "http://${APPLIANCE_HOST}/v2/management/host/about"
+```
+
+To modify this to use a secure API call, change `http://` to `https://`:
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+  "https://${APPLIANCE_HOST}/v2/management/host/about"
+```
+
+:::info **Note**
+If you are using a self-signed certificate (your own, or the Speechmatics certificate used by default), then you will see a warning like this when using the above curl command:
+:::
+
+```
+curl: (60) SSL certificate problem: self signed certificate
+```
+
+**Warning**: The default SSL certificate on the Appliance is a self-signed certificate created by Speechmatics, which is not signed by any Certificate Authority. Your HTTP client or web browser may warn that this is insecure. This warning can be suppressed, for example with cURL by adding the `--insecure` flag, however customers who are serious about security should not be using the self-signed certificate. We recommend uploading your own SSL certificate to the Appliance. Instructions for doing this can be found below.
+
+**Important**: We have added `--insecure` to some of the cURL examples in this document so that the command trusts the self-signed certificate. You won't need this option once you've uploaded your own certificate and configured your own system to trust it.
+
+### Speech API Example
+
+Access to the REST Speech API, is also possible via HTTPS:
+
+```bash
+curl --insecure -L -X 'GET' "https://${APPLIANCE_HOST}/v2/jobs/"
+```
+
+### Websocket Example
+
+Access to the Websocket, is also possible via a secure websocket:
+
+```bash
+speechmatics transcribe --lang en ${PATH_TO_AUDIO_FILE} --url "wss://${APPLIANCE_HOST}:9004/v2/en" --ssl-mode insecure
+```
+
+:::info **Note**
+The above example requires the Speechmatics python client to be installed see [Speechmatics python](https://github.com/speechmatics/speechmatics-python)
+:::
+
+
+## Using your Own SSL certificate and Private Key
+
+To use your own SSL certificate, you'll need to upload your _certificate_ file as well as the associated _private key_ file.
+
+- The **private key** file normally has a '.key' extension and should look similar to the example below.
+
+```
+-----BEGIN RSA PRIVATE KEY-----
+xqgLwi4gJ9+9Qkavpk3WpPFTTYUfVrCJNviKEn5wA1tuutqLQkRTcxJtrEk8trKI
+fCxeZo35yVhYmDGUIuAdAcPRTPj0XZkXQRhkITmD8TYMc/sVlJpFr+TAssGzute8
+... 21 lines redacted ...
++bLv4aqI9tZrwpyeziaOuyQRhYodpAjhCyCFMkJjY59BKv/cqMHx8FPDQmaZ9Xs0
+SmE9JAknDgF5yLHm1Q6WZ1/L/M4SkgIqEglF7ifLd5M3wskpmHia6/f8Fa2KwbBJ
+-----END RSA PRIVATE KEY-----
+```
+
+:::info **Note**
+We do not currently support encrypted/password protected private key files.
+:::
+
+- The **certificate** file should be PEM encoded and normally has an '.crt' or '.pem' extension. It should look similar to this:
+
+```
+-----BEGIN CERTIFICATE-----
+MIIGuzCCBaOgAwIBAgIIIHlfyznYUA8wDQYJKoZIhvcNAQELBQAwgbQxCzAJBgNV
+BAYTAlVTMRAwDgYDVQQIEwdBcml6b25hMRMwEQYDVQQHEwpTY290dHNkYWxlMRow
+... 32 lines redacted ...
+P4LMbjCA4mqQvlipibeSAN1E4OrFL47zLcy+H9M0+Rw2CUiwL8QZFq+TAiIZ34tC
+UVCh52xpB9/BhO++QbGd1zObqDhcGEg8pJpJIycej9t4GN1eqNSudn0ibsQWev8=
+-----END CERTIFICATE-----
+```
+
+Both files should be in [PKCS8](https://en.wikipedia.org/wiki/PKCS_8) format. If you have to upload a certificate chain,
+then the file you upload should contain the individual certificates concatenated,
+with your organization's certificate first.
+
+### Uploading the Certificate and Key to the Appliance
+
+To upload your own certificate to the Appliance, you will need to make a POST request to the `/v2/security/sslcertificate` endpoint.
+This can be done using an HTTP client on the commandline or with the Management Interface in a browser.
+
+With the example shown here set `APPLIANCE_HOST` as appropriate (e.g. `export APPLIANCE_HOST=localhost` if your Appliance is running locally):
+
+```bash
+curl --insecure -L -u admin:$PWD -X 'POST' "https://${APPLIANCE_HOST}/v2/security/sslcertificate" \
+    -F "keyfile=@appliance.key" -F "certfile=@appliance.crt"
+```
+
+**Warning**: Do not upload these files over HTTP, or you risk leaking the private key for your certificate.
+
+If the upload succeeds, then you should receive an HTTP 200 response.
+
+Be aware that setting a new certificate will reconfigure the Kubernetes ingress in the Appliance which can take around five seconds.
+During this period, requests will still be served, however, the old certificate will be used.
+Existing connections such as job uploads or WebSocket streams will not be interrupted.
+
+You can check the certificate on the Appliance by using the `openssl` tool:
+
+```bash
+openssl s_client -connect ${APPLIANCE_HOST}:443
+```
+
+### Disabling HTTP Access
+
+If desired, HTTP access may be disabled, which will cause any requests to the Appliance using HTTP to redirect to HTTPS. To do this, make a POST request to the `/v2/security/insecureports` endpoint, with a JSON body containing `{"enable_insecure_ports": false}`:
+
+```bash
+curl -sSL -u admin:admin -X 'POST' \
+  "http://${APPLIANCE_HOST}/v2/security/insecureports" \
+  -H "Content-Type: application/json" \
+  -d '{"enable_insecure_ports": false}'
+```
+
+If the request succeeded then you should receive an HTTP 200 response. The web server in the Appliance will take around five seconds to restart. Now, when attempting to make an HTTP request to the Appliance you will be redirected to an https endpoint instead.
+
+```bash-and-response
+curl -X 'GET' "http://${APPLIANCE_HOST}/v2/management/host/about"
+< HTTP/1.1 301 Moved Permanently
+< Location: https://${APPLIANCE_HOST}/v2/management/host/about
+```
+
+### Configure Basic Authentication for Admin
+
+By default the username and password for [HTTP basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) are both set to `admin`.
+
+To set your own password, make a POST request to the `/v2/security/adminpassword` endpoint. The username for basic auth is always `admin` and cannot be changed.
+
+```bash-and-response
+curl --insecure -L -u admin:admin -X 'POST' \
+  "https://${APPLIANCE_HOST}/v2/security/adminpassword" \
+  -H 'Content-Type: application/json' \
+  -d '{ "password": "example" }'
+```
+
+If this request was successful, then you should receive an HTTP 200 response with a success message. The web server in the Appliance will take around five seconds to restart. All requests to management API endpoints will now require a valid `Authorization` header as specified by [RFC7617](https://tools.ietf.org/html/rfc7617). Unauthenticated requests will fail, for example:
+
+```bash-and-response
+$ curl -X 'GET' "http://${APPLIANCE_HOST}/v2/management/host/about"
+401 Unauthorized
+```
+
+Authenticated requests should succeed. If you are using curl then the `--user` flag can be used to set the username and password (separated with a colon). If you're using the Management Interface in a browser than a prompt will appear for a username and password.
+
+```bash
+curl -L --user "admin:$PWD" -X GET "http://${APPLIANCE_HOST}/v2/management/host/about"
+```
+
+## FAQs
+
+### How do I Reset the SSL settings?
+
+If you have made a mistake in your SSL configuration, it is possible to reset the Appliance to its default settings. This will return it to using the self-signed certificate from Speechmatics, and will delete any configured admin password. If you have disabled HTTP access, then you need to know the existing admin password to do this.
+
+To do this, make a DELETE request to the `/v2/security/reset` endpoint:
+
+```bash-and-response
+$ curl -L -u "admin:$PWD" -X 'DELETE' "http://${APPLIANCE_HOST}/v2/security/reset"
+```
+
+### What if I Forget the Admin Password?
+
+If you have forgotten the admin password you set, and have disabled HTTP access to the Appliance then it will not be possible to interact with the Appliance over HTTP/HTTPS. Fortunately, there is a way to reset the password if you have direct access to the Appliance's console (through the hypervisor that you use) or via SSH.
+
+```bash
+# This command will open the vi editor
+kubectl edit secret management-auth-secret
+# Replace the line
+# users: <base64 hash of the forgotten password>
+# with
+# users: YWRtaW46JDJ5JDA1JFExeFBVUFJyRG96LzQwWEZuN09aVHVtV1dzallUeWlhOHo1ZUkvWHpHRUhSUng0dXRyM2UyCg==
+
+# Restart the management-api service
+kubectl rollout restart deployment/management-api
+```
+
+{/* can someone come with a kubectl one-liner to copy management-auth-secret-backup to management-auth-secret without telling the user to run vi? It should be possible to export the secret and import it under the new name? */}
+
+This specific value will reset the password to `admin`.
+
+### What Versions of SSL/TLS do you Support?
+
+We support TLS 1.2 and TLS 1.3. We do not support earlier versions of TLS/SSL as these are considered weak. In general, we would recommend you keep your client frameworks up to date with the latest security patches and try to use the strictest TLS configuration that you can.
+
+#### What Cipher Suites do you Support?
+
+For TLS 1.3 we support the following cipher suites that are considered strong (in server preferred order):
+
+- TLS_AES_128_GCM_SHA256
+- TLS_AES_256_GCM_SHA384
+- TLS_CHACHA20_POLY1305_SHA256
+
+For TLS 1.2, we support the following cipher suites that are considered strong (in server preferred order):
+
+- TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+
+Other cipher suites are available for TLS 1.2, but they are considered to be weak. Our recommendation is that you select one of the above cipher suites.

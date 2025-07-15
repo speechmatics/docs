@@ -312,7 +312,7 @@
     },
     {
       "source": "/on-prem/virtual-appliance/administration",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance",
       "permanent": true
     },
     {
@@ -322,7 +322,7 @@
     },
     {
       "source": "/on-prem/virtual-appliance/administration/gpu",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/using-a-gpu",
       "permanent": true
     },
     {
@@ -332,47 +332,47 @@
     },
     {
       "source": "/on-prem/virtual-appliance/administration/logcli-help",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/logcli-help",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/monitoring",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/monitoring",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/networking",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/networking",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/remote-access",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/remote-access",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/scaling",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/scaling",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/security",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/security",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/services",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/services",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/ssl",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/ssl-configuration",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/administration/usage",
-      "destination": "/not-found",
+      "destination": "/deployments/usage-reporting",
       "permanent": true
     },
     {
@@ -382,32 +382,32 @@
     },
     {
       "source": "/on-prem/virtual-appliance/installation/downloading-import",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/installation/download-and-import",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/licensing/license-features",
-      "destination": "/deployments/virtual-appliance/licensing/license-features",
+      "destination": "/deployments/virtual-appliance/installation/license-features",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/licensing/usage-and-licensing",
-      "destination": "/deployments/virtual-appliance/licensing",
+      "destination": "/deployments/virtual-appliance/installation/licensing",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/network-config",
-      "destination": "/deployments/virtual-appliance/network-config",
+      "destination": "/deployments/virtual-appliance/installation/network-config",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/system-requirements",
-      "destination": "/deployments/virtual-appliance/system-requirements",
+      "destination": "/deployments/virtual-appliance/installation/system-requirements",
       "permanent": true
     },
     {
       "source": "/on-prem/virtual-appliance/installation/verify",
-      "destination": "/deployments/virtual-appliance/verify-installation",
+      "destination": "/deployments/virtual-appliance/installation/verify-and-go",
       "permanent": true
     },
     {

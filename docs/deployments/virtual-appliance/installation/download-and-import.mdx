@@ -82,9 +82,9 @@ To import a Speechmatics OVA into VMware Workstation follow these steps:
 - Give the VM a suitable name, for example: `sm-appliance-01`
 - Click `Import`
 
-Once the import has finished, ensure the VM is configured to use our recommended network settings by following the instructions [here](./network-config.mdx#vmware-workstation).
+Once the import has finished, ensure the VM is configured to use our recommended network settings by following the instructions [here](/deployments/virtual-appliance/installation/network-config#vmware-workstation).
 
-Before booting the VM you may also wish to consult the [System Requirements](system-requirements.mdx#virtual-appliance-system-requirements) page and set your CPU and memory quantities as desired for your expected workload.
+Before booting the VM you may also wish to consult the [System Requirements](/deployments/virtual-appliance/installation/system-requirements#virtual-appliance-system-requirements) page and set your CPU and memory quantities as desired for your expected workload.
 
 Note that VMware Workstation does not currently support PCI passthrough, which is a requirement for running GPU transcription. As such, only CPU transcription is possible.
 
@@ -242,11 +242,11 @@ When the status is in the `completed` state the AMI is ready to use.
 
 ### Security
 
-For more background on creating security groups refer to the official [AWS documentation](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html). See the [Ports and Protocols](../administration/security.mdx#ports-and-protocols) section for a list of the ports that are used. These ports should be opened so that you can submit jobs and manage and monitor the Speechmatics Virtual Appliance.
+For more background on creating security groups refer to the official [AWS documentation](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html). See the [Ports and Protocols](/deployments/virtual-appliance/administration/security#ports-and-protocols) section for a list of the ports that are used. These ports should be opened so that you can submit jobs and manage and monitor the Speechmatics Virtual Appliance.
 
 #### Batch Virtual Appliance
 
-If you set up HTTPS as described in [SSL Configuration](../administration/ssl.mdx) then you only need to expose port 443.
+If you set up HTTPS as described in [SSL Configuration](/deployments/virtual-appliance/administration/ssl-configuration) then you only need to expose port 443.
 
 ### Launching a Virtual Appliance
 
@@ -345,7 +345,7 @@ qm set 123 -cores 6 -memory 24576
 
 If you wish to enable GPU transcription you must carry out these additional steps.
 
-GPU transcription requires PCIe passthrough of a [suitable graphics card](../../containers/gpu-inference-container.mdx#system-requirements) from the host to the virtual appliance. A prerequisite of this is to use a suitable virtual machine type along with a UEFI bios, like so:
+GPU transcription requires PCIe passthrough of a [suitable graphics card](/deployments/container/gpu-speech-to-text#system-requirements) from the host to the virtual appliance. A prerequisite of this is to use a suitable virtual machine type along with a UEFI bios, like so:
 
 ```bash
 qm set 123 -machine q35 -bios ovmf
@@ -384,7 +384,7 @@ smadmin@ubuntu:~$ ip addr show | grep -A 6 'en.*:'
        valid_lft forever preferred_lft forever
 ```
 
-In this example the IP address is `192.168.1.163`, which was allocated to the appliance via DHCP. If there isn't an IP address listed in your output, or if you wish to use a static IP address, see the [IP Configuration](./network-config.mdx#ip-configuration) page. If the command returns no output at all then ensure you've added a network adapter as described above. It may aid debugging to run just the start of the command: `ip addr show`
+In this example the IP address is `192.168.1.163`, which was allocated to the appliance via DHCP. If there isn't an IP address listed in your output, or if you wish to use a static IP address, see the [IP Configuration](/deployments/virtual-appliance/installation/network-config#ip-configuration) page. If the command returns no output at all then ensure you've added a network adapter as described above. It may aid debugging to run just the start of the command: `ip addr show`
 
 If your appliance has a GPU passed-through then it's wise to verify that it's visible to the OS by running the following commands:
 

@@ -1,0 +1,39 @@
+# Networking
+
+## Network Requirements
+
+:::info **Note**
+The Appliance uses k3s default subnets (see: https://docs.k3s.io/cli/server#networking)
+:::
+
+- cluster-cidr "10.42.0.0/16"	IPv4/IPv6 network CIDRs to use for pod IPs-
+- service-cidr "10.43.0.0/16"	IPv4/IPv6 network CIDRs to use for service IPs
+
+You need to ensure that any network you use does not have an IP address conflict.
+
+## Configure Networking
+
+The Virtual Appliance will attempt to acquire an IP address via DHCP.
+
+If you need to configure a static IP address, you can log into the Appliance and follow the instructions from the [official Ubuntu documentation](https://help.ubuntu.com/stable/ubuntu-help/net-manual.html.en)
+
+## Firewall Ports
+
+There are several firewall rules that may need to be enabled to ensure the communication can be made to the Virtual Appliance:
+
+| Port/Protocol | Description                                                                         |
+| ------------- | ----------------------------------------------------------------------------------- |
+| 22/TCP        | SSH access                                                                          |
+| 80/TCP        | Used for the Management API to manage the Appliance, and for submitting jobs [^1]   |
+| 443/TCP       | Used for HTTPS communication with the above services                                |
+| 9000/TCP      | Used for the websocket connection to the realtime transcription service [^2]        |
+| 9004/TCP      | Used for the secure websocket connection to the realtime transcription service [^2] |
+| 9001/TCP      | Prometheus metrics                                                                  |
+| 3100/TCP      | Loki logs endpoint                                                                  |
+
+[^2]: Jobs service only available in `batch` mode.
+[^1]: Websocket service only available in `realtime` mode.
+
+## Using Proxies
+
+If the network that you are deploying your Appliance into does not have a direct route to the Internet, you may need to use a proxy server in order to talk to the cloud-based usage reporting service. See the relevant section in [Licensing](/deployments/virtual-appliance/installation/licensing) for details on how to set this up.

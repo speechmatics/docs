@@ -222,7 +222,7 @@
   },
   {
     "source": "/on-prem/virtual-appliance/administration",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/adding-languages",
@@ -230,7 +230,7 @@
   },
   {
     "source": "/on-prem/virtual-appliance/administration/gpu",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/using-a-gpu"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/lang-id",
@@ -238,39 +238,39 @@
   },
   {
     "source": "/on-prem/virtual-appliance/administration/logcli-help",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/logcli-help"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/monitoring",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/monitoring"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/networking",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/networking"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/remote-access",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/remote-access"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/scaling",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/scaling"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/security",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/security"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/services",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/services"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/ssl",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/ssl-configuration"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/usage",
-    "destination": "/not-found"
+    "destination": "/deployments/usage-reporting"
   },
   {
     "source": "/on-prem/virtual-appliance/installation",
@@ -278,27 +278,27 @@
   },
   {
     "source": "/on-prem/virtual-appliance/installation/downloading-import",
-    "destination": "/deployments/virtual-appliance/download-and-import"
+    "destination": "/deployments/virtual-appliance/installation/download-and-import"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/licensing/license-features",
-    "destination": "/deployments/virtual-appliance/licensing/license-features"
+    "destination": "/deployments/virtual-appliance/installation/license-features"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/licensing/usage-and-licensing",
-    "destination": "/deployments/virtual-appliance/licensing"
+    "destination": "/deployments/virtual-appliance/installation/licensing"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/network-config",
-    "destination": "/deployments/virtual-appliance/network-config"
+    "destination": "/deployments/virtual-appliance/installation/network-config"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/system-requirements",
-    "destination": "/deployments/virtual-appliance/system-requirements"
+    "destination": "/deployments/virtual-appliance/installation/system-requirements"
   },
   {
     "source": "/on-prem/virtual-appliance/installation/verify",
-    "destination": "/deployments/virtual-appliance/verify-installation"
+    "destination": "/deployments/virtual-appliance/installation/verify-and-go"
   },
   { "source": "/private/example-file", "destination": "/" },
   { "source": "/private/preview-mode", "destination": "/not-found" },
