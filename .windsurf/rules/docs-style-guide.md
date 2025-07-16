@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Apply this rule when working on .md or .mdx files in the docs folder of the docsd repo
+description: Apply this rule when working on .md or .mdx files in the docs folder of the docs repo
 ---
 
 This guide will help you write clear, consistent, and user-friendly content for the Docs.
@@ -74,20 +74,20 @@ Grammatical context:
 
     -   Example: *We offer speech-to-text conversion for streaming media.*
 
-### Voice agents -- Flow
+### Voice agents &ndash; Flow
 
 A platform for creating conversational AI agents that can understand and respond to users in natural, real-time conversations.
 
 Grammatical context:
 
--   Use an en dash (--) to indicate a connection between two equal terms in a name. Avoid using a hyphen (-) here---it suggests a single compound word rather than a title hierarchy---and steer clear of an em dash (---), which is too heavy for navigation items or section titles.
+-   Use an en dash (&ndash;) to indicate a connection between two equal terms in a name. Avoid using a hyphen (-) here&mdash;it suggests a single compound word rather than a title hierarchy&mdash;and steer clear of an em dash (&mdash;), which is too heavy for navigation items or section titles.
 
 * * * * *
 
 Core writing principles
 =======================
 
-# Dos and Don'ts
+## Dos and Don'ts
 
 The ✅ emoji precedes a correct use example. 
 
