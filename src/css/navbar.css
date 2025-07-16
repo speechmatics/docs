@@ -1,9 +1,14 @@
+:root {
+  --doc-sidebar-width: 224px;
+}
+
 .theme-doc-sidebar-container {
-  background-color: var(--gray-2);
+  background-color: var(--gray-3);
 }
 
 .navbar {
-  --ifm-navbar-background-color: var(--gray-2);
+  --ifm-navbar-background-color: var(--gray-3);
+  box-shadow: none;
 }
 
 main {
@@ -16,8 +21,22 @@ main {
 
 footer.footer,
 footer.footer--dark {
-  --ifm-footer-background-color: var(--gray-2);
+  --ifm-footer-background-color: var(--gray-3);
   --ifm-footer-color: var(--gray-11);
   --ifm-footer-link-color: var(--gray-11);
-  border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+aside.theme-doc-sidebar-container {
+  border-right-width: 0;
+}
+
+nav.menu {
+  overflow-y: hidden;
+  border-width: 0;
+}
+
+nav.menu:hover,
+nav.menu:active,
+nav.menu:focus {
+  overflow-y: auto;
 }

@@ -1,0 +1,4 @@
+.radix-themes main {
+  border-radius: var(--radius-4);
+  background-color: var(--gray-1);
+}
