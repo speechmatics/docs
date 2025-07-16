@@ -1,15 +1,41 @@
 ---
-sidebar_position: 3
-description: 'Learn how to transcribe files from a URL'
-keywords: [speechmatics, fetch, url, transcription, speech recognition, asr]
+keywords: [speechmatics, transcription, speech recognition, asr, api, limits]
+toc_max_heading_level: 2
+title: 'Input (Batch)'
 ---
 
-# Fetch URL
+# Input
 
+:::info
+This page documents audio inputs for transcription by **REST API** (a.k.a. Batch SaaS).
+* For Real-time transcription, see the [Real-time Transcription supported formats and limits](/speech-to-text/real-time/input).
+* For Flow Voice AI, see the [Flow Voice AI supported formats and limits](/voice-agents-flow/supported-formats-and-limits).
+:::
+
+## Supported File Types
+
+The following file formats types are supported for transcription by REST API:
+
+- `wav`
+- `mp3`
+- `aac`
+- `ogg`
+- `mpeg`
+- `amr`
+- `m4a`
+- `mp4`
+- `flac`
+
+The list above is exhaustive - any file format outside the list above is explicitly not supported.
+
+Only files where the type can be determined by data inspection are supported. Raw audio formats where the codec is not embedded in the file cannot be processed in batch mode. This includes files commonly given extensions like ".raw" or ".g729" where the codec is only hinted at in the name.
+
+
+## Fetch URL
 
 If you store your digital media in cloud storage (for example AWS S3 or Azure Blob Storage) you can also submit a job by providing the URL of the audio file. The configuration uses a `fetch_data` section, which looks like this:
 
-### Configuration Example
+#### Configuration example
 
 ```json
 {
@@ -26,7 +52,7 @@ If you store your digital media in cloud storage (for example AWS S3 or Azure Bl
 
 In SaaS, fetch requests made to the URL in `fetch_data` have user agent set to `Speechmatics-API/2.0`.
 
-### Fetch Failure
+#### Fetch failure
 
 If the Speechmatics Batch SaaS is unable to retrieve audio from the specified online location, the job will fail, with a `status` of `rejected`, and no transcript will be generated. Users can now retrieve failure information by making a GET /jobs/$JOBID request, and use that to carry out diagnostic information.
 

@@ -8,7 +8,11 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/real-time/supported-formats-and-limits",
+      id: "speech-to-text/real-time/input",
+    },
+    {
+      type: "doc",
+      id: "speech-to-text/real-time/output",
     },
     {
       type: "doc",

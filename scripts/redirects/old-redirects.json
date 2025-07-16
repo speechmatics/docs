@@ -13,7 +13,7 @@
   },
   {
     "source": "/features-other/fetch-url",
-    "destination": "/speech-to-text/batch/fetch-url"
+    "destination": "/speech-to-text/batch/input#fetch-url"
   },
   {
     "source": "/features-other/lang-id",
@@ -124,7 +124,7 @@
   { "source": "/introduction", "destination": "/" },
   {
     "source": "/introduction/additional-info",
-    "destination": "/speech-to-text/batch/check-job-status"
+    "destination": "/speech-to-text/batch/output"
   },
   {
     "source": "/introduction/authentication",
@@ -136,7 +136,7 @@
   },
   {
     "source": "/introduction/errors-rate-limits",
-    "destination": "/speech-to-text/batch/supported-files-and-limits"
+    "destination": "/speech-to-text/batch/input"
   },
   {
     "source": "/introduction/rt-guide",

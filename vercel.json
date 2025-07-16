@@ -32,7 +32,7 @@
     },
     {
       "source": "/features-other/fetch-url",
-      "destination": "/speech-to-text/batch/fetch-url",
+      "destination": "/speech-to-text/batch/input#fetch-url",
       "permanent": true
     },
     {
@@ -182,7 +182,7 @@
     },
     {
       "source": "/introduction/additional-info",
-      "destination": "/speech-to-text/batch/check-job-status",
+      "destination": "/speech-to-text/batch/output",
       "permanent": true
     },
     {
@@ -197,7 +197,7 @@
     },
     {
       "source": "/introduction/errors-rate-limits",
-      "destination": "/speech-to-text/batch/supported-files-and-limits",
+      "destination": "/speech-to-text/batch/input",
       "permanent": true
     },
     {
@@ -592,12 +592,12 @@
     },
     {
       "source": "/en/cloud/understanding-saas-usage/",
-      "destination": "/speech-to-text/batch/supported-files-and-limits",
+      "destination": "/speech-to-text/batch/input",
       "permanent": true
     },
     {
       "source": "/en/cloud/troubleshooting/",
-      "destination": "/speech-to-text/batch/supported-files-and-limits",
+      "destination": "/speech-to-text/batch/input",
       "permanent": true
     },
     {

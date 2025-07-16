@@ -1,36 +1,6 @@
----
-sidebar_label: 'Supported Files and Limits'
-keywords: [speechmatics, transcription, speech recognition, asr, api, limits]
-toc_max_heading_level: 2
----
-
 import HTTPMethodBadge from '@theme/HTTPMethodBadge'
 
-# Supported Files and Limits (Batch)
-
-:::info
-This page documents limits, conditions and supported file types for transcription by **REST API** (a.k.a. Batch SaaS).
-* For Real-time transcription, see the [Real-time Transcription supported formats and limits](/speech-to-text/real-time/supported-formats-and-limits).
-* For Flow Voice AI, see the [Flow Voice AI supported formats and limits](/voice-agents-flow/supported-formats-and-limits).
-:::
-
-## Supported File Types
-
-The following file formats types are supported for transcription by REST API:
-
-- `wav`
-- `mp3`
-- `aac`
-- `ogg`
-- `mpeg`
-- `amr`
-- `m4a`
-- `mp4`
-- `flac`
-
-The list above is exhaustive - any file format outside the list above is explicitly not supported.
-
-Only files where the type can be determined by data inspection are supported. Raw audio formats where the codec is not embedded in the file cannot be processed in batch mode. This includes files commonly given extensions like ".raw" or ".g729" where the codec is only hinted at in the name.
+# Limits
 
 ## Rate Limiting and Fair Usage
 
@@ -61,7 +31,7 @@ Please reach out to [Support](https://support.speechmatics.com) if you need to i
 ## File Size Limits
 
 If you submit your media file in the body of the `/jobs` <HTTPMethodBadge method="POST" /> request to Speechmatics Batch SaaS, the file must be less than 1 GB in size or the job will be rejected.
-To process files larger than 1 GB, you can provide the URL of the audio file in the job config as described in the [Fetch URL documentation](/speech-to-text/batch/fetch-url).
+To process files larger than 1 GB, you can provide the URL of the audio file in the job config as described in the [Fetch URL documentation](/speech-to-text/batch/input#fetch-url).
 
 ## Data Retention Limits
 

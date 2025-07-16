@@ -78,7 +78,7 @@ The job config must state that the job type is `alignment`, the language of the 
 
 ## Retrieving Alignment Jobs
 
-Checking status of Alignment jobs is done in the same way as transcription jobs. This is described on [this page](/speech-to-text/batch/check-job-status).
+Checking status of Alignment jobs is done in the same way as transcription jobs. This is described on [this page](/speech-to-text/batch/output).
 
 An aligned file can be retrieved from the `/v2/jobs/<JOB_ID>/alignment` endpoint. By default, the `word_start_and_end` alignment format is returned. This can be overridden using the `tags` query string parameter:
 
@@ -106,7 +106,7 @@ Use the following endpoints to retrieve the inputs files used for an alignment j
 - `/v2/jobs/<JOB_ID>/text`: to get the text file submitted
 - `/v2/jobs/<JOB_ID>/data`: to get the audio file submitted
 
-Note that Alignment follows Speechmatics' [Data Retention Limits](/speech-to-text/batch/supported-files-and-limits#data-retention-limits).
+Note that Alignment follows Speechmatics' [Data Retention Limits](/speech-to-text/batch/limits#data-retention-limits).
 
 ## Fetching Files from an Online Location
 

@@ -40,7 +40,7 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Disfluencies and Word Replacement](/speech-to-text/output-enhancements/output-formatting) | Batch, Real-Time | SaaS, On-Prem |
 | [End-of-Turn](/speech-to-text/real-time/end-of-turn) | Real-Time | SaaS, On-Prem |
 | [Feature Discovery](/speech-to-text/features/feature-discovery) | Batch, Real-Time | SaaS |
-| [Fetch URL](/speech-to-text/batch/fetch-url) | Batch | SaaS, On-Prem |
+| [Fetch URL](/speech-to-text/batch/input#fetch-url) | Batch | SaaS, On-Prem |
 | [Language Identification](/speech-to-text/batch/language-identification) | Batch | SaaS |
 | [Notifications](/speech-to-text/batch/notifications.md) | Batch | SaaS, On-Prem |
 | [Numeral Formatting](/speech-to-text/output-enhancements/numeral-formatting) | Batch, Real-Time | SaaS, On-Prem |
