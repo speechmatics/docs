@@ -12,7 +12,7 @@ Leverage Speechmatics’ cloud services for easy, scalable, and fully managed sp
 
 The best way to get started using Speechmatics' cloud services is:
 - Create an account in our [Portal](https://portal.speechmatics.com/)
-- Check out our [Real-Time Transcription](/speech-to-text/real-time/quickstart.mdx)
+- Check out our [Real-Time Transcription](/speech-to-text/realtime/quickstart.mdx)
 - Check out our [Batch Transcription](/speech-to-text/batch/quickstart.mdx)
 
 ## On-Premises
@@ -38,7 +38,7 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Custom Dictionary](/speech-to-text/features/custom-dictionary) | Batch, Real-Time | SaaS, On-Prem |
 | [Diarization](/speech-to-text/output-enhancements/diarization) | Batch, Real-Time | SaaS, On-Prem |
 | [Disfluencies and Word Replacement](/speech-to-text/output-enhancements/output-formatting) | Batch, Real-Time | SaaS, On-Prem |
-| [End-of-Turn](/speech-to-text/real-time/end-of-turn) | Real-Time | SaaS, On-Prem |
+| [End-of-Turn](/speech-to-text/realtime/end-of-turn) | Real-Time | SaaS, On-Prem |
 | [Feature Discovery](/speech-to-text/features/feature-discovery) | Batch, Real-Time | SaaS |
 | [Fetch URL](/speech-to-text/batch/input#fetch-url) | Batch | SaaS, On-Prem |
 | [Language Identification](/speech-to-text/batch/language-identification) | Batch | SaaS |
