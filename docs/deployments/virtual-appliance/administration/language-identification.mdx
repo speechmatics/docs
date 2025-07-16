@@ -1,0 +1,21 @@
+# Language Identification
+
+By default, Language Identification is disabled, and is currently only available in `Batch` mode. You can enable it using the Management API with
+
+```bash
+curl -sSL -u admin:admin -X 'POST' \
+  "http://${APPLIANCE_HOST}/v2/management/host/langid" \
+  -H 'Content-Type: application/json' \
+  -d '{"max_thread_count": 1, "memory_per_thread": "3Gi"}'
+```
+
+- `max_thread_count` is the maximum number of threads the Language Identification will use. When set to 0, Language Identification
+is disabled.
+Each Language Identification task will use up to one thread, so to allow 2 parallel identification tasks, you should set this value to 2.
+- `memory_per_thread` is the memory reserved for each configured thread.
+If you set `max_thread_count` to 2 and `memory_per_thread` to 3Gi, 6Gi will be reserved for the Language Identification component.
+`memory_per_thread` is optional and if not set will default to 3Gi. When submitting large audio files, you may need to increase the memory
+assigned to each thread.
+
+
+You can learn more about Language Identification in the [SaaS documentation](/speech-to-text/batch/language-identification).

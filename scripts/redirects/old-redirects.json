@@ -194,15 +194,18 @@
     "source": "/on-prem/containers/usage",
     "destination": "/deployments/usage-reporting"
   },
-  { "source": "/on-prem/kubernetes", "destination": "/not-found" },
-  { "source": "/on-prem/kubernetes/flow", "destination": "/not-found" },
+  { "source": "/on-prem/kubernetes", "destination": "/deployments/kubernetes" },
+  {
+    "source": "/on-prem/kubernetes/flow",
+    "destination": "/deployments/kubernetes/flow"
+  },
   {
     "source": "/on-prem/kubernetes/prerequisites",
-    "destination": "/not-found"
+    "destination": "/deployments/kubernetes/prerequisites"
   },
   {
     "source": "/on-prem/kubernetes/realtime",
-    "destination": "/not-found"
+    "destination": "/deployments/kubernetes/realtime"
   },
   {
     "source": "/on-prem/usage/",
@@ -226,7 +229,7 @@
   },
   {
     "source": "/on-prem/virtual-appliance/administration/adding-languages",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/adding-languages"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/gpu",
@@ -234,7 +237,7 @@
   },
   {
     "source": "/on-prem/virtual-appliance/administration/lang-id",
-    "destination": "/not-found"
+    "destination": "/deployments/virtual-appliance/administration/language-identification"
   },
   {
     "source": "/on-prem/virtual-appliance/administration/logcli-help",

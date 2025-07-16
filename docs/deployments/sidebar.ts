@@ -1,4 +1,5 @@
 import containerSidebar from "./container/sidebar";
+import kubernetesSidebar from "./kubernetes/sidebar";
 import usageReportingSidebar from "./usage-reporting/sidebar";
 import virtualApplianceSidebar from "./virtual-appliance/sidebar";
 
@@ -18,6 +19,7 @@ export default {
     },
     containerSidebar,
     virtualApplianceSidebar,
+    kubernetesSidebar,
     usageReportingSidebar,
   ],
 } as const;

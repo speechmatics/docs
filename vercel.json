@@ -272,22 +272,22 @@
     },
     {
       "source": "/on-prem/kubernetes",
-      "destination": "/not-found",
+      "destination": "/deployments/kubernetes",
       "permanent": true
     },
     {
       "source": "/on-prem/kubernetes/flow",
-      "destination": "/not-found",
+      "destination": "/deployments/kubernetes/flow",
       "permanent": true
     },
     {
       "source": "/on-prem/kubernetes/prerequisites",
-      "destination": "/not-found",
+      "destination": "/deployments/kubernetes/prerequisites",
       "permanent": true
     },
     {
       "source": "/on-prem/kubernetes/realtime",
-      "destination": "/not-found",
+      "destination": "/deployments/kubernetes/realtime",
       "permanent": true
     },
     {
@@ -317,7 +317,7 @@
     },
     {
       "source": "/on-prem/virtual-appliance/administration/adding-languages",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/adding-languages",
       "permanent": true
     },
     {
@@ -327,7 +327,7 @@
     },
     {
       "source": "/on-prem/virtual-appliance/administration/lang-id",
-      "destination": "/not-found",
+      "destination": "/deployments/virtual-appliance/administration/language-identification",
       "permanent": true
     },
     {

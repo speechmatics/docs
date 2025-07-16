@@ -1,0 +1,178 @@
+---
+toc_max_heading_level: 3
+description: 'Learn how to access images in the Speechmatics Container system'
+keywords: [speechmatics, container, kubernetes, SaaS, on-prem, helm]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { smVariables } from '/sm-variables';
+import CodeBlock from '@theme/CodeBlock';
+
+# Real-Time
+
+## Quick Start
+
+### Installation
+
+Providing the [Prerequisites](/deployments/kubernetes/prerequisites) have been met for the Speechmatics Helm chart, use the command below to install:
+
+<CodeBlock language="bash">
+  {`# Install the sm-realtime chart
+helm upgrade --install speechmatics-realtime \\
+  oci://speechmaticspublic.azurecr.io/sm-charts/sm-realtime \\
+  --version ${smVariables.helmChartVersion} \\
+  --set proxy.ingress.url="speechmatics.example.com"`}
+</CodeBlock>
+
+### Validate the Capacity
+
+You can confirm wether the transcribers and inference servers are available using:
+
+```bash
+kubectl get sessiongroups
+```
+
+If the transcribers and inference servers are available, it will show `CAPACITY` meaning that they have successfully registered.
+
+```bash
+NAME                                REPLICAS   CAPACITY   USAGE   VERSION   SPEC HASH
+inference-server-enhanced-recipe1   1          360        0       1         b5784af49332f9948481195451eab6ca
+speechmatics-realtime-en            1          2          0       1         83929f2b9b2448cdc818d0e46e37600b
+```
+
+### Run a Session
+
+```bash
+speechmatics rt transcribe \
+  --url wss://speechmatics.example.com/v1 \
+  --lang en \
+  --operating-point enhanced \
+  --ssl-mode insecure \
+  <audio-file>
+```
+
+## Configuration
+
+See the examples below on how to configure the Helm chart for different deployment scenarios.
+
+
+<Tabs>
+<TabItem value="all_langs" label="All Languages" default>
+
+```yaml
+global:
+  transcriber:
+    languages: ["ar", "ba", "be", "bg", "bn", "ca", "cmn", "cmn_en", "cs", "cy", "da", "de", "el", "en", "en_ms", "en_ta", "eo", "es", "es-bilingual-en", "et", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi", "hr", "hu", "ia", "id", "it", "ja", "ko", "lt", "lv", "mn", "mr", "ms", "mt", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "sw", "ta", "th", "tr", "ug", "uk", "ur", "vi", "yue"]
+
+# Enable all enhanced and standard inference server recipes
+inferenceServerEnhancedRecipe1:
+  enabled: true
+
+inferenceServerEnhancedRecipe2:
+  enabled: true
+
+inferenceServerEnhancedRecipe3:
+  enabled: true
+
+inferenceServerEnhancedRecipe4:
+  enabled: true
+
+inferenceServerStandardAll:
+  enabled: true
+```
+
+</TabItem>
+<TabItem value="en_only" label="English Standard + Enhanced" default>
+
+```yaml
+# Disable default enhanced inference server recipes
+inferenceServerEnhancedRecipe1:
+  enabled: false
+
+# Enable custom inference server deployment with just en models
+inferenceServerCustom:
+  enabled: true
+  fullnameOverride: inference-server-en
+ 
+  tritonServer:
+    image:
+      # Repository for the en-only inference server triton container
+      repository: sm-gpu-inference-server-en
+ 
+  inferenceSidecar:
+    enabled: true
+
+    # Configuration for custom model deployments
+    registerFeatures:
+      capacity: 600
+      customModelCosts:
+        "*:diar_standard": 0
+        "*:body_standard": 0
+        "*:diar_enhanced": 0
+        "*:body_enhanced": 0
+        en:am_en_standard: 0
+        en:ensemble_en_standard: 20
+        en:lm_en_enhanced: 10
+        en:am_en_enhanced: 0
+        en:ensemble_en_enhanced: 20
+```
+
+</TabItem>
+<TabItem value="autoscaling" label="Auto-Scaling" default>
+
+```yaml
+global:
+  # Enable scaling for all sessiongroups resources
+  sessionGroups:
+    scaling:
+      enabled: true
+
+inferenceServerEnhancedRecipe1:
+  sessionGroups:
+    scaling:
+      # Scale up inference server pods when there are 300 inference tokens remaining
+      scaleOnCapacityLeft: 300
+
+transcribers:
+  sessionGroups:
+    scaling:
+      # Scale up transcriber pods when there is only capacity for 1 more session
+      scaleOnCapacityLeft: 1
+```
+
+</TabItem>
+</Tabs>
+
+## Hardware Recommendations
+
+Below are the recommended Azure node sizes for running Speechmatics on Kubernetes:
+
+Service | Node Size
+---|---
+STT (Inference Server)    | Standard_NC4as_T4_v3
+STT (Transcriber)     | Standard_E16s_v5
+All Other Services  | Standard_D*s_v5
+
+
+## Uninstall
+
+Run the following command to uninstall Speechmatics from the cluster:
+
+```bash
+helm uninstall speechmatics-realtime
+```
+
+## FAQ
+
+*Why should I use the sm-realtime Helm chart over a Docker container deployment?*
+
+> The sm-realtime chart is the recommended way of running Speechmatics containers for production environments.
+  It provides a set of containers which will help protect and auto-scale sensitive websocket connections, and ensure performance with session capacity management. 
+  It also provides cost benefits with custom scheduling to help bin-pack active workers onto busy Kubernetes nodes.
+
+*What is SessionGroups?*
+
+> SessionGroups is Speechmatics' custom Kubernetes auto-scaling and session management solution for websocket containers.
+  SessionGroups ensures that cluster nodes can safely scale up and down without impacting live STT and Flow sessions running on it. Additionally, it will bin-pack new sessions onto busy nodes for cost efficiency.
+  It comes as a CustomResourceDefinition (CRD) and controller deployed as part of the Speechmatics Realtime Helm chart.
