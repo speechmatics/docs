@@ -81,16 +81,26 @@ const config: Config = {
       },
       items: [
         {
+          type: "search",
+          position: "right",
+        },
+        {
           type: "doc",
-          position: "left",
+          position: "right",
           docId: "index",
           label: "Docs",
         },
         {
           type: "doc",
-          position: "left",
+          position: "right",
           docId: "api-ref/index",
           label: "API Reference",
+        },
+        {
+          type: "html",
+          position: "right",
+          value:
+            "<a href='https://portal.speechmatics.com/signup' target='_blank' class='rt-reset rt-BaseButton rt-r-size-2 rt-variant-solid rt-Button'>Sign up</a>",
         },
       ],
     },
