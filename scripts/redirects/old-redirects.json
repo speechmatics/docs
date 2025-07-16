@@ -77,11 +77,11 @@
   },
   {
     "source": "/features/entities",
-    "destination": "/speech-to-text/output-enhancements/numeral-formatting"
+    "destination": "/speech-to-text/formatting#numeral-formatting"
   },
   {
     "source": "/features/punctuation-settings",
-    "destination": "/speech-to-text/output-enhancements/punctuation-settings"
+    "destination": "/speech-to-text/formatting#punctuation-settings"
   },
   {
     "source": "/features/realtime-latency",
@@ -89,7 +89,7 @@
   },
   {
     "source": "/features/word-tagging",
-    "destination": "/speech-to-text/output-enhancements/output-formatting"
+    "destination": "/speech-to-text/formatting#output-formatting-options"
   },
   {
     "source": "/flow-api-ref",
