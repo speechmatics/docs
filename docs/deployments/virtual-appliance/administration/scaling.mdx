@@ -1,0 +1,66 @@
+# Virtual Appliance Scaling
+
+## Multi Threaded Workers
+
+### Batch Mode
+
+The number of concurrent threads available to a job worker depends on the length of the file being transcribed. Workers can be assigned a single thread or multiple, depending on the setting of `scaling_mode` in the API. `scaling_mode` can take two values: `simple`, meaning each transcription job runs in a single thread, or `adaptive`, where the number of threads depends on the length of the audio.
+Depending on the scaling mode and transcription features requested by the job, workers will reserve a specific amount of CPU and Memory resources. On job creation, if enough resources are available, Kubernetes will schedule the job, if not enough resources are available, jobs will be marked as pending until resources are freed.
+
+```bash
+curl -sSL -u admin:admin -X 'POST' \
+  "http://${APPLIANCE_HOST}/v2/management/host/scaling" \
+  -d '{"scaling_mode": "simple"}'
+```
+
+In adaptive mode, jobs run in parallel depending on their length, up to a maximum of 4 threads. For this reason, adaptive mode is only available if the node has at least 4 cores.
+
+| Length in Seconds | Threads |
+| ----------------: | ---- |
+|      0 < s &le; 300 | 1    |
+|    300 < s &le; 600 | 2    |
+|    600 < s &le; 900 | 3    |
+|    900 < s &le; max | 4    |
+
+{/* ref https://gitlab1.speechmatics.io/k8s/batch-jobs-api-v2/-/blob/master/pkg/k8sbuffer/job_spec/resources.go#L56 */}
+
+Since adaptive jobs use multiple threads, they also apply a greater load to the GPU Inference Server (if enabled).
+As a result the `max_jobs` configuration setting has been introduced to protect the Inference Server from being overwhelmed see [GPU Configuration](/deployments/virtual-appliance/administration/using-a-gpu#gpu-configuration)
+
+### Realtime Mode
+
+Realtime mode supports multi-threaded workers by default, the worker has a configurable number of streams (threads) it can process at a given time, see [Realtime GPU configuration](/deployments/virtual-appliance/administration/using-a-gpu#realtime-mode-1) for more details. If the max number of threads is exceeded then the appliance will reject any new sessions.
+
+The current number of active sessions can be retrieved via the sessions endpoint of the management api.
+
+```
+curl -sSL -u admin:admin -X 'GET' \
+  "http://${APPLIANCE_HOST}/v2/management/host/realtime/sessions"
+```
+
+This will return a json object. 
+
+- `request_ids` - a list of strings representing the request ids of active sessions
+
+```json
+{
+  "request_ids": ["session_1_id", "session_2_id"],
+}
+```
+
+When starting a new realtime session, it is best to check the readiness of the realtime service, this will report whether there is remaining capacity for a new session.
+
+```
+curl -sSL -u admin:admin -X 'GET' \
+  "http://${APPLIANCE_HOST}/v2/management/host/realtime/ready"
+```
+
+This will return a json object. 
+
+- `ready` - `true/false` if true then the service has capacity for a new session else `max_streams` has been reached.
+
+```json
+{
+  "ready": true,
+}
+```

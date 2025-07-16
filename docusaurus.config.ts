@@ -102,6 +102,7 @@ const config: Config = {
     prism: {
       theme: prismTheme,
       darkTheme: prismTheme,
+      additionalLanguages: ["docker", "bash"],
     },
     docs: {
       sidebar: {
@@ -109,16 +110,16 @@ const config: Config = {
       },
     },
     mermaid: {
-      theme: { light: "neutral", dark: "neutral" },
+      theme: { light: "neutral", dark: "dark" },
     },
     algolia: {
       // The application ID provided by Algolia
-      appId: 'K9Y1459LXK',
+      appId: "K9Y1459LXK",
 
       // Public API key: it is safe to commit it
-      apiKey: '4192375eb6e5980b954ea3a77a14ff99',
+      apiKey: "4192375eb6e5980b954ea3a77a14ff99",
 
-      indexName: 'beta_Beta docs',
+      indexName: "beta_Beta docs",
 
       // Optional: see doc section below
       contextualSearch: true,
@@ -159,7 +160,7 @@ const config: Config = {
                 },
                 {
                   // Load JS files as raw assets when requested with ?raw query
-                  test: /\.js$|\.ts$|\.tsx$|\.mjs$|\.html$/,
+                  test: /\.js$|\.ts$|\.tsx$|\.mjs$|\.html$|\.yml$|\.yaml$/,
                   resourceQuery: /raw/,
                   // With Webpack 5 we shouldn't need raw-loader
                   // But because Docusaurus uses babel-loader for all JS files by default,

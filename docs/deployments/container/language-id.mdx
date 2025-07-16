@@ -1,0 +1,277 @@
+---
+toc_max_heading_level: 3
+description: 'Learn about the Speechmatics language ID Container'
+keywords: [speechmatics, container, language ID, lang ID, language, ASR, SaaS, on-prem]
+---
+
+# Language ID container
+
+This guide will walk you through the steps needed to deploy the Speechmatics Batch Language Identification Container.
+
+:::tip
+Looking for how to use this in cloud SaaS? See the documentation [here](/speech-to-text/batch/language-identification).
+:::
+
+This Container will allow you to predict the most likely, predominant language spoken in a media file. You can use the predicted language to select the correct transcriber when the language spoken in your file is unknown.
+
+The following steps are required to use this in your environment:
+
+- Check system requirements
+- Pull the Docker Image into your local Docker Registry
+- Run the Container
+
+
+## Prerequisites
+
+- [A license file or a license token with Language ID enabled](/deployments/container/licensing)
+- [Access to our Docker repository](/deployments/container/accessing-images)
+- Audio file (we recommend having at least 60 seconds of speech for high accuracy)
+
+:::info Please Note
+If you do not have a license or access to the Docker repository, please contact reach out to [Support](https://support.speechmatics.com).
+:::
+
+## System requirements
+
+Speechmatics Containerized deployments are built on the Docker platform. A single Docker image can be used to create and run multiple Containers concurrently, for each running Container the following resources are required:
+
+- 1 vCPU
+- 1 GB RAM
+- The host machine should have an AMD or Intel CPU with modern AVX instructions as this generally improves transcription processing speed. Exact impact on transcription speed varies on brand, generation, which instruction sets are available and resource allocation
+- If you are using a hypervisor, you should pass through to the VM all AVX related instruction sets
+
+The raw image size of the Language Identification Container is around 2.1GB.
+
+## Workflow
+
+- Run the Language ID Docker Container with an audio file
+- Receive the output JSON with the predicted language code
+- Use that language code to run transcription with any of the Speechmatics deployments
+
+## Licensing
+
+You should have received a confidential license file from Speechmatics containing a token to use to license your Container. The contents of the file received should look similar to this:
+
+```json
+{
+  "contractid": 1,
+  "creationdate": "2022-06-01 09:04:11",
+  "customer": "Speechmatics",
+  "id": "c18a4eb990b143agadeb384cbj7b04c3",
+  "metadata": {
+    "key_pair_id": 1,
+    "request": {
+      "customer": "Speechmatics",
+      "features": ["MAPBA", "ALID"],
+      "notValidAfter": "2023-01-01",
+      "validFrom": "2022-01-01"
+    }
+  },
+  "signedclaimstoken": "example"
+}
+```
+
+There are two ways to apply the license to the Container.
+
+- As a volume-mapped file
+
+  The license file should be mapped to the path `/license.json` within the Container. For example:
+
+```bash
+docker run ... -v /my_license.json:/license.json:ro speechmaticspublic.azurecr.io/langid:2.2.1
+```
+
+- As an environment variable
+
+  Setting an environment variable named `LICENSE_TOKEN` is also a valid way to license the Container. The contents of this variable should be set to the value of the `signedclaimstoken` from within the license file. For example, copy the `signedclaimstoken` from the license file (without the quotation marks) and set the environment variable as below. The token example is not a full example:
+
+```bash
+docker run ... -e LICENSE_TOKEN=eyJhbGciOiJ... speechmaticspublic.azurecr.io/langid:2.2.1
+```
+
+There should be no reason to do this, but if both a volume-mapped file and an environment variable are provided
+simultaneously then the volume-mapped file will be ignored.
+
+## Using the Container
+
+:::info
+To reliably identify the predominant language, the file should contain at least 60 seconds of speech in that language. 
+:::
+
+Once the Docker image has been pulled into a local environment, it can be started using the Docker run command. More details about operating and managing the Container are available in the [Docker API](https://docs.docker.com/engine/api/latest) documentation.
+
+There are two different methods for passing a media file into a Container:
+
+- STDIN: Streams media file into the Container through the standard command line entry point
+- File Location: Pulls media file from a file location
+
+Here are some examples below to demonstrate these modes of operating the Container.
+
+Example 1: passing a file using the cat command to the Container
+
+```bash
+cat ~/$AUDIO_FILE | docker run -i -e LICENSE_TOKEN=eyJhbGciOiJ... speechmaticspublic.azurecr.io/langid:2.2.1
+```
+
+Example 2: pulling a media file from a mapped directory into the Container
+
+```bash
+docker run -v $AUDIO_FILE:/input.audio -e LICENSE_TOKEN=eyJhbGciOiJ... speechmaticspublic.azurecr.io/langid:2.2.1
+```
+
+:::info
+The media file must be volume-mapped into the Container path `/input.audio`
+:::
+
+Both the methods will produce the same identification result. STDOUT is used to provide the result in JSON format. Here's an example of the returned JSON:
+
+```json
+{
+  "format": "1.1",
+  "metadata": {
+    "created_at": "2023-08-30T10:45:27+0000",
+    "type": "language_identification",
+    "language_identification_config": {},
+    "duration": 60.029388,
+    "processed_duration": 60
+  },
+  "results": [
+    {
+      "alternatives": [
+        {
+          "language": "cs",
+          "confidence": 0.94
+        },
+        {
+          "language": "sk",
+          "confidence": 0.02
+        },
+        {
+          "language": "uk",
+          "confidence": 0.02
+        },
+        {
+          "language": "pl",
+          "confidence": 0.01
+        },
+        {
+          "language": "en",
+          "confidence": 0
+        },
+        {
+          "language": "sl",
+          "confidence": 0
+        },
+        {
+          "language": "el",
+          "confidence": 0
+        },
+        {
+          "language": "bg",
+          "confidence": 0
+        },
+        {
+          "language": "be",
+          "confidence": 0
+        },
+        {
+          "language": "ru",
+          "confidence": 0
+        }
+      ],
+      "start_time": 0,
+      "end_time": 60.03
+    }
+  ],
+  "predicted_language": "cs"
+}
+```
+
+In the regular case the predicted language code will be in the `predicted_language` field. 
+The `alternatives` in  `results` contains the top 10 predicted languages based on the confidence score.
+A list of possible [Language Codes can be found here](/speech-to-text/supported-languages). The following languages are not supported for Language Identification: Interlingua (ia), Esperanto (eo), Uyghur (ug), Cantonese (yue).
+
+In case the language can't be identified, the `error` field contains one of the following reasons:
+- `LOW_CONFIDENCE`: The language can't be determined with sufficient confidence
+- `UNEXPECTED_LANGUAGE`: The language identified is not among the `expected_languages` list
+- `NO_SPEECH`: The audio file does not contain any speech
+- `FILE_UNREADABLE`: Failure to read the file. E.g. due to an unsupported audio format, Container exits with exit code 1
+- `OTHER`: Generic error with details provided in `message` field,  Container exits with exit code 1
+
+For example the response for input with no speech looks like:
+```json
+{
+  "format": "1.1",
+  "metadata": {
+    "created_at": "2023-09-01T12:49:27+0000",
+    "type": "language_identification",
+    "language_identification_config": {},
+    "duration": 183.913313,
+    "processed_duration": 90
+  },
+  "results": [],
+  "error": "NO_SPEECH",
+  "message": "No speech found for language identification"
+}
+```
+
+
+### Setting Expected Languages
+
+If you expect the audio to be one of a restricted set of languages, you can provide this information through the `expected_languages` config. 
+You can either specify them as comma-separated string as CLI argument:
+```bash
+docker run -v $AUDIO_FILE:/input.audio -e LICENSE_TOKEN=eyJhbGciOiJ... speechmaticspublic.azurecr.io/langid:2.2.1 --expected-languages cs,sk,en
+```
+
+or provide the list in a JSON config file:
+
+```json
+{
+  "type": "language_identification",
+  "language_identification_config": {
+    "expected_languages": ["cs", "sk", "en"]
+  }
+}
+```
+The config needs to be volume-mapped into `/config.json` to apply the configuration to the identification:
+```bash
+docker run -v $(pwd)/config.json:/config.json -v $AUDIO_FILE:/input.audio -e LICENSE_TOKEN=eyJhbGciOiJ... speechmaticspublic.azurecr.io/langid:2.2.1
+```
+
+## Ability to run a container with multiple cores
+
+For customers who are looking to improve job turnaround time and who are able to assign sufficient resources, it is possible to pass a parallel parameter to the Container to take advantage of multiple CPUs. The parameter is called `parallel` and the following example shows how it can be used. In this case to use 2 cores to process the audio you would run the Container like this:
+
+```bash
+docker run -v $AUDIO_FILE:/input.audio -e LICENSE_TOKEN=eyJhbGciOiJ... speechmaticspublic.azurecr.io/langid:2.2.1 --parallel=2
+```
+
+Depending on your hardware, you may need to experiment to find the optimum performance. We've noticed an improvement in turnaround time for jobs by using this approach.
+
+If you limit or are limited on the number of CPUs you can use (for example your platform places restrictions on the number of cores you can use, or you use the --cpu flag in your docker run command), then you should ensure that you do not set the parallel value to be more than the number of available cores. If you attempt to use a setting in excess of your free resources, then the Container will only use the available cores.
+
+If you are running the Container on a shared resource, you may experience different results depending on what other processes are running at the same time.
+
+## Determining success
+
+The exit code of the Container will determine if the identification was successful. There are two exit code possibilities:
+
+- `Exit Code == 0` : The identification was a success; the output will contain a JSON output defining the identification result
+- `Exit Code != 0` : the output will contain useful information why the job failed. This output should be used in any communication with [Speechmatics Support](https://support.speechmatics.com) to aid understanding and resolution of any problems that may occur
+
+## Limitations
+
+- It's not possible to predict the language of each channel independently in a multichannel media file; any multichannel files are converted to mono before identifying the language
+- Inverted multichannel audio is not supported, this is where the second channel is the inverse of first
+- The Container uses CPU and doesn't run on a GPU
+
+## Enable logging
+
+If you are seeing problems then we recommend that you [reach out to Support](https://support.speechmatics.com). Please include the logging output from the Container if you do open a ticket, and ideally enable verbose logging.
+
+Verbose logging is enabled by running the Container with the argument `-vv`. All logs are written to STDERR.
+
+```bash
+docker run ... speechmaticspublic.azurecr.io/langid:2.2.1 -vv
+```

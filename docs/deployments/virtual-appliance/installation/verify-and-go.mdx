@@ -1,0 +1,164 @@
+import Admonition from "@theme/Admonition";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import HTTPMethodBadge from "@site/src/theme/HTTPMethodBadge";
+
+# Verify and go
+
+This section explains how to verify the correct operation of the Virtual Appliance upon first launch.
+
+## Appliance health 
+
+### Checking the appliance health
+
+A health check endpoint has been implemented in the appliance management API in order to provide some simple checks to validate the health of the appliance.
+
+- **Method:** <HTTPMethodBadge method="GET" />
+- **URL:** `https://${APPLIANCE_HOST}/v2/management/health`
+
+```bash
+curl -X 'GET' "https://${APPLIANCE_HOST}/v2/management/health" 
+```
+
+```json
+{
+  "status": "healthy",
+  "database": {
+    "status": "disabled"
+  },
+  "batch_inference": {
+    "status": "disabled"
+  },
+  "monitoring": {
+    "status": "healthy"
+  },
+  "storage": {
+    "status": "healthy"
+  },
+  "realtime_inference": {
+    "status": "healthy"
+  },
+  "gpu_inference": {
+    "status": "healthy"
+  }
+}
+```
+
+The above provides an indicator of the overall appliance health under `status`, health of individual components are also listed:
+
+- `database` - The health of the internal jobs database
+- `batch_inference` - The health of the batch inference service
+- `monitoring` - The health of the monitoring Services
+- `storage` - The health of the mounted storage disks
+- `realtime_inference` - The health of the realtime inference service
+- `gpu_inference` - The health of the GPU inference service (if enabled)
+
+:::info **Note**
+Some features may appear with status `disabled` where they are not required by the current configuration of the appliance.
+:::
+
+### Common Health Issues
+
+#### Unhealthy realtime inference
+
+```json
+  "realtime_inference": {
+    "status": "unhealthy",
+    "errors": [
+      "expected deployment: sm-transcriber-en to have 1 ready replicas have: 0"
+    ]
+  }
+```
+
+The transcriber requires the appliance to be licensed before it can start, ensure the appliance is licensed, see [Licensing](/deployments/virtual-appliance/installation/licensing).
+
+#### Unhealthy storage
+
+The appliance requires you to have the expected disks mounted to the expected mount points in order to function correctly. These disks depend on the mode you are currently running.
+
+- `batch` - /opt/speechmatics/jobs, /opt/speechmatics/monitoring
+- `realtime` - /opt/speechmatics/monitoring
+
+
+### Batch Smoke Test
+
+To check the health of the appliance use the health endpoint of the Appliance Management API
+
+```bash
+curl -sSL -u admin:admin -X 'GET' \
+   "http://${APPLIANCE_HOST}/v2/management/health"
+```
+
+Which should respond with a summary of the appliance health.
+
+```json
+{
+  "status": "healthy",
+  "database": {
+    "status": "healthy"
+  },
+  "batch_inference": {
+    "status": "healthy"
+  },
+  "monitoring": {
+    "status": "healthy"
+  },
+  "storage": {
+    "status": "healthy"
+  },
+  "realtime_inference": {
+    "status": "disabled"
+  },
+  "gpu_inference": {
+    "status": "disabled"
+  }
+}
+```
+
+To run a simple transcription job to test that everything is working use the Batch Virtual Appliance Speech API
+
+```bash
+curl -s -L -X 'POST' \
+   "http://${APPLIANCE_HOST}/v2/jobs/" \
+   -F data_file=@{FILENAME} \
+   -F 'config={ "type": "transcription",
+         "transcription_config": { "language": "en" }
+      }'
+```
+
+Where `${APPLIANCE_HOST}` is the hostname or IP address of your Virtual Appliance. The above assumes that `FILENAME` is the path to a file that contains English speech; modify the language identifier in the job config to match the language you want to transcribe.
+
+You can use the Job ID to get the status of the job:
+
+```bash
+curl -s -L -X 'GET' "http://${APPLIANCE_HOST}/v2/jobs/${JOB_ID}/" \
+   | jq
+```
+
+Where `${JOB_ID}` is the Job ID (ID field) that was returned when you submitted the job. Once the job is done, you use the Job ID to return the transcription:
+
+```bash
+curl -s -L -X 'GET' "http://${APPLIANCE_HOST}/v2/jobs/${JOB_ID}/transcript" \
+   | jq
+```
+
+Under normal conditions, the job should take less than half the duration of the media file to process. So for example if you submit a MP3 file that is 60 minutes long, its transcription should be processed in less than 30 minutes. See the REST Speech API Guide for the list of language codes, how to use features of the API, the output formats that are supported, as well as more usage examples.
+
+You can also validate the Appliance is working using the jobs web UI. Go to `https://${APPLIANCE_HOST}/v2/ui`
+
+![Jobs web UI](/img/appliance-images/jobs-web-ui.png)
+
+and you can recreate the <HTTPMethodBadge method="POST"/> requests documented above in the browser.
+
+The Speechmatics Batch Virtual Appliance is now ready to use.
+
+
+### Realtime Smoke Test
+
+To run a test realtime transcription session using the [Speechmatics Python Client](https://github.com/speechmatics/speechmatics-python):
+
+```bash
+speechmatics transcribe --lang en ${PATH_TO_AUDIO_FILE} --url "ws://${APPLIANCE_HOST}:9000/v2/en" --ssl-mode none
+```
+
+If successful you will see the transcribed text printed out in the console.

@@ -1,0 +1,158 @@
+---
+sidebar_position: 1
+---
+
+# System Requirements
+
+The Speechmatics Virtual Appliance is supported on following hypervisors:
+
+- VMware ESXi v7.0 and greater
+- VMware Workstation v16.0 and greater*
+- AWS EC2
+- Proxmox VE v8.0 and greater
+
+For the Virtual Appliance to operate as required, the underlying hypervisor host must meet the requirements and provide the Virtual Appliance the resource requirements defined below.
+
+:::info **Note**
+*VMware Workstation does not currently support PCI passthrough, which is a requirement for running GPU transcription.
+:::
+
+## Virtual Appliance system requirements
+
+### Batch Virtual Appliance
+
+The _minimum_ specifications for the Speechmatics Batch Virtual Appliance are:
+
+#### CPU transcription
+
+- 2 vCPUs
+- 8GB RAM
+- Up to 170GB hard disk space
+
+For each concurrent input stream using the Standard model the Appliance requires additional resources based on the requested features.
+
+| Scaling Mode | CPU       | Memory (GB) |
+| ------------ | --------- | ----------- |
+| simple       | 1.0       | 1.60 - 2.00 |
+| adaptive     | 4.0       | 3.90 - 4.80 |
+
+If you are using the Enhanced model
+
+| Scaling Mode | CPU       | Memory (GB) |
+| ------------ | --------- | ----------- |
+| simple       | 1.0       | 2.10 - 2.30 |
+| adaptive     | 4.0       | 5.00 - 5.50 |
+
+
+#### GPU transcription
+
+- 8 vCPUs
+- 32GB RAM
+- Up to 170GB hard disk space
+
+These specifications include requirements to run at least one worker using either our Standard or Enhanced model.
+
+For each concurrent input stream using the Standard model the Appliance requires additional resources based on the requested features.
+
+| Scaling Mode | CPU       | Memory (GB) |
+| ------------ | --------- | ----------- |
+| simple       | 0.9 - 1.3 | 1.30 - 1.80 |
+| adaptive     | 2.9 - 3.6 | 2.60 - 3.60 |
+
+If you are using the Enhanced model
+
+| Scaling Mode | CPU       | Memory (GB) |
+| ------------ | --------- | ----------- |
+| simple       | 0.8 - 1.1 | 2.70 - 3.60 |
+| adaptive     | 2.3 - 3.1 | 5.40 - 7.20 |
+
+The _recommended_ specifications for the Speechmatics Batch Virtual Appliance are:
+
+- 16 vCPUs
+- 64GB RAM
+
+These specifications provide a good tradeoff of cost, performance and stability, it is possible to get increased throughput by choosing a larger machine and running more jobs in parallel. However depending on the use case it may be better to run several boxes of the recommended size.
+
+
+### Realtime Virtual Appliance
+
+#### CPU transcription
+
+The Realtime Virtual Appliance is currently in early access and CPU transcription is not currently supported.
+
+#### GPU transcription
+
+The _minimum_ specifications for the Speechmatics Realtime Virtual Appliance are:
+
+- 4 vCPUs
+- 16GB RAM
+- Up to 100GB hard disk space
+
+These specifications include requirements to run at least one worker using either our Standard or Enhanced model.
+
+For each additional input stream the appliance will require up to 0.2 vCPUs and 200MB of Memory
+
+The _recommended_ specifications for the Speechmatics Realtime Virtual Appliance are:
+
+- 8 vCPUs
+- 32GB RAM
+- Up to 100GB hard disk space
+
+The above allows the maximum GPU throughput on either enhanced and or standard modes. 
+
+
+### Important message on IOPS
+
+Heavy usage of the Appliance at scale can sometimes result in very high usage of IO. If this is the case, we recommend increasing the maximum IOPs supported by your hardware to a value between 8,000-12,000. This is not necessary in all circumstances, but may result in better performance if you are running more than 10 concurrent workers. You should first upgrade the root disk. If you have an even greater number of workers, you may also need to upgrade the jobs disk.
+
+Increasing the IOPS also will result in an increase in cost for resource usage. If you use AWS, we recommend in all cases to set the `volume type` to `gp3` as it costs less and has better performance than `gp2`.
+
+Low IOPS can also result in longer startup times in for the appliance, in cases where the IOPS is too low the first few transcription request on a fresh VM may fail see [troubleshooting](/deployments/virtual-appliance/administration/services#troubleshooting).
+
+How to change the maximum IOPS supported by your hardware is documented [here for AWS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/requesting-ebs-volume-modifications.html), [here for Microsoft Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/disks-performance-tiers-portal), and [here for VMware](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-25C3D9FE-3A9D-4739-AC75-16A9E0A3D9F0.html). You may need to do this if:
+
+- You are using close to, or the maximum number of workers supported by that Appliance size
+- The jobs being processed are all long files, and diarization is requested
+
+
+## Host requirements
+
+#### CPU
+
+- The host machine should have an AMD or Intel CPU with modern AVX instructions as this generally improves transcription processing speed. Exact impact on transcription speed varies on brand, generation, which instruction sets are available and resource allocation
+- If you are using a hypervisor, you should pass through to the VM all AVX related instruction sets. You can check this using the management API's cpuinfo call, shown below.
+- We recommend allocating reserved memory and processors from hypervisors to the Appliance VM
+
+#### GPU
+
+- For running with a GPU, the requirements are the same as for the [GPU Container](/deployments/container/gpu-speech-to-text#system-requirements).
+
+### Host CPU info
+
+To see detailed CPU hardware information for the Appliance VM, you can run the following query via the Management API:
+
+```bash
+curl -L -u admin:admin -X 'GET' "https://${APPLIANCE_HOST}/v2/management/cpuinfo"
+```
+
+You will receive information about the host CPU, including number of cores and flags passed through by hypervisor:
+
+```json
+{
+  "usage_percentage": 2.5,
+  "architecture": "X86_64",
+  "model_name": "Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz",
+  "cpus": "2",
+  "vendor": "GenuineIntel",
+  "hyperthreading": false,
+  "flags": "3dnowprefetch abm adx aes apic arat arch_capabilities arch_perfmon avx avx2 avx512_vnni bmi1 bmi2 clflush cmov constant_tsc cpuid cpuid_fault cx16 cx8 de f16c flush_l1d fma fpu fsgsbase fxsr hypervisor ibpb ibrs invpcid invpcid_single lahf_lm lm mca mce md_clear mmx movbe msr mtrr nonstop_tsc nopl nx pae pat pcid pclmulqdq pdpe1gb pge pni popcnt pse pse36 pti rdrand rdseed rdtscp sep smap smep ss ssbd sse sse2 sse4_1 sse4_2 ssse3 stibp syscall tsc tsc_adjust tsc_deadline_timer tsc_reliable vme x2apic xsave xsaveopt xtopology"
+}
+```
+
+### Hypervisor specific guidance
+
+For VMware, the document Performance Best Practices for VMware vSphere 7.0 contains a comprehensive overview of hardware considerations and recommendations on how to optimize your host platform. See [Broadcom support](https://support.broadcom.com) for up-to-date technical information on VMware.
+
+For Amazon EC2, [this link](https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html) explains how to set up a VM using an AWS S3 bucket to store the OVA file.
+
+Proxmox VE docs can be found at [here](https://pve.proxmox.com/pve-docs/)

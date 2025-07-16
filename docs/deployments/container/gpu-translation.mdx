@@ -1,0 +1,221 @@
+---
+toc_max_heading_level: 3
+description: "Learn about the Speechmatics Translation GPU container system"
+keywords:
+  [
+    speechmatics,
+    container,
+    translation,
+    gpu,
+    GPU,
+    performance,
+    NVIDIA,
+    CUDA,
+    SaaS,
+    on-prem,
+  ]
+sidebar_label: "Translation"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import { smVariables } from "/sm-variables";
+import CodeBlock from "@theme/CodeBlock";
+
+# Translation GPU inference container
+
+## Prerequisites
+
+- [A license file or a license token](/deployments/container/licensing)
+  - The Inference Container itself does not need a license, but its client (a transcriber Container) must have a valid license with Translation enabled
+- [Access to our Docker repository](/deployments/container/accessing-images)
+
+## System Requirements
+
+_Note: System requirements for the Translation inference server are the same as for the [GPU Inference Container](/deployments/container/gpu-speech-to-text) for transcription, except for RAM and CPU requirements which are lower. The two servers cannot use the same GPU. _
+
+The system must have:
+
+- Nvidia GPU(s) with at least 16GB of GPU memory
+- Nvidia drivers (see below for supported versions)
+- CUDA [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of 7.5-9.0 inclusive,
+  which corresponds to the Turing, Ampere, Lovelace, Hopper architecture. Cards with the Volta architecture or below are not able to run the models
+- 5GB RAM
+- 4 vCPUs
+- The [nvidia-container-toolkit](https://github.com/NVIDIA/nvidia-docker) installed
+- Docker version > 19.03
+
+The raw Docker image size of the Translation Container is around 10GB.
+
+### Nvidia Drivers
+
+- The GPU Inference Container is based on CUDA 12.3.2, which requires NVIDIA Driver release 545 or later.
+- If you are running on a data center GPU (e.g, a T4) you can use drivers: 470.57 (or later R470), 525.85 (or later R525), 535.86 (or later R535), or 545.23 (or later R545).
+
+Driver installation can be validated by running `nvidia-smi`. This command should return the Nvidia driver version and show additional information about the GPU(s).
+
+#### Azure Instances
+
+The GPU node can be provisioned in the cloud. Our SaaS deployment uses
+
+- Azure [Standard_NC4as_T4_v3](https://learn.microsoft.com/en-us/azure/virtual-machines/nct4-v3-series)
+
+but any `NC` or `ND` series with sufficient memory should work.
+
+## Running the Image
+
+Currently, each Translation Container can only run on a single GPU.
+If a system has more than one GPU, the device must be specified using `CUDA_VISIBLE_DEVICES`
+or selecting the device using the `--gpus` argument. See [Nvidia/CUDA documentation for details](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#cuda-environment-variables).
+
+<CodeBlock language="bash">
+  {`docker run --rm -it \\
+    --gpus '"device=0"' \\
+    -e CUDA_VISIBLE_DEVICES \\
+    -p 8001:8001 \\ # the grpc endpoint uses port 8001, can be mapped to any host port
+    speechmaticspublic.azurecr.io/sm-translation-inference-server:${smVariables.latestContainerVersion}
+`}
+</CodeBlock>
+
+On startup you will see logs detailing available GPU memory. As set out in the [requirements](#system-requirements) section, the system must have a minimum of 16GB of GPU memory, though extra GPU memory may be used if available.
+
+```
+Total GPU memory: 40960MiB
+Approx. size models: 5GB
+Available GPU memory after models loaded: 35GB
+```
+
+## Sending Requests
+
+Batch and Real-Time (RT) transcribers handle sending requests to the Translation Inference Server. To run a transcription job with Translation, follow the [instructions for running the CPU Container](/deployments/container/cpu-speech-to-text) and additionally:
+
+- Set the environment variable `SM_TRANSLATION_ENDPOINT` in the transcriber to the GRPC endpoint of the running Translation Inference Server, in the form `<server_ip_address>:<port>` where the port is the one bound to port 8001 of the Translation Docker Container (see [running the image](#running-the-image))
+- Include a `translation_config` inside of your job config. [More details](/speech-to-text/translation)
+- Use a transcriber version 10.3.0 or newer
+- Ensure you use a license which allows Translation
+
+### Translation Language Pairs
+
+The Translation Inference Container is not language specific, meaning that all 69 translation language pairs supported can run on a single Inference Container. The source language is defined by the language of the transcriber sending requests.
+
+By default, a maximum of 5 target languages can be requested at once. This behaviour can be changed by setting the environment variable `SM_TRANSLATION_MAX_TARGET_LANGUAGES` in the transcriber. Setting this to 0 will disable the limit.
+
+### Example of Running Translation
+
+Assuming the following config file:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "operating_point": "enhanced",
+    "language": "en"
+  },
+  "translation_config": {
+    "target_languages": ["es", "de"] # Set languages here to enable translation
+  }
+}
+```
+
+You can run Batch Transcription and Translation with:
+
+<CodeBlock language="bash">
+  {`cat ~/$AUDIO_FILE | docker run -i \\
+    -v ~/$CONFIG_FILE:/config.json \\
+    -e LICENSE_TOKEN=eyJhbGciOiJ... \\
+    -e SM_TRANSLATION_ENDPOINT=<server>:<port> \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+Or start a Translation enabled Real-Time Container with:
+
+<CodeBlock language="bash">
+  {`docker run -p 9000:9000 -e LICENSE_TOKEN=eyJhbGciOiJ... \\
+      -e SM_TRANSLATION_ENDPOINT=<server>:<port> \\
+      -e SM_TRANSLATION_MAX_TARGET_LANGUAGES=10 \\ # raise the allowed number of target languages
+      rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+### Monitoring the Server
+
+The Inference Server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such
+can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP APIs. To expose these, configure an external mapping for port
+8002(Prometheus) or 8000(HTTP).
+
+## Docker Compose example
+
+This docker-compose file will create a Speechmatics GPU translation server:
+
+<CodeBlock language="yaml" title="docker-compose.yml">
+  {`---
+version: '3.8'
+\0
+networks:
+  transcriber:
+    driver: bridge
+\0
+services:
+  triton:
+    image: speechmaticspublic.azurecr.io/sm-translation-inference-server:${smVariables.latestContainerVersion}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              ### Limit to N GPUs
+              # count: 1
+              ### Pick specific GPUs by device ID
+              # device_ids:
+              #   - 0
+              #   - 3
+              capabilities:
+                - gpu
+    container_name: triton
+    networks:
+      - transcriber
+    expose:
+      - 8000/tcp
+      - 8001/tcp
+      - 8002/tcp
+    environment:
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+      - CUDA_VISIBLE_DEVICES=0
+`}
+</CodeBlock>
+
+## Error Handling
+
+### Unsupported Target Language - Batch
+
+If one or more of the target languages are not supported for the source language, an error message will be included in the final JSON output. No translations will be returned for that language pair.
+
+```json
+{
+  "job": { ... },
+  "metadata": {
+    "created_at": "2023-05-26T15:01:48.412714Z",
+    "type": "transcription",
+    "transcription_config": {...},
+    "translation_config": {
+      "target_languages": [
+        "es",
+        "zz"
+      ]
+    },
+    "translation_errors": [
+      {"type": "unsupported_translation_pair", "message": "Translation from en to zz currently not supported"}
+    ],
+    ...
+  },
+  "results": [...]
+}
+```
+
+Please note, this behaviour is different when using our [SaaS Deployment](/speech-to-text/translation#unsupported-target-language).
+
+For all other errors, please see [documentation here](/speech-to-text/translation#batch-error-responses)
+
+## Performance
+
+Translation running on a 4-core T4 has an RTF of roughly 0.008. It can handle up to 125 hours of batch audio per hour, or 125 Real-Time Transcription streams. However, each translation target language is counted as a stream, meaning that a single Real-Time Transcription stream which requests 5 target languages adds the same load on the Translation Inference Server as 5 transcription streams each requesting a single target language.

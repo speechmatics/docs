@@ -1,0 +1,158 @@
+---
+toc_max_heading_level: 3
+description: 'Learn how to access images in the Speechmatics Container system'
+keywords: [speechmatics, container, cpu, SaaS, on-prem]
+---
+
+import { smVariables } from '/sm-variables';
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Details from '@theme/Details';
+
+# Accessing images
+
+The Speechmatics Docker images are obtained from the Speechmatics Docker Repository. If you do not have a Speechmatics Docker Repository account or have lost your details, please reach out to [Support](https://support.speechmatics.com).
+
+The latest information about the Containers can be found in the knowledge base section of the [Support Portal](https://support.speechmatics.com). If a support account is not available or the _Containers_ section is not visible in the Support Portal, please reach out to [Support](https://support.speechmatics.com) for help.
+
+## Prerequisites
+
+- Speechmatics Docker repository credentials – speak to [Support](https://support.speechmatics.com) to get these
+- Language Code – the ISO language code (for example `fr` for French)
+- `LICENSE_TOKEN` - The value of the signed claims token which is used to validate the license file. This is required to run the Container. Speechmatics Support will provide this within the license file generated for each customer
+- `TAG` – which is used to identify the image version
+
+## Docker repository login
+
+Using the credentials supplied by Speechmatics, login to our Docker repository:
+
+```bash
+docker login https://speechmaticspublic.azurecr.io
+```
+
+You will be prompted for your username and password that was provided to you. If successful, you will see the response:
+
+```
+Login Succeeded
+```
+
+If unsuccessful, please verify your credentials and URL. If problems persist, please contact Speechmatics Support.
+
+:::info
+Speechmatics require all customers to cache a copy of the Docker image(s) within their own environment. Once the first version of the container is pulled from the Speechmatics Software Repository, please re-host in a private container registry instead and reference your personal registry in your deployments.
+:::
+
+## Pulling Core Speech CPU images
+
+Each supported language pack comes as a different Docker image, so the process will need to be repeated for each language pack required using the relevant language code.
+
+<CodeBlock language="bash">
+  {`# pulling Batch Global English (en) with the ${smVariables.latestContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-en:${smVariables.latestContainerVersion}
+\0
+# pulling the Batch Spanish (es) model with the ${smVariables.latestContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-es:${smVariables.latestContainerVersion}
+\0
+# pulling Real-Time Global English (en) with the ${smVariables.latestContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+See [how to run the Core Speech CPU container here.](/deployments/container/cpu-speech-to-text)
+
+
+## Pulling Transcription GPU images
+
+The Transcription GPU images are required to use the most accurate models.
+
+### Standard operating point
+
+There is a single image available that supports all languages for the Standard Operating Point. There are language specific images available that support the Enhanced and Standard Operating Point.
+
+<CodeBlock>
+  {`# pulling the Standard operating point Transcription GPU inference server which supports all languages with the ${smVariables.latestContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-standard-all:${smVariables.latestContainerVersion}
+\0
+# pulling language specific Transcription GPU inference servers available for en, es, de, fr. Supports both Enhanced and Standard operating points with the ${smVariables.latestContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-en:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+### Enhanced operating point
+
+Depending on which Enhanced Operating Point languages are required, you can pull specific images.
+
+<Details open>
+  <summary>Language Pack 1</summary>
+    Bashkir, Basque, Belarusian, English, English / Mandarin, English / Malay, English / Tamil, Esperanto, Irish, Marathi, Mongolian, Tamil, Turkish, Ukrainian, Uyghur, Welsh
+   <CodeBlock language="bash">
+    {`docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-enhanced-recipe1:${smVariables.latestContainerVersion} `}
+  </CodeBlock>
+</Details>
+
+<details open>
+  <summary>Language Pack 2</summary>
+  Bulgarian, Croatian, Estonian, Galician, Indonesian, Interlingua, Latvian, Lithuanian, Persian, Romanian, Slovakian, Slovenian, Spanish, Urdu
+  <CodeBlock language="bash">
+    {`docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-enhanced-recipe2:${smVariables.latestContainerVersion} `}
+  </CodeBlock>
+</details>
+
+<details open>
+  <summary>Language Pack 3</summary>
+  Catalan, Czech, Danish, Finnish, German, Greek, Hebrew, Hindi, Hungarian, Italian, Korean, Malay, Swahili, Swedish
+  <CodeBlock language="bash">
+    {`docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-enhanced-recipe3:${smVariables.latestContainerVersion} `}
+  </CodeBlock>
+</details>
+
+<details open>
+  <summary>Language Pack 4</summary>
+  Arabic, Bengali, Cantonese, Dutch, French, Japanese, Maltese, Mandarin, Norwegian, Polish, Portuguese, Russian, Thai, Vietnamese
+  <CodeBlock language="bash">
+    {`docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-enhanced-recipe4:${smVariables.latestContainerVersion} `}
+  </CodeBlock>
+</details>
+
+See [how to run the Transcription GPU container here.](/deployments/container/gpu-speech-to-text)
+
+:::info
+To access additional language configurations for containers, please [speak to our Support Team](https://support.speechmatics.com).
+:::
+
+## Pulling Translation GPU image
+
+This GPU image is required to use Translation in Batch or Real-Time.
+
+<CodeBlock language="bash">
+  {`# pulling the Translation GPU inference server which supports all translation pairs with the ${smVariables.latestContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-translation-inference-server:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+See [how to run the Translation GPU container here.](/deployments/container/gpu-translation)
+
+## Pulling bilingual images
+
+To use Spanish and English bilingual transcription you need to pull the Core Speech CPU image below for the client and use the Spanish [GPU Inference Server](#pulling-transcription-gpu-images).
+
+<CodeBlock language="bash">
+  {`# pulling Batch bilingual Spanish and English with the ${smVariables.latestContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-es-bilingual-en:${smVariables.latestContainerVersion}
+\0
+# pulling Real-time bilingual Spanish and English with the ${smVariables.latestContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/rt-asr-transcriber-es-bilingual-en:${smVariables.latestContainerVersion}`}
+  </CodeBlock>
+
+:::info
+Bilingual is only available for GPU deployments. Batch and Real-Time are supported.
+:::
+
+## Pulling Language ID Image
+
+This image is required to use Language ID.
+
+<CodeBlock language="bash">
+  {`# pulling the latest Language ID image:
+docker pull speechmaticspublic.azurecr.io/langid:2.2.1`}
+</CodeBlock>
+
+See [how to run the Language ID container here.](/deployments/container/language-id)

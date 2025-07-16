@@ -1,0 +1,605 @@
+---
+toc_max_heading_level: 3
+description: "Learn about the Speechmatics CPU container system"
+keywords: [speechmatics, container, cpu, SaaS, on-prem]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import { smVariables } from "/sm-variables";
+import CodeBlock from "@theme/CodeBlock";
+
+# CPU Speech to text container
+
+The Core Speech CPU container is a single container that provides transcription. It should be used for deployments where GPUs are not available.
+
+To use our latest and most accurate models, please refer to the [Transcription GPU Container](/deployments/container/gpu-speech-to-text) deployment.
+
+## Prerequisites
+
+- [A license file or a license token](/deployments/container/licensing)
+- [Access to our Docker repository](/deployments/container/accessing-images)
+
+## System requirements
+
+CPU containers are split by language. Each running container will require the following resources:
+
+- 1 vCPU
+- 2-5GB RAM
+- 100MB hard disk space
+- 3GB storage
+- If you are using the Enhanced model, it is recommended to use the upper limit of the RAM recommendations
+- The host machine should have an AMD or Intel CPU with modern AVX instructions as this generally improves transcription processing speed. Exact impact on transcription speed varies on brand, generation, which instruction sets are available and resource allocation
+- If you are using a hypervisor, you should pass through to the VM all AVX related instruction sets
+
+:::info
+When using the [parallel processing](#parallel-processing-guide) functionality of the Batch
+container, this will require more resource due to the intensive memory required.
+When using parallel processing, we recommend using (`N * RAM` requirements) where `N`
+is the number of vCPUs intended to be used for parallel processing. So if 2
+vCPUs were required for parallel processing, the RAM requirements would be up to
+10GB
+:::
+
+## Batch transcription
+
+Each Batch container processes one input file and outputs a resulting transcript in a predefined language in a number of supported outputs.
+
+All data is transitory. Once a container completes its transcription it removes all record of the operation.
+
+Input file sizes up to 2 hours in length or 4GB in size.
+
+### Input methods
+
+There are two different methods for passing an audio file into a container.
+
+Stream the audio through the container via standard input (STDIN):
+
+<CodeBlock language="bash">
+  {`cat ~/example.wav | docker run -i \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+Pull an audio file from a mapped directory into the `input.audio` file within the container:
+
+<CodeBlock language="bash">
+  {`docker run \\
+    -v ~/example.wav:/input.audio \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+See [Docker docs](https://docs.docker.com/engine/reference/commandline/run/) for a full list of the available options.
+
+Both the methods will produce the same transcribed outcome and will write a JSON response to standard output (stdout) and any other logs to standard error (stderr).
+The intermediate files created during the transcription are stored in `/home/smuser/work`. This is the case whether running the container as a root or non-root user.
+
+Here is an example output:
+
+<CodeBlock language="json">
+  {`{
+  "format": "${smVariables.jsonOutputVersion}",
+  "metadata": {
+    "created_at": "2023-08-02T15:43:50.871Z",
+    "type": "transcription",
+    "language_pack_info": {
+      "adapted": false,
+      "itn": true,
+      "language_description": "English",
+      "word_delimiter": " ",
+      "writing_direction": "left-to-right"
+    },
+    "transcription_config": {
+      "language": "en",
+      "diarization": "none"
+    }
+  },
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Are",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 3.61,
+      "start_time": 3.49,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "on",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 3.73,
+      "start_time": 3.61,
+      "type": "word"
+    }
+  ]
+}`}
+</CodeBlock>
+
+
+
+The exit code of the Container will also determine if the transcription was successful. There are two exit code possibilities:
+
+- `Exit Code == 0` : The transcript was a success; the output will contain a JSON output defining the transcript (more info below)
+- `Exit Code != 0` : the output will contain a stack trace and other useful information. This output should be used in any communication with Speechmatics Support to aid understanding and resolution of any problems that may occur
+
+If you encounter any issues refer to the [troubleshooting](/deployments/container/troubleshooting) documentation, which includes more detailed exit codes.
+
+Now that you have successfully run a job, you can use the above APIs in your workflow. In the following section we will show ways you can modify the container to create simple ways of orchestrating the it within your deployments.
+
+### Modifying the image
+
+#### Building an image
+
+Using STDIN to pass files in and obtain the transcription may not be sufficient for all use cases. It is possible to build a new Docker Image that will use the Speechmatics Image as a layer if required for your specific workflow. To include the Speechmatics Docker Image inside another image, ensure to add the pulled Docker Image into the Dockerfile for the new application.
+
+#### Requirements for a custom image
+
+To ensure the Speechmatics Docker Image works as expected inside the custom image, please consider the following:
+
+- Any audio that needs to be transcribed must to be copied to a file called `/input.audio` inside the running Container
+- To initiate transcription, call the application `pipeline`. The `pipeline` will start the transcription service and use `/input.audio` as the audio source
+- When running `pipeline`, the working directory must be set to `/opt/orchestrator`, using either the Dockerfile `WORKDIR` directive, the `cd` command or similar means
+- Once `pipeline` finishes transcribing, ensure you move the transcription data outside the Container
+
+#### Dockerfile
+
+To add a Speechmatics Docker Image into a custom one, the Dockerfile must be modified to include the full image name of the locally available image.
+
+<>
+  Example: Adding English (en) with tag{" "}
+  {smVariables.latestContainerVersion} to the Dockerfile
+</>
+
+<CodeBlock language="dockerfile" title="Dockerfile">
+  {`FROM batch-asr-transcriber-en:${smVariables.latestContainerVersion}
+ADD download_audio.sh /usr/local/bin/download_audio.sh
+RUN chmod +x /usr/local/bin/download_audio.sh
+CMD ["/usr/local/bin/download_audio.sh"]`}
+</CodeBlock>
+
+Once the above image is built, and a Container instantiated from it, a script called `download_audio.sh` will be executed (this could do something like pulling a file from a webserver and copying it to `/input.audio` before starting the pipeline application). This is a very basic Dockerfile to demonstrate a way of orchestrating the Speechmatics Docker Image.
+
+:::info
+  For support purposes, it is assumed the Docker Image provided by
+  Speechmatics has been unmodified. If you experience issues, Speechmatics
+  support will require you to replicate the issues with the unmodified Docker
+  image e.g.
+  `batch-asr-transcriber-en:{smVariables.latestContainerVersion}`
+:::
+
+### Parallel processing guide
+
+For customers who are looking to improve job turnaround time and who are able to assign sufficient resources, it is possible to pass a parallel transcription parameter to the container to take advantage of multiple CPUs. The parameter is called parallel and the following example shows how it can be used. In this case to use 4 cores to process the audio you would run the Container like this:
+
+<CodeBlock language="bash">
+  {`docker run -i \\
+    -v ~/example.wav:/input.audio \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion} \\
+    --parallel=4
+`}
+</CodeBlock>
+
+Depending on your hardware, you may need to experiment to find the optimum performance. We've noticed significant improvement in turnaround time for jobs by using this approach.
+
+If you limit or are limited on the number of CPUs you can use (for example your platform places restrictions on the number of cores you can use, or you use the --cpu flag in your docker run command), then you should ensure that you do not set the parallel value to be more than the number of available cores. If you attempt to use a setting in excess of your free resources, then the Container will only use the available cores.
+
+If you simply increase the parallel setting to a large number you will see diminishing returns. Moreover, because files are split into 5 minute chunks for parallel processing, if your files are shorter than 5 minutes then you will see no parallelization (in general the longer your audio files the more speedup you will see by using parallel processing).
+
+If you are running the container on a shared resource you may experience different results depending on what other processes are running at the same time.
+
+The optimum number of cores is `N / 5`, where `N` is the length of the audio in minutes. Values higher than this will deliver little to no value, as there will be more cores than chunks of work. A typical approach will be to increment the parallel setting to a point where performance plateaus, and leave it at that (all else being equal).
+
+For large files and large numbers of cores, the time taken by the first and last stages of processing (which cannot be parallelized) will start to dominate, with diminishing returns.
+
+### Generating multiple transcript formats
+
+In addition to our primary JSON format, the Speechmatics container can output transcripts in the plain text (TXT) and SubRip (SRT) subtitle format. This can be done by using <br /> `--all-formats` command and then specifying a directory parameter within the transcription request. This is where all supported transcript formats will be saved. You can also use <br /> `--allformats` to generate the same response.
+
+This directory must be mounted into the container so the transcripts can be retrieved after container finishes. You will receive a transcript in all currently supported formats: JSON, TXT, and SRT.
+
+The following example shows how to use `--all-formats` parameter. In this scenario, after processing the file, three separate transcripts would be found in the `~/tmp/output` directory. These transcripts would be in JSON, TXT, and SRT format.
+
+<CodeBlock language="bash">
+{`docker run \\
+    -v ~/example.wav:/input.audio \\
+    -v ~/tmp/output:/output_dir_name \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion} \\
+    --all-formats /output_dir_name`}
+</CodeBlock>
+
+
+## Real-time transcription
+
+The Real-time container provides the ability to transcribe speech data in a predefined language from a live stream or a recorded audio file.
+
+- Multiple instances of the container can be run on the same Docker host. This enables scaling of a single language or multiple languages as required
+- All data is transitory, once a container completes its transcription it removes all record of the operation, no data is persisted
+
+Here's an example of how to start the Container from the command line:
+
+<CodeBlock language="bash">
+  {`docker run \\
+    -p 9000:9000 \\
+    -p 8001:8001 \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+See [Docker docs](https://docs.docker.com/engine/reference/commandline/run/) for a full list of the available options.
+
+### Running in multi-session mode (Real-time)
+
+By default the real-time container will accept only one websocket connection at a time. To enable multiple connections, set the environment variable `SM_MAX_CONCURRENT_CONNECTIONS` to the maximum number of sessions to allow. When this is set, the `/ready` [health check endpoint](#health-service) will return true if there is a free connection available.
+
+Most memory is shared between connections, but you should expect CPU usage to scale with the number of active sessions.
+
+When the transcription container is linked to a GPU inference server, more memory can be shared because the larger models are handled by the remote GPU. 
+
+### Input modes
+
+The supported method for passing audio to a Real-Time Container is to use a WebSocket. A session is setup with configuration parameters passed in using a `StartRecognition` message, and thereafter audio is sent to the container in binary chunks, with transcripts being returned in an `AddTranscript` message.
+
+In the `AddTranscript` message individual result segments are returned, corresponding to audio segments defined by pauses (and other latency measurements).
+
+[//]: # "TODO talk about the supported method for passing audio to a batch container as that is the other input mode"
+
+#### Output
+
+The results list are sorted by increasing `start_time`, with a supplementary rule to sort by decreasing `end_time`. See below for an example:
+
+<CodeBlock language="json">
+  {`{
+    "message": "AddTranscript",
+    "format": "${smVariables.jsonOutputVersion}",
+    "metadata": {
+      "transcript": "full tell radar",
+      "start_time": 0.11,
+      "end_time": 1.07
+    },
+    "results": [
+      {
+        "type": "word",
+        "start_time": 0.11,
+        "end_time": 0.4,
+        "alternatives": [{ "content": "full", "confidence": 0.7 }]
+      },
+      {
+        "type": "word",
+        "start_time": 0.41,
+        "end_time": 0.62,
+        "alternatives": [{ "content": "tell", "confidence": 0.6 }]
+      },
+      {
+        "type": "word",
+        "start_time": 0.65,
+        "end_time": 1.07,
+        "alternatives": [{ "content": "radar", "confidence": 1.0 }]
+      }
+    ]
+}`}
+</CodeBlock>
+
+#### Transcription duration information
+
+The Container will output a log message after every transcription session to indicate the duration of speech transcribed
+during that session. This duration only includes speech, and not any silence or background noise which was present in the audio.
+This data can be used to report usage back to us, or simply for your own records.
+
+The format of the log messages produced should match the following example:
+
+```
+2020-04-13 22:48:05.312 INFO sentryserver Transcribed 52 seconds of speech
+```
+
+Consider using the following regular expression to extract just the seconds part from the line if you are parsing it:
+
+```
+^.+ .+ INFO sentryserver Transcribed (\d+) seconds of speech$
+```
+
+### Read-only mode
+
+Users may wish to run the Container in read-only mode. This may be necessary due to their regulatory environment, or a requirement not to write any media file to disk. An example of how to do this is below.
+
+<CodeBlock language="bash">
+  {`docker run -it --read-only \\
+    -p 9000:9000 \\
+    --tmpfs /tmp \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+The Container still requires a temporary directory with write permissions. Users can provide a directory (e.g `/tmp`) by using the `--tmpfs` Docker argument. A tmpfs mount is temporary, and only persisted in the host memory. When the Container stops, the tmpfs mount is removed, and files written there won’t be persisted.
+
+If customers want to use the shared Custom Dictionary Cache feature, they must also specify the location of cache and mount it as a volume
+
+<CodeBlock language="bash">
+  {`docker run -it --read-only \\
+    -p 9000:9000 \\
+    --tmpfs /tmp \\
+    -v /cachelocation:/cache \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    -e SM_CUSTOM_DICTIONARY_CACHE_TYPE=shared \\
+    rt-asr-transcriber-en:${smVariables.latestContainerVersion}
+`}
+</CodeBlock>
+
+### Running container as a non-root user
+
+A Real-Time Container can be run as a non-root user with no impact to feature functionality. This may be required if a hosting environment or a company's internal regulations specify that a Container must be run as a named user.
+
+Users may specify the non-root command by the `docker run –-user $USERNUMBER:$GROUPID`. User number and group ID are non-zero numerical values from a value of **1** up to a value of **65535**
+
+An example is below:
+
+<CodeBlock language="bash">
+  {`docker run -it --user 100:100 \\
+    -p 9000:9000 \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    rt-asr-transcriber-en:${smVariables.latestContainerVersion}
+`}
+</CodeBlock>
+
+## How to use a shared Custom Dictionary cache
+
+The Speechmatics Real-Time Container includes an optional [Custom Dictionary](/speech-to-text/features/custom-dictionary) cache mechanism to reduce session initialisation times. 
+
+You will see improvements when reusing an identical Custom Dictionary from the second time onwards.
+
+The cache volume is safe to use from multiple Containers concurrently if the operating system and its filesystem support file locking operations.
+The cache can store multiple Custom Dictionaries in any language used for transcription. It can support multiple Custom Dictionaries in the same language.
+
+If a Custom Dictionary is small enough to be stored within the cache volume, this will take place automatically if the shared cache is specified.
+
+For more information about how the shared cache storage management works, please see [Maintaining the Shared Cache](#maintaining-the-shared-cache).
+
+We highly recommend you ensure any location you use for the shared cache has enough space for the number of Custom Dictionaries you plan to allocate there. How to allocate Custom Dictionaries to the shared cache is documented below.
+
+### How to set up the shared cache
+
+The shared cache is enabled by setting the following value when running transcription:
+
+- Cache Location: You must volume map the directory location you plan to use as the shared cache to `/cache` when submitting a job
+- `SM_CUSTOM_DICTIONARY_CACHE_TYPE`: (mandatory if using the shared cache) This environment variable must be set to `shared`
+- `SM_CUSTOM_DICTIONARY_CACHE_ENTRY_MAX_SIZE`: (optional if using the shared cache). This determines the maximum size of any single Custom Dictionary that can be stored within the shared cache in **bytes**
+  - E.G. a `SM_CUSTOM_DICTIONARY_CACHE_ENTRY_MAX_SIZE` with a value of 10000000 would set a max storage size of any Custom Dictionary at **10MB**
+  - For reference a Custom Dictionary wordlist with 1000 words produces a cache entry of size around 200 kB, or **200000** bytes
+  - A value of `-1` will allow **every** Custom Dictionary to be stored within the shared cache. This is the **default** assumed value
+  - A Custom Dictionary Cache entry **larger** than the `SM_CUSTOM_DICTIONARY_CACHE_ENTRY_MAX_SIZE` will still be used in transcription, but will not be cached
+
+### Maintaining the shared cache
+
+If you specify the shared cache to be used and your Custom Dictionary is within the permitted size, Speechmatics Real-Time Container will always try to cache the Custom Dictionary. If a Custom Dictionary cannot occupy the shared cache due to other cached Custom Dictionaries within the allocated cache, then older Custom Dictionaries will be removed from the cache to free up as much space as necessary for the new Custom Dictionary. This is carried out in order of the least recent Custom Dictionary to be used.
+
+Therefore, you must ensure your cache allocation large enough to handle the number of Custom Dictionaries you plan to store. We recommend a relatively large cache to avoid this situation if you are processing multiple Custom Dictionaries using the batch container (e.g 50 MB). If you don't allocate sufficient storage this could mean one or multiple Custom Dictionaries are deleted when you are trying to store a new Custom Dictionary.
+
+It is recommended to use a Docker volume with a dedicated filesystem with a limited size. If a user decides to use a volume that shares filesystem with the host, it is the user's responsibility to purge the cache if necessary.
+
+### Creating the shared cache
+
+In the example below, transcription is run where an example local docker volume is created for the shared cache. It will allow a Custom Dictionary of up to 5MB to be cached.
+
+<Tabs>
+<TabItem value="Batch" default>
+  <CodeBlock>
+  {
+    `docker volume create speechmatics-cache
+  \0
+docker run -i -v /home/user/sm_audio.wav:/input.audio \\
+  -e SM_CUSTOM_DICTIONARY_CACHE_TYPE=shared \\
+  -e SM_CUSTOM_DICTIONARY_CACHE_ENTRY_MAX_SIZE=5000000 \\
+  -v speechmatics-cache:/cache \\
+  -e LICENSE_TOKEN=$TOKEN_VALUE \\
+  batch-asr-transcriber-en:${smVariables.latestContainerVersion}`
+  }
+  </CodeBlock>
+</TabItem>
+  <TabItem value="Real-Time">
+    <CodeBlock>
+      {`docker volume create speechmatics-cache
+      \0
+  docker run --rm -d \\
+    -p 9000:9000 \\
+    -e SM_CUSTOM_DICTIONARY_CACHE_TYPE=shared \\
+    -e SM_CUSTOM_DICTIONARY_CACHE_ENTRY_MAX_SIZE=5000000 \\
+    -v speechmatics-cache:/cache \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    rt-asr-transcriber-en:${smVariables.latestContainerVersion}
+  \0
+  speechmatics transcribe --additional-vocab gnocchi --url ws://localhost:9000/v2 --ssl-mode=none test.mp3
+    `}
+    </CodeBlock>
+    </TabItem>
+  </Tabs>
+
+#### Viewing the shared cache
+
+If all set correctly and the cache was used for the first time, a single entry in the cache should be present.
+
+The following example shows how to check what Custom Dictionaries are stored within the cache. This will show the **language**, the **sampling rate**, and the **checksum** value of the cached dictionary entries.
+
+```bash
+ls $(docker inspect -f "{{.Mountpoint}}" speechmatics-cache)/custom_dictionary
+en,16kHz,bef53e5bcca838a39c3707f1134bda6a09ff87aaa09203617528774734455edd
+```
+
+**Reducing the Shared Cache Size**
+
+Cache size can be reduced by removing some or all cache entries.
+
+```bash
+rm -rf $(docker inspect -f "{{.Mountpoint}}" speechmatics-cache)/custom_dictionary/*
+```
+
+:::info Manually purging the cache
+Before manually purging the cache, ensure that no containers have the volume mounted, otherwise an error during transcription might occur. Consider creating a new docker volume as a temporary cache while performing purging maintenance on the cache.
+:::
+
+## Linking to a GPU inference container
+
+The GPU Inference Container allows multiple speech recognition containers to offload heavy inference tasks to a GPU, where they can be batched and parallelized more efficiently.
+
+The CPU is run as normal, but with the additional environment variable `SM_INFERENCE_ENDPOINT` which indicates the GRPC endpoint of the Inference Server.
+
+Speech containers running in GPU mode use less local CPU and memory, so they can be packed more densely on a server.
+
+```bash
+docker run \
+  --rm \
+  -it \
+  -e SM_INFERENCE_ENDPOINT=<server>:<port> \
+  -v $PWD/license.json:/license.json \
+  -v $PWD/example.wav:/input.audio \
+  <speech_container_image_name>
+```
+
+#### When the inference server is not available
+
+At start up, the Container will make a TCP connection to the `SM_INFERENCE_ENDPOINT` server to establish if it's accessible.
+If this test fails, the transcription will terminate with an error.
+
+#### Batch
+
+In the event of a connection error during transcription, the transcriber will retry for up to 60 seconds using an exponential back off.
+The length of this retry period can be configured with the `SM_SPLIT_RETRY_TIMEOUT` environment variable, which is a whole number of seconds.
+
+#### Real-time
+
+In Real-Time mode, the transcriber will retry connection to the server for a maximum of 250ms before giving up.
+
+For more details see [GPU Inference Container](/deployments/container/gpu-speech-to-text)
+
+## Health service
+
+The container is able to expose an HTTP Health Service, which offers startup, liveness, readiness, and session listing probes. This is accessible from port 8001, and has four endpoints, `started`, `live`, `ready` and `session_status`. This may be especially helpful if you are deploying the container into a Kubernetes cluster. If you are using Kubernetes, we recommend that you also refer to the Kubernetes documentation around
+[liveness and readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
+
+The Health Service is enabled by default and runs as a subprocess of the main entrypoint to the container.
+
+### Endpoints
+
+The Health Service offers four endpoints:
+
+#### `/started`
+
+This endpoint provides a startup probe. It can be queried using an HTTP GET request. You must include the relevant port, 8001, in the request.
+
+This probe indicates whether all services in the Container have successfully started. Once it returns a successful response code, it should never return an unsuccessful response code later.
+
+Possible responses:
+
+- `200` if all of the services in the container have successfully started.
+- `503` otherwise.
+
+A JSON object is also returned in the body of the response, indicating the status.
+
+Example:
+
+```bash-and-response
+$ curl -i address.of.container:8001/started
+HTTP/1.0 200 OK
+Server: BaseHTTP/0.6 Python/3.8.5
+Date: Mon, 08 Feb 2021 12:46:21 GMT
+Content-Type: application/json
+{
+    "started": true
+}
+```
+
+#### `/live`
+
+This endpoint provides a liveness probe. It can be queried using an HTTP GET request. You must include the relevant port, 8001, in the request.
+
+This probe indicates whether all services in the Container are active. The services in the Container send regular updates to the Health Service, if they don't send an update for more than 10 seconds then they will be marked as 'dead' and this endpoint will return an unsuccessful response code. For example, if the WebSocket server in the Container were to crash, this endpoint should indicate that.
+
+Possible responses:
+
+- `200` if all of the services in the Container have successfully started, and have recently sent an update to the Health Service.
+- `503` otherwise.
+
+A JSON object is also returned in the body of the response, indicating the status.
+
+Example:
+
+```bash-and-response
+$ curl -i address.of.container:8001/live
+HTTP/1.0 200 OK
+Server: BaseHTTP/0.6 Python/3.8.5
+Date: Mon, 08 Feb 2021 12:46:45 GMT
+Content-Type: application/json
+{
+    "alive": true
+}
+```
+
+#### `/ready`
+
+This endpoint provides a readiness probe. It can be queried using an HTTP GET request.
+
+The container has been designed to process multiple audio streams at a time. This probe indicates whether the container has a slot free for connections, and can be used as a scaling mechanism.
+
+**Note**: The readiness check is accurate within a 2 second resolution. If you do use this probe for load balancing, be aware that bursts of traffic within that 2 second window could all be allocated to a single Container since its readiness state will not change.
+
+Possible responses:
+
+- `200` if the container has a free connection slot.
+- `503` otherwise.
+
+In the body of the response there is also a JSON object with the current status.
+
+Example:
+
+```bash-and-response
+$ curl -i address.of.container:8001/ready
+HTTP/1.0 200 OK
+Server: BaseHTTP/0.6 Python/3.8.5
+Date: Mon, 08 Feb 2021 12:47:05 GMT
+Content-Type: application/json
+{
+    "ready": true
+}
+```
+
+#### `/session_status` (from 13.0.0 onwards)
+
+This endpoint provides a list of the sessions being served by the container. It can be queried using an HTTP GET request.
+
+Possible responses:
+
+- `200` Successful listing of the current sessions
+- `503` otherwise.
+
+In the body of the response there is a JSON object listing the current sessions, which can be tied to log entries and individual client connections.
+
+The `session_id` is created by the transcriber and returned to the client on first connection, and will always be present.
+
+This endpoint only returns data for the `request_id` field if the header `x-request-id` was set in the initial websocket handshake. This is designed to support deployments where the transcriber sits behind a proxy or load balancer and the proxy adds an id to the connection when it's first created.
+
+Example:
+
+```bash-and-response
+$ curl -i address.of.container:8001/session_status
+HTTP/1.0 200 OK
+Server: BaseHTTP/0.6 Python/3.10.13
+Date: Wed, 05 Mar 2025 11:41:51 GMT
+Content-Type: application/json
+{
+  "max_sessions": 4,
+  "active_sessions": [
+    {"session_id": "499e3f17-b9e4-4c72-b9aa-66cbbdafea53", "request_id": "499e3f17-b9e4-4c72-b9aa-66cbbdafea53"},
+    {"session_id": "fffc5412-d4b5-4e72-a912-663107349968", "request_id": "802da03c-77f5-4b9a-b0df-441734a3b2b0"},
+  ]
+}
+```

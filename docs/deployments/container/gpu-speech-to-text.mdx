@@ -1,0 +1,168 @@
+---
+toc_max_heading_level: 3
+description: 'Learn about the Speechmatics Transcription GPU container system'
+keywords: [speechmatics, container, gpu, GPU, performance, NVIDIA, CUDA, SaaS, on-prem]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { smVariables } from '/sm-variables';
+import CodeBlock from '@theme/CodeBlock';
+import gpuSttDockerCompose from './assets/gpu-stt-docker-compose.yml?raw';
+
+# GPU Speech to text container
+
+## Prerequisites
+
+- [A license file or a license token](/deployments/container/licensing)
+  - There is no specific license for the GPU Inference Container, it will run using an existing Speechmatics license for the Real-Time or Batch
+    Container
+- [Access to our Docker repository](/deployments/container/accessing-images)
+
+## System requirements
+
+The system must have:
+
+- Nvidia GPU(s) with at least 16GB of GPU memory
+- Nvidia drivers (see below for supported versions)
+- CUDA [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of 7.5-9.0 inclusive,
+  which corresponds to the Turing, Ampere, Lovelace, Hopper architectures. Cards with the Volta architecture or below are not able to run the models
+- 24 GB RAM
+- The [nvidia-container-toolkit](https://github.com/NVIDIA/nvidia-docker) installed
+- Docker version > 19.03
+
+The raw image size of the GPU Inference Container is around 15GB.
+
+### Nvidia drivers
+
+The GPU Inference Container is based on CUDA 12.3.2, which requires NVIDIA Driver release 545 or later.
+If you are running on a data center GPU (e.g, a T4) you can use drivers: 470.57 (or later R470), 525.85 (or later R525), 535.86 (or later R535), or 545.23 (or later R545).
+
+Driver installation can be validated by running `nvidia-smi`. This command should return the Nvidia driver version and show additional information about the GPU(s).
+
+#### Azure instances
+
+The GPU node can be provisioned in the cloud. Our SaaS deployment uses
+
+- Azure [Standard_NC8as_T4_v3](https://learn.microsoft.com/en-us/azure/virtual-machines/nct4-v3-series)
+
+but any `NC` or `ND` series with sufficient memory should work.
+
+## Running the image
+
+Currently, each GPU Inference Container can only run on a single GPU.
+If a system has more than one GPU, the device must be specified using `CUDA_VISIBLE_DEVICES`
+or selecting the device using the `--gpus` argument. See [Nvidia/CUDA documentation for details](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#cuda-environment-variables).
+
+<CodeBlock language="bash">
+  {`docker run --rm -it \\
+    -v $PWD/license.json:/license.json \\
+    --gpus '"device=0"' \\
+    -e CUDA_VISIBLE_DEVICES \\
+    -p 8001:8001 \\
+    speechmaticspublic.azurecr.io/sm-gpu-inference-server-en:${smVariables.latestContainerVersion}
+`}
+</CodeBlock>
+
+When the Container starts you should see output similar to this,
+indicating that the server has started and is ready to serve requests.
+
+```
+I1215 11:43:57.300390 1 server.cc:633]
++----------------------+---------+--------+
+| Model                | Version | Status |
++----------------------+---------+--------+
+| am_en_enhanced       | 1       | READY  |
+| am_en_standard       | 1       | READY  |
+| body_enhanced        | 1       | READY  |
+| body_standard        | 1       | READY  |
+| decoder_enhanced     | 1       | READY  |
+| decoder_standard     | 1       | READY  |
+| diar_enhanced        | 1       | READY  |
+| diar_standard        | 1       | READY  |
+| ensemble_en_enhanced | 1       | READY  |
+| ensemble_en_standard | 1       | READY  |
+| lm_enhanced          | 1       | READY  |
++----------------------+---------+--------+
+...
+I1215 11:43:57.375233 1 grpc_server.cc:4819] Started GRPCInferenceService at 0.0.0.0:8001
+I1215 11:43:57.375473 1 http_server.cc:3477] Started HTTPService at 0.0.0.0:8000
+I1215 11:43:57.417749 1 http_server.cc:184] Started Metrics Service at 0.0.0.0:8002
+```
+
+### Batch and Real-time inference
+
+The Inference server can run in two modes: _batch_, for processing whole files and returning the transcript at the end, and _real-time_ for
+processing audio streams. The default mode is batch. To configure the GPU server for real-time, set the environment variable
+`SM_BATCH_MODE=false` by passing it into the `docker run` command.
+
+The modes correspond to the two types of client speech Container, which are distinguished by their name:
+
+- **rt**-asr-transcriber-en:&lt;version&gt;
+- **batch**-asr-transcriber-en:&lt;version&gt;
+
+The server can only support one of these modes at once.
+
+### Linking to a GPU inference container
+
+Once the GPU Server is running, follow the [Instructions for Linking a CPU Container](/deployments/container/cpu-speech-to-text#linking-to-a-gpu-inference-container).
+
+### Running only one operating point
+
+[Operating Points](/speech-to-text/features/accuracy-language-packs#accuracy) represent different levels of model complexity.
+To save GPU memory for throughput, you can run the server with only one Operating Point loaded. To do this, pass the
+`SM_OPERATING_POINT` environment variable to the container and set it to either `standard` or `enhanced`.
+
+:::info
+When running the all language standard Operating Point GPU inference server you must set the `SM_OPERATING_POINT` environment variable to `standard`
+:::
+
+### Monitoring the server
+
+The inference server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such
+can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP APIs. To expose these, configure an external mapping for port
+8002(Prometheus) or 8000(HTTP).
+
+### Operating points in GPU inference
+
+When inference is outsourced to a GPU server, alternative GPU-specific models are used, so you should not expect to see identical results compared to CPU-based inference. For convenience, the GPU models are also designated as 'standard' and 'enhanced'.
+
+## Docker Compose example
+
+This Docker Compose file will create a Speechmatics GPU Inference Server:
+
+(assumes your `license.json` file is in the current working directory)
+
+<CodeBlock language="yaml" title="docker-compose.yml">
+{gpuSttDockerCompose.replace('{{ CONTAINER_VERSION }}', smVariables.latestContainerVersion)}
+</CodeBlock>
+
+## GPU Inference Performance
+
+This is a comparison of the performance and estimated running costs of transcription executing on
+standard Azure VMs.
+
+### Benchmark metrics
+
+| Operating Point                            | CPU Standard | CPU Enhanced | GPU Standard | GPU Enhanced |
+|--------------------------------------------|--------------|--------------|--------------|--------------|
+| Lowest Processing Cost (US ¢ per hour)     | 1.7          | 3.8          | 0.71         | 2.21         |
+| Cost vs CPU Standard (%)                   | -            | 224%         | 42%          | 130%         |
+| Cost vs CPU Enhanced (%)                   | 45%          | -            | 19%          | 58%          |
+| Maximum Throughput[^1]                     | 53.2         | 23.7         | 170          | 34           |
+| Representative Real-Time Factor (RTF)[^2]  | 0.085        | 0.2          | 0.035        | 0.08         |
+| Transcriber Count                          | 20           | 20           | 20           | 13           |
+
+The benchmark uses the following configuration:
+
+| Benchmark details |                                     |
+| ----------------- | ----------------------------------- |
+| CPU               | D16ds_v5                            |
+| GPU Standard      | Standard_NC16as_T4_v3               |
+| GPU Enhanced      | Standard_NC8as_T4_v3                |
+| Price Basis       | Azure PAYG East US, Linux, Standard |
+
+For GPU Operating Points, Transcribers and Inference Server were all run on a single VM node.
+
+[^1]: Throughput is measured as hours of audio per hour of runtime. A throughput of 50 would mean that in one hour, the system as a whole can transcribe 50 hours of audio.
+[^2]: An RTF of 1 would mean that a one hour file would take one hour to transcribe. An RTF of 0.1 would mean that a one hour file would take six minutes to transcribe. Benchmark RTFs are representative for processing audio files over 20 minutes in duration using `parallel=4`.

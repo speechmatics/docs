@@ -1,0 +1,72 @@
+# Adding Languages
+
+:::note
+Adding languages is currently only supported for `batch` mode, if you need extra realtime languages please [reach out to Support](https://support.speechmatics.com).
+:::
+
+If you have access to the Speechmatics Container Repository, you can install additional CPU-only languages on the Appliance.
+
+Log into the appliance using SSH with the username `smadmin`, as described in [Remote Access](./remote-access.mdx). At the commandline, run the `configure_languages.sh` script. You will be prompted for credentials for the Speechmatics Container Repository.
+
+You will need to know which version of the images are compatible with your appliance, this will be documented here, but until then [reach out to Support](https://support.speechmatics.com).
+Language codes are the standard two-letter ISO codes used in configuring transcription, for example: "de", "fr".
+
+Access to the Speechmatics repository is needed to download new languages, these credentials can be set in the environment but need to be base64 encoded, alternately if unset the user will be prompted for the username and password after running the configure languages script. If you need access to the Speechmatics container repository please [reach out to Support](https://support.speechmatics.com).
+
+```bash
+export CRICTL_AUTH=$(echo -n <username>:<password> | base64)
+```
+
+### Add a language:
+```bash
+sudo CRICTL_AUTH=$(echo -n <username>:<password> | base64) BUILD_MODE=batch configure_languages.sh <version> <language-code> [<language-code> ...]
+```
+
+### Remove a language:
+
+```bash
+sudo CRICTL_AUTH=$(echo -n <username>:<password> | base64) BUILD_MODE=batch configure_languages.sh -r <language-code> [<language-code> ...]
+```
+
+:::note
+Running the configure language script requires superuser access.
+:::
+
+After the script has completed, the new language will be available to use.
+
+Adding a transcription language with this script will also make it available for `auto` Language Identification.
+
+## Reverting
+
+If something appears to have gone wrong after running the script, the system configuration can be restored by running
+
+```bash
+sudo kubectl apply -f /root/.siab_deployment/k8s/bjapi.yaml
+```
+
+To assist Speechmatics Support, running this command will show the currently configured languages:
+
+```bash
+kubectl get -o json deployment/api | \
+jq -r '.spec.template.spec.containers[0].env[]|select(.name="SM_FEATURES_VALIDATION").value'
+```
+
+This command will print a configuration file, under `batch->transcription->languages` there should be a section like:
+
+```json
+{
+  ...
+  "batch": {
+    "transcription": [
+      {
+        "version": "latest",
+        "languages": [
+          "en"
+        ],
+        ...
+      }
+    ]
+  }
+  ...
+}
+```

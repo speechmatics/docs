@@ -1,0 +1,93 @@
+# Security
+
+The Appliance is designed to be installed within your own security perimeter. It has its own firewall installed to only allow ingress to ports that are required for its Management, Monitoring and Speech APIs.
+
+## Overview
+
+The Appliance uses a Kubernetes architecture running on a customized Ubuntu machine. [AppArmor](https://gitlab.com/apparmor/apparmor/wikis/home/) default security policies are used to protect the OS and running applications on the Appliance.
+
+Data on the Appliance (including audio and video data that is submitted via the Speech API, logs, and output transcripts) are encrypted on disk if the hypervisor is configured to manage at-rest encryption. The OVA you import
+is not encrypted by default if you require at-rest encryption you should follow the instructions specific to your hypervisor.
+
+## Securing the Management API
+
+All requests to the Management API require authentication unless it is explicitly turned off. The default username and password are `'admin'` and `'admin'`.
+
+To disable HTTP authentication against the Management API, run this command:
+
+```bash
+curl -sSL -u admin:admin -X 'DELETE' \
+  "http://${APPLIANCE_HOST}/v2/security/adminpassword"
+```
+
+To configure your own password (advised), run:
+
+```bash
+curl -sSL -u admin:admin -X 'POST' \
+  "http://${APPLIANCE_HOST}/v2/security/adminpassword" \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "password": "yourpassword"
+}'
+```
+
+or perform these operations from the Management Web UI running on `http(s)://${APPLIANCE_HOST}/`.
+
+## Configuring a Token for transcription
+
+Versions of the Appliance before 6.0.0 required no authentication to use the ASR API. This version requires no authentication by default, but depending on the appliance mode you can configure a token of your choice to protect either the jobs endpoint or realtime websocket using the Management API.
+
+```bash
+curl -sSL -u admin:admin -X 'POST' \
+  "https://${APPLIANCE_HOST}/v2/security/jobtoken" \
+  -H 'Content-Type: application/json' \
+  -d '{"user_token": "$AUTH_TOKEN"}'
+```
+
+To remove the token, run a DELETE command
+
+```bash
+curl -sSL -u admin:admin -X 'DELETE' \
+  "https://${APPLIANCE_HOST}/v2/security/jobtoken"
+```
+
+When a token is in use, requests to the respective transcription services will require an authentication header identical to the kind used in the Speechmatics SaaS.
+
+### Batch Mode
+
+In `batch` mode the Jobs API will require an auth token
+
+```bash
+curl -s -L -X 'POST' "https://${APPLIANCE_HOST}/v2/jobs/" \
+   -H "Authorization: Bearer $AUTH_TOKEN" \
+   -F data_file=@sample.wav \
+   -d 'config={ "type": "transcription",
+         "transcription_config": { "language": "en" }
+      }'
+```
+
+### Realtime Mode
+
+In `realtime` mode the websocket will require an auth token, for example using the [Speechmatics Python Client](https://github.com/speechmatics/speechmatics-python):
+
+```bash
+speechmatics config set --auth-token $AUTH_TOKEN
+speechmatics transcribe --lang en ${PATH_TO_AUDIO_FILE} --url "ws://${APPLIANCE_HOST}:9000/v2/en" --ssl-mode none
+```
+
+## Ports and Protocols
+
+There are several firewall rules that may need to be enabled to ensure the communication can be made to the Virtual Appliance. If you set up HTTPS as described in the 'SSL Configuration' section of these docs then you only need to expose port 443 for `batch` mode, and port 443 and 9004 for `realtime` mode.
+
+| Port/Protocol | Description                                                                         |
+| ------------- | ----------------------------------------------------------------------------------- |
+| 22/TCP        | SSH access                                                                          |
+| 80/TCP        | Used for the Management API to manage the Appliance, and for submitting jobs [^1]   |
+| 443/TCP       | Used for HTTPS communication with the above services                                |
+| 9000/TCP      | Used for the websocket connection to the realtime transcription service [^2]        |
+| 9004/TCP      | Used for the secure websocket connection to the realtime transcription service [^2] |
+| 9001/TCP      | Prometheus metrics                                                                  |
+| 3100/TCP      | Loki logs endpoint                                                                  |
+
+[^2]: Jobs service only available in `batch` mode.
+[^1]: Websocket service only available in `realtime` mode.

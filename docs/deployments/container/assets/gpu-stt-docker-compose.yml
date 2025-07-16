@@ -1,0 +1,35 @@
+version: "3.8"
+
+networks:
+  transcriber:
+    driver: bridge
+
+services:
+  triton:
+    image: speechmaticspublic.azurecr.io/sm-gpu-inference-server-en:{{ CONTAINER_VERSION }}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              ### Limit to N GPUs
+              # count: 1
+              ### Pick specific GPUs by device ID
+              # device_ids:
+              #   - 0
+              #   - 3
+              capabilities:
+                - gpu
+    container_name: triton
+    networks:
+      - transcriber
+    expose:
+      - 8000/tcp
+      - 8001/tcp
+      - 8002/tcp
+    environment:
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+      - CUDA_VISIBLE_DEVICES=0
+    volumes:
+      - $PWD/license.json:/license.json:ro

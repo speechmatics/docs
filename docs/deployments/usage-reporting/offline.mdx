@@ -1,0 +1,424 @@
+import CodeBlock from '@theme/CodeBlock';
+import { smVariables } from '/sm-variables';
+import Code from '@theme/CodeInline';
+import usageContainerDockerCompose from './assets/usage-container-docker-compose.yml?raw';
+import offlineUsageExportScript from './assets/export-usage-data.sh?raw';
+
+import { Grid } from '@radix-ui/themes';
+import { LinkCard } from '@theme/LinkCard';
+
+# Offline usage reporting
+
+To support on-prem solutions which require access to the internet to be blocked, usage data can be collected locally using a usage container. This data is then exported and sent to Speechmatics via email for review. Depending on the on-prem solution you require, the setup process is slightly different. See the sections below on [Containers](#container) or [Appliances](#virtual-appliance) for details.
+
+The Usage Container only collates data that is required for Speechmatics to calculate accurate financial billing and measure product usage and system performance. This data is made up of a series of events that correspond to the various stages of a Speechmatics Batch or Real-Time Container as it processes a media file.
+
+
+:::info
+No personal customer data, transcripts or media data is captured or stored at any point. See [What Data Do We Record](/deployments/usage-reporting#what-data-do-we-record) for a full description of what information will be recorded.
+:::
+
+The customer is responsible for assigning storage to the Usage Container and or Batch Appliance in order to capture all usage information, and sending data to Speechmatics at regular intervals.
+
+## Reporting cadence
+
+Speechmatics requires customers to send all usage data by the last working day of each calendar month. You should send data for each Usage Container and/or batch appliance you have running in your environments. For customers with very large transcription volumes, more regular reporting may be recommended. Large transcription volumes can mean:
+
+- Large number of jobs
+  - This means any Usage Container that will store data from more than 10,000 Batch jobs in a calendar month, or 1250 Real-Time jobs of more than an hour
+- Many jobs of long duration (>60 minutes), especially when using the Real-Time Container in a 'streaming' mode where it persists between sessions
+
+## Sending data to Speechmatics
+
+:::info
+The exported data must not be modified in any way before sending to Speechmatics.
+Speechmatics will request a new unmodified data export if it is found that data has been altered.
+:::
+Data is retained in the Usage Container for **90 days**, after which point it is purged.
+
+After exporting, Speechmatics requires data to be sent via email to [billing-reporting@speechmatics.com](mailto:billing-reporting@speechmatics.com).
+
+Speechmatics recommends file sizes to not exceed 25MB. This is the default limit for sending emails for many popular providers like Microsoft Office 365. Files in excess of this size may trigger an error when sending by your email provider.
+
+You will receive a confirmation email within 15 minutes if the report(s) get accepted by our billing system. If the "Reply-To" header on the email you send contains multiple email addresses, we will send a reply email to only the first address in the list.
+
+:::info
+Any attachment sent to Speechmatics must have the correct file name extension: `.json.gz`.
+:::
+
+
+For details on how to export usage data for a given on-prem solution see here [Container](/deployments/usage-reporting/offline#container) and [Appliance](/deployments/usage-reporting/offline#virtual-appliance) for more details.
+
+## Deployment type
+
+### Virtual Appliance
+
+The usage mode can be set via the Management API
+
+```bash
+curl -L -u admin:admin -X 'POST' \
+  "http://${APPLIANCE_HOST}/v2/management/usagereporting" \
+  -d '{"mode": "offline"}'
+```
+
+where mode is either `offline` or `online`.
+
+When the usage mode is set to `offline`, usage will be collected via a Container inside the appliance, the data collected by this Container will need to be sent to Speechmatics via email at [billing-reporting@speechmatics.com](mailto:billing-reporting@speechmatics.com).
+
+#### Workflow
+
+The following workflow is recommended:
+
+- The user downloads and runs one or more of the Virtual Appliances
+- Before running any jobs, the user sets the usage mode to `offline` (see above).
+- At intervals of no more than a calendar month, the user will extract usage data processed in that interval from each running Appliance via the Management API, see [below](#exporting-usage-data)
+- The user will then send this data to a designated Speechmatics email address at [billing-reporting@speechmatics.com](mailto:billing-reporting@speechmatics.com).
+
+#### Exporting usage data
+
+:::info
+The exported data must not be modified in any way before sending to Speechmatics.
+Speechmatics will request a new unmodified data export if it is found that data has been altered.
+:::
+
+Data is retained in the appliance for **90 days**, after which point it is purged. Exported data needs to be sent to via email to [billing-reporting@speechmatics.com](mailto:billing-reporting@speechmatics.com).
+
+A compressed archive of the usage data can be retrieved via the Management API
+
+:::info
+In `realtime` mode you may see usage for contract id `-77777777777777`, this is a prewarming job that runs during the transcriber first startup, and will not be included in your billed usage.
+:::
+
+```bash
+curl -X 'GET' \
+  "http://${APPLIANCE_HOST}/v1/export?since={start_time}&until={end_time}" \
+  -H 'accept: application/gzip'
+```
+
+Where `start_time` and `end_time` are inclusive and are timestamps in the [ISO-8601 format](https://www.iso.org/iso-8601-date-and-time-format.html) (YYYY-MM-DDTHH:MM:SSZ).
+
+To remain under the 25MB email attachment limit, we recommend changing `start_time` and `end_time` to chunk exports into 25MB files (usually around 10,000 batch jobs or 1250 real-time sessions of one hour).
+
+Data is exported in compressed `json.gz` format. All files must be sent in this format to Speechmatics. The name of the file does not matter. You can send multiple attachments per email, or each email as a separate attachment, so long as you are under email provider limits for sending files.
+
+### Container
+
+#### Terminology
+
+Throughout this section there are references to different types of containers:
+
+- ASR Containers - Speechmatics containers that transcribe media or audio files into a transcript. Two types are available - those can process media in batch, and those that can process media in real-time. When these are specifically referred to they are called the Batch or Real-Time Containers
+- Usage Containers - a new container that stores event-specific data from ASR Containers
+
+#### Getting started
+
+The ASR Usage Container can be retrieved from Speechmatics Docker Registry as a Docker Image. To access the Usage Container, you should use the same credentials that you use to access Speechmatics' ASR Containers from its Docker Registry. This information should already be provided to you by [Support](https://support.speechmatics.com) when you are onboarded.
+
+You will also need to know the following information:
+
+- Docker Registry URL, e.g. `https://speechmaticspublic.azurecr.io`
+- Image name, e.g. `asr-usage`
+<><li> Image tag, e.g. <Code>{smVariables.usageContainerVersion}</Code></li></>
+
+
+The image can be downloaded by using the standard Docker workflow:
+
+<CodeBlock language="bash">
+{`# Login
+docker login https://speechmaticspublic.azurecr.io
+\0
+### Download image
+docker pull speechmaticspublic.azurecr.io/asr-usage:${smVariables.usageContainerVersion}`}
+</CodeBlock>
+
+:::info
+Speechmatics require all customers to cache a copy of the Docker images within their own environment.
+Please do not pull directly from the Speechmatics docker registry for each deployment.
+:::
+
+#### System requirements
+
+The ASR Usage Container requires the following resources:
+
+- 1 vCPU
+- 1 GB memory
+- At least 1 GB of persistent storage per Usage Container deployed. Every 25 MB can store data for up to 13,000 batch jobs or up to 1250 (60 minute) Real-Time sessions.
+
+Persisting storage to temporary locations (e.g. `tmpfs`) is supported where this is necessary as part of a user's workflow, but is not recommended. If you are required to use `tmpfs` or other such directories as a storage solution, Speechmatics recommends increasing the frequency of how often usage reports are sent to avoid any potential data loss
+
+#### Configuration
+
+The following section will show you how to set up an environment where you have a running ASR Usage Container that can accept data from one or multiple ASR Containers. It will show in order:
+
+- How to set up and run an ASR Usage Container
+- How to ensure an ASR Batch or Real-Time Container can send all required data to an ASR Usage Container during transcription.
+
+You must set up a Usage Container before running Speechmatics' Batch or Real-Time ASR Containers in order to ensure that all usage data is captured. A Usage Container is persistent, which means it does not shut down after receiving transcription data.
+
+#### Prerequisites
+
+When setting up an environment with one or multiple Speechmatics ASR Container(s) and one or multiple Usage Container(s) please ensure:
+
+- That all Batch or Real-Time Containers you require to send data to the Usage Container can exchange communication with each other in their environment
+- That all communication between Docker containers is via HTTPS
+- That when running Usage Containers, you enable the required ports when necessary to send and extract data. More detail is below
+
+#### Compatibility
+
+To use the Usage Container, you must be running the following ASR Container versions:
+
+- Batch Container 8.2.0 onwards
+- Real-Time Container 1.4.1 onwards
+
+The ASR Usage Container has been tested using Docker Version 20. Compatibility with previous versions of Docker has not been tested.
+
+#### Early access
+
+The Usage Container has been released as an early access product that any customer using either Speechmatics' Batch or Real-Time ASR Containers is entitled to use. Speechmatics encourages customers to try this solution, in order to simplify their usage logging and reporting processes.
+
+Speechmatics encourages feedback on the Usage Container, and the raising of any bugs or usability issues. These will be subject to our normal bug triage process, and should be submitted to [Support](https://support.speechmatics.com).
+
+#### Workflow
+
+The following workflow is recommended:
+
+- The user downloads the Usage Container from Speechmatics' Docker Registry using their existing credentials
+  - The user must cache a copy of each Container they download within their own environment
+- The user will run one or multiple Usage Container(s) depending on their requirements
+  - Any Usage Container must be assigned its own persistent data volume. The user is responsible for allocating and backing up this persistent volume
+  - Any Usage Container must also have all relevant ports opened to allow data exchange and export where necessary
+- When requesting transcription from a Batch or Real-Time Container, the user must specify the hostname or IP address of the Usage Container via a new environment variable
+  - Data will then be stored in the Usage Container for up to 90 days
+- At intervals of no more than a calendar month, the user will extract usage data processed in that interval from the ASR Usage Container via the RESTful API
+  - The user will then send this data to a designated Speechmatics [email address](mailto:billing-reporting@speechmatics.com)
+
+
+#### ASR Usage Container
+
+The ASR Usage Container always requires a persistent storage volume to store the data.
+This volume must be mounted inside the container at `/data`.
+
+#### Endpoints
+
+The ASR Usage Container has 2 endpoints:
+
+| Endpoint  | Use                                                                                                   | Port | How to Set                                                                                                                                                               |
+| --------- | ----------------------------------------------------------------------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `v1/log`    | Receives transcription event data from Batch and Real-Time Containers                                 | 9090 | use the `SM_EATS_URL` environment variable                                                                                                                               |
+| `v1/export` | All event data, or time-specific event data, can be extracted from this endpoint as a compressed file | 8000 | use the `docker -p $PORT:$PORT` command. If you need to change the default port use `-e PANDAS_PORT` environment variable as well as `docker -p` with your required port |
+
+By default, all Docker Containers do not expose any ports. You must specifically request these ports to be open to ensure transcription events are captured, or that data can be extracted.
+
+The example below starts a Usage Container with
+
+- A persistent volume mounted to `/data`
+- Port 9090 open via the `EATS_PORT` environment variable to allow the Container to accept transcription event data
+- Port 8000 open via the `docker -p` command to allow data to be exported from the Usage Container
+
+<CodeBlock language="bash">
+{`
+# Create volume
+docker volume create volume-1
+
+# Mount volume
+docker run -it  \\
+    -v volume-1:/data \\
+    -e EATS_PORT=9090  \\
+    -p 8000:8000 \\
+    speechmaticspublic.azurecr.io/asr-usage:${smVariables.usageContainerVersion}
+`}
+</CodeBlock>
+
+Further documentation on using persistent storage volumes on popular container orchestration engines:
+
+<Grid columns={{initial: "1", md: "2"}} gap="3" mb="4">
+  <LinkCard
+    title="Kubernetes"
+    href="https://kubernetes.io/docs/concepts/storage/persistent-volumes"
+  />
+  <LinkCard
+    title="Nomad"
+    href="https://www.nomadproject.io/docs/job-specification/volume"
+  />
+</Grid>
+
+:::info
+Speechmatics recommends setting up backup policies for the persistent volume.
+The ASR Usage Container cannot perform recovery by itself if the data file or volume is corrupted.
+:::
+
+The ASR Usage Container accepts the following configuration option, which can be set via environment variables.
+
+| Key         | Default | Type | Description                                                                                                                 |
+| ----------- | ------- | ---- | --------------------------------------------------------------------------------------------------------------------------- |
+| `EATS_PORT` | `9090`  | int  | Listening port for incoming data from transcribers. Must be set to accept usage data from Batch or Real-Time ASR Containers |
+
+{/* (these options are hidden from regular users)
+| `EATS_SECURE` | `true` | boolean | Communicate to transcriber in HTTPS (See [Security](./index.md#security)) |
+ */}
+
+#### Sending transcription data from ASR Container to ASR Usage Container
+
+An ASR Container must be explicitly configured to send data to the ASR Usage Container when starting. By default, this is via HTTPS.
+
+The following configuration options **must** be specified when running the ASR Container to send usage data:
+
+| Key           | Default | Type   | Description                                                                    |
+| ------------- | ------- | ------ | ------------------------------------------------------------------------------ |
+| `SM_EATS_URL` | none    | string | Address and listening port of the ASR Usage Container you wish to send data to |
+
+{/* (this is a hidden option)
+| `SM_EATS_SECURE` | `false` | boolean | Communicate to telemetry container in HTTP (See [Security](./index.md#security)) | */}
+
+To correctly configure the transcriber, set `SM_EATS_URL` environment variable to point to ASR Usage Container. e.g., `SM_EATS_URL=asr-usage.example.net:9090` or `SM_EATS_URL=10.244.8.32:9090`, where `asr-usage.example.net` and `10.244.8.32` correspond to the relevant ASR Usage Container instance. The port `9090` is the default listening port for incoming data from transcribers. The port number is alterable by using the `EATS_PORT` environment variable.
+
+Below is a working example of running an ASR Batch Container that will then send transcription event data to a running ASR Usage Container:
+
+```bash
+docker run -i -v $AUDIO_FILE:/input.audio \
+  -v $CONFIG_FILE:/config.json:ro \
+  -e LICENSE_TOKEN=$TOKEN_VALUE \
+  -e SM_EATS_URL=-asr-usage.example.net:9090
+  batch-asr-transcriber-en:8.2.0
+```
+
+Below is a similar example of a Real-Time Container that will send transcription event data to a running ASR Usage Container:
+
+```bash
+docker run -p 9000:9000 \
+  -e LICENSE_TOKEN=$TOKEN_VALUE \
+  -e SM_EATS_URL=asr-usage.example.net:9090 \
+  rt-asr-transcriber-en:1.4.0
+```
+
+#### Logging
+
+The Usage Container will log event data sent by an ASR Batch or Real-Time Container:
+
+- during transcription
+- when transcription has finished
+  - For the Batch Container this is when transcription finishes as it is not a persistent container.
+  - For the Real-Time Container this is both after a endOfTranscription websocket message. The Real-Time Container will send a `SESSION_ENDED` message to the Usage Container
+- when the Container is shut down or terminated by the user or due to system error during transcription itself (e.g. SIGTERM)
+
+#### Example Logs - Success
+
+The following is an example of a log from by a Batch or Real-Time ASR Container when they successfully send data to the ASR Usage Container:
+
+```
+2021-07-19 11:24:31.314 INFO sentryserver Transcription usage registered with EATS
+```
+
+The following is an example of a log from the Usage Container when it successfully receives data from a Batch or Real-Time ASR Container:
+
+```
+[2021-08-25T10:45:37Z INFO  actix_web::middleware::logger] 172.19.0.3:39068 "POST /v1/log HTTP/1.1" 201 0 "-" "Go-http-client/1.1" 0.009459
+```
+
+The following is an example of a log from the Usage Container when a customer successfully exports data:
+
+```
+[2021-09-03T14:54:00Z INFO  actix_web::middleware::logger] 172.19.0.1:55820 "GET /v1/export HTTP/1.1" 200 12912 "-" "curl/7.64.1" 0.006313
+```
+
+#### Example Logs - Failure
+
+If data cannot be sent from the ASR Container to the ASR Usage Container, the following error message is shown in the ASR Container:
+
+```
+2021-07-19 11:27:43.158 ERROR sentryserver Error 'Post "https://asr-usage.net:9090/v1/log": dial tcp 172.25.0.2:909: connect: connection refused' occurred when logging EATS data: retrying
+```
+
+#### Example Logs - Failure Upon Container Termination
+
+If a Container is shut down or terminated, both the Batch and the Real-Time Container will attempt retries for up to 1 minute after receiving `SIGTERM`. For Batch, the Container will attempt to send data when transcription finishes. For the Real-Time Container, this is when Container termination is requested. After this point, any unsent data is lost with following message.
+
+```
+2021-07-19 11:28:55.288 WARNING sentryserver Some activity events could not be sent to EATS: count: 4
+```
+
+#### Orchestrating multiple ASR Usage Containers
+
+It is up to the customer's level of risk tolerance and their internal topology and orchestration how many ASR Usage Containers they need to deploy in ratio to their number of ASR Containers. Speechmatics recommends that each environment in which Batch or Real-Time Containers are deployed requires at least one Usage Container. Customers can implement multiple Usage Containers in each environment for redundancy and to reduce the risk of failure.
+
+If a customer has ASR containers in multiple availability zones or clusters, assigning Usage Containers per environment or cluster reduces latency and the requirement to send messages between clusters.
+
+Orchestrating multiple ASR Usage Containers allows redundancy in the event of network or storage failure. It is possible to deploy multiple ASR Usage Containers in a single environment and have usage data distributed to those Containers. A basic scenario example is below,
+
+The `docker-compose` example below illustrate this scenario with:
+
+- Two Speechmatics ASR Usage Containers
+- One proxy Container, to route telemetry data
+- One Speechmatics ASR Batch Container
+
+<CodeBlock language="yaml" title="docker-compose.yml">
+{usageContainerDockerCompose}
+</CodeBlock>
+
+The example configures the ASR Batch Container to send data, using `SM_EATS_URL`, to the proxy container instead of a specific ASR Usage Container. When receiving usage data, the proxy will forward it to one ASR Usage Container, using round robin balancing.
+
+Each ASR Usage Container will need its own persistent storage volume to store usage data. This means that when generating reports to send to Speechmatics, an export request must be made for each ASR Usage Container the user has in operation. There will be as many reports as there are ASR Usage Containers deployed.
+
+{/* ## Security
+
+By default, the transcriber and the telemetry Container use a secure network connection. It is possible to disable this and enable connection over HTTP by setting:
+
+- `EATS_SECURE` environment variable to `false` for the telemetry container
+- `SM_EATS_SECURE` environment variable to `false` for the transcriber container
+
+:::info
+Speechmatics strongly recommend against disabling secure connections.
+::: */}
+
+#### Exporting Usage Data
+
+:::info
+The exported data must not be modified in any way before sending to Speechmatics.
+Speechmatics will request a new unmodified data export if it is found that data has been altered.
+:::
+Data is retained in the Usage Container for **90 days**, after which point it is purged. Exported data needs to be sent to via email to [billing-reporting@speechmatics.com](mailto:billing-reporting@speechmatics.com).
+
+The data must be exported from each ASR Usage Container you have used, and then sent to Speechmatics for calculation. The ASR Usage Container has a REST API to export transcription data. You will need to send at least as many reports as you have from ASR Usage Containers. Based on heavy transcription usage, you may have to provide multiple reports per single ASR Usage Container.
+
+To remain under the 25MB email attachment limit, we recommend changing `start_time` and `end_time` to chunk exports into 25MB files (usually around 10,000 batch jobs or 1250 real-time sessions of one hour).
+
+Data is exported in compressed `json.gz` format. All files must be sent in this format to Speechmatics. The name of the file does not matter. You can send multiple attachments per email, or each email as a separate attachment, so long as you are under email provider limits for sending files.
+
+The complete API reference for extracting usage data can be found in the [API Reference](/api-ref/batch/get-usage-statistics) section.
+
+```bash
+# To export all data
+curl 'asr-usage.net:8000/v1/export' > ExportExampleFile.json.gz
+
+# To export data within a date window, e.g. 1-Jan-2020 to 1-Feb-2020
+curl 'asr-usage.net:8000/v1/export?since=2020-01-01T00:00:00.000000Z&until=2020-02-01T00:00:00Z' > ExportExampleFile-01-01_2020-02-01.json.gz
+```
+
+If the number of jobs extracted is too large a 4XX response may be returned. Generally this has been shown in testing to be circa. 25,000 Batch jobs or 5,000 Real-Time jobs of an hour long.
+
+In such cases, please select a smaller time window with `since` and `until` parameters.
+
+:::info
+It is fine to have overlapping reports with duplicate data.
+Transcriptions will always be billed once; the billing cycle will be determined by their time of completion.
+:::
+
+The following example script exports reports by each week for the whole month:
+
+<CodeBlock language="bash" title="export-usage-data.sh">
+{offlineUsageExportScript}
+</CodeBlock>
+
+The exported usage data is a compressed JSON file; it is possible to inspect the contents by unpacking it and opening the text file. The following example uses the [jq](https://stedolan.github.io/jq/) JSON parser.
+
+```bash-and-response
+$ cat exported_2020-01-01_2020-02-01.json.gz | gunzip | jq .
+{
+  "header": {
+    "alg": "HS512"
+  },
+  "payload": {
+    "events": [
+      {
+        ...
+```

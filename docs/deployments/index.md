@@ -1,3 +1,7 @@
+---
+title: Deployments — Overview
+---
+
 # Overview
 
 Learn about the different ways to use our APIs, including cloud services and on-premises containers.
@@ -15,9 +19,9 @@ The best way to get started using Speechmatics' cloud services is:
 
 Deploy Speechmatics services in your own environment using containers. This option provides maximum control over your deployment and data.
 
-- [CPU Speech-to-Text Container](./container/cpu-speech-to-text-container.mdx): Deploy the Speechmatics speech-to-text engine as a containerized service on your own hardware.
-- [Language ID Container](./container/language-id.mdx): Identify the language spoken in your audio using the Language ID container.
-- [Translation Container](./container/translation.mdx): Translate audio from one language to another using the Translation container.
+- [CPU Speech-to-Text Container](/deployments/container/cpu-speech-to-text): Deploy the Speechmatics speech-to-text engine as a containerized service on your own hardware.
+- [Language ID Container](/deployments/container/language-id): Identify the language spoken in your audio using the Language ID container.
+- [Translation Container](/deployments/container/gpu-translation): Translate audio from one language to another using the Translation container.
 
 
 ## Feature Availability

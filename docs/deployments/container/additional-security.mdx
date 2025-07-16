@@ -1,0 +1,151 @@
+---
+toc_max_heading_level: 3
+description: 'Learn about the Speechmatics container system security'
+keywords: [speechmatics, container, cpu, SaaS, security, on-prem]
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { smVariables } from '/sm-variables';
+import CodeBlock from '@theme/CodeBlock';
+
+# Additional Security Features
+
+This section documents additional measures you can take to run the Batch Container where there are restrictive requirements on data storage or user access.
+
+## Custom Mapping Temporary Directories to Run the Batch Container
+
+Users may wish to run the Batch Container in an environment where they cannot or do not want to write anything to disk, and instead use temporary storage like `tmpfs` or `ramfs` to ensure regulatory compliance. The Batch Container supports mounting temporary directories for the storage of all intermediate files created during transcription, as well as mounting the directories where input, output and job configuration files are placed. Files can also be locally retrieved by using the `fetch_url` functionality in the configuration object.
+
+Speechmatics also supports the `--job-config` option to specify the location of the configuration object. The job config location must specify the location in the container at which the config file can be found. If this also needs to be in a temporary directory (e.g. `tmp`), rather than `tmpfs` this must be a volume from a host machine in which the configuration object can be found.
+
+Below is an example, where the intermediate files and configuration object are in temporary storage. Please note that the `--job-config` argument must come after the image name
+
+<CodeBlock language="bash">
+{`docker run --rm -i \\
+    --read-only --tmpfs /home/smuser \\
+    -v <path/to/dir/in/host/containing/config.json>:/tmp \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion} \\
+    --job-config /tmp/config.json`}
+</CodeBlock>
+
+This example sets up a `tmpfs` for intermediate files created by transcription, so that all such files are written to transient storage, rather than to disk. The configuration object is mounted in a retrievable folder in `tmp`.
+
+An alternative is to use `tmp` as `tmpfs` and then mount an additional read-only volume on a path inside the Container in which the config can be found.
+
+<CodeBlock language="bash">
+{`docker run --rm -i \\
+    --read-only --tmpfs /home/smuser --tmpfs /tmp \\
+    -v <path/to/dir/in/host/containing/config.json>:/configs_dir:ro \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion} \\
+    --job-config /example_configs_dir/config.json`}
+</CodeBlock>
+
+If the Container is run using Kubernetes, users can use the [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) to mount `tmpfs` in the needed directories (/home/smuser and /tmp). Configuration files can also be stored in an emptyDir if any of the Containers in the pod is able to put it there. This could be achieved in deployment software like Kubernetes by using an [initContainer](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) or using the [sidecar pattern](https://www.oreilly.com/library/view/designing-distributed-systems/9781491983638/ch02.html) or by fetching the configuration from its original location and storing it in the `emptyDir` volume. Then the transcriber should be called with the `--job-config argument` pointing to the path in the emptyDir volume in which the config was stored.
+
+Users can also pull files from temporary locations using `fetch_url` functionality Below is a configuration example:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en"
+  },
+  "fetch_data": {
+    "url": "file:///tmp/$FILENAME.wav"
+  }
+}
+```
+
+## Running a Batch Container as a Non-Root User
+
+There are some use cases where you may not be able to run the Batch Container as a root user. This may be because you are working in a hosting environment that mandates the use of a named user rather than root.
+
+You must start the Container with the flag `-–user $USERNUMBER:$GROUPID`. User number and group ID are non-zero numerical values from a value of **1** up to a value of **65535**. Here is a working example:
+
+```bash
+docker run --user 1000:3000 ubuntu echo hello world
+```
+
+### Getting Transcription Output as a Non-Root User
+
+If you take transcription via the default STDOUT, then this will not change as a non-root user. Below is an example:
+
+```bash
+docker run -u 1020:4000 \
+ -v /Users/$USER/work/pipeline/mydev/config.json:/config.json \
+ -v /Users/$USER/work/pipeline/mydev/input.audio:/input.audio \
+    ${IMAGE_NAME}
+```
+
+If you want to write the output to a specific directory, you must volume map a directory to which the non-root user would have access.
+
+### Running a Batch Container as a Non-Root User on Kubernetes
+
+:::note
+The examples below **do not** constitute an explicit recommendation to run as non-root user, merely a guideline on how to do so with Kubernetes only when this is an unavoidable requirement.
+:::
+
+If you require named users to be deployed on Kubernetes Pods, you must set the following Security Config. The user and group **must** correspond to the user and group you use when starting the container
+
+```yaml
+securityContext:
+  runAsUser: { non-zero numerical value between 0 and 65535 }
+  runAsGroup: { non-zero numerical value between 0 and 65535 }
+```
+
+There is more information on how to configure security settings on Kubernetes pods [here](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+
+Some Kubernetes deployments may mandate the use of PodSecurity Admissions Controllers. These provide stricter security requirements. More information on them can be found [here](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/). If your deployment requires this set up, here is an example configuration that allows you to carry out transcription as a non-root user.
+
+```yaml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: restricted
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default,runtime/default'
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+    seccomp.security.alpha.kubernetes.io/defaultProfileName: 'runtime/default'
+    apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
+spec:
+  privileged: false
+  # Required to prevent escalations to root.
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  # Allow core volume types.
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    # Assume that persistentVolumes set up by the cluster admin are safe to use.
+    - 'persistentVolumeClaim'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    # Require the container to run without root privileges.
+    rule: 'MustRunAsNonRoot'
+  seLinux:
+    # This policy assumes the nodes are using AppArmor rather than SELinux.
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      # Forbid adding the root group.
+      - min: 1
+        max: 65535
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      # Forbid adding the root group.
+      - min: 1
+        max: 65535
+  readOnlyRootFilesystem: false
+```

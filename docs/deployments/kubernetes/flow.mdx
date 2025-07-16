@@ -1,0 +1,125 @@
+---
+toc_max_heading_level: 3
+description: 'Learn how to access images in the Speechmatics Container system'
+keywords: [speechmatics, container, kubernetes, SaaS, on-prem, helm]
+---
+
+import { smVariables } from '/sm-variables';
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Flow
+
+## Prerequisites
+
+### Speechmatics Flow Client
+
+You will require the `speechmatics-flow` client, which is available [here](https://github.com/speechmatics/speechmatics-flow).
+
+### Hugging Face
+
+For an on-prem LLM deployment, you will need a Hugging Face token with permissions to the `meta-llama/Llama-3.2-3B-Instruct` model or any other model you wish to use.
+
+The Helm chart requires you to have a valid Hugging Face token stored in a secret called `vllm-secret`, on the Kubernetes cluster. 
+
+You can add a secret to the cluster with these commands:
+
+```bash
+kubectl create secret generic vllm-secret \
+  --from-literal=hf-token-secret="$HUGGING_FACE_TOKEN"
+```
+
+Alternatively, you can configure the chart to create the secret for your Hugging Face token for you using the following values:
+
+```yaml
+flow:
+  vllm:
+    hfTokenSecret:
+      createSecret: true
+      token: "$BASE64_ENCODED_HF_TOKEN"
+```
+
+### Hardware Requirements
+
+The example in this documentation has been tested on a Kubernetes cluster running the following Azure node sizes:
+
+Service | Node Size
+---|---
+STT (Inference Server)    | Standard_NC4as_T4_v3
+STT (Transcriber)     | Standard_E16s_v5
+TTS     | Standard_NC4as_T4_v3
+vLLM   | Standard_NV72ads_A10_v5
+All Other Services  | Standard_D*s_v5
+
+Depending on the LLM model you choose, the GPU requirements may vary.
+
+## Configuration
+
+The Speechmatics Helm chart can be configured to deploy and manage services to run Speechmatics Flow for on-premise environments.
+
+The example yaml below will configure the Helm chart to deploy Flow fully on-premise using a local LLM and TTS service.
+
+```yaml
+# flow.values.yaml
+flow:
+  enabled: true
+
+  vllm:
+    hfTokenSecret:
+      token: HUGGING_FACE_TOKEN
+
+    config:
+      # -- Model to use for vLLM
+      model: meta-llama/Llama-3.2-3B-Instruct
+      numGPUs: 2
+
+      # -- Use less GPU memory to fit the 3B model on Standard_NV72ads_A10_v5
+      dtype: float16
+      disableLogRequests: true
+      enablePrefixCaching: false
+      additionalArgs:
+        max-num-seqs: "1"
+        gpu-memory-utilization: "0.75"
+    
+    resources:
+      limits:
+        nvidia.com/gpu: "2"
+```
+
+### Installation
+
+<CodeBlock language="bash">
+  {`helm upgrade --install speechmatics-realtime \\
+  oci://speechmaticspublic.azurecr.io/sm-charts/sm-realtime \\
+  --version ${smVariables.helmChartVersion} \\
+  --set proxy.ingress.url="speechmatics.example.com" \\
+  -f flow.values.yaml`}
+</CodeBlock>
+
+### Have a Conversation
+
+To find a list of available agents to converse with, run the following command:
+
+```bash
+kubectl get configmap proxy-agent-config -o yaml | yq '.data | keys'
+```
+
+Example output:
+```bash
+- 32f4725b-fde5-4521-a57c-e899e245d0b0_latest.json
+
+# 32f4725b-fde5-4521-a57c-e899e245d0b0 is your agent ID
+```
+
+You can use this agent ID to begin your conversation using the `speechmatics-flow` client.
+
+```bash
+speechmatics-flow --url wss://speechmatics.example.com/v1/flow \
+  --ssl-mode insecure \
+  --assistant 32f4725b-fde5-4521-a57c-e899e245d0b0
+```
+
+## On-Premise LLM with vLLM
+
+The on-prem LLM makes use of vLLM and runs the `meta-llama/Llama-3.2-3B-Instruct` model from Hugging Face by default. 

@@ -25,7 +25,7 @@ Speechmatics enables you to translate your audio into multiple languages. Quickl
 
 Test out our Translation Feature for free in the [Speechmatics On-Demand Portal](https://portal.speechmatics.com/signup), no coding required.
 
-Translation can be enabled when transcribing either a **file** or in **real-time**, by using the Speechmatics SaaS, or by deploying it [On-Prem](/deployments/container/translation).
+Translation can be enabled when transcribing either a **file** or in **real-time**, by using the Speechmatics SaaS, or by deploying it [On-Prem](/deployments/container/gpu-translation).
 
 If you're new to Speechmatics, please see our guide on [Transcribing a File](/speech-to-text/batch/quickstart) or [Transcribing in Real-Time](/speech-to-text/real-time/quickstart). Once you are set up, include the following config to enable Translation:
 
@@ -352,9 +352,9 @@ When using Translation, there are a few things to keep in mind:
 
 ### Unsupported Target Language
 
-If one or more of the target languages are not [supported](./translation.mdx#supported-translation-pairs) for the transcription language, the job will be rejected with a HTTP 400 error response.
+If one or more of the target languages are not [supported](#supported-translation-pairs) for the transcription language, the job will be rejected with a HTTP 400 error response.
 
-This behaviour is different when the [transcription language is not known](./translation.mdx#unsupported-translation-pair) ahead of time.
+This behaviour is different when the [transcription language is not known](#unsupported-translation-pair) ahead of time.
 
 Example Bad Config:
 
@@ -382,7 +382,7 @@ Response:
 
 ### Unsupported Translation Pair
 
-When using [Language Identification](/speech-to-text/batch/language-identification), if one or more of the target languages are not [supported](./translation.mdx#supported-translation-pairs) for the identified transcription language, the job will be accepted and an error message will be included in the JSON output. No translations will be returned for that language pair. 
+When using [Language Identification](/speech-to-text/batch/language-identification), if one or more of the target languages are not [supported](#supported-translation-pairs) for the identified transcription language, the job will be accepted and an error message will be included in the JSON output. No translations will be returned for that language pair. 
 
 This behaviour is different when the [transcription language is known](#unsupported-target-language) ahead of time.
 
@@ -449,7 +449,7 @@ In the event that Translation fails for one or more languages, the transcription
 
 ### Unsupported Target Language
 
-If one or more of the target languages are not [supported](./translation.mdx#supported-translation-pairs) for the source language, a warning is raised but transcription will continue. No translations will be returned for that language.
+If one or more of the target languages are not [supported](#supported-translation-pairs) for the source language, a warning is raised but transcription will continue. No translations will be returned for that language.
 
 ```bash
 WARNING:speechmatics.client:Translation from en to ta currently not supported
