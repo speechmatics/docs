@@ -91,31 +91,31 @@ Core writing principles
 
 The ✅ emoji precedes a correct use example. 
 
-The ❌ emoji precedes an incorrect use example.
+The ❌ emoji precedes an incorrect use exampl.e
 
 ### Keep it concise
 
-Write clearly and avoid redundant language.\
-✅ *Languages*\
+Write clearly and avoid redundant language.
+✅ *Languages*
 ❌ *Speechmatics supported languages*
 
 ### American English
 
-Use en-US spelling and grammar conventions consistently.\
-✅ *diarization and color*\
+Use en-US spelling and grammar conventions consistently.
+✅ *diarization and color*
 ❌ *diarisation and colour*
 
 ### Prioritise lowercase spelling
 
-Capitalize only proper nouns, like product names, to maintain a clear content hierarchy.\
-✅ *Refer to the channel diarization guide for the Batch API.*\
+Capitalize only proper nouns, like product names, to maintain a clear content hierarchy.
+✅ *Refer to the channel diarization guide for the Batch API.*
 ❌ *For troubleshooting Containers, please refer to the On-Prem Documentation.*
 
 ### Sentence case in titles and headings
 
 It is more elegant and less overbearing than title casing. Especially for longer titles. ([more tips](https://www.everyinteraction.com/articles/title-case-vs-sentence-case-in-ui/))
 
-✅ *Language identification*\
+✅ *Language identification*
 ❌ *Supported Formats and Limits*
 
 ### Human-centric
@@ -126,7 +126,7 @@ Write in a way that includes readers with various levels of technical depth.
 
 With inline definitions or cross-links to relevant pages.
 
-### **Empathy and clarity**
+### Empathy and clarity
 
 Explain 'why' before 'how'.
 
@@ -146,50 +146,50 @@ Elements
 
 1 or 2-word names are preferred. Try to keep it under 3 words. Use 4 or more words only if no other choice is available. Use sentence case only.
 
-✅ *Language identification*\
+✅ *Language identification*
 ❌ *Virtual Appliance Usage Reporting*
 
 ### Page title
 
-It may differ from the corresponding navigation item title.\
-Try to keep it under 5 words if possible.\
+It may differ from the corresponding navigation item title.
+Try to keep it under 5 words if possible.
 Use sentence case only.
 
 ### Description
 
-A one-sentence benefit-led 'What you'll do*'* statement that sparks interest.\
+A one-sentence benefit-led 'What you'll do*'* statement that sparks interest.
 Second person, active voice, present tense.
 
-✅ *Learn how to transcribe pre-recorded audio files.*\
-✅ *Enable the model to fetch data and take actions.*\
-✅ *Take your first steps with the Speechmatics API.*\
-✅ *Explore speech features in the Speechmatics API.*\
-✅ *Ensure the microphone input works correctly.*\
+✅ *Learn how to transcribe pre-recorded audio files.*
+✅ *Enable the model to fetch data and take actions.*
+✅ *Take your first steps with the Speechmatics API.*
+✅ *Explore speech features in the Speechmatics API.*
+✅ *Ensure the microphone input works correctly.*
 ✅ *Allow Flow to use your custom LLM.*
 
-❌ *Speechmatics can turn audio into text.*\
-❌ This is a quickstart guide for developers that shows how to transcribe.\
-❌ *This page will give you comprehensive details on the API.*\
-❌ *A quick overview of everything you might possibly need.*\
-❌ *In-depth information and exhaustive guide.*\
-❌ *Understand the concepts better with this detailed document.*\
-❌ *We'll discuss several important aspects and usage examples.*\
-❌ *Introduction and background to getting started with our features.*\
+❌ *Speechmatics can turn audio into text.*
+❌ This is a quickstart guide for developers that shows how to transcribe.
+❌ *This page will give you comprehensive details on the API.*
+❌ *A quick overview of everything you might possibly need.*
+❌ *In-depth information and exhaustive guide.*
+❌ *Understand the concepts better with this detailed document.*
+❌ *We'll discuss several important aspects and usage examples.*
+❌ *Introduction and background to getting started with our features.*
 ❌ *Explanation of how certain things can be done in our platform.*
 
 ### Heading
 
-There is no word limit, but keep it concise and meaningful.\
+There is no word limit, but keep it concise and meaningful.
 Use the context to reduce the wording. Use sentence case only.
 
-✅ *Examples*\
+✅ *Examples*
 ❌ *Realtime output examples*
 
 ### Paragraph
 
 Short paragraphs make content scannable and easy to digest. Respect readers' time and keep them to a maximum of 3 sentences long.
 
-**PRO TIP**\
+**PRO TIP**
 Use your favourite LLM to paraphrase, shorten text, or suggest improvements. Share this guide or parts of it to provide the context.
 
 Visual hierarchy
@@ -250,9 +250,9 @@ The 'first sprint' for developers integrating the Speechmatics API. Guide users 
 
 **Tips**
 
-**Time-to-first-value:** keep the entire Quickstart readable in 3--5 minutes.\
-**Minimal prose:** code over paragraphs; use prose only to clarify 'why'.\
-**Environment notes:** call out setup quirks as inline notes.\
+**Time-to-first-value:** keep the entire Quickstart readable in 3--5 minutes.
+**Minimal prose:** code over paragraphs; use prose only to clarify 'why'.
+**Environment notes:** call out setup quirks as inline notes.
 **Consistency:** aim to use the same section order across all Quickstarts.
 
 Guide
@@ -264,7 +264,10 @@ Guides walk readers through more detailed workflows or feature sets. They provid
 
 2.  **Mix prose with code**: Introduce each step with a brief "why" (1--2 sentences), then show the code snippet that achieves it.
 
-3.  **Highlight essential details**: Use admonitions for notes, tips, and cautions (e.g., authentication quirks, rate limits).
+3.  **Highlight essential details**: Use admonitions for notes, tips, and cautions (e.g., authentication quirks, rate limits). Admonitions follow the docusaurus layout, for example:
+:::info
+This is an admonition
+:::
 
 4.  **Include examples and expected results**
 
