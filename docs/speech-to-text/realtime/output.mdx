@@ -17,7 +17,7 @@ When transcribing in real-time, you can control the maximum time to wait for the
 
 For even faster output, use [Partial transcripts](#partial-transcripts) to receive transcription output before higher-accuracy final transcripts are returned.
 
-### Configuration Example
+### Configuration example
 The following example shows a typical configuration for low latency applications. Include this in the [StartRecognition](/api-ref/realtime-transcription-websocket#startrecognition) message.
 
 ```json
@@ -49,7 +49,7 @@ At 2 seconds `max_delay`, there is around 1% relative accuracy degradation when 
 
 For the best accuracy, we recommend using a `max_delay` of 4 seconds which is equivalent to our Batch transcription service. This can be combined with Partial transcripts, to give users early feedback of the recognised text.
 
-## Partial Transcripts
+## Partial transcripts
 
 Partial transcripts allow you to receive preliminary transcription and update as more context is available until the higher-accuracy [Finals](/api-ref/realtime-transcription-websocket#addtranscript) are returned. Typically Partials are returned in less than 500 milliseconds. [Partial transcripts](/api-ref/realtime-transcription-websocket.mdx#addpartialtranscript) are enabled using the `enable_partials` config option. 
 
@@ -59,7 +59,7 @@ Note that Partial transcripts have some limitations:
 - Accuracy is usually 10-25% lower than the Final transcript. This includes punctuation and capitalisation of words.
 - The `confidence` field for Partial transcripts has no meaning and should not be relied on.
 
-## Numeral Formatting
+## Numeral formatting
 
 [Numeral Formatting](/speech-to-text/output-enhancements/numeral-formatting) ensures readability of your transcripts by formatting numbers, dates, currencies and other important _entities_ into their written form.
 
@@ -67,7 +67,7 @@ When the `max_delay_mode` is set to `flexible`, and an entity is being spoken, t
 
 If you have strict latency requirements, and prefer not to wait for entity formatting to complete, set `max_delay_mode` to `fixed`. Note that in this mode, there will be some reduction in accuracy and readability for numbers, currencies, and dates.
 
-## Example Outputs (Partials and Finals)
+## Example outputs (Partials and Finals)
 With only `Finals` and default `max_delay_mode`, messages received could look like the following:
 
 - **(Final)**: I am 35.
