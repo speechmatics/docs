@@ -85,7 +85,7 @@
   },
   {
     "source": "/features/realtime-latency",
-    "destination": "/speech-to-text/real-time/latency"
+    "destination": "/speech-to-text/real-time/output#latency"
   },
   {
     "source": "/features/word-tagging",
@@ -144,7 +144,7 @@
   },
   {
     "source": "/introduction/supported-languages",
-    "destination": "/speech-to-text/supported-languages"
+    "destination": "/speech-to-text/languages"
   },
   {
     "source": "/introduction/troubleshooting",

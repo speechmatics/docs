@@ -122,7 +122,7 @@
     },
     {
       "source": "/features/realtime-latency",
-      "destination": "/speech-to-text/real-time/latency",
+      "destination": "/speech-to-text/real-time/output#latency",
       "permanent": true
     },
     {
@@ -207,7 +207,7 @@
     },
     {
       "source": "/introduction/supported-languages",
-      "destination": "/speech-to-text/supported-languages",
+      "destination": "/speech-to-text/languages",
       "permanent": true
     },
     {

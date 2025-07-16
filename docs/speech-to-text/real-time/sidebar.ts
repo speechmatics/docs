@@ -1,6 +1,6 @@
 export default {
   type: "category",
-  label: "Real-Time Transcription",
+  label: "Realtime Transcription",
   items: [
     {
       type: "doc",
@@ -16,7 +16,7 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/real-time/latency",
+      id: "speech-to-text/real-time/limits",
     },
     {
       type: "doc",

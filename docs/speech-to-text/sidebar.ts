@@ -12,11 +12,11 @@ export default {
       id: "speech-to-text/index",
       label: "Overview",
     },
-    batchSidebar,
     realtimeSidebar,
+    batchSidebar,
     {
       type: "doc",
-      id: "speech-to-text/supported-languages",
+      id: "speech-to-text/languages",
     },
     {
       type: "doc",

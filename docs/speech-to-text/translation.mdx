@@ -188,7 +188,7 @@ with open(PATH_TO_FILE, 'rb') as fd:
 
 <Tabs groupId="transcription-types">
   <TabItem value="batch" label="Batch Translation" default>
-The returned JSON will include a new property called `translations`, which contains a list of translated text for each target language requested (using the same <a href="https://docs.speechmatics.com/introduction/supported-languages#languages">ISO Language Codes</a> as for transcription).
+The returned JSON will include a new property called `translations`, which contains a list of translated text for each target language requested (using the same [ISO Language Codes](/speech-to-text/languages) as for transcription).
 
 ```json
 {
@@ -308,7 +308,7 @@ Partial translation example message
 
 Each translated section of text matches directly to one or more words in the native language transcription based on the start and end time. Each one has the following properties:
 
-- `language`: Real-time only. The translated language [ISO Language Code](/speech-to-text/supported-languages#languages)
+- `language`: Real-time only. The translated language [ISO Language Code](/speech-to-text/languages#languages)
 - `content`: The translated content
 - `start_time`: The start time of the translated content, which matches the start time of the first word in the transcript
 - `end_time`: The end time of the translated content, which matches the end time of the last word in the transcript
