@@ -90,7 +90,7 @@ Available GPU memory after models loaded: 35GB
 Batch and Real-Time (RT) transcribers handle sending requests to the Translation Inference Server. To run a transcription job with Translation, follow the [instructions for running the CPU Container](/deployments/container/cpu-speech-to-text) and additionally:
 
 - Set the environment variable `SM_TRANSLATION_ENDPOINT` in the transcriber to the GRPC endpoint of the running Translation Inference Server, in the form `<server_ip_address>:<port>` where the port is the one bound to port 8001 of the Translation Docker Container (see [running the image](#running-the-image))
-- Include a `translation_config` inside of your job config. [More details](/speech-to-text/translation)
+- Include a `translation_config` inside of your job config. [More details](/speech-to-text/features/translation)
 - Use a transcriber version 10.3.0 or newer
 - Ensure you use a license which allows Translation
 
@@ -212,9 +212,9 @@ If one or more of the target languages are not supported for the source language
 }
 ```
 
-Please note, this behaviour is different when using our [SaaS Deployment](/speech-to-text/translation#unsupported-target-language).
+Please note, this behaviour is different when using our [SaaS Deployment](/speech-to-text/features/translation#unsupported-target-language).
 
-For all other errors, please see [documentation here](/speech-to-text/translation#batch-error-responses)
+For all other errors, please see [documentation here](/speech-to-text/features/translation#batch-error-responses)
 
 ## Performance
 
