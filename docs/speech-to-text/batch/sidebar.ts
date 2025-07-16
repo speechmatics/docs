@@ -38,10 +38,6 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/batch/alignment",
-    },
-    {
-      type: "doc",
       id: "speech-to-text/batch/srt-format",
     },
     {
