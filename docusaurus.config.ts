@@ -76,8 +76,8 @@ const config: Config = {
         alt: "Speechmatics Logo",
         src: "img/logo-text.svg",
         srcDark: "img/logo-text-dark.svg",
-        height: 23,
-        width: 150,
+        height: 24,
+        width: 190,
       },
       items: [
         {
