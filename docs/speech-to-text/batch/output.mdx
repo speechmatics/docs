@@ -5,11 +5,21 @@ sidebar_position: 2
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
 import CodeBlock from '@theme/CodeBlock'
+import SchemaNode from '@theme/Schema'
 import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
 import checkJobStatusUnixSample from './assets/check-job-status.sh'
 import checkMultipleJobsStatusUnixSample from './assets/check-multiple-jobs-status.sh'
+import transcriptResponseSchema from "!openapi-schema-loader!@site/spec/batch.yaml"
 
 # Output
+
+Transcription jobs are processed asynchronously. You can check the status of a job to see if it has been completed.
+
+
+:::tip
+You can also configure notifications to be sent to a webhook when a job is completed. See [Notifications](/speech-to-text/batch/notifications) for more details.
+:::
+
 
 ## Check single job status
 
@@ -36,9 +46,9 @@ You can make a GET request to check the status of a job as follows:
 
 The response is a JSON object containing details of the job, with the `status` field showing whether the job is still processing or not. The possible values are:
 
-- running
-- done
-- rejected
+- **`running`**: The job is still processing.
+- **`done`**: The job has been completed. The transcript is available for download at the [`/jobs/:jobid/transcript` endpoint](/api-ref/batch/get-the-transcript-for-a-transcription-job).
+- **`rejected`**: Transcription was not possible. This will be accompanied by an error message.
 
 An example response looks like this:
 
@@ -89,3 +99,22 @@ curl -L -X GET "https://asr.api.speechmatics.com/v2/jobs/" `
 </Tabs>
 
 Note that if a job has been deleted it will not be included in the list, unless specifically requested, as described in the [API Reference](/api-ref/batch/list-all-jobs).
+
+## Load and process the transcript
+
+Transcripts can be loaded in the following formats: Plain text, JSON or SRT. You can request the format using the `format` query parameter. See [API reference here](/api-ref/batch/get-the-transcript-for-a-transcription-job#request)
+
+A few useful things to know about transcript formats:
+
+- The default format is JSON.
+- Use the `format=txt` query parameter to get the transcript in plain text. Useful for quick access to the transcript.
+- Use the `format=srt` query parameter to get the transcript in SRT format. Useful for displaying the transcript in a subtitle file.
+- To access other data, including word timestamps, translations, and speech intelligence features, use the default JSON format.
+
+### Transcript response schema
+
+Below is the schema for the transcript response when using the default JSON format.
+
+Please refer to our [API Reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#responses) for further details.
+
+<SchemaNode schema={transcriptResponseSchema.paths["/jobs/{jobid}/transcript"].get.responses["200"].schema} />
