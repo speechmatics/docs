@@ -1,6 +1,5 @@
 [
   { "source": "/jobsapi/", "destination": "/api-ref/batch/create-a-new-job" },
-  { "source": "/search", "destination": "/not-found/" },
   { "source": "/features", "destination": "/speech-to-text/" },
   { "source": "/features-other", "destination": "/speech-to-text/" },
   {
@@ -304,7 +303,6 @@
     "destination": "/deployments/virtual-appliance/installation/verify-and-go"
   },
   { "source": "/private/example-file", "destination": "/" },
-  { "source": "/private/preview-mode", "destination": "/not-found" },
   {
     "source": "/release-notes",
     "destination": "https://speechmatics.featurebase.app/en/changelog"
