@@ -144,6 +144,10 @@ html {
   --ifm-font-family-base: unset;
 }
 
+.radix-themes * {
+  outline-color: var(--accent-a9);
+}
+
 /* Duplicating the Radix link styles, since Docusaurus imposes them at higher specificity */
 a.rt-Link:hover {
   text-decoration: underline;
