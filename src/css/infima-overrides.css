@@ -86,6 +86,7 @@ html[data-theme="dark"] {
 
   --ifm-menu-color: var(--gray-11);
 
+  --color-background: var(--gray-3);
   background-color: var(--color-background);
 
   --ifm-color-primary: var(--cyan-10);
