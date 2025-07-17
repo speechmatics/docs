@@ -19,10 +19,6 @@ export default {
       id: "speech-to-text/supported-languages",
     },
     {
-      type: "doc",
-      id: "speech-to-text/translation",
-    },
-    {
       type: "category",
       label: "Features",
       items: [

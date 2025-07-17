@@ -44,7 +44,7 @@
   },
   {
     "source": "/features-other/translation",
-    "destination": "/speech-to-text/translation"
+    "destination": "/speech-to-text/features/translation"
   },
   {
     "source": "/features-other/word-alignment",
@@ -68,7 +68,7 @@
   },
   {
     "source": "/features/diarization",
-    "destination": "/speech-to-text/output-enhancements/diarization"
+    "destination": "/speech-to-text/features/diarization"
   },
   {
     "source": "/features/end-of-turn",

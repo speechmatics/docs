@@ -67,7 +67,7 @@
     },
     {
       "source": "/features-other/translation",
-      "destination": "/speech-to-text/translation",
+      "destination": "/speech-to-text/features/translation",
       "permanent": true
     },
     {
@@ -97,7 +97,7 @@
     },
     {
       "source": "/features/diarization",
-      "destination": "/speech-to-text/output-enhancements/diarization",
+      "destination": "/speech-to-text/features/diarization",
       "permanent": true
     },
     {
@@ -757,27 +757,27 @@
     },
     {
       "source": "/features/diarization/diarization/speaker-diarization",
-      "destination": "/speech-to-text/output-enhancements/diarization",
+      "destination": "/speech-to-text/features/diarization",
       "permanent": true
     },
     {
       "source": "/features/diarization/speaker-diarization",
-      "destination": "/speech-to-text/output-enhancements/diarization",
+      "destination": "/speech-to-text/features/diarization",
       "permanent": true
     },
     {
       "source": "/features/diarization/channel-diarization",
-      "destination": "/speech-to-text/output-enhancements/diarization",
+      "destination": "/speech-to-text/features/diarization",
       "permanent": true
     },
     {
       "source": "/features/diarization/speaker-change",
-      "destination": "/speech-to-text/output-enhancements/diarization",
+      "destination": "/speech-to-text/features/diarization",
       "permanent": true
     },
     {
       "source": "/features/diarization/speaker-change-channel",
-      "destination": "/speech-to-text/output-enhancements/diarization",
+      "destination": "/speech-to-text/features/diarization",
       "permanent": true
     },
     {
