@@ -1,0 +1,3 @@
+.inactive:not(:hover) {
+  background-color: transparent;
+}
