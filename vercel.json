@@ -6,11 +6,6 @@
       "permanent": true
     },
     {
-      "source": "/search",
-      "destination": "/not-found/",
-      "permanent": true
-    },
-    {
       "source": "/features",
       "destination": "/speech-to-text/",
       "permanent": true
@@ -413,11 +408,6 @@
     {
       "source": "/private/example-file",
       "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/private/preview-mode",
-      "destination": "/not-found",
       "permanent": true
     },
     {
