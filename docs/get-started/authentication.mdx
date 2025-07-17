@@ -102,7 +102,7 @@ For batch jobs, temporary keys allow your end-users to upload their audio to Spe
 
 When you generate a temporary key with a `client_ref`, that temporary key will only be able to create and retrieve jobs associated with that `client_ref`. `client_ref` should be a `string` that uniquely identifies an end-user.
 
-Note that temporary keys generated with a `client_ref` can't access the [Usage Batch API endpoint](https://docs.speechmatics.com/jobsapi#tag/jobs/paths/~1usage/get) and will receive a `HTTP 403 - Forbidden`.
+Note that temporary keys generated with a `client_ref` can't access the [Usage Batch API endpoint](/api-ref/batch/get-usage-statistics) and will receive a `HTTP 403 - Forbidden`.
 
 :::warning
 If your batch temporary key will be exposed to end-users, for example in the browser, then you must use the `client_ref` parameter. This will prevent one user from viewing or deleting the jobs of another user.

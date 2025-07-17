@@ -17,12 +17,10 @@ export function checkRedirects([...newSitePaths]: string[]) {
   // Check Vercel.json and ensure it has an entry for each old site path
   // and that the target exists in newSitePaths
   for (const oldRoute of oldSiteRoutes.map(normalizePath)) {
-    if (!vercelRedirects[oldRoute]) {
-      throw new Error(`Missing redirect for ${oldRoute}`);
-    }
+    const dest = vercelRedirects[oldRoute] ?? oldRoute;
 
-    if (!newSitePaths.includes(vercelRedirects[oldRoute])) {
-      if (vercelRedirects[oldRoute].startsWith("https://")) {
+    if (!newSitePaths.includes(dest)) {
+      if (dest.startsWith("https://")) {
         continue;
       }
 
