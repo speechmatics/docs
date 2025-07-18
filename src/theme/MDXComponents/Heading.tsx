@@ -10,12 +10,12 @@ export default function MDXHeading(props: Props): ReactNode {
   const desc = props.as === "h1" ? doc.metadata.description : undefined;
 
   return (
-    <Flex direction="column" gap="2" my="5">
-      <RadixHeading asChild size={size}>
+    <Flex direction="column" gap="2">
+      <RadixHeading asChild size={size} mt="5" mb={desc ? "0" : "5"}>
         <Heading {...props} />
       </RadixHeading>
       {desc && (
-        <Text size="3" color="gray">
+        <Text size="3" color="gray" mb="5">
           {desc}
         </Text>
       )}

@@ -37,7 +37,9 @@ export default function Admonition(unprocessedProps: Props): ReactNode {
             <Icon />
           </Box>
         </Callout.Icon>
-        <Callout.Text>{props.children}</Callout.Text>
+        <Text size="2" as="span">
+          {props.children}
+        </Text>
       </Callout.Root>
     </Box>
   );
