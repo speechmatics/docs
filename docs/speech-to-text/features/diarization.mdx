@@ -1,3 +1,18 @@
+---
+description: "Learn how to use the Speechmatics diarization offering"
+keywords:
+  [
+    speechmatics,
+    features,
+    diarization,
+    transcription,
+    speech recognition,
+    automatic speech recognition,
+    asr,
+  ]
+sidebar_position: 2
+---
+
 import DocCardList from '@theme/DocCardList';
 import { Card, DataList, Text } from '@radix-ui/themes';
 
@@ -47,7 +62,9 @@ The feature is disabled by default. To enable Speaker Diarization, `diarization`
   "type": "transcription",
   "transcription_config": {
     "language": "en",
+    // highlight-start
     "diarization": "speaker"
+    // highlight-end
   }
 }
 ```
@@ -109,10 +126,12 @@ the job config object as shown below:
   "type": "transcription",
   "transcription_config": {
     "language": "en",
+    // highlight-start
     "diarization": "speaker",
     "speaker_diarization_config": {
       "speaker_sensitivity": 0.6
     }
+    // highlight-end
   }
 }
 ```
@@ -131,10 +150,12 @@ You can reduce the likelihood of incorrectly switching between similar sounding 
   "type": "transcription",
   "transcription_config": {
     "language": "en",
+    // highlight-start
     "diarization": "speaker",
     "speaker_diarization_config": {
       "prefer_current_speaker": true
     }
+    // highlight-end
   }
 }
 ```
@@ -161,10 +182,12 @@ For Real-Time Transcription, you can prevent too many speakers from being detect
   "transcription_config": {
     "language": "en",
     "operating_point": "enhanced",
+    // highlight-start
     "diarization": "speaker",
     "speaker_diarization_config": {
       "max_speakers": 10
     }
+    // highlight-end
   }
 }
 ```
@@ -205,8 +228,10 @@ In order to use this feature you set the `diarization` property to `channel`. Yo
   "type": "transcription",
   "transcription_config": {
     "language": "en",
+    // highlight-start
     "diarization": "channel",
     "channel_diarization_labels": ["Agent", "Caller"]
+    // highlight-end
   }
 }
 ```

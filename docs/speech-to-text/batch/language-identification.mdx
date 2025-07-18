@@ -61,7 +61,7 @@ If you expect the audio to be one of a restricted set of languages, you can prov
 
 If the language detected is not in the `expected_languages` list, the job will be [rejected](#language-not-in-expected-languages-list).
 
-A list of possible [Language Codes can be found here](/speech-to-text/supported-languages). The following languages are not supported for Language Identification: Interlingua (ia), Esperanto (eo), Uyghur (ug), Cantonese (yue), Irish (ga), Maltese (mt), Urdu (ur), Bengali (bn), Swahili (sw).
+A list of possible [Language Codes can be found here](/speech-to-text/languages). The following languages are not supported for Language Identification: Interlingua (ia), Esperanto (eo), Uyghur (ug), Cantonese (yue), Irish (ga), Maltese (mt), Urdu (ur), Bengali (bn), Swahili (sw).
 
 ### Low Confidence Action
 By default, the job will be rejected if no language is identified with [high enough confidence](#low-confidence).
@@ -201,11 +201,11 @@ The Custom Dictionary will be used with the identified language. Some language-s
 
 ### Output Locale
 
-[Output Locale](/speech-to-text/output-enhancements/output-formatting#output-locale) is currently not supported in combination with using Automatic Language Identification. Jobs with this combination of features will be rejected.
+[Output Locale](/speech-to-text/formatting#output-formatting-options#output-locale) is currently not supported in combination with using Automatic Language Identification. Jobs with this combination of features will be rejected.
 
 ### Translation
 
-[Translation](/speech-to-text/translation) can be used with Automatic Language Identification.
+[Translation](/speech-to-text/features/translation) can be used with Automatic Language Identification.
 
 If the identified transcription language and target translation language match, then the translation will contain the transcription sentences.
 
@@ -217,7 +217,7 @@ To reduce friction when using Automatic Language Identification, the translation
 
 If one or more of the expected languages are not supported, a HTTP 400 error response is returned.
 
-Language ID is supported for [all of Speechmatics' languages](/speech-to-text/supported-languages) except Interlingua (ia), Esperanto (eo), Uyghur (ug), Cantonese (yue), Irish (ga), Maltese (mt), Urdu (ur), Bengali (bn), Swahili (sw).
+Language ID is supported for [all of Speechmatics' languages](/speech-to-text/languages) except Interlingua (ia), Esperanto (eo), Uyghur (ug), Cantonese (yue), Irish (ga), Maltese (mt), Urdu (ur), Bengali (bn), Swahili (sw).
 
 Example bad config:
 
@@ -375,7 +375,7 @@ This error is available when checking the [job details](//api-ref/batch/get-job-
 
 ### Errors When Used with Translation
 
-It is not possible to translate between all language pairs. When `auto` language is used, this can mean some translation target languages will not be available. See the full list of [Supported Language Pairs](/speech-to-text/translation#supported-translation-pairs).
+It is not possible to translate between all language pairs. When `auto` language is used, this can mean some translation target languages will not be available. See the full list of [Supported Language Pairs](/speech-to-text/features/translation#supported-translation-pairs).
 
 These errors are available when getting the [job transcript](/api-ref/batch/get-the-transcript-for-a-transcription-job):
 
