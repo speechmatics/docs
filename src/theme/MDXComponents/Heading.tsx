@@ -1,15 +1,25 @@
-import { Heading as RadixHeading } from "@radix-ui/themes";
+import { useDoc } from "@docusaurus/plugin-content-docs/client";
+import { Flex, Heading as RadixHeading, Text } from "@radix-ui/themes";
 import Heading from "@theme/Heading";
 import type { Props } from "@theme/MDXComponents/Heading";
 import React, { type ReactNode } from "react";
 
 export default function MDXHeading(props: Props): ReactNode {
   const size = getSize(props.as);
+  const doc = useDoc();
+  const desc = props.as === "h1" ? doc.metadata.description : undefined;
 
   return (
-    <RadixHeading asChild size={size} mt="5" mb="5">
-      <Heading {...props} />
-    </RadixHeading>
+    <Flex direction="column" gap="2" my="5">
+      <RadixHeading asChild size={size}>
+        <Heading {...props} />
+      </RadixHeading>
+      {desc && (
+        <Text size="3" color="gray">
+          {desc}
+        </Text>
+      )}
+    </Flex>
   );
 }
 

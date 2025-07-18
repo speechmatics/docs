@@ -36,7 +36,7 @@ The following example shows a typical configuration for low latency applications
 ```
 
 - `max_delay` (Number): Optional. Allowed between 0.7 and 4 seconds. Default is 4 seconds. This is the delay in seconds between the end of a spoken word and returning the Final transcript results. Note that there is a very small amount of additional latency while the server is sending the transcript to the client.
-- `max_delay_mode` (String): Optional. Allowed values are `fixed` and `flexible`. Default is `flexible`. This allows some additional time for [Numeral Formatting](#numeral-formatting).
+- `max_delay_mode` (String): Optional. Allowed values are `fixed` and `flexible`. Default is `flexible`. This allows some additional time for [Numeral Formatting](#smart-formatting).
 - `enable_partials` (Boolean): Default is false. Whether or not to receive [Partial transcripts](#partial-transcripts) before the Final transcripts are received.
 
 ## Accuracy/Latency trade-offs
@@ -61,7 +61,7 @@ Note that Partial transcripts have some limitations:
 
 ## Numeral formatting
 
-[Numeral Formatting](/speech-to-text/formatting#numeral-formatting) ensures readability of your transcripts by formatting numbers, dates, currencies and other important _entities_ into their written form.
+[Numeral Formatting](/speech-to-text/formatting#smart-formatting) ensures readability of your transcripts by formatting numbers, dates, currencies and other important _entities_ into their written form.
 
 When the `max_delay_mode` is set to `flexible`, and an entity is being spoken, the Final transcript would be delayed until the entity is fully spoken to enable proper formatting. This option should be used in most use-cases for improved accuracy and readability for numbers, currencies, and dates. 
 

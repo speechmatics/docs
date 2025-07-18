@@ -76,7 +76,7 @@
   },
   {
     "source": "/features/entities",
-    "destination": "/speech-to-text/formatting#numeral-formatting"
+    "destination": "/speech-to-text/formatting#smart-formatting"
   },
   {
     "source": "/features/punctuation-settings",
