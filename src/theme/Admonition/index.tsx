@@ -6,12 +6,13 @@ import {
   CircleAlertIcon,
   InfoIcon,
   LightbulbIcon,
+  NotepadText,
 } from "lucide-react";
 import React, { type ReactNode } from "react";
 import styles from "./index.module.css";
 
 const admonitionMap = {
-  note: { icon: InfoIcon, color: "gray" },
+  note: { icon: NotepadText, color: "gray" },
   info: { icon: InfoIcon, color: "cyan" },
   warning: { icon: BellIcon, color: "yellow" },
   danger: { icon: CircleAlertIcon, color: "red" },
