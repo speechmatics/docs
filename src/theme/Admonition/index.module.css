@@ -1,3 +1,12 @@
 .admonition {
   --ifm-paragraph-margin-bottom: 0;
 }
+
+.admonition h1,
+.admonition h2,
+.admonition h3,
+.admonition h4,
+.admonition h5,
+.admonition h6 {
+  margin-top: 0;
+}

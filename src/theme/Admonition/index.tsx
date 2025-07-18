@@ -2,7 +2,7 @@ import { processAdmonitionProps } from "@docusaurus/theme-common";
 import { Box, Callout, Flex, Text } from "@radix-ui/themes";
 import type { Props } from "@theme/Admonition";
 import {
-  AlertTriangleIcon,
+  BellIcon,
   CircleAlertIcon,
   InfoIcon,
   LightbulbIcon,
@@ -13,7 +13,7 @@ import styles from "./index.module.css";
 const admonitionMap = {
   note: { icon: InfoIcon, color: "gray" },
   info: { icon: InfoIcon, color: "cyan" },
-  warning: { icon: AlertTriangleIcon, color: "orange" },
+  warning: { icon: BellIcon, color: "yellow" },
   danger: { icon: CircleAlertIcon, color: "red" },
   tip: { icon: LightbulbIcon, color: "green" },
 };
@@ -26,14 +26,18 @@ export default function Admonition(unprocessedProps: Props): ReactNode {
 
   return (
     <Box asChild mb="3">
-      <Callout.Root color={color} size="2" className={styles.admonition}>
-        <Flex gap="2" align="center">
-          <Callout.Icon>
+      <Callout.Root
+        variant="surface"
+        color={color}
+        size="2"
+        className={styles.admonition}
+      >
+        <Callout.Icon>
+          <Box asChild width="100%" height="100%">
             <Icon />
-          </Callout.Icon>
-          <Text weight="bold">{props.type.toUpperCase()}</Text>
-        </Flex>
-        {props.children}
+          </Box>
+        </Callout.Icon>
+        <Callout.Text>{props.children}</Callout.Text>
       </Callout.Root>
     </Box>
   );
