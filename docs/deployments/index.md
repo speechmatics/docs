@@ -43,7 +43,7 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Language Identification](/speech-to-text/batch/language-identification) | Batch | SaaS |
 | [Notifications](/speech-to-text/batch/notifications.md) | Batch | SaaS, On-Prem |
 | [Numeral Formatting](/speech-to-text/formatting#smart-formatting) | Batch, Real-Time | SaaS, On-Prem |
-| [Punctuation Settings](/speech-to-text/formatting#punctuation-settings) | Batch, Real-Time | SaaS, On-Prem |
+| [Punctuation Settings](/speech-to-text/formatting#punctuation) | Batch, Real-Time | SaaS, On-Prem |
 | [Sentiment Analysis](/speech-to-text/batch/speech-intelligence/sentiment-analysis) | Batch | SaaS, On-Prem |
 | [Summarization](/speech-to-text/batch/speech-intelligence/summarization) | Batch | SaaS |
 | [Topic Detection](/speech-to-text/batch/speech-intelligence/topic-detection) | Batch | SaaS |

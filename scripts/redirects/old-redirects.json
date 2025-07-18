@@ -80,7 +80,7 @@
   },
   {
     "source": "/features/punctuation-settings",
-    "destination": "/speech-to-text/formatting#punctuation-settings"
+    "destination": "/speech-to-text/formatting#punctuation"
   },
   {
     "source": "/features/realtime-latency",
