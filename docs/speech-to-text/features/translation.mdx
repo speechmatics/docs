@@ -13,7 +13,7 @@ keywords:
     speech-to-text translation,
     real-time speech translation,
   ]
-sidebar_position: 4
+sidebar_position: 1
 ---
 
 import Tabs from "@theme/Tabs";
@@ -36,9 +36,11 @@ If you're new to Speechmatics, please see our guide on [Transcribing a File](/sp
     "operating_point": "enhanced",
     "language": "en"
   },
+  // highlight-start
   "translation_config": {
-    "target_languages": ["es", "de"] # Set languages here to enable translation
+    "target_languages": ["es", "de"]
   }
+  // highlight-end
 }
 ```
 
@@ -312,9 +314,9 @@ Each translated section of text matches directly to one or more words in the nat
 - `content`: The translated content
 - `start_time`: The start time of the translated content, which matches the start time of the first word in the transcript
 - `end_time`: The end time of the translated content, which matches the end time of the last word in the transcript
-- `speaker`: The speaker label when `diarization:speaker` is set - see [here](/speech-to-text/output-enhancements/diarization#speaker-diarization) about Speaker Diarization
+- `speaker`: The speaker label when `diarization:speaker` is set - see [here](/speech-to-text/features/diarization#speaker-diarization) about Speaker Diarization
   - Speaker labels are only available on Final translations, not Partial translations
-- `channel`: The channel label when `diarization:channel` is set - see [here](/speech-to-text/output-enhancements/diarization#channel-diarization) about Channel Diarization
+- `channel`: The channel label when `diarization:channel` is set - see [here](/speech-to-text/features/diarization#channel-diarization) about Channel Diarization
   - Only available for Batch transcription
 
 ## Supported Translation Pairs 
@@ -334,8 +336,8 @@ Translation is supported for the majority of Speechmatics' languages. The suppor
 When using Translation, there are a few things to keep in mind:
 
 - **Accuracy of Transcription:** We recommended using the Enhanced Operating Point for the best Translation results. Transcription accuracy directly impacts the accuracy of translation
-- **Punctuation:** Punctuation plays a significant role in the accuracy of translation. It is therefore recommended to avoid disabling any [Punctuation Marks](/speech-to-text/output-enhancements/punctuation-settings) or reducing the [Punctuation Sensitivity](/speech-to-text/output-enhancements/punctuation-settings) to ensure the best possible results
-- **Formatting:** The translation is applied to the [written form](/speech-to-text/output-enhancements/numeral-formatting) transcript
+- **Punctuation:** Punctuation plays a significant role in the accuracy of translation. It is therefore recommended to avoid disabling any [Punctuation Marks](/speech-to-text/formatting#punctuation-settings) or reducing the [Punctuation Sensitivity](/speech-to-text/formatting#punctuation-settings) to ensure the best possible results
+- **Formatting:** The translation is applied to the [written form](/speech-to-text/formatting#numeral-formatting) transcript
 - **Transcription Time:** Enabling Translation for a file will increase the turnaround time of jobs. The amount of time it increases for a single translation will be small. The number of translation target languages directly affects turnaround time. This does not affect Real-time, except when closing a connection when there can be a delay of up to 5 seconds while we receive the final translation
 
 ## Limitations

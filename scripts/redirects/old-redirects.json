@@ -1,6 +1,5 @@
 [
   { "source": "/jobsapi/", "destination": "/api-ref/batch/create-a-new-job" },
-  { "source": "/search", "destination": "/not-found/" },
   { "source": "/features", "destination": "/speech-to-text/" },
   { "source": "/features-other", "destination": "/speech-to-text/" },
   {
@@ -45,7 +44,7 @@
   },
   {
     "source": "/features-other/translation",
-    "destination": "/speech-to-text/translation"
+    "destination": "/speech-to-text/features/translation"
   },
   {
     "source": "/features-other/word-alignment",
@@ -69,7 +68,7 @@
   },
   {
     "source": "/features/diarization",
-    "destination": "/speech-to-text/output-enhancements/diarization"
+    "destination": "/speech-to-text/features/diarization"
   },
   {
     "source": "/features/end-of-turn",
@@ -77,11 +76,11 @@
   },
   {
     "source": "/features/entities",
-    "destination": "/speech-to-text/output-enhancements/numeral-formatting"
+    "destination": "/speech-to-text/formatting#numeral-formatting"
   },
   {
     "source": "/features/punctuation-settings",
-    "destination": "/speech-to-text/output-enhancements/punctuation-settings"
+    "destination": "/speech-to-text/formatting#punctuation-settings"
   },
   {
     "source": "/features/realtime-latency",
@@ -89,7 +88,7 @@
   },
   {
     "source": "/features/word-tagging",
-    "destination": "/speech-to-text/output-enhancements/output-formatting"
+    "destination": "/speech-to-text/formatting#output-formatting-options"
   },
   {
     "source": "/flow-api-ref",
@@ -304,7 +303,6 @@
     "destination": "/deployments/virtual-appliance/installation/verify-and-go"
   },
   { "source": "/private/example-file", "destination": "/" },
-  { "source": "/private/preview-mode", "destination": "/not-found" },
   {
     "source": "/release-notes",
     "destination": "https://speechmatics.featurebase.app/en/changelog"

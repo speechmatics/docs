@@ -1,0 +1,409 @@
+---
+description: 'Control how numbers, dates, and text appear in transcripts'
+keywords:
+  [
+    entity formatting,
+    numeral formatting,
+    output formatting,
+    punctuation,
+    transcript format,
+    transcription
+  ]
+toc_max_heading_level: 4
+---
+
+import CodeBlock from '@theme/CodeBlock'
+
+# Formatting
+
+Control how numbers, punctuation, and special text appear in your transcripts.
+
+## Output locale
+
+Some languages have multiple spelling conventions that vary by region. To ensure consistent spelling throughout your transcript, specify an output locale:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "output_locale": "en-GB"
+  }
+}
+```
+
+Available English locales:
+- British English (`en-GB`)
+- US English (`en-US`)
+- Australian English (`en-AU`)
+
+Available Chinese Mandarin locales:
+- Simplified Mandarin (`cmn-Hans`, default)
+- Traditional Mandarin (`cmn-Hant`)
+
+:::tip
+**Recommended for English transcription**. Without a specified locale, spelling may be inconsistent within the same transcript.
+:::
+
+## Profanities
+
+You can tag profanities to identify or censor offensive language in your workflow. Profanity tagging is available for:
+- English (`en`)
+- Italian (`it`)
+- Spanish (`es`)
+
+Tagged profanities appear in the transcript with the `profanity` tag:
+
+```json
+"results": [
+  {
+    "alternatives": [
+      {
+        "confidence": 1.0,
+        "content": "$PROFANITY",
+        "language": "en",
+        "tags": [
+          "profanity"
+        ]
+      }
+    ],
+    "end_time": 18.03,
+    "start_time": 17.61,
+    "type": "word"
+  }
+]
+```
+
+For other languages, consider using [word replacement](#word-replacement) to identify profanities.
+
+## Disfluencies
+
+Disfluencies are hesitation sounds like "um", "uh", and "hmm". In English, these are automatically tagged with `disfluency`:
+
+```json
+"results": [
+  {
+    "alternatives": [
+      {
+        "confidence": 1.0,
+        "content": "hmm",
+        "language": "en",
+        "tags": [
+          "disfluency"
+        ]
+      }
+    ],
+    "end_time": 18.03,
+    "start_time": 17.61,
+    "type": "word"
+  }
+]
+```
+
+<details data-accent-color="gray">
+  <summary>Full list of tagged disfluencies</summary>
+<CodeBlock>
+{`huh
+aha
+ah
+aw
+eh
+err
+hmm
+mm
+um
+uh
+uh-oh
+uh-huh
+uh-uh
+mhm
+a-ha
+aah
+aahh
+aaw
+ah-ha
+ahaa
+ahh
+ahha
+aww
+eeh
+erm
+hhm
+hhmm
+hm
+huh-uh
+m-hm
+uggh
+ugh
+ughh
+uhh
+uhhm
+uhm
+uhmm
+umm
+uuh
+uuhh
+uum`}
+</CodeBlock>
+</details>
+
+### Removing disfluencies
+
+You can automatically remove disfluencies from your transcript:
+
+```json
+"transcription_config": {
+  "language": "en",
+  "transcript_filtering_config": {
+    "remove_disfluencies": true
+  }
+}
+```
+
+This simplifies client-side processing by removing hesitation sounds and properly adjusting capitalization and spacing. For example:
+
+Without disfluency removal:
+> Um, what would you like, hmm?
+
+With disfluency removal:
+> What would you like?
+
+This feature is available for English only. The default setting is `"remove_disfluencies": false`.
+
+## Word replacement
+
+Word replacement lets you substitute specific words or patterns in the transcript after processing:
+
+```json
+"transcription_config": {
+  "language": "en",
+  "transcript_filtering_config": {
+    "replacements": [
+      {"from": "foo", "to": "bar"},
+      {"from": "heavy", "to": "light"}
+    ]
+  }
+}
+```
+
+Common uses for word replacement:
+- Censoring profanities in languages without built-in support
+- Masking sensitive information (card numbers, personal data)
+- Standardizing terminology or brand names
+- Fixing known issues with particular words
+
+Word replacement is case-sensitive and applied after transcription is complete. For example, "Foo" would not be replaced by "bar" in the example above.
+
+:::tip
+For adding new vocabulary, use the [custom dictionary](/speech-to-text/features/custom-dictionary) feature instead.
+:::
+
+### Regex
+
+You can use regular expressions (ECMAScript format) in the `from` field by adding forward-slash delimiters:
+
+```javascript
+// Replace both "Hello" and "hello" with "goodbye"
+{"from": "/^[hH]ello$/", "to": "goodbye"}
+
+// Add brackets around "cheese" while preserving the original word
+{"from": "/(cheese)/", "to": "[$1]"}
+```
+
+Word replacement rules:
+1. Plain word replacements are processed first
+2. If no match is found, regex replacements are tried in the order listed
+3. Once a word matches a replacement, no further replacements are applied to it
+4. Regex replacements are global (all matches are replaced)
+5. Malformed regex patterns will cause the transcription to fail with an error
+
+
+## Smart formatting
+
+Speechmatics automatically converts spoken numbers, dates, currencies, and other entities into properly formatted text. This makes transcripts more readable without losing timing information.
+
+For example, spoken words like "nineteen ninety nine" become "1999" in the output.
+
+### Configuration
+
+To include detailed information about entities in your JSON output, add this to your configuration:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "enable_entities": true
+  }
+}
+```
+
+By default, `enable_entities` is `false`. When enabled, entity metadata appears only in JSON output (SRT and TXT formats remain unchanged).
+
+### Output
+
+The JSON output will include:
+
+- A new `type` field with value `entity` for formatted numeric entities
+- Full written form in the `content` section, including any spaces or symbols
+- An `entity_class` field describing how the entity was formatted
+- Start and end times spanning all words in the entity
+- Two additional representations:
+  - `spoken_form`: Original words as spoken, with individual timing and confidence
+  - `written_form`: Formatted words separated individually
+
+Here's an example of a transcript with `enable_entities` set to `true`:
+
+```json
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.99,
+          "content": "17th of January 2022",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 3.14,
+      "entity_class": "date",
+      "spoken_form": [
+        {
+          "alternatives": [
+            {
+              "confidence": 1.0,
+              "content": "seventeenth",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 1.41,
+          "start_time": 0.72,
+          "type": "word"
+        },
+        // Additional spoken words omitted for brevity
+      ],
+      "start_time": 0.72,
+      "type": "entity",
+      "written_form": [
+        {
+          "alternatives": [
+            {
+              "confidence": 0.99,
+              "content": "17th",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 1.33,
+          "start_time": 0.72,
+          "type": "word"
+        },
+        // Additional written words omitted for brevity
+      ]
+    }
+  ]
+}
+```
+
+When `enable_entities` is `false`, the words appear individually in the output.
+
+
+
+### Entity classes
+
+The system applies different formatting rules based on the type of entity detected. The following classes are available:
+
+| Entity class | Description | Spoken example | Written example |
+|-------------|-------------|---------------|-----------------|
+| alphanum | Alphanumeric sequences (3+ characters) | "a z triple seven five four" | AZ77754 |
+| cardinal | Whole numbers (in English, numbers ≤10 remain as words) | "nineteen" | 19 |
+| decimal | Numbers with decimal point | "eighteen point one two" | 18.12 |
+| fraction | Fractions (complex ones use n/d format) | "three sixteenths" | 3/16 |
+| ordinal | Position numbers with suffix | "forty second" | 42nd |
+| money | Currency values with symbol | "twenty dollars" | $20 |
+| percentage | Percentages with % symbol | "two hundred percent" | 200% |
+| date | Calendar dates and years | "fifteenth of January twenty twenty two" | 15th of January 2022 |
+| time | Clock times with separators | "eleven forty a m" | 11:40 a.m. |
+| span | Ranges (x to y format) | "one hundred to two hundred million pounds" | 100 to £200 million |
+| credit card | Payment card number sequences | "one one one one..." | 1111 2222 3333 4444 |
+| telephone | Phone number formatting | "five five five..." | (555) 429-2228 |
+| electronic | Email and web addresses | "bob at speechmatics dot com" | bob@speechmatics.com |
+| measurement | Units with abbreviations | "ten kilometers per second" | 10 km/s |
+
+:::warning
+The system chooses entity classes based on context, so occasionally a value might be classified differently than expected. For example, "2001" could be a "cardinal" number or a "date".
+:::
+
+### Languages
+
+Each language follows its own conventions for:
+
+- Thousand separators
+- Decimal separators
+- Currency symbol position
+
+Examples:
+- **English**: Uses commas for thousands (20,000), decimal points (10.5), and places currency symbols before values ($10)
+- **German**: Uses periods for thousands (20.000), commas for decimals (10,5), and places currency symbols after values with a non-breaking space (10 $)
+- **French**: Uses non-breaking spaces for thousands (20 000), commas for decimals (10,5), and places currency symbols after values with a non-breaking space (10 $)
+
+Smart formatting is available in these languages:
+
+- Cantonese
+- Chinese Mandarin (Simplified and Traditional)
+- Dutch
+- English
+- French
+- German
+- Hindi
+- Italian
+- Japanese
+- Norwegian
+- Portuguese
+- Russian
+- Spanish
+- Swedish
+
+## Punctuation
+
+All Speechmatics language packs support punctuation to improve transcript readability. Each language supports specific punctuation marks:
+
+| Language | Supported marks | End-of-sentence marks | Notes |
+|----------|----------------|---------------------|-------|
+| Cantonese, Mandarin | ， 。 ？ ！ 、 | 。 ？ ！ | Full-width punctuation |
+| Japanese | 。 、 | 。 | Full-width punctuation |
+| Hindi | । ? , ! | । ? ! | |
+| All other languages | . , ! ? | . ! ? | |
+
+### Configuration
+
+You can control which punctuation marks appear in your transcripts using the `punctuation_overrides` setting:
+
+```json
+"transcription_config": {
+   "language": "en",
+    // highlight-start
+   "punctuation_overrides": {
+      "permitted_marks": [".", ","],
+      "sensitivity": 0.4
+   }
+   // highlight-end
+}
+```
+
+This configuration:
+- Allows only periods and commas (no question or exclamation marks)
+- Sets punctuation sensitivity to 0.4 (lower than the default 0.5)
+
+The `sensitivity` parameter accepts values from 0 to 1. Higher values produce more punctuation in the output.
+
+:::warning
+Disabling punctuation may slightly reduce speaker diarization accuracy. See the [speaker diarization and punctuation](/speech-to-text/features/diarization#speaker-diarization-and-punctuation) section for details.
+:::
+
+## Next steps
+
+- [Custom Dictionary](/speech-to-text/features/custom-dictionary): Improve recognition of specific words and phrases by adding them to a custom dictionary.
+- [Diarization](/speech-to-text/features/diarization): Enhance your transcripts with speaker and channel information.

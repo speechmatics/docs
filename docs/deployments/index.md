@@ -36,17 +36,17 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Audio Filtering](/speech-to-text/features/audio-filtering) | Batch, Real-Time | SaaS, On-Prem |
 | [Auto Chapters](/speech-to-text/batch/speech-intelligence/auto-chapters) | Batch | SaaS |
 | [Custom Dictionary](/speech-to-text/features/custom-dictionary) | Batch, Real-Time | SaaS, On-Prem |
-| [Diarization](/speech-to-text/output-enhancements/diarization) | Batch, Real-Time | SaaS, On-Prem |
-| [Disfluencies and Word Replacement](/speech-to-text/output-enhancements/output-formatting) | Batch, Real-Time | SaaS, On-Prem |
-| [End-of-Turn](/speech-to-text/realtime/end-of-turn) | Real-Time | SaaS, On-Prem |
+| [Diarization](/speech-to-text/features/diarization) | Batch, Real-Time | SaaS, On-Prem |
+| [Disfluencies and Word Replacement](/speech-to-text/formatting#disfluencies) | Batch, Real-Time | SaaS, On-Prem |
+| [End-of-Turn](/speech-to-text/real-time/end-of-turn) | Real-Time | SaaS, On-Prem |
 | [Feature Discovery](/speech-to-text/features/feature-discovery) | Batch, Real-Time | SaaS |
 | [Fetch URL](/speech-to-text/batch/input#fetch-url) | Batch | SaaS, On-Prem |
 | [Language Identification](/speech-to-text/batch/language-identification) | Batch | SaaS |
 | [Notifications](/speech-to-text/batch/notifications.md) | Batch | SaaS, On-Prem |
-| [Numeral Formatting](/speech-to-text/output-enhancements/numeral-formatting) | Batch, Real-Time | SaaS, On-Prem |
-| [Punctuation Settings](/speech-to-text/output-enhancements/punctuation-settings) | Batch, Real-Time | SaaS, On-Prem |
+| [Numeral Formatting](/speech-to-text/formatting#numeral-formatting) | Batch, Real-Time | SaaS, On-Prem |
+| [Punctuation Settings](/speech-to-text/formatting#punctuation-settings) | Batch, Real-Time | SaaS, On-Prem |
 | [Sentiment Analysis](/speech-to-text/batch/speech-intelligence/sentiment-analysis/index.mdx) | Batch | SaaS, On-Prem |
 | [Summarization](/speech-to-text/batch/speech-intelligence/summarization) | Batch | SaaS |
 | [Topic Detection](/speech-to-text/batch/speech-intelligence/topic-detection) | Batch | SaaS |
 | [Tracking](/speech-to-text/batch/tracking) | Batch, Real-Time | SaaS, On-Prem |
-| [Translation](/speech-to-text/translation) | Batch, Real-Time | SaaS, On-Prem |
+| [Translation](/speech-to-text/features/translation) | Batch, Real-Time | SaaS, On-Prem |
