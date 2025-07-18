@@ -26,9 +26,15 @@ import transcriptResponseSchema from "!openapi-schema-loader!@site/spec/batch.ya
 
 Translate your audio into multiple languages through a single API call, with over 30 languages supported.
 
+## Use cases
+
+- Translate audio files for international distribution
+- Power live subtitles and captions for global events
+- Build voice assistants or AI agents that communicate in multiple languages
+
 ## Configuration
 
-Enable translation when processing a **file** or in **real-time** in SaaS and [on-prem deployment](/deployments/container/gpu-translation).
+Enable translation when processing a file or in real-time in SaaS and [on-prem deployment](/deployments/container/gpu-translation).
 
 New to Speechmatics? See our guides on [transcribing a file](/speech-to-text/batch/quickstart) or [transcribing in real-time](/speech-to-text/real-time/quickstart). Once set up, add the following configuration to enable translation:
 
@@ -49,7 +55,7 @@ New to Speechmatics? See our guides on [transcribing a file](/speech-to-text/bat
 ```
 
 :::tip
-Each transcription can be translated into up to five languages.
+You can configure up to five translation languages at a time.
 :::
 
 ## Batch output
@@ -349,26 +355,23 @@ The following languages can be translated to and from **English** in realtime an
 In batch, you can also translate from Norwegian Bokmål to Nynorsk.
 :::
 
-## Considerations
+## Best practices
 
-Keep these factors in mind when using translation:
+Follow these guidelines to achieve optimal translation results:
 
-- **Transcription accuracy:** Use the enhanced operating point for best translation results. Better transcription directly improves translation quality.
-- **Punctuation:** Maintain all [punctuation marks](/speech-to-text/formatting#punctuation-settings) and avoid reducing [punctuation sensitivity](/speech-to-text/formatting#punctuation-settings) for optimal results.
-- **Formatting:** Translation applies to the [written form](/speech-to-text/formatting#numeral-formatting) transcript.
-- **Processing time:** Adding translation increases job turnaround time. Multiple target languages further increase processing time. Real-time translation may have up to 5 seconds delay when closing a connection while receiving final translations.
+- **Use enhanced operating point** — Higher transcription accuracy directly leads to better translations
+- **Keep punctuation enabled** — Maintain all [punctuation settings](/speech-to-text/formatting#punctuation) at default levels for optimal translation quality
+- **Consider processing times** — Each additional target language increases processing time in batch jobs
+- **Plan for connection closing** — Realtime sessions may have a 5-second delay when finalizing translations
 
-## Limitations
-
-- **Maximum translations:** Up to five target languages per transcription
-- **Output formats:** Only JSON format supports translation. Text and SRT formats are available only in the native language for Batch transcription.
-- **Native language-only features:** These features are not available in translations:
-  - Single word timings
-  - Confidence scores
-  - Word tagging
-  - Output locale spelling
+:::warning
+Be aware of these limitations:
+- **Language limit** — Maximum 5 target languages per transcription
+- **Format restrictions** — Only JSON format includes translations (text and SRT formats contain source language only)
+- **Reduced metadata** — Certain features (timestamps, confidence scores, word tagging, and regional spelling) are only available in the original language
+:::
 
 ## Next Steps
 
 - [Try the portal](https://portal.speechmatics.com/) to see how translation works with your own audio.
-- Read the [API reference](/api-ref/batch/transcription) to learn more about the translation parameters.
+- Use [diarization](/speech-to-text/features/diarization) to enhance your translations with speaker information.
