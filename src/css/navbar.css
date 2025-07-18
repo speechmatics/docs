@@ -40,3 +40,8 @@ nav.menu:active,
 nav.menu:focus {
   overflow-y: auto;
 }
+
+/* TODO if we ever swizzle out the side nav completely, remove this */
+.radix-themes .menu__link {
+  font-size: var(--font-size-2);
+}
