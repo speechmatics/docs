@@ -113,6 +113,11 @@ const AnyOneOf: React.FC<SchemaProps> = ({ schema, schemaType }) => {
               label={label}
               value={`${index}-item-properties`}
             >
+              {/* Render description */}
+              {anyOneSchema.description && (
+                <MarkdownWrapper text={anyOneSchema.description} />
+              )}
+
               {/* Handle primitive types directly */}
               {["string", "number", "integer", "boolean"].includes(
                 anyOneSchema.type,
@@ -158,6 +163,11 @@ const AnyOneOf: React.FC<SchemaProps> = ({ schema, schemaType }) => {
               )}
               {anyOneSchema.items && (
                 <Items schema={anyOneSchema} schemaType={schemaType} />
+              )}
+              {anyOneSchema.example && (
+                <MarkdownWrapper
+                  text={`**Example**: \`${JSON.stringify(anyOneSchema.example)}\``}
+                />
               )}
             </TabItem>
           );

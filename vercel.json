@@ -27,7 +27,7 @@
     },
     {
       "source": "/features-other/fetch-url",
-      "destination": "/speech-to-text/batch/fetch-url",
+      "destination": "/speech-to-text/batch/input#fetch-url",
       "permanent": true
     },
     {
@@ -102,7 +102,7 @@
     },
     {
       "source": "/features/end-of-turn",
-      "destination": "/speech-to-text/real-time/end-of-turn",
+      "destination": "/speech-to-text/realtime/end-of-turn",
       "permanent": true
     },
     {
@@ -117,7 +117,7 @@
     },
     {
       "source": "/features/realtime-latency",
-      "destination": "/speech-to-text/real-time/latency",
+      "destination": "/speech-to-text/realtime/output#latency",
       "permanent": true
     },
     {
@@ -177,7 +177,7 @@
     },
     {
       "source": "/introduction/additional-info",
-      "destination": "/speech-to-text/batch/check-job-status",
+      "destination": "/speech-to-text/batch/output",
       "permanent": true
     },
     {
@@ -192,17 +192,17 @@
     },
     {
       "source": "/introduction/errors-rate-limits",
-      "destination": "/speech-to-text/batch/supported-files-and-limits",
+      "destination": "/speech-to-text/batch/input",
       "permanent": true
     },
     {
       "source": "/introduction/rt-guide",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/introduction/supported-languages",
-      "destination": "/speech-to-text/supported-languages",
+      "destination": "/speech-to-text/languages",
       "permanent": true
     },
     {
@@ -537,12 +537,12 @@
     },
     {
       "source": "/tutorials/using-ffmpeg",
-      "destination": "/speech-to-text/real-time/guides/python-using-ffmpeg",
+      "destination": "/speech-to-text/realtime/guides/python-using-ffmpeg",
       "permanent": true
     },
     {
       "source": "/tutorials/using-mic",
-      "destination": "/speech-to-text/real-time/guides/python-using-microphone",
+      "destination": "/speech-to-text/realtime/guides/python-using-microphone",
       "permanent": true
     },
     {
@@ -582,12 +582,12 @@
     },
     {
       "source": "/en/cloud/understanding-saas-usage/",
-      "destination": "/speech-to-text/batch/supported-files-and-limits",
+      "destination": "/speech-to-text/batch/input",
       "permanent": true
     },
     {
       "source": "/en/cloud/troubleshooting/",
-      "destination": "/speech-to-text/batch/supported-files-and-limits",
+      "destination": "/speech-to-text/batch/input",
       "permanent": true
     },
     {
@@ -1312,122 +1312,122 @@
     },
     {
       "source": "/en/real-time-saas/user-guide",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v4.2.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v4.1.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v4.0.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.8.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.7.1",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.7.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.6.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.5.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.4.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.3.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v4.2.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v4.1.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v4.0.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.8.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.7.1",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.7.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.6.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.5.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.4.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.3.0",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {
       "source": "/en/real-time-saas",
-      "destination": "/speech-to-text/real-time/quickstart",
+      "destination": "/speech-to-text/realtime/quickstart",
       "permanent": true
     },
     {

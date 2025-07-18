@@ -8,11 +8,15 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/batch/supported-files-and-limits",
+      id: "speech-to-text/batch/input",
     },
     {
       type: "doc",
-      id: "speech-to-text/batch/check-job-status",
+      id: "speech-to-text/batch/output",
+    },
+    {
+      type: "doc",
+      id: "speech-to-text/batch/limits",
     },
     {
       type: "category",
@@ -30,15 +34,7 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/batch/fetch-url",
-    },
-    {
-      type: "doc",
       id: "speech-to-text/batch/language-identification",
-    },
-    {
-      type: "doc",
-      id: "speech-to-text/batch/alignment",
     },
     {
       type: "doc",

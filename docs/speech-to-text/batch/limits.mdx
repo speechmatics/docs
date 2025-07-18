@@ -1,0 +1,42 @@
+---
+sidebar_label: 'Limits'
+---
+
+import HTTPMethodBadge from '@theme/HTTPMethodBadge'
+
+# Limits – Batch transcription
+
+## Rate limiting and fair usage
+
+Speechmatics Batch SaaS applies rate limiting and fair queueing to provide a consistently high quality of service to all users.
+
+If you make a large number of requests in a short period of time, some of these requests may fail with the response `HTTP 429 - Rate Limited`. To minimize the possibility of encountering rate limiting errors, we recommend that you do not exceed the following rates:
+
+- 10 new jobs per second (<HTTPMethodBadge method="POST"/> API calls)
+- 50 job status requests per second (<HTTPMethodBadge method="GET"/> API calls). Note that Speechmatics recommends using [Notifications](/speech-to-text/batch/notifications) for job status updates in production
+
+Aside from rate limiting, there is no limit to the number of jobs that you can submit. However, Speechmatics Batch SaaS applies a fair queueing policy which means that if you have a large number of jobs in progress at one time, the most recently submitted jobs may take longer to complete.
+
+
+## Hourly usage limits
+
+Speechmatics limits the number of hours of audio users can process each month to help manage load on our servers. The current limits (in hours) by account type are listed in the table below:
+
+|            | Batch standard    | Batch enhanced    |
+|------------| ------------------| ------------------|
+| Free Tier  | 2 hours/month     | 2 hours/month     |
+| Paid Tier  | 6,000 hours/month | 6,000 hours/month |
+| Enterprise | Custom            | Custom            |
+
+
+Please reach out to [Support](https://support.speechmatics.com) if you need to increase the above limits.
+
+
+## File size limits
+
+If you submit your media file in the body of the `/jobs` <HTTPMethodBadge method="POST" /> request to Speechmatics Batch SaaS, the file must be less than 1 GB in size or the job will be rejected.
+To process files larger than 1 GB, you can provide the URL of the audio file in the job config as described in the [Fetch URL documentation](/speech-to-text/batch/input#fetch-url).
+
+## Data retention limits
+
+Audio files, transcripts, and configuration data are stored in the Speechmatics Batch SaaS for 7 days. Any request to retrieve a transcript or file more than 7 days after it was processed will receive an HTTP 404 error message and a status of `expired`. You can delete audio or transcripts in advance of this 7 day period - see the [API Reference](/api-ref/batch/delete-a-job) for details.

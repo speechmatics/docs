@@ -1,5 +1,5 @@
 import batchSidebar from "./batch/sidebar";
-import realtimeSidebar from "./real-time/sidebar";
+import realtimeSidebar from "./realtime/sidebar";
 
 export default {
   type: "category",
@@ -12,11 +12,11 @@ export default {
       id: "speech-to-text/index",
       label: "Overview",
     },
-    batchSidebar,
     realtimeSidebar,
+    batchSidebar,
     {
       type: "doc",
-      id: "speech-to-text/supported-languages",
+      id: "speech-to-text/languages",
     },
     {
       type: "category",

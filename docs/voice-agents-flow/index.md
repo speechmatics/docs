@@ -14,7 +14,7 @@ Flow is engineered to engage in natural and fluid conversations by automatically
 
 ## How Flow works
 
-Built on-top of Speechmatics' [industry-leading ASR](/speech-to-text/real-time/quickstart), the latest LLMs and text-to-speech, Flow is engineered to engage in natural and fluid conversations. 
+Built on-top of Speechmatics' [industry-leading ASR](/speech-to-text/realtime/quickstart), the latest LLMs and text-to-speech, Flow is engineered to engage in natural and fluid conversations. 
 
 Simply stream in audio, and Flow will provide the TTS response as well as other useful information.
 
