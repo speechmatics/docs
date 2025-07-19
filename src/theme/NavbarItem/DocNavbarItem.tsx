@@ -27,8 +27,13 @@ export default function DocNavbarItem({
     pageActive || (!!activeDoc?.sidebar && activeDoc.sidebar === doc.sidebar);
 
   return (
-    <Flex asChild display={{initial: "none", md: "flex"}}>
-      <Button asChild variant="soft" color="gray" className={!isActive ? styles.inactive : ''}>
+    <Flex asChild display={{ initial: "none", md: "flex" }}>
+      <Button
+        asChild
+        variant="soft"
+        color="gray"
+        className={!isActive ? styles.inactive : ""}
+      >
         <Link to={doc.path}>{staticLabel ?? doc.id}</Link>
       </Button>
     </Flex>
