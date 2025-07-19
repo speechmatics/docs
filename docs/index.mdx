@@ -9,15 +9,15 @@ pagination_next: null
 
 import { LinkCard } from "@site/src/theme/LinkCard";
 import { ChevronsRightIcon, FileAudio, BotMessageSquare, } from "lucide-react";
-import { Box, Flex, Card, Grid } from "@radix-ui/themes";
+import { Box, Flex, Card, Grid, Inset } from "@radix-ui/themes";
 
 # Welcome to Speechmatics
 
 <Box asChild width="100%" height="200px" my="3">
   <Card>
-    <Flex justify="center" align="center" width="100%" height="100%">
-    (Demo placeholder)
-    </Flex>
+    <Inset>
+      <img style={{objectFit: "cover"}} src="/img/hero visual@3x.png" alt="Speechmatics hero visual" />
+    </Inset>
   </Card>
 </Box>
 

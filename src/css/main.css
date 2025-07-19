@@ -1,6 +1,5 @@
 .radix-themes main {
   border-radius: var(--radius-4);
   background-color: var(--gray-1);
-  padding-top: var(--space-6);
-  padding-bottom: var(--space-6);
+  padding: var(--space-4) var(--space-4) var(--space-6) var(--space-4);
 }
