@@ -1,0 +1,7 @@
+.menuExternalLink {
+  align-items: center;
+}
+
+.menuExternalLink:not(:hover) svg {
+  display: none;
+}
