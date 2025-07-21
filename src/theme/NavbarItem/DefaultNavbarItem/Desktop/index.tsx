@@ -19,9 +19,6 @@ export default function DefaultNavbarItemDesktop({
         className,
         styles.navbar__item,
       )}
-      style={{
-        backgroundColor: props.isActive(null, null) ? undefined : "transparent",
-      }}
       asChild
     >
       <NavbarNavLink isDropdownLink={isDropdownItem} {...props} />
