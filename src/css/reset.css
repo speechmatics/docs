@@ -3,10 +3,6 @@ pre {
   /* overflow-y: auto; */
 }
 
-kbd {
-  all: unset;
-}
-
 code {
   background-color: unset;
 }
