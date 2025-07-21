@@ -3,19 +3,19 @@ import { Box, Callout, Flex, Text } from "@radix-ui/themes";
 import type { Props } from "@theme/Admonition";
 import {
   BellIcon,
-  CircleAlertIcon,
+  FlameIcon,
   InfoIcon,
   LightbulbIcon,
-  NotepadText,
+  PinIcon,
 } from "lucide-react";
 import React, { type ReactNode } from "react";
 import styles from "./index.module.css";
 
 const admonitionMap = {
-  note: { icon: NotepadText, color: "gray" },
+  note: { icon: PinIcon, color: "gray" },
   info: { icon: InfoIcon, color: "cyan" },
   warning: { icon: BellIcon, color: "yellow" },
-  danger: { icon: CircleAlertIcon, color: "red" },
+  danger: { icon: FlameIcon, color: "red" },
   tip: { icon: LightbulbIcon, color: "green" },
 };
 
