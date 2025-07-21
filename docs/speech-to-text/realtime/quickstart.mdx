@@ -1,3 +1,7 @@
+---
+description: Learn how to convert streaming audio to text.
+---
+
 import Admonition from '@theme/Admonition';
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
@@ -7,10 +11,6 @@ import javascriptRadioExample from "./assets/javascript-radio-example.js?raw"
 import pythonRadioExample from "./assets/url-example.py?raw"
 
 # Quickstart
-
-Learn how to convert streaming audio to text.
-
-This guide will show you how to use WebSocket API to transcribe voice.
 
 :::tip
 The easiest way to try real-time transcription is via the [web portal](https://portal.speechmatics.com/jobs/create/real-time).
@@ -75,7 +75,7 @@ Final transcripts are the definitive result.
 - Once displayed, they are not updated.
 - Words arrive incrementally, with some delay.
 
-You control the latency and accuracy tradeoff [using the `max_delay` setting](/speech-to-text/real-time/latency) in your `transcription_config`.
+You control the latency and accuracy tradeoff [using the `max_delay` setting](/speech-to-text/realtime/output#latency) in your `transcription_config`.
 Larger values of `max_delay` increase accuracy by giving the system more time to process audio context.
 
 :::tip
@@ -91,7 +91,7 @@ Partial transcripts are low-latency and can update later as more conversation co
 
 You can combine partials with finals for a responsive user experience — show partials first, then replace them with finals as they arrive.
 
-You control the latency and accuracy tradeoff using the [`max_delay` setting](/speech-to-text/real-time/latency) in your `transcription_config`.
+You control the latency and accuracy tradeoff using the [`max_delay` setting](/speech-to-text/realtime/output#latency) in your `transcription_config`.
 
 :::tip
 Use partials for: real-time captions, voice interfaces, or any case where speed matters

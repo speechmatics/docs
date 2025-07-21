@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 title: Welcome
+description: Enterprise-grade APIs for speech-to-text and voice AI agents.
 hide_table_of_contents: true
 pagination_prev: null
 pagination_next: null
@@ -8,17 +9,17 @@ pagination_next: null
 
 import { LinkCard } from "@site/src/theme/LinkCard";
 import { ChevronsRightIcon, FileAudio, BotMessageSquare, } from "lucide-react";
-import { Box, Flex, Card, Grid } from "@radix-ui/themes";
+import { Box, Flex, Card, Grid, Inset } from "@radix-ui/themes";
 
 # Welcome to Speechmatics
 
-Enterprise-grade APIs for speech-to-text and voice AI agents.
-
-<Box asChild width="100%" height="200px" my="3">
-  <Card>
-    <Flex justify="center" align="center" width="100%" height="100%">
-    (Demo placeholder)
-    </Flex>
+<Box asChild width="100%" my="3">
+  <Card variant="ghost">
+    <Inset>
+    <Box asChild width="100%" height="200px">
+      <img style={{objectFit: "cover"}} src="/img/hero visual@3x.png" alt="Speechmatics hero visual" />
+    </Box>
+    </Inset>
   </Card>
 </Box>
 
@@ -41,7 +42,7 @@ With Speechmatics, you can:
     title="Transcribe in real-time"
     description="Instantly convert streaming audio to text with Real-time processing"
     direction="column"
-    href="/speech-to-text/real-time/quickstart"
+    href="/speech-to-text/realtime/quickstart"
   />
   <LinkCard
     icon={<FileAudio/>}

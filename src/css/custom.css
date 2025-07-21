@@ -12,6 +12,7 @@
 @import "./badge.css";
 @import "./details.css";
 @import "./scroll.css";
+@import "./search-bar.css";
 
 /* OpenAPI docs plugin customization */
 .radix-themes .openapi-explorer__form-item-input {

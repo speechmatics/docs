@@ -1,5 +1,6 @@
 ---
 title: Build a conversational AI app with React Native and Flow
+description: 'Learn how to create a mobile application that integrates Speechmatics Flow service using React Native.'
 sidebar_label: React Native
 ---
 
@@ -16,8 +17,6 @@ import indexStepFour from "?url=https://raw.githubusercontent.com/speechmatics/f
 
 # Build a conversational AI app with React Native and Flow
 
-
-Learn how to create a mobile application that integrates Speechmatics Flow service using React Native.
 This guide demonstrates how to build the app using the Expo framework, implementing real-time audio communication with Flow's servers.
 
 You can find the complete code on [GitHub <GithubIcon size={16} />](https://github.com/speechmatics/flow-react-native-guide).
@@ -26,7 +25,6 @@ You can find the complete code on [GitHub <GithubIcon size={16} />](https://gith
   src={AppScreenshotUrl}
   style={{ width: 350, display: "block", margin: "auto" }}
 />
-;
 
 ## Prerequisites
 
@@ -100,9 +98,9 @@ npx expo run android
 
 This will launch the Metro Bundler and show up some options.
 
-:::info
+:::warning
 #### Expo Go is not supported
-If it shows the following: `Using Expo Go`, **we need to switch to a development build by pressing** <Kbd size="5">s</Kbd>. Then press <Kbd size="5">r</Kbd> to reload the app.
+If it shows the following: `Using Expo Go`, **we need to switch to a development build by pressing** <Kbd>s</Kbd>. Then press <Kbd>r</Kbd> to reload the app.
 Some features that we are going to include, like the native module for handling audio, don't work properly in Expo Go.
 :::
 

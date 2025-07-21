@@ -12,7 +12,7 @@
   },
   {
     "source": "/features-other/fetch-url",
-    "destination": "/speech-to-text/batch/fetch-url"
+    "destination": "/speech-to-text/batch/input#fetch-url"
   },
   {
     "source": "/features-other/lang-id",
@@ -72,19 +72,19 @@
   },
   {
     "source": "/features/end-of-turn",
-    "destination": "/speech-to-text/real-time/end-of-turn"
+    "destination": "/speech-to-text/realtime/end-of-turn"
   },
   {
     "source": "/features/entities",
-    "destination": "/speech-to-text/formatting#numeral-formatting"
+    "destination": "/speech-to-text/formatting#smart-formatting"
   },
   {
     "source": "/features/punctuation-settings",
-    "destination": "/speech-to-text/formatting#punctuation-settings"
+    "destination": "/speech-to-text/formatting#punctuation"
   },
   {
     "source": "/features/realtime-latency",
-    "destination": "/speech-to-text/real-time/latency"
+    "destination": "/speech-to-text/realtime/output#latency"
   },
   {
     "source": "/features/word-tagging",
@@ -123,7 +123,7 @@
   { "source": "/introduction", "destination": "/" },
   {
     "source": "/introduction/additional-info",
-    "destination": "/speech-to-text/batch/check-job-status"
+    "destination": "/speech-to-text/batch/output"
   },
   {
     "source": "/introduction/authentication",
@@ -135,15 +135,15 @@
   },
   {
     "source": "/introduction/errors-rate-limits",
-    "destination": "/speech-to-text/batch/supported-files-and-limits"
+    "destination": "/speech-to-text/batch/input"
   },
   {
     "source": "/introduction/rt-guide",
-    "destination": "/speech-to-text/real-time/quickstart"
+    "destination": "/speech-to-text/realtime/quickstart"
   },
   {
     "source": "/introduction/supported-languages",
-    "destination": "/speech-to-text/supported-languages"
+    "destination": "/speech-to-text/languages"
   },
   {
     "source": "/introduction/troubleshooting",
@@ -396,10 +396,10 @@
   },
   {
     "source": "/tutorials/using-ffmpeg",
-    "destination": "/speech-to-text/real-time/guides/python-using-ffmpeg"
+    "destination": "/speech-to-text/realtime/guides/python-using-ffmpeg"
   },
   {
     "source": "/tutorials/using-mic",
-    "destination": "/speech-to-text/real-time/guides/python-using-microphone"
+    "destination": "/speech-to-text/realtime/guides/python-using-microphone"
   }
 ]

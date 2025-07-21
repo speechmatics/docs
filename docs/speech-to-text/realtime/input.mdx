@@ -1,0 +1,38 @@
+---
+description: 'Learn about the supported input audio formats for the Speechmatics Real-time API'
+keywords: [speechmatics, transcription, speech recognition, asr, api, limits]
+toc_max_heading_level: 2
+sidebar_position: 2
+---
+
+import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
+import SchemaNode from '@theme/Schema'
+import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml"
+
+# Input
+
+:::info
+This page is about the **Real-time transcription API** (websocket).
+* For information on Batch SaaS, see the [Batch SaaS input](/speech-to-text/batch/input).
+* For information on Flow Voice AI, see the [Flow Voice AI input](/voice-agents-flow/supported-formats-and-limits).
+:::
+
+## Supported input audio formats
+
+Sessions can be configured to use two types of audio input, `file` and `raw`. Unless you have a specific reason to use the `file` option, we recommend using the `raw` option.
+
+
+:::tip
+For capturing raw audio in the browser, try our `browser-audio-input` package, [available here on NPM](https://www.npmjs.com/package/@speechmatics/browser-audio-input).
+:::
+
+### `audio_format`
+
+The format must be supplied in the `audio_format` field of the `StartRecognition` message. See the [API reference](/api-ref/realtime-transcription-websocket#startrecognition).
+
+<SchemaNode schema={realtimeSchema.components.schemas.AudioFormat} />
+
+## Sending audio
+
+After receiving a `RecognitionStarted` message, you can start sending audio over the Websocket connection. Audio is sent as binary data, encoded in the format specified in the `StartRecognition` message. See [Protocol overview](/api-ref/realtime-transcription-websocket#protocol-overview) for complete details of the API protocol.
+
