@@ -13,10 +13,12 @@ import { Box, Flex, Card, Grid, Inset } from "@radix-ui/themes";
 
 # Welcome to Speechmatics
 
-<Box asChild width="100%" height="200px" my="3">
-  <Card>
+<Box asChild width="100%" my="3">
+  <Card variant="ghost">
     <Inset>
+    <Box asChild width="100%" height="200px">
       <img style={{objectFit: "cover"}} src="/img/hero visual@3x.png" alt="Speechmatics hero visual" />
+    </Box>
     </Inset>
   </Card>
 </Box>
