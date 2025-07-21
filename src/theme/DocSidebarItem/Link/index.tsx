@@ -1,14 +1,14 @@
-import React, { type ReactNode } from "react";
-import clsx from "clsx";
-import { ThemeClassNames } from "@docusaurus/theme-common";
-import { isActiveSidebarItem } from "@docusaurus/plugin-content-docs/client";
 import Link from "@docusaurus/Link";
 import isInternalUrl from "@docusaurus/isInternalUrl";
-import IconExternalLink from "@theme/Icon/ExternalLink";
+import { isActiveSidebarItem } from "@docusaurus/plugin-content-docs/client";
+import { ThemeClassNames } from "@docusaurus/theme-common";
 import type { Props } from "@theme/DocSidebarItem/Link";
+import IconExternalLink from "@theme/Icon/ExternalLink";
+import clsx from "clsx";
+import React, { type ReactNode } from "react";
 
-import styles from "./styles.module.css";
 import { Flex } from "@radix-ui/themes";
+import styles from "./styles.module.css";
 
 export default function DocSidebarItemLink({
   item,

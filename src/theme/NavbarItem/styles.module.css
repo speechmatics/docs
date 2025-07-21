@@ -1,9 +1,0 @@
-.inactive:not(:hover) {
-  background-color: transparent;
-}
-
-@media (max-width: 996px) {
-  .navButton {
-    display: none;
-  }
-}
