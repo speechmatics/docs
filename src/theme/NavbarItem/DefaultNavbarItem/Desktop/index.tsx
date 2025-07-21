@@ -13,13 +13,15 @@ export default function DefaultNavbarItemDesktop({
   const element = (
     <Button
       color="gray"
-      variant="ghost"
+      variant="soft"
       className={clsx(
         isDropdownItem ? "dropdown__link" : "navbar__item navbar__link",
         className,
         styles.navbar__item,
       )}
-      style={{ margin: 0 }}
+      style={{
+        backgroundColor: props.isActive(null, null) ? undefined : "transparent",
+      }}
       asChild
     >
       <NavbarNavLink isDropdownLink={isDropdownItem} {...props} />
