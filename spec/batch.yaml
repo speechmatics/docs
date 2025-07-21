@@ -215,7 +215,7 @@ paths:
               code: 500
               error: Internal Server Error
     delete:
-      summary: Delete a job.
+      summary: Delete a job
       description: Delete a job and remove all associated resources.
       parameters:
         - name: jobid
