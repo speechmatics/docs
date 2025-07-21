@@ -21,6 +21,31 @@ export default {
           href: "https://github.com/speechmatics",
           label: "GitHub",
         },
+        {
+          type: "link",
+          href: "https://status.speechmatics.com",
+          label: "Status",
+        },
+        {
+          type: "link",
+          label: "Support",
+          href: "https://support.speechmatics.com/hc/en-gb",
+        },
+        {
+          type: "link",
+          label: "Feature request",
+          href: "https://github.com/orgs/speechmatics/discussions/new?category=ideas-suggestions",
+        },
+        {
+          type: "link",
+          label: "Blog",
+          href: "https://blog.speechmatics.com",
+        },
+        {
+          type: "link",
+          label: "Website",
+          href: "https://speechmatics.com",
+        },
       ],
     },
   ],

@@ -25,3 +25,115 @@ kubectl create secret docker-registry speechmatics-registry \
   --docker-username=<username> \
   --docker-password=<password>
 ```
+
+Using the same credentials, authenticate Helm with the `speechmaticspublic` registry to install the Helm chart:
+
+```bash
+# Authenticate to the Speechmatics Helm repository
+helm registry login speechmaticspublic.azurecr.io \
+  --username <username> \
+  --password <password>
+```
+
+## Speechmatics License
+
+Please speak to `support@speechmatics.com` if you do not already have a valid Speechmatics license.
+
+The Helm chart requires you to have a valid Speechmatics license stored in a secret called `speechmatics-license`, on the Kubernetes cluster. 
+
+You can add a secret to the cluster with these commands:
+
+```bash
+kubectl create secret generic speechmatics-license \
+  --from-literal=license.json="$(cat $LICENSE_FILE)"
+```
+
+Alternatively, you can configure the chart to create the secret for your Speechmatics license secret for you using the following values:
+
+```yaml
+global:
+  licensing:
+    createSecret: true
+    license: $B64_ENCODED_LICENSE
+```
+
+## GPU Drivers
+
+The Speechmatics inference server runs Nvidia Triton Server, which requires an Nvidia GPU. When running GPU nodes in Kubernetes, you will require the Nvidia device plugin which allows containers on the cluster to access the GPUs.
+
+Below is a list of the common cloud providers and their recommended way of deploying the Nvidia device plugin on a cluster:
+
+* AWS - [Amazon EKS Setup](https://docs.aws.amazon.com/deep-learning-containers/latest/devguide/deep-learning-containers-eks-setup.html#deep-learning-containers-eks-setup-gpu-clusters)
+* Azure - [GPU Workloads on AKS](https://learn.microsoft.com/en-us/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool#nvidia-device-plugin-installation)
+* GCP - [Deploy GPU workloads in GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus#installing_drivers)
+
+Alternatively, see the [Nvidia Device Plugin](https://github.com/NVIDIA/k8s-device-plugin#deployment-via-helm) docs.
+
+You can validate a node has allocatable GPU resources with:
+
+```bash
+kubectl get nodes -o yaml | yq .[].[].status.allocatable | grep nvidia
+```
+
+## Nginx Ingress Controller
+
+When setting up Speechmatics via an ingress controller, it is recommended to use the `ingress-nginx` ingress controller with snippet annotations enabled. You can confirm if your cluster supports Nginx with snippet annotations enabled using the following command:
+
+```bash
+# The default is false
+kubectl get cm -o yaml -l app.kubernetes.io/instance=nginx | grep allow-snippet-annotations
+```
+
+If you are not already running `ingress-nginx`, follow the below steps:
+
+1. Create an `nginx.values.yaml` file:
+
+```yaml
+controller:
+  service:
+    # This is needed to preserve the source IP of the client
+    # See: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+    externalTrafficPolicy: Local
+
+    # This should be set to the IP address used to access services on your cluster
+    loadBalancerIP: $CLUSTER_INGRESS_IP
+
+  config:
+    # This prevents nginx worker process from shutting down for 24h in case of active sessions
+    worker-shutdown-timeout: 86400s
+
+  extraArgs:
+    # Needed to support annotations added by the chart ingresses
+    annotations-prefix: nginx.ingress.kubernetes.io
+
+    # This prevents nginx main process from shutting down for 24h in case of active sessions
+    shutdown-grace-period: 86400
+ 
+  # Used to prevent nginx pods being terminated for 24h while there are active sessions
+  terminationGracePeriodSeconds: 86400
+
+  # Needed to allow ingresses to add snippet annotations to add necessary headers
+  allowSnippetAnnotations: true
+```
+
+2. Install the Nginx chart with:
+
+```bash
+helm repo add nginx https://kubernetes.github.io/ingress-nginx
+helm install nginx nginx/ingress-nginx --version 4.11.4 -f nginx.values.yaml
+```
+
+### Using Another Ingress Controller
+
+If you are running another ingress controller, when enabling ingress on the chart, you need to ensure that a `Request-Id` header is passed through. This is used to manage session usage.
+
+In Nginx, it looks like this:
+
+```yaml
+proxy:
+  ingress:
+    annotations:
+      # Add headers to all requests coming through this ingress
+      nginx.ingress.kubernetes.io/configuration-snippet: |+
+        more_set_headers "Request-Id: $req_id";
+```

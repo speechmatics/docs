@@ -1,0 +1,7 @@
+.menuExternalLink {
+  align-items: center;
+}
+/* Hide the external link icon when the link is not hovered or focused */
+.menuExternalLink:not(:hover):not(:focus) svg {
+  display: none;
+}
