@@ -166,7 +166,7 @@ paths:
       - $ref: "#/parameters/AuthHeader"
       - $ref: "#/parameters/EARTag"
     get:
-      summary: Get job details.
+      summary: Get job details
       description: Get job details, including progress and any error reports.
       parameters:
         - name: jobid

@@ -7,6 +7,7 @@ import { Button, Flex } from "@radix-ui/themes";
 import type { Props } from "@theme/NavbarItem/DocNavbarItem";
 import React, { type ReactNode } from "react";
 import styles from "./styles.module.css";
+import clsx from "clsx";
 
 export default function DocNavbarItem({
   docId,
@@ -32,7 +33,7 @@ export default function DocNavbarItem({
         asChild
         variant="soft"
         color="gray"
-        className={!isActive ? styles.inactive : ""}
+        className={clsx(!isActive && styles.inactive, styles.navButton)}
       >
         <Link to={doc.path}>{staticLabel ?? doc.id}</Link>
       </Button>
