@@ -27,7 +27,7 @@ export default function DocNavbarItem({
     pageActive || (!!activeDoc?.sidebar && activeDoc.sidebar === doc.sidebar);
 
   return (
-    <Flex asChild display={{ initial: "none", md: "flex" }}>
+    <Flex asChild align="center">
       <Button
         asChild
         variant="soft"
