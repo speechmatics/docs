@@ -31,7 +31,8 @@
   fill: var(--yellow-4);
 }
 
-kbd {
+kbd.DocSearch-Button-Key {
+  all: unset;
   display: inline-flex;
   align-items: center;
   justify-content: center;
