@@ -32,7 +32,6 @@
 }
 
 kbd.DocSearch-Button-Key {
-  all: unset;
   display: inline-flex;
   align-items: center;
   justify-content: center;
