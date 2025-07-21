@@ -5,9 +5,9 @@ import {
 } from "@docusaurus/plugin-content-docs/client";
 import { Button, Flex } from "@radix-ui/themes";
 import type { Props } from "@theme/NavbarItem/DocNavbarItem";
+import clsx from "clsx";
 import React, { type ReactNode } from "react";
 import styles from "./styles.module.css";
-import clsx from "clsx";
 
 export default function DocNavbarItem({
   docId,

@@ -26,7 +26,7 @@ keywords:
 
 # Languages
 
-This page lists the range of languages supported by Speechmatics. For more information on how to use these, please refer to the guide on [Accuracy and Language](/speech-to-text/features/accuracy-language-packs)
+This page lists the range of languages supported by Speechmatics.
 
 :::info
 To automatically identify the language in an audio file, use our [Language Identification](/speech-to-text/batch/language-identification) feature.
@@ -88,7 +88,7 @@ Speechmatics takes a global-first approach to our languages. In a single languag
 | Slovakian                    | sk                              |                                                                                                                                                                                                                                                                                                                                           |
 | Slovenian                    | sl                              |                                                                                                                                                                                                                                                                                                                                           |
 | Spanish                      | es                              | Our global Spanish gives high-accuracy transcription across many different accents including (but not limited to) Spanish spoken in Spain, US, Mexico, Colombia, Argentina, Venezuela, Chile and Peru.                                                                                                                                   |
-| Spanish & English bilingual  | es (with domain='bilingual-en') | Ideal when transcribing Spanish and English in the same media file or stream. Supports all accents and dialects listed under English and Spanish. [Requires the domain config to be set](/speech-to-text/features/accuracy-language-packs#domain-language-optimization).                                                                             |
+| Spanish & English bilingual  | es (with domain='bilingual-en') | Ideal when transcribing Spanish and English in the same media file or stream. Supports all accents and dialects listed under English and Spanish. [Requires the domain config to be set](/speech-to-text/languages#multilingual-speech-to-text).                                                                             |
 | Swahili                      | sw                              |                                                                                                                                                                                                                                                                                                                                           |
 | Swedish                      | sv                              |                                                                                                                                                                                                                                                                                                                                           |
 | Tamil                        | ta                              |                                                                                                                                                                                                                                                                                                                                           |
@@ -114,3 +114,39 @@ For more details, see [Translation](/speech-to-text/features/translation).
 | Bulgarian (bg), Catalan (ca), Mandarin (cmn), Czech (cs), Danish (da), German (de), Greek (el), Spanish (es), Estonian (et), Finnish (fi), French (fr), Galician (gl), Hindi (hi), Croatian (hr), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Korean (ko), Lithuanian (lt), Latvian (lv), Malay (ms), Dutch (nl), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Slovakian (sk), Slovenian (sl), Swedish (sv), Turkish (tr), Ukrainian (uk), Vietnamese (vi) | English (en)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | Norwegian Bokmål (no)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Norwegian Nynorsk (nn)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
+
+## Multilingual speech-to-text
+
+These packs are ideal when transcribing multiple languages in the same media file or stream with high accuracy. For more information on the supported languages, please refer to [Supported Language Packs](/speech-to-text/languages).
+
+Supported multilingual packs are:
+
+| Language Pack | Transcription config |
+|----------------|----------------------|
+| Mandarin and English |  `{"language": "cmn_en"}` |
+| Malay and English |  `{"language": "en_ms"}` |
+| Tamil and English |  `{"language": "en_ta"}` |
+| Spanish and English |  `{"language": "es", "domain": "bilingual-en"}` |
+
+Bilingual (excluding Spanish and English) example:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "cmn_en",
+  }
+}
+```
+
+Bilingual Spanish and English example:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "es",
+    "domain": "bilingual-en"
+  }
+}
+```
