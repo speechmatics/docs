@@ -1,11 +1,11 @@
-import path from "node:path";
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import katex from "rehype-katex";
 import math from "remark-math";
+import { checkRedirectsPlugin } from "./plugins/check-redirects";
+import { sourceLoaderPlugin } from "./plugins/source-loader";
 import { prismTheme } from "./prism-theme";
-import { checkRedirects } from "./scripts/redirects/check-redirects";
 import { sidebarItemsGenerator } from "./sidebar-generator";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -76,21 +76,31 @@ const config: Config = {
         alt: "Speechmatics Logo",
         src: "img/logo-text.svg",
         srcDark: "img/logo-text-dark.svg",
-        height: 23,
-        width: 150,
+        height: 24,
+        width: 190,
       },
       items: [
         {
+          type: "search",
+          position: "right",
+        },
+        {
           type: "doc",
-          position: "left",
+          position: "right",
           docId: "index",
           label: "Docs",
         },
         {
           type: "doc",
-          position: "left",
+          position: "right",
           docId: "api-ref/index",
           label: "API Reference",
+        },
+        {
+          type: "html",
+          position: "right",
+          value:
+            "<a href='https://portal.speechmatics.com/signup' target='_blank' class='rt-reset rt-BaseButton rt-r-size-2 rt-variant-solid rt-Button'>Sign up</a>",
         },
       ],
     },
@@ -144,51 +154,8 @@ const config: Config = {
         },
       },
     ],
-    () => {
-      return {
-        name: "source-loader-plugin",
-        configureWebpack(config) {
-          // console.log("Webpack Configuration:");
-          // console.log("Rules:", config.module.rules);
-          return {
-            module: {
-              rules: [
-                {
-                  // Load Python and text files as raw assets
-                  test: /\.py$|\.txt$|\.sh$/,
-                  type: "asset/source",
-                },
-                {
-                  // Load JS files as raw assets when requested with ?raw query
-                  test: /\.js$|\.ts$|\.tsx$|\.mjs$|\.html$|\.yml$|\.yaml$/,
-                  resourceQuery: /raw/,
-                  // With Webpack 5 we shouldn't need raw-loader
-                  // But because Docusaurus uses babel-loader for all JS files by default,
-                  // doing it like above for txt and py files strips line breaks and whitespace
-                  // TODO: Configure custom JS loader that isn't babel, and remove the raw-loader dependency
-                  // one day it will be legacy.
-                  use: "raw-loader",
-                },
-                {
-                  // Load content from URLs when requested with ?url= query
-                  resourceQuery: /url=/,
-                  use: path.resolve(__dirname, "scripts/url-loader.js"),
-                },
-              ],
-            },
-          };
-        },
-      };
-    },
-
-    () => {
-      return {
-        name: "check-redirects-plugin",
-        async postBuild({ routesPaths }) {
-          checkRedirects(routesPaths);
-        },
-      };
-    },
+    sourceLoaderPlugin,
+    checkRedirectsPlugin,
   ],
   themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"], // export theme components
   scripts: [

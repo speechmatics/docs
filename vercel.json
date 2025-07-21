@@ -107,12 +107,12 @@
     },
     {
       "source": "/features/entities",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/features/punctuation-settings",
-      "destination": "/speech-to-text/formatting#punctuation-settings",
+      "destination": "/speech-to-text/formatting#punctuation",
       "permanent": true
     },
     {
@@ -877,212 +877,212 @@
     },
     {
       "source": "/en/cloud/entities",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-saas/entities",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities/v4.2.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities/v4.1.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities/v4.0.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.8.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.7.1",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.7.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.6.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.5.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.4.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.3.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-appliance/entities",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities/v4.2.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities/v4.1.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities/v4.0.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.8.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.7.1",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.7.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.6.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.5.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.4.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.3.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-appliance/entities",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-container/entities/v9.0.1",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-container/entities/v9.0.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-container/entities/v8.2.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-container/entities/v8.1.2",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-container/entities/v8.1.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-container/entities/v8.0.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-container/entities/v7.0.3",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-container/entities/v6.3.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/batch-container/entities",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/entities/v2.0.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/entities/v1.4.1",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/entities/v1.4.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/entities/v1.3.1",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/entities/v1.3.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/entities/v1.2.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/entities/v1.1.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/entities/v1.0.0",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {
       "source": "/en/real-time-container/entities",
-      "destination": "/speech-to-text/formatting#numeral-formatting",
+      "destination": "/speech-to-text/formatting#smart-formatting",
       "permanent": true
     },
     {

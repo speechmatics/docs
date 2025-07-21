@@ -36,7 +36,7 @@ paths:
       - $ref: "#/parameters/AuthHeader"
       - $ref: "#/parameters/EARTag"
     post:
-      summary: Create a new job.
+      summary: Create a new job
       consumes:
         - multipart/form-data
       parameters:
@@ -107,7 +107,7 @@ paths:
               code: 500
               error: Internal Server Error
     get:
-      summary: List all jobs.
+      summary: List all jobs
       parameters:
         - name: created_before
           in: query
@@ -166,7 +166,7 @@ paths:
       - $ref: "#/parameters/AuthHeader"
       - $ref: "#/parameters/EARTag"
     get:
-      summary: Get job details
+      summary: Get job details.
       description: Get job details, including progress and any error reports.
       parameters:
         - name: jobid
@@ -215,7 +215,7 @@ paths:
               code: 500
               error: Internal Server Error
     delete:
-      summary: Delete a job
+      summary: Delete a job.
       description: Delete a job and remove all associated resources.
       parameters:
         - name: jobid
@@ -394,7 +394,7 @@ paths:
       - $ref: "#/parameters/AuthHeader"
       - $ref: "#/parameters/EARTag"
     get:
-      summary: Get the transcript for a transcription job.
+      summary: Get the transcript for a transcription job
       produces:
         - application/json
         - application/vnd.speechmatics.v2
@@ -748,7 +748,7 @@ paths:
       - $ref: "#/parameters/AuthHeader"
       - $ref: "#/parameters/EARTag"
     get:
-      summary: Get usage statistics.
+      summary: Get usage statistics
       produces:
         - application/json
       parameters:

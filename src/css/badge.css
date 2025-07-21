@@ -2,7 +2,11 @@
 This cannot be done by Swizzling since it's not a Docusaurus component, it only exists in Infima classes. */
 .api-method > .menu__link {
   position: relative;
-  padding-left: 4em;
+  padding-left: calc(
+    4 *
+    var(--font-size-2) +
+    var(--ifm-menu-link-padding-horizontal)
+  );
 }
 
 a.menu__link.menu__link--active {
