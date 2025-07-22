@@ -30,6 +30,12 @@ $ npm run build
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
+### MixPanel setup
+
+To use Mixpanel, set the `MIXPANEL_PROJECT_TOKEN` environment variable when running the app locally (`npm run start`) or building it (`npm run build`). You can store the token in a `.env.local` file. If you're developing and want to use the token from Vercel's preview environment, run `vercel env pull --environment=preview` to populate the file.
+
 ### Deployment
 
 TBD
+
+NOTE: The `MIXPANEL_PROJECT_TOKEN` env variable containing the **production** token should be available at build time in order to get a build that uses MixPanel suitable for a production deployment.
