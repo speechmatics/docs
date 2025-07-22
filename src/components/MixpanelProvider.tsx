@@ -12,7 +12,6 @@ export default function MixpanelProvider({ children }) {
   useEffect(() => {
     if (typeof window !== "undefined" && token) {
       mixpanel.init(token, {
-        debug: true, // Enable debug mode
         track_pageview: true,
         persistence: "localStorage",
         autocapture: {
