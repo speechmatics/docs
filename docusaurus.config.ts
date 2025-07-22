@@ -14,6 +14,10 @@ const config: Config = {
   title: "Speechmatics Docs",
   tagline: "Speechmatics Documentation",
   favicon: "img/favicon.ico",
+  customFields: {
+    mixpanelToken: process.env.MIXPANEL_PROJECT_TOKEN,
+  },
+
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
