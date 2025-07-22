@@ -255,13 +255,13 @@ You can enable this feature by setting the `SM_PREWARM_ENGINE_MODES` environment
 In general, the format is: `{language}_{domain}_{processor}_{operating_point}:{prewarm_connections}`.
 
 The parameters are:
-- `language` - One of the supported [language codes](../../introduction/supported-languages#languages)
+- `language` - One of the supported [language codes](/speech-to-text/languages)
 
-- `domain` - Optional. One of `general` or a domain used for some [multi-lingual transcription](../../features/accuracy-language-packs#multilingual-speech-to-text) use cases. For example: `SM_PREWARM_ENGINE_MODES='es_bilingual-en_gpu_standard:1'`
+- `domain` - Optional. One of `general` or a domain used for some [multi-lingual transcription](/speech-to-text/languages#multilingual-speech-to-text) use cases. For example: `SM_PREWARM_ENGINE_MODES='es_bilingual-en_gpu_standard:1'`
 
 - `processor` - One of `cpu` or `gpu`. Note that selecting `gpu` requires a [GPU Inference Container](/on-prem/containers/gpu-inference-container)
 
-- `operating_point` - One of `standard` or `enhanced`. The [operating point](../../features/accuracy-language-packs#accuracy) you want to prewarm
+- `operating_point` - One of `standard` or `enhanced`. The [operating point](/speech-to-text/#operating-points) you want to prewarm
 
 - `prewarm_connections` - Integer. The number of engine instances of the specific mode you want to pre-warm. The total number of `prewarm_connections` cannot be greater than `SM_MAX_CONCURRENT_CONNECTIONS`. After the pre-warming is complete, this parameter does not limit the types of connections the engine can start.
 
