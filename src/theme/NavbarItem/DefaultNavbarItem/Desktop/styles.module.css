@@ -1,0 +1,16 @@
+.navbar__item {
+  background-color: transparent;
+}
+
+@media (max-width: 996px) {
+  .navbar__item {
+    /* This is needed to allow the buttons to be hidden when the sidebar is in view
+    Without the `!important`, the Radix styles take over, and we have no good way to carve out an exception since the breakpoints are different between Radix and Infima.
+     */
+    display: none !important;
+  }
+}
+
+:global(.navbar__link--active) {
+  background-color: var(--gray-a4);
+}
