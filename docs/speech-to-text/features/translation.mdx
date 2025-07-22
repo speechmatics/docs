@@ -36,7 +36,7 @@ Translate your audio into multiple languages through a single API call, with ove
 
 Enable translation when processing a file or in real-time in SaaS and [on-prem deployment](/deployments/container/gpu-translation).
 
-New to Speechmatics? See our guides on [transcribing a file](/speech-to-text/batch/quickstart) or [transcribing in real-time](/speech-to-text/real-time/quickstart). Once set up, add the following configuration to enable translation:
+New to Speechmatics? See our guides on [transcribing a file](/speech-to-text/batch/quickstart) or [transcribing in real-time](/speech-to-text/realtime/quickstart). Once set up, add the following configuration to enable translation:
 
 ```json
 {
@@ -60,7 +60,7 @@ You can configure up to five translation languages at a time.
 
 ## Batch output
 
-The returned JSON will include a new property called `translations`, which contains a list of translated text for each target language requested (using the same [ISO language codes](/speech-to-text/supported-languages#languages) as for transcription).
+The returned JSON will include a new property called `translations`, which contains a list of translated text for each target language requested (using the same [ISO language codes](/speech-to-text/languages#languages) as for transcription).
 
 <SchemaNode schema={transcriptResponseSchema.definitions.RetrieveTranscriptResponse} />
 
