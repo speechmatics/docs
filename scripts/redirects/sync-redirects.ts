@@ -56,7 +56,6 @@ for (const redirect of taggedRedirects) {
           source: `${normalizePath(source)}/v${tag}`,
           destination: newDestination,
           permanent: true,
-          trailingSlash: true,
         });
       }
     }
