@@ -52,7 +52,7 @@
   },
   {
     "source": "/features/accuracy-language-packs",
-    "destination": "/speech-to-text/features/accuracy-language-packs"
+    "destination": "/speech-to-text/languages#multilingual-speech-to-text"
   },
   {
     "source": "/features/audio-events",

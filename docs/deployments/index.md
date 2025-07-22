@@ -29,7 +29,7 @@ Feature availability varies depending on the deployment method you choose. Below
 
 | Feature | Modes | Deployments |
 |-----------------------------------------------|----------------------|----------------------------|
-| [Accuracy Language Packs](/speech-to-text/features/accuracy-language-packs) | Batch, Real-Time | SaaS, On-Prem |
+| [Multi-lingual speech-to-text](/speech-to-text/languages#multilingual-speech-to-text) | Batch, Real-Time | SaaS, On-Prem |
 | [Alignment](/speech-to-text/batch/alignment) | Batch | SaaS |
 | [Audio Events](/speech-to-text/features/audio-events) | Batch, Real-Time | SaaS, On-Prem |
 | [Audio Filtering](/speech-to-text/features/audio-filtering) | Batch, Real-Time | SaaS, On-Prem |
