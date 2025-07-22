@@ -120,7 +120,7 @@
     "source": "/flow/react-native-guide",
     "destination": "/voice-agents-flow/guides/react-native"
   },
-  { "source": "/introduction", "destination": "https://docs.speechmatics.com/" },
+  { "source": "/introduction", "destination": "/" },
   {
     "source": "/introduction/additional-info",
     "destination": "/speech-to-text/batch/output"

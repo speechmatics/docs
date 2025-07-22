@@ -1,4 +1,5 @@
 {
+  "trailingSlash": false,
   "redirects": [
     {
       "source": "/jobsapi/",
@@ -172,7 +173,7 @@
     },
     {
       "source": "/introduction",
-      "destination": "https://docs.speechmatics.com/",
+      "destination": "/",
       "permanent": true
     },
     {
@@ -547,22 +548,22 @@
     },
     {
       "source": "/en",
-      "destination": "https://docs.speechmatics.com/",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/en/real-time-saas/overview/",
-      "destination": "https://docs.speechmatics.com/",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/en/cloud/",
-      "destination": "https://docs.speechmatics.com/",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/en/cloud/configuring-job-request/",
-      "destination": "https://docs.speechmatics.com/",
+      "destination": "/",
       "permanent": true
     },
     {
