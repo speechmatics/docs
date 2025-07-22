@@ -1,4 +1,4 @@
 .pageContainer {
-  background-color: var(--color-panel-solid);
+  background-color: var(--gray-1);
   border-radius: var(--radius-4);
 }
