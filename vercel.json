@@ -172,7 +172,7 @@
     },
     {
       "source": "/introduction",
-      "destination": "https://docs.speechmatics.com/",
+      "destination": "/",
       "permanent": true
     },
     {
@@ -547,22 +547,22 @@
     },
     {
       "source": "/en",
-      "destination": "https://docs.speechmatics.com/",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/en/real-time-saas/overview/",
-      "destination": "https://docs.speechmatics.com/",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/en/cloud/",
-      "destination": "https://docs.speechmatics.com/",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/en/cloud/configuring-job-request/",
-      "destination": "https://docs.speechmatics.com/",
+      "destination": "/",
       "permanent": true
     },
     {
@@ -823,52 +823,62 @@
     {
       "source": "/en/batch-appliance/api-guide/api-howto/v4.2.0",
       "destination": "/speech-to-text/batch/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/v4.1.0",
       "destination": "/speech-to-text/batch/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/v4.0.0",
       "destination": "/speech-to-text/batch/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/v3.8.0",
       "destination": "/speech-to-text/batch/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/v3.7.1",
       "destination": "/speech-to-text/batch/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/v3.7.0",
       "destination": "/speech-to-text/batch/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/v3.6.0",
       "destination": "/speech-to-text/batch/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/v3.5.0",
       "destination": "/speech-to-text/batch/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/v3.4.0",
       "destination": "/speech-to-text/batch/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/v3.3.0",
       "destination": "/speech-to-text/batch/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto",
@@ -888,52 +898,62 @@
     {
       "source": "/en/batch-appliance/entities/v4.2.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/entities/v4.1.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/entities/v4.0.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.8.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.7.1",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.7.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.6.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.5.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.4.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/entities/v3.3.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/entities",
@@ -943,52 +963,62 @@
     {
       "source": "/en/real-time-appliance/entities/v4.2.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/entities/v4.1.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/entities/v4.0.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.8.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.7.1",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.7.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.6.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.5.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.4.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/entities/v3.3.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/entities",
@@ -998,42 +1028,50 @@
     {
       "source": "/en/batch-container/entities/v9.0.1",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/entities/v9.0.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/entities/v8.2.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/entities/v8.1.2",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/entities/v8.1.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/entities/v8.0.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/entities/v7.0.3",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/entities/v6.3.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/entities",
@@ -1043,42 +1081,50 @@
     {
       "source": "/en/real-time-container/entities/v2.0.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/entities/v1.4.1",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/entities/v1.4.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/entities/v1.3.1",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/entities/v1.3.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/entities/v1.2.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/entities/v1.1.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/entities/v1.0.0",
       "destination": "/speech-to-text/formatting#smart-formatting",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/entities",
@@ -1093,52 +1139,62 @@
     {
       "source": "/en/batch-appliance/api-guide/v4.2.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/v4.1.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/v4.0.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/v3.8.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/v3.7.1",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/v3.7.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/v3.6.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/v3.5.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/v3.4.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/v3.3.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide",
@@ -1148,52 +1204,62 @@
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api/v4.2.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api/v4.1.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api/v4.0.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api/v3.8.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api/v3.7.1",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api/v3.7.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api/v3.6.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api/v3.5.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api/v3.4.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api/v3.3.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/api-guide/api-howto/speech-api",
@@ -1203,52 +1269,62 @@
     {
       "source": "/en/batch-appliance/error-codes/v4.2.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/error-codes/v4.1.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/error-codes/v4.0.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/error-codes/v3.8.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/error-codes/v3.7.1",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/error-codes/v3.7.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/error-codes/v3.6.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/error-codes/v3.5.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/error-codes/v3.4.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/error-codes/v3.3.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/error-codes",
@@ -1258,52 +1334,62 @@
     {
       "source": "/en/real-time-appliance/api-v2/v4.2.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/v4.1.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/v4.0.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/v3.8.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/v3.7.1",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/v3.7.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/v3.6.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/v3.5.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/v3.4.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/v3.3.0",
       "destination": "/api-ref/batch/create-a-new-job",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2",
@@ -1318,52 +1404,62 @@
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v4.2.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v4.1.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v4.0.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.8.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.7.1",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.7.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.6.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.5.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.4.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide/v3.3.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/speech-api-guide",
@@ -1373,52 +1469,62 @@
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v4.2.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v4.1.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v4.0.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.8.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.7.1",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.7.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.6.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.5.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.4.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage/v3.3.0",
       "destination": "/speech-to-text/realtime/quickstart",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/api-v2/api-example-usage",
@@ -1433,52 +1539,62 @@
     {
       "source": "/en/batch-appliance/release-notes/v4.2.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v4.1.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v4.0.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.8.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.7.1",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.7.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.6.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.5.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.4.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/release-notes/v3.3.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/release-notes",
@@ -1488,52 +1604,62 @@
     {
       "source": "/en/real-time-appliance/release-notes/v4.2.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v4.1.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v4.0.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.8.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.7.1",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.7.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.6.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.5.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.4.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/release-notes/v3.3.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/release-notes",
@@ -1543,52 +1669,62 @@
     {
       "source": "/en/batch-appliance/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance",
@@ -1598,52 +1734,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide",
@@ -1653,52 +1799,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/introduction",
@@ -1708,52 +1864,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/system-requirements",
@@ -1763,52 +1929,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/downloading",
@@ -1818,52 +1994,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/importing/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/importing/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/importing/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/importing/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/importing/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/importing/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/importing/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/importing/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/importing/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/importing/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/importing",
@@ -1873,52 +2059,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/networking/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/networking/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/networking/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/networking/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/networking/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/networking/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/networking/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/networking/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/networking/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/networking/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/networking",
@@ -1928,52 +2124,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/licensing",
@@ -1983,52 +2189,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/goverify-ba",
@@ -2038,52 +2254,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration",
@@ -2093,52 +2319,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/ssl",
@@ -2148,52 +2384,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/networking-admin",
@@ -2203,52 +2449,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/scaling",
@@ -2258,52 +2514,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/monitoring-admin",
@@ -2313,52 +2579,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/services",
@@ -2368,52 +2644,62 @@
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-appliance/install-admin-guide/administration/security",
@@ -2423,52 +2709,62 @@
     {
       "source": "/en/real-time-appliance/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance",
@@ -2478,52 +2774,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide",
@@ -2533,52 +2839,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/introduction",
@@ -2588,52 +2904,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/system-requirements",
@@ -2643,52 +2969,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/downloading",
@@ -2698,52 +3034,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/importing",
@@ -2753,52 +3099,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/networking",
@@ -2808,52 +3164,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/licensing",
@@ -2863,52 +3229,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/goverify-rta",
@@ -2918,52 +3294,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration",
@@ -2973,52 +3359,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/ssl",
@@ -3028,52 +3424,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/networking-admin",
@@ -3083,52 +3489,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/scaling",
@@ -3138,52 +3554,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/monitoring-admin",
@@ -3193,52 +3619,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/services",
@@ -3248,52 +3684,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/security",
@@ -3303,52 +3749,62 @@
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/install-admin-guide/administration/cd-cache-admin",
@@ -3358,52 +3814,62 @@
     {
       "source": "/en/real-time-appliance/demo/v4.2.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/demo/v4.1.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/demo/v4.0.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/demo/v3.8.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/demo/v3.7.1",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/demo/v3.7.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/demo/v3.6.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/demo/v3.5.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/demo/v3.4.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/demo/v3.3.0",
       "destination": "/deployments/virtual-appliance",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-appliance/demo",
@@ -3423,42 +3889,50 @@
     {
       "source": "/en/batch-container/speech-api/v9.0.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/v9.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/v8.2.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/v8.1.2",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/v8.1.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/v8.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/v7.0.3",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/v6.3.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api",
@@ -3468,42 +3942,50 @@
     {
       "source": "/en/batch-container/speech-api/parallel-processing/v9.0.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/parallel-processing/v9.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/parallel-processing/v8.2.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/parallel-processing/v8.1.2",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/parallel-processing/v8.1.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/parallel-processing/v8.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/parallel-processing/v7.0.3",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/parallel-processing/v6.3.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/speech-api/parallel-processing",
@@ -3513,42 +3995,50 @@
     {
       "source": "/en/batch-container/technical-guide-migration/v9.0.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/technical-guide-migration/v9.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/technical-guide-migration/v8.2.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/technical-guide-migration/v8.1.2",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/technical-guide-migration/v8.1.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/technical-guide-migration/v8.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/technical-guide-migration/v7.0.3",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/technical-guide-migration/v6.3.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/technical-guide-migration",
@@ -3558,42 +4048,50 @@
     {
       "source": "/en/batch-container/quick-start/v9.0.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/quick-start/v9.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/quick-start/v8.2.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/quick-start/v8.1.2",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/quick-start/v8.1.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/quick-start/v8.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/quick-start/v7.0.3",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/quick-start/v6.3.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/quick-start",
@@ -3603,42 +4101,50 @@
     {
       "source": "/en/batch-container/demo/v9.0.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/demo/v9.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/demo/v8.2.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/demo/v8.1.2",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/demo/v8.1.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/demo/v8.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/demo/v7.0.3",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/demo/v6.3.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/demo",
@@ -3668,42 +4174,50 @@
     {
       "source": "/en/real-time-container/quick-start/v2.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/v1.4.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/v1.4.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/v1.3.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/v1.3.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/v1.2.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/v1.1.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/v1.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start",
@@ -3713,42 +4227,50 @@
     {
       "source": "/en/real-time-container/speech-api-guide/v2.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/v1.4.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/v1.4.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/v1.3.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/v1.3.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/v1.2.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/v1.1.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/v1.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide",
@@ -3758,42 +4280,50 @@
     {
       "source": "/en/real-time-container/quick-start/health-checks/v2.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/health-checks/v1.4.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/health-checks/v1.4.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/health-checks/v1.3.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/health-checks/v1.3.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/health-checks/v1.2.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/health-checks/v1.1.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/health-checks/v1.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/health-checks",
@@ -3803,42 +4333,50 @@
     {
       "source": "/en/real-time-container/quick-start/troubleshooting/v2.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/troubleshooting/v1.4.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/troubleshooting/v1.4.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/troubleshooting/v1.3.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/troubleshooting/v1.3.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/troubleshooting/v1.2.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/troubleshooting/v1.1.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/troubleshooting/v1.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/quick-start/troubleshooting",
@@ -3848,42 +4386,50 @@
     {
       "source": "/en/real-time-container/speech-api-guide/api-howto/v2.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/api-howto/v1.4.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/api-howto/v1.4.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/api-howto/v1.3.1",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/api-howto/v1.3.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/api-howto/v1.2.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/api-howto/v1.1.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/api-howto/v1.0.0",
       "destination": "/deployments/container/cpu-speech-to-text",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/speech-api-guide/api-howto",
@@ -3893,42 +4439,50 @@
     {
       "source": "/en/batch-container/release-notes/v9.0.1",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/release-notes/v9.0.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/release-notes/v8.2.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/release-notes/v8.1.2",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/release-notes/v8.1.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/release-notes/v8.0.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/release-notes/v7.0.3",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/release-notes/v6.3.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/batch-container/release-notes",
@@ -3938,42 +4492,50 @@
     {
       "source": "/en/real-time-container/release-notes/v2.0.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.4.1",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.4.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.3.1",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.3.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.2.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.1.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/release-notes/v1.0.0",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
-      "permanent": true
+      "permanent": true,
+      "trailingSlash": true
     },
     {
       "source": "/en/real-time-container/release-notes",
