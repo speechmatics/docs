@@ -172,7 +172,7 @@
     },
     {
       "source": "/introduction",
-      "destination": "/",
+      "destination": "https://docs.speechmatics.com/",
       "permanent": true
     },
     {
@@ -547,22 +547,22 @@
     },
     {
       "source": "/en",
-      "destination": "/",
+      "destination": "https://docs.speechmatics.com/",
       "permanent": true
     },
     {
       "source": "/en/real-time-saas/overview/",
-      "destination": "/",
+      "destination": "https://docs.speechmatics.com/",
       "permanent": true
     },
     {
       "source": "/en/cloud/",
-      "destination": "/",
+      "destination": "https://docs.speechmatics.com/",
       "permanent": true
     },
     {
       "source": "/en/cloud/configuring-job-request/",
-      "destination": "/",
+      "destination": "https://docs.speechmatics.com/",
       "permanent": true
     },
     {
