@@ -16,7 +16,7 @@ const vercelRedirects = [];
 const newRedirectLookup = new Map<string, string>();
 
 for (const redirect of oldRedirects) {
-  vercelRedirects.push({ ...redirect, permanent: true });
+  vercelRedirects.push({ ...redirect, source: normalizePath(redirect.source), permanent: true });
   newRedirectLookup.set(redirect.source, redirect.destination);
 }
 
@@ -31,7 +31,7 @@ for (const redirect of superOldRedirects) {
     }
 
     vercelRedirects.push({
-      source,
+      source: normalizePath(source),
       destination: newDestination,
       permanent: true,
     });

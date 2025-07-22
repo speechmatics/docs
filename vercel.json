@@ -2,7 +2,7 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/jobsapi/",
+      "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true
     },
@@ -287,7 +287,7 @@
       "permanent": true
     },
     {
-      "source": "/on-prem/usage/",
+      "source": "/on-prem/usage",
       "destination": "/deployments/usage-reporting",
       "permanent": true
     },
@@ -472,7 +472,7 @@
       "permanent": true
     },
     {
-      "source": "/sdk/",
+      "source": "/sdk",
       "destination": "/",
       "permanent": true
     },
@@ -552,82 +552,82 @@
       "permanent": true
     },
     {
-      "source": "/en/real-time-saas/overview/",
+      "source": "/en/real-time-saas/overview",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/en/cloud/",
+      "source": "/en/cloud",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/en/cloud/configuring-job-request/",
+      "source": "/en/cloud/configuring-job-request",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/en/cloud/release-notes/",
+      "source": "/en/cloud/release-notes",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
-      "source": "/en/real-time-saas/release-notes/",
+      "source": "/en/real-time-saas/release-notes",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
-      "source": "/en/cloud/introduction/",
+      "source": "/en/cloud/introduction",
       "destination": "/get-started/authentication",
       "permanent": true
     },
     {
-      "source": "/en/cloud/understanding-saas-usage/",
+      "source": "/en/cloud/understanding-saas-usage",
       "destination": "/speech-to-text/batch/input",
       "permanent": true
     },
     {
-      "source": "/en/cloud/troubleshooting/",
+      "source": "/en/cloud/troubleshooting",
       "destination": "/speech-to-text/batch/input",
       "permanent": true
     },
     {
-      "source": "/en/usage-container/",
+      "source": "/en/usage-container",
       "destination": "/deployments/usage-reporting",
       "permanent": true
     },
     {
-      "source": "/en/usage-container/release-notes/",
+      "source": "/en/usage-container/release-notes",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
-      "source": "/en/usage-container/intro/",
+      "source": "/en/usage-container/intro",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
-      "source": "/en/usage-container/api/",
+      "source": "/en/usage-container/api",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
-      "source": "/en/language-identification-container/",
+      "source": "/en/language-identification-container",
       "destination": "/deployments/container/language-id",
       "permanent": true
     },
     {
-      "source": "/en/language-identification-container/quick-start-guide/",
+      "source": "/en/language-identification-container/quick-start-guide",
       "destination": "/deployments/container/language-id",
       "permanent": true
     },
     {
-      "source": "/en/language-identification-container/release-notes/",
+      "source": "/en/language-identification-container/release-notes",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
     },
     {
-      "source": "/en/alignment-service/",
+      "source": "/en/alignment-service",
       "destination": "/speech-to-text/batch/alignment",
       "permanent": true
     },
