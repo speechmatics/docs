@@ -239,13 +239,32 @@ Here's an example of how to start the Container from the command line:
 
 See [Docker docs](https://docs.docker.com/engine/reference/commandline/run/) for a full list of the available options.
 
-### Running in multi-session mode (Real-time)
+### Multi-session containers
 
 By default the real-time container will accept only one websocket connection at a time. To enable multiple connections, set the environment variable `SM_MAX_CONCURRENT_CONNECTIONS` to the maximum number of sessions to allow. When this is set, the `/ready` [health check endpoint](#health-service) will return true if there is a free connection available.
 
-Most memory is shared between connections, but you should expect CPU usage to scale with the number of active sessions.
+CPU usage scales with the number of active sessions, whereas most memory usage is shared between connections. When the transcription container is linked to a GPU inference server, the amount of memory which is shared is further increased.
 
-When the transcription container is linked to a GPU inference server, more memory can be shared because the larger models are handled by the remote GPU. 
+### Reducing initial connection time
+
+The first-session loading time can be reduced down to several hundred milliseconds by prewarming the transcriber.
+
+You can enable this feature by setting the `SM_PREWARM_ENGINE_MODES` environment variable, with a semicolon separated list describing the required engine modes. For example, to prewarm 1 English GPU Standard and 2 English GPU Enhanced:
+`SM_PREWARM_ENGINE_MODES='en_gpu_standard:1;en_gpu_enhanced:2'`
+
+In general, the format is: `{language}_{domain}_{processor}_{operating_point}:{prewarm_connections}`.
+
+The parameters are:
+- `language` - One of the supported [language codes](/speech-to-text/languages)
+
+- `domain` - Optional. One of `general` or a domain used for some [multi-lingual transcription](/speech-to-text/languages#multilingual-speech-to-text) use cases. For example: `SM_PREWARM_ENGINE_MODES='es_bilingual-en_gpu_standard:1'`
+
+- `processor` - One of `cpu` or `gpu`. Note that selecting `gpu` requires a [GPU Inference Container](/deployments/container/gpu-speech-to-text)
+
+- `operating_point` - One of `standard` or `enhanced`. The [operating point](/speech-to-text/#operating-points) you want to prewarm
+
+- `prewarm_connections` - Integer. The number of engine instances of the specific mode you want to pre-warm. The total number of `prewarm_connections` cannot be greater than `SM_MAX_CONCURRENT_CONNECTIONS`. After the pre-warming is complete, this parameter does not limit the types of connections the engine can start.
+
 
 ### Input modes
 
