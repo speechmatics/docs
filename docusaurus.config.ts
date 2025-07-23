@@ -43,6 +43,16 @@ const config: Config = {
 
   markdown: {
     mermaid: true,
+    async parseFrontMatter(params) {
+      const result = await params.defaultParseFrontMatter(params);
+      if (!result.frontMatter.description) {
+        console.error(
+          `Missing description for Markdown/MDX file: ${params.filePath}`,
+        );
+        process.exit(1);
+      }
+      return result;
+    },
   },
 
   presets: [
