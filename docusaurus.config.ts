@@ -164,6 +164,18 @@ const config: Config = {
         },
       },
     ],
+    [
+      "@signalwire/docusaurus-plugin-llms-txt",
+      {
+        siteTitle: "Speechmatics Docs",
+        siteDescription: "Developer documentation for Speechmatics APIs",
+        depth: 2,
+        content: {
+          includePages: true,
+          enableLlmsFullTxt: true, // Optional: generates llms-full.txt
+        },
+      },
+    ],
     sourceLoaderPlugin,
     checkRedirectsPlugin,
   ],
