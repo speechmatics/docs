@@ -14,6 +14,10 @@ const config: Config = {
   title: "Speechmatics Docs",
   tagline: "Speechmatics Documentation",
   favicon: "img/favicon.ico",
+  customFields: {
+    mixpanelToken: process.env.MIXPANEL_PROJECT_TOKEN,
+  },
+
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
@@ -184,6 +188,14 @@ const config: Config = {
     {
       src: "/js/color-theme.js",
       async: true,
+    },
+    {
+      src: "https://consent.cookiebot.com/uc.js",
+      async: false,
+      defer: false,
+      id: "Cookiebot",
+      "data-cbid": "d687cfe6-4b5a-43ff-8e0e-ae6a3a33aeee",
+      "data-blockingmode": "auto",
     },
   ],
   stylesheets: [
