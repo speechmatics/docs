@@ -18,7 +18,6 @@ export default function MixpanelProvider({ children }) {
         track_pageview: true,
         api_host: "https://api-eu.mixpanel.com",
         opt_out_tracking_by_default: true,
-        persistence: "localStorage",
         autocapture: {
           pageview: "full-url",
           click: true,
