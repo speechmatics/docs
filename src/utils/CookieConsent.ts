@@ -87,6 +87,8 @@ declare global {
     __cookieConsentCleanup?: () => void;
   }
 
+// TODO remove when we move to TS 5.9
+// https://github.com/microsoft/TypeScript/issues/61604
   interface CookieChangeEvent extends Event {
     changed?: Array<{ name: string }>;
     deleted?: Array<{ name: string }>;
