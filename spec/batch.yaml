@@ -46,7 +46,7 @@ paths:
           in: formData
           type: string
           description: >-
-            JSON containing a `JobConfig` model indicating the type and parameters for the recognition job.
+            JSON containing a [`JobConfig`](/speech-to-text/batch/input#jobconfig-schema) model indicating the type and parameters for the recognition job.
           required: true
         - name: data_file
           in: formData
@@ -1095,6 +1095,8 @@ definitions:
         - Caller
         - Agent
   NotificationConfig:
+    type: object
+    title: NotificationConfig
     required:
       - url
     properties:
@@ -1303,13 +1305,10 @@ definitions:
           - informative
           - conversational
         default: auto
-        description: >-
+        description: |
           Choose from three options:
-
           - `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.
-
           - `informative` - Recommended for more structured information delivered by one or more people, making it ideal for videos, podcasts, lectures, and presentations.
-
           - `auto` - Automatically selects the most appropriate content type based on an analysis of the transcript.
       summary_length:
         type: string

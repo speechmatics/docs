@@ -10,6 +10,7 @@
 
 # Misc
 .DS_Store
+.env
 .env.local
 .env.development.local
 .env.test.local
@@ -23,3 +24,5 @@ yarn-error.log*
 docs/api-ref/jobs
 docs/api-ref/batch
 static/*.yaml
+.vercel
+.env*.local
