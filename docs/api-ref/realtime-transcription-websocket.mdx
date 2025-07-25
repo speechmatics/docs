@@ -151,6 +151,22 @@ The following values of the `message` field are supported:
   })}
 </Flex>
 
+## Websocket errors
+
+In the Real-time SaaS, an in-band error message can be followed by a WebSocket close message. The table below shows the possible WebSocket close codes and associated error types. The error types are provided in the payload of the close message.
+
+| WebSocket Close Code | WebSocket Close Payload |
+| --- | --- |
+| 1003 | `protocol_error` |
+| 1008 | `policy_violation` |
+| 1011 | `internal_error` |
+| 4001 | `not_authorised` |
+| 4003 | `not_allowed` |
+| 4004 | `invalid_model` |
+| 4005 | `quota_exceeded` |
+| 4006 | `timelimit_exceeded` |
+| 4013 | `job_error` |
+
 {/* Manually generated TOC, since we're using JSX sections */}
 export const toc = [
   { value: "Protocol overview", id: "protocol-overview", level: 2 },
@@ -169,4 +185,5 @@ export const toc = [
     "id": messageName.toLowerCase(),
     "level": 3
   })),
+  { value: "Websocket errors", id: "websocket-errors", level: 2 },
 ]
