@@ -3,7 +3,7 @@ keywords: [speechmatics, transcription, speech recognition, asr, api, limits]
 toc_max_heading_level: 2
 title: 'Input – Batch'
 sidebar_label: 'Input'
-description: 'Learn about the supported input audio formats for the Speechmatics Batch API'
+description: 'Learn about configuration and supported input audio formats for the Speechmatics Batch API'
 ---
 import SchemaNode from "@theme/Schema";
 import batchSchema from "!openapi-schema-loader!@site/spec/batch.yaml";
@@ -34,7 +34,7 @@ The list above is exhaustive - any file format outside the list above is explici
 
 Only files where the type can be determined by data inspection are supported. Raw audio formats where the codec is not embedded in the file cannot be processed in batch mode. This includes files commonly given extensions like ".raw" or ".g729" where the codec is only hinted at in the name.
 
-# Job configuration options
+## Job configuration options
 
 Jobs are configured by passing a JSON string to the `config` field of the `CreateJobRequest` (see [API reference](/api-ref/batch/create-a-new-job))
 
