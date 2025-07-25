@@ -1,0 +1,38 @@
+import React from "react";
+
+import FormTextInput from "@theme/ApiExplorer/FormTextInput";
+import { Param, setParam } from "@theme/ApiExplorer/ParamOptions/slice";
+import { useTypedDispatch } from "@theme/ApiItem/hooks";
+import { Box, Code, Flex } from "@radix-ui/themes";
+
+export interface ParamProps {
+  param: Param;
+}
+
+export default function ParamTextFormItem(props: ParamProps) {
+  const { param } = props;
+  const prefix = param["x-docusaurus-example-prefix"];
+
+  const dispatch = useTypedDispatch();
+  return (
+    <Box asChild my="2">
+      <FormTextInput
+        isRequired={param.required}
+        paramName={param.name}
+        placeholder={param.description || param.name}
+        prefix={prefix}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          dispatch(
+            setParam({
+              ...param,
+              value:
+                param.in === "path" || param.in === "query"
+                  ? `${prefix}${e.target.value.replace(/\s/g, "%20")}`
+                  : `${prefix}${e.target.value}`,
+            }),
+          )
+        }
+      />
+    </Box>
+  );
+}

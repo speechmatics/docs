@@ -22,6 +22,8 @@ parameters:
     name: Authorization
     in: header
     description: Customer API token
+    pattern: "^Bearer .+$"
+    x-docusaurus-example-prefix: "Bearer "
     required: true
     type: string
   EARTag:
