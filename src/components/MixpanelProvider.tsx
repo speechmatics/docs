@@ -36,7 +36,8 @@ export default function MixpanelProvider({ children }) {
 
   useEffect(() => {
     // Only run on client-side and if Mixpanel is initialized
-    if (typeof window === "undefined" || !mixpanel) {
+    if (!token) {
+      console.warn("MixPanel couldn't be initialized");
       return;
     }
 
@@ -47,7 +48,7 @@ export default function MixpanelProvider({ children }) {
       // User has not consented or opted out of statistics tracking
       mixpanel.opt_out_tracking();
     }
-  }, [statistics]);
+  }, [statistics, token]);
 
   return <>{children}</>;
 }
