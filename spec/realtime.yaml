@@ -752,7 +752,7 @@ components:
         | Info Type | Description |
         | --- | --- |
         | `recognition_quality` | Informs the client what particular quality-based model is used to handle the recognition. Sent to the client immediately after the WebSocket handshake is completed.|
-        |`model_redirect`| Informs the client that a deprecated language code has been specified, and will be handled with a different model. For example, if the model parameter is set to one of en-US, en-GB, or en-AU, then the request may be internally redirected to the Global English model (en).
+        |`model_redirect`| Informs the client that a deprecated language code has been specified, and will be handled with a different model. For example, if the model parameter is set to one of `en-US`, `en-GB`, or `en-AU`, then the request may be internally redirected to the Global English model (`en`).
         |`deprecated`| Informs about using a feature that is going to be removed in a future release.
         |`session_transfer`| Informs that the session has been seamlessly transferred to another backend, with the reason: Session has been transferred to a new backend. This typically occurs due to backend maintenance operations or migration from a faulty backend.
 
@@ -773,7 +773,7 @@ components:
         | `idle_timeout` | Informs that the session is approaching the idle duration limit (no audio data sent within the last hour), with a `reason` of the form: <p>`Session will timeout in {time_remaining}m due to inactivity, no audio sent within the last {time_elapsed}m`</p> Currently the server will send messages at 15, 10 and 5m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).
         | `session_timeout` | Informs that the session is approaching the max session duration limit (maximum session duration of 48 hours), with a `reason` of the form: <p>`Session will timeout in {time_remaining}m due to max duration, session has been active for {time_elapsed}m`</p> Currently the server will send messages at 45, 30 and 15m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).|
         | `empty_translation_target_list` | No supported translation target languages specified. Translation will not run.
-        | `add_audio_after_eos` | Protocol specification doesn't allow adding audio after EndOfStream has been received. AddAudio messages after this, will be ignored.
+        | `add_audio_after_eos` | Protocol specification doesn't allow adding audio after `EndOfStream` has been received. Any `AddAudio messages after this, will be ignored.
       enum:
         - duration_limit_exceeded
         - unsupported_translation_pair
