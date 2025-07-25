@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import mixpanel from "mixpanel-browser";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import mixpanel from "mixpanel-browser";
+import React, { useEffect } from "react";
 import { useCookieConsent } from "../hooks/useCookieConsent";
 
 export default function MixpanelProvider({ children }) {
