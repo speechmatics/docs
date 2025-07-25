@@ -137,7 +137,7 @@ components:
       payload:
         $ref: "#/components/schemas/AddTranslation"
     EndOfTranscript:
-      summary: Server response to EndOfStream, after the server has finished sending all AddTranscript messages.
+      summary: Server response to `EndOfStream`, after the server has finished sending all AddTranscript messages.
       payload:
         $ref: "#/components/schemas/EndOfTranscript"
     AudioEventStarted:
@@ -157,7 +157,7 @@ components:
       payload:
         $ref: "#/components/schemas/Warning"
     Error:
-      summary: Error messages sent from the server to the client.
+      summary: Error messages sent from the server to the client. After any error, the transcription is terminated and the connection is closed.
       payload:
         $ref: "#/components/schemas/Error"
   schemas:
@@ -358,13 +358,22 @@ components:
         seq_no:
           type: integer
         quality:
+          description: >-
+            Only set when `type` is `recognition_quality`. Quality-based model name. It is one of "telephony", "broadcast". The model is selected automatically, for high-quality audio (12kHz+) the broadcast model is used, for lower quality audio the telephony model is used.
           type: string
         usage:
+          description: >-
+            Only set when `type` is `concurrent_session_usage`. Indicates the current usage (number of active concurrent sessions).
           type: number
         quota:
+          description: >-
+            Only set when `type` is `concurrent_session_usage`. Indicates the current quota (maximum number of concurrent sessions allowed).
           type: number
         last_updated:
+          description: >-
+            Only set when `type` is `concurrent_session_usage`. Indicates the timestamp of the most recent usage update, in the format `YYYY-MM-DDTHH:MM:SSZ` (UTC). This value is updated even when usage exceeds the quota, as it represents the most recent known data. In some cases, it may be empty or outdated due to internal errors preventing successful update.
           type: string
+          example: "2025-03-25T08:45:31Z"
       required:
         - message
         - type
@@ -383,6 +392,8 @@ components:
         seq_no:
           type: integer
         duration_limit:
+          description: >-
+            Only set when `type` is `duration_limit_exceeded`. Indicates the limit that was exceeded (in seconds).
           type: number
       required:
         - message
@@ -735,6 +746,16 @@ components:
         - to
     InfoTypeEnum:
       type: string
+      description: |
+        The following are the possible info types:
+
+        | Info Type | Description |
+        | --- | --- |
+        | `recognition_quality` | Informs the client what particular quality-based model is used to handle the recognition. Sent to the client immediately after the WebSocket handshake is completed.|
+        |`model_redirect`| Informs the client that a deprecated language code has been specified, and will be handled with a different model. For example, if the model parameter is set to one of `en-US`, `en-GB`, or `en-AU`, then the request may be internally redirected to the Global English model (`en`).
+        |`deprecated`| Informs about using a feature that is going to be removed in a future release.
+        |`session_transfer`| Informs that the session has been seamlessly transferred to another backend, with the reason: Session has been transferred to a new backend. This typically occurs due to backend maintenance operations or migration from a faulty backend.
+
       enum:
         - recognition_quality
         - model_redirect
@@ -742,15 +763,65 @@ components:
         - concurrent_session_usage
     WarningTypeEnum:
       type: string
+      description: |
+        The following are the possible warning types:
+
+        | Warning Type | Description |
+        | --- | --- |
+        | `duration_limit_exceeded` | The maximum allowed duration of a single utterance to process has been exceeded. Any `AddAudio` messages received that exceed this limit are confirmed with `AudioAdded`, but are ignored by the transcription engine. Exceeding the limit triggers the same mechanism as receiving an `EndOfStream` message, so the Server will eventually send an `EndOfTranscript` message and suspend.
+        | `unsupported_translation_pair` | One of the requested translation target languages is unsupported (given the source audio language). The error message specifies the unsupported language pair.
+        | `idle_timeout` | Informs that the session is approaching the idle duration limit (no audio data sent within the last hour), with a `reason` of the form: <p>`Session will timeout in {time_remaining}m due to inactivity, no audio sent within the last {time_elapsed}m`</p> Currently the server will send messages at 15, 10 and 5m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).
+        | `session_timeout` | Informs that the session is approaching the max session duration limit (maximum session duration of 48 hours), with a `reason` of the form: <p>`Session will timeout in {time_remaining}m due to max duration, session has been active for {time_elapsed}m`</p> Currently the server will send messages at 45, 30 and 15m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).|
+        | `empty_translation_target_list` | No supported translation target languages specified. Translation will not run.
+        | `add_audio_after_eos` | Protocol specification doesn't allow adding audio after `EndOfStream` has been received. Any `AddAudio messages after this, will be ignored.
       enum:
         - duration_limit_exceeded
+        - unsupported_translation_pair
+        - idle_timeout
+        - session_timeout
+        - empty_translation_target_list
+        - add_audio_after_eos
     ErrorTypeEnum:
       type: string
+      # TODO if OpenAPI/AsyncAPI ever adds enum descriptors, we can move this description there
+      # https://github.com/OAI/OpenAPI-Specification/issues/348
+      # In the meantime we just have a long description of the different enum variants
+      description: |
+        The following are the possible error types:
+
+        | Error Type | Description |
+        | --- | --- |
+        | `invalid_message` | The message received was not understood. |
+        | `invalid_model` | Unable to use the model for the recognition. This can happen if the language is not supported at all, or is not available for the user. |
+        | `invalid_config` | The config received contains some wrong or unsupported fields, or too many translation target languages were requested. |
+        | `invalid_audio_type` | Audio type is not supported, is deprecated, or the `audio_type` is malformed. |
+        | `invalid_output_format` | Output format is not supported, is deprecated, or the `output_format` is malformed. |
+        | `not_authorised` | User was not recognised, or the API key provided is not valid. |
+        | `insufficient_funds` | User doesn't have enough credits or any other reason preventing the user to be charged for the job properly. |
+        | `not_allowed` | User is not allowed to use this message (is not allowed to perform the action the message would invoke). |
+        | `job_error` | Unable to do any work on this job, the server might have timed out etc. |
+        | `data_error` | Unable to accept the data specified - usually because there is too much data being sent at once |
+        | `buffer_error` | Unable to fit the data in a corresponding buffer. This can happen for clients sending the input data faster than real-time. |
+        | `protocol_error` | Message received was syntactically correct, but could not be accepted due to protocol limitations. This is usually caused by messages sent in the wrong order. |
+        | `quota_exceeded` | Maximum number of concurrent connections allowed for the contract has been reached |
+        | `timelimit_exceeded` | Usage quota for the contract has been reached |
+        | `idle_timeout` | Idle duration limit was reached (no audio data sent within the last hour), a closing handshake with code 1008 follows this in-band error. |
+        | `session_timeout` | Max session duration was reached (maximum session duration of 48 hours), a closing handshake with code 1008 follows this in-band error. |
+        | `session_transfer` | An error while transferring session to another backend with the reason: Session transfer failed. This may occur when moving sessions due to backend maintenance operations or migration from a faulty backend. |
+        | `unknown_error` | An error that did not fit any of the types above. |
+
+        :::info
+
+        `invalid_message`, `protocol_error` and `unknown_error` can be triggered as a response to any type of messages.
+
+        :::
+
       enum:
         - invalid_message
         - invalid_model
         - invalid_config
         - invalid_audio_type
+        - invalid_output_format
         - not_authorised
         - insufficient_funds
         - not_allowed
@@ -758,8 +829,11 @@ components:
         - data_error
         - buffer_error
         - protocol_error
-        - timelimit_exceeded
         - quota_exceeded
+        - timelimit_exceeded
+        - idle_timeout
+        - session_timeout
+        - session_transfer
         - unknown_error
     AudioEventStartData:
       type: object
