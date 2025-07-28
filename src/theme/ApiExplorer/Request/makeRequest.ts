@@ -1,15 +1,15 @@
-import { Body } from "@theme/ApiExplorer/Body/slice";
-import sdk from "postman-collection";
+import type { Body } from "@theme/ApiExplorer/Body/slice";
+import type sdk from "postman-collection";
 
 function fetchWithtimeout(
   url: string,
   options: RequestInit,
-  timeout = 5000
-): any {
+  timeout = 5000,
+): Promise<Response> {
   return Promise.race([
     fetch(url, options),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Request timed out")), timeout)
+    new Promise<Response>((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out")), timeout),
     ),
   ]);
 }
@@ -40,17 +40,18 @@ async function loadImage(content: Blob): Promise<string | ArrayBuffer | null> {
 async function makeRequest(
   request: sdk.Request,
   proxy: string | undefined,
-  _body: Body
+  _body: Body,
 ) {
   const headers = request.toJSON().header;
+  console.log("makeRequest", request);
 
-  let myHeaders = new Headers();
+  const myHeaders = new Headers();
   if (headers) {
-    headers.forEach((header: any) => {
+    for (const header of headers) {
       if (header.key && header.value) {
         myHeaders.append(header.key, header.value);
       }
-    });
+    }
   }
 
   // The following code handles multiple files in the same formdata param.
@@ -182,66 +183,66 @@ async function makeRequest(
   let finalUrl = request.url.toString();
   if (proxy) {
     // Ensure the proxy ends with a slash.
-    let normalizedProxy = proxy.replace(/\/$/, "") + "/";
+    const normalizedProxy = `${proxy.replace(/\/$/, "")}/`;
     finalUrl = normalizedProxy + request.url.toString();
   }
 
-  return fetchWithtimeout(finalUrl, requestOptions).then((response: any) => {
-    const contentType = response.headers.get("content-type");
-    let fileExtension = "";
+  return fetchWithtimeout(finalUrl, requestOptions).then(
+    (response: Response) => {
+      const contentType = response.headers.get("content-type");
+      let fileExtension = "";
 
-    if (contentType) {
-      if (contentType.includes("application/pdf")) {
-        fileExtension = ".pdf";
-      } else if (contentType.includes("image/jpeg")) {
-        fileExtension = ".jpg";
-      } else if (contentType.includes("image/png")) {
-        fileExtension = ".png";
-      } else if (contentType.includes("image/gif")) {
-        fileExtension = ".gif";
-      } else if (contentType.includes("image/webp")) {
-        fileExtension = ".webp";
-      } else if (contentType.includes("video/mpeg")) {
-        fileExtension = ".mpeg";
-      } else if (contentType.includes("video/mp4")) {
-        fileExtension = ".mp4";
-      } else if (contentType.includes("audio/mpeg")) {
-        fileExtension = ".mp3";
-      } else if (contentType.includes("audio/ogg")) {
-        fileExtension = ".ogg";
-      } else if (contentType.includes("application/octet-stream")) {
-        fileExtension = ".bin";
-      } else if (contentType.includes("application/zip")) {
-        fileExtension = ".zip";
+      if (contentType) {
+        if (contentType.includes("application/pdf")) {
+          fileExtension = ".pdf";
+        } else if (contentType.includes("image/jpeg")) {
+          fileExtension = ".jpg";
+        } else if (contentType.includes("image/png")) {
+          fileExtension = ".png";
+        } else if (contentType.includes("image/gif")) {
+          fileExtension = ".gif";
+        } else if (contentType.includes("image/webp")) {
+          fileExtension = ".webp";
+        } else if (contentType.includes("video/mpeg")) {
+          fileExtension = ".mpeg";
+        } else if (contentType.includes("video/mp4")) {
+          fileExtension = ".mp4";
+        } else if (contentType.includes("audio/mpeg")) {
+          fileExtension = ".mp3";
+        } else if (contentType.includes("audio/ogg")) {
+          fileExtension = ".ogg";
+        } else if (contentType.includes("application/octet-stream")) {
+          fileExtension = ".bin";
+        } else if (contentType.includes("application/zip")) {
+          fileExtension = ".zip";
+        }
+
+        if (fileExtension) {
+          return response.blob().then((blob) => {
+            const url = window.URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            // Now the file name includes the extension
+            link.setAttribute("download", `file${fileExtension}`);
+
+            // These two lines are necessary to make the link click in Firefox
+            link.style.display = "none";
+            document.body.appendChild(link);
+
+            link.click();
+
+            // After link is clicked, it's safe to remove it.
+            setTimeout(() => document.body.removeChild(link), 0);
+
+            return response;
+          });
+        }
       }
 
-      if (fileExtension) {
-        return response.blob().then((blob: any) => {
-          const url = window.URL.createObjectURL(blob);
-
-          const link = document.createElement("a");
-          link.href = url;
-          // Now the file name includes the extension
-          link.setAttribute("download", `file${fileExtension}`);
-
-          // These two lines are necessary to make the link click in Firefox
-          link.style.display = "none";
-          document.body.appendChild(link);
-
-          link.click();
-
-          // After link is clicked, it's safe to remove it.
-          setTimeout(() => document.body.removeChild(link), 0);
-
-          return response;
-        });
-      } else {
-        return response;
-      }
-    }
-
-    return response;
-  });
+      return response;
+    },
+  );
 }
 
 export default makeRequest;

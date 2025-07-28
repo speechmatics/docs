@@ -5,20 +5,20 @@ import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import Accept from "@theme/ApiExplorer/Accept";
 import Authorization from "@theme/ApiExplorer/Authorization";
 import Body from "@theme/ApiExplorer/Body";
-import buildPostmanRequest from "@theme/ApiExplorer/buildPostmanRequest";
 import ContentType from "@theme/ApiExplorer/ContentType";
 import ParamOptions from "@theme/ApiExplorer/ParamOptions";
 import {
-  setResponse,
-  setCode,
   clearCode,
-  setHeaders,
   clearHeaders,
+  setCode,
+  setHeaders,
+  setResponse,
 } from "@theme/ApiExplorer/Response/slice";
 import Server from "@theme/ApiExplorer/Server";
+import buildPostmanRequest from "@theme/ApiExplorer/buildPostmanRequest";
 import { useTypedDispatch, useTypedSelector } from "@theme/ApiItem/hooks";
-import { ParameterObject } from "docusaurus-plugin-openapi-docs/src/openapi/types";
-import { ApiItem } from "docusaurus-plugin-openapi-docs/src/types";
+import type { ParameterObject } from "docusaurus-plugin-openapi-docs/src/openapi/types";
+import type { ApiItem } from "docusaurus-plugin-openapi-docs/src/types";
 import sdk from "postman-collection";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -29,18 +29,30 @@ function Request({ item }: { item: ApiItem }) {
   const metadata = useDoc();
   const { proxy, hide_send_button: hideSendButton } = metadata.frontMatter;
 
-  const pathParams = useTypedSelector((state: any) => state.params.path);
-  const queryParams = useTypedSelector((state: any) => state.params.query);
-  const cookieParams = useTypedSelector((state: any) => state.params.cookie);
-  const contentType = useTypedSelector((state: any) => state.contentType.value);
-  const headerParams = useTypedSelector((state: any) => state.params.header);
-  const body = useTypedSelector((state: any) => state.body);
-  const accept = useTypedSelector((state: any) => state.accept.value);
-  const acceptOptions = useTypedDispatch((state: any) => state.accept.options);
-  const authSelected = useTypedSelector((state: any) => state.auth.selected);
-  const server = useTypedSelector((state: any) => state.server.value);
-  const serverOptions = useTypedSelector((state: any) => state.server.options);
-  const auth = useTypedSelector((state: any) => state.auth);
+  const pathParams = useTypedSelector((state: unknown) => state.params.path);
+  const queryParams = useTypedSelector((state: unknown) => state.params.query);
+  const cookieParams = useTypedSelector(
+    (state: unknown) => state.params.cookie,
+  );
+  const contentType = useTypedSelector(
+    (state: unknown) => state.contentType.value,
+  );
+  const headerParams = useTypedSelector(
+    (state: unknown) => state.params.header,
+  );
+  const body = useTypedSelector((state: unknown) => state.body);
+  const accept = useTypedSelector((state: unknown) => state.accept.value);
+  const acceptOptions = useTypedDispatch(
+    (state: unknown) => state.accept.options,
+  );
+  const authSelected = useTypedSelector(
+    (state: unknown) => state.auth.selected,
+  );
+  const server = useTypedSelector((state: unknown) => state.server.value);
+  const serverOptions = useTypedSelector(
+    (state: unknown) => state.server.options,
+  );
+  const auth = useTypedSelector((state: unknown) => state.auth);
   const dispatch = useTypedDispatch();
 
   const [expandAccept, setExpandAccept] = useState(true);
@@ -78,13 +90,11 @@ function Request({ item }: { item: ApiItem }) {
     cookie: [] as ParameterObject[],
   };
 
-  item.parameters?.forEach(
-    (param: { in: "path" | "query" | "header" | "cookie" }) => {
-      const paramType = param.in;
-      const paramsArray: ParameterObject[] = paramsObject[paramType];
-      paramsArray.push(param as ParameterObject);
-    }
-  );
+  for (const param of item.parameters) {
+    const paramType = param.in;
+    const paramsArray: ParameterObject[] = paramsObject[paramType];
+    paramsArray.push(param as ParameterObject);
+  }
 
   const methods = useForm({ shouldFocusError: false });
 
@@ -119,7 +129,7 @@ function Request({ item }: { item: ApiItem }) {
       } else {
         await handleResponse(res);
       }
-    } catch (e: any) {
+    } catch (e) {
       console.log(e);
       dispatch(setResponse("Connection failed"));
       dispatch(clearCode());
@@ -173,6 +183,7 @@ function Request({ item }: { item: ApiItem }) {
         <div className="openapi-explorer__request-header-container">
           <span className="openapi-explorer__request-title">Request </span>
           {allDetailsExpanded ? (
+            // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
             <span
               className="openapi-explorer__expand-details-btn"
               onClick={collapseAllDetails}
@@ -180,6 +191,7 @@ function Request({ item }: { item: ApiItem }) {
               Collapse all
             </span>
           ) : (
+            // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
             <span
               className="openapi-explorer__expand-details-btn"
               onClick={expandAllDetails}
@@ -194,6 +206,7 @@ function Request({ item }: { item: ApiItem }) {
               open={expandServer}
               className="openapi-explorer__details-container"
             >
+              {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
               <summary
                 className="openapi-explorer__details-summary"
                 onClick={(e) => {
@@ -211,6 +224,7 @@ function Request({ item }: { item: ApiItem }) {
               open={expandAuth}
               className="openapi-explorer__details-container"
             >
+              {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
               <summary
                 className="openapi-explorer__details-summary"
                 onClick={(e) => {
@@ -230,6 +244,7 @@ function Request({ item }: { item: ApiItem }) {
               }
               className="openapi-explorer__details-container"
             >
+              {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
               <summary
                 className="openapi-explorer__details-summary"
                 onClick={(e) => {
@@ -247,6 +262,7 @@ function Request({ item }: { item: ApiItem }) {
               open={expandBody}
               className="openapi-explorer__details-container"
             >
+              {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
               <summary
                 className="openapi-explorer__details-summary"
                 onClick={(e) => {
@@ -276,6 +292,7 @@ function Request({ item }: { item: ApiItem }) {
               open={expandAccept}
               className="openapi-explorer__details-container"
             >
+              {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
               <summary
                 className="openapi-explorer__details-summary"
                 onClick={(e) => {

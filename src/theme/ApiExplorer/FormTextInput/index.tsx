@@ -1,10 +1,9 @@
 import type React from "react";
-import { forwardRef } from "react";
+import { forwardRef, useCallback } from "react";
 
 import { ErrorMessage } from "@hookform/error-message";
-import clsx from "clsx";
-import { useFormContext } from "react-hook-form";
-import { TextField, Text } from "@radix-ui/themes";
+import { Text, TextField } from "@radix-ui/themes";
+import { useController, useFormContext } from "react-hook-form";
 
 export interface Props {
   isRequired?: boolean;
@@ -23,30 +22,44 @@ const FormTextInput = forwardRef<HTMLInputElement, Props>(
       value,
       placeholder,
       password,
-      onChange,
       paramName,
       prefix,
       ...props
     }: Props,
     ref,
   ) => {
+    console.log(props);
+
     placeholder = placeholder?.split("\n")[0];
 
     const {
-      register,
       formState: { errors },
     } = useFormContext();
 
     const showErrorMessage = errors?.[paramName]?.message;
+
+    const controller = useController({
+      name: paramName,
+      rules: {
+        required: isRequired ? "This field is required" : false,
+      },
+    });
+
+    const onChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        controller.field.onChange(e);
+        props.onChange?.(e);
+      },
+      [controller, props.onChange],
+    );
 
     return (
       <>
         <TextField.Root
           ref={ref}
           {...props}
-          {...register(paramName, {
-            required: isRequired ? "This field is required" : false,
-          })}
+          type={password ? "password" : "text"}
+          onChange={onChange}
         >
           <TextField.Slot>
             <Text color="gray">{prefix}</Text>

@@ -1,9 +1,9 @@
-import React from "react";
+import type React from "react";
 
-import FormTextInput from "@theme/ApiExplorer/FormTextInput";
-import { Param, setParam } from "@theme/ApiExplorer/ParamOptions/slice";
-import { useTypedDispatch } from "@theme/ApiItem/hooks";
 import { Box, Code, Flex } from "@radix-ui/themes";
+import FormTextInput from "@theme/ApiExplorer/FormTextInput";
+import { type Param, setParam } from "@theme/ApiExplorer/ParamOptions/slice";
+import { useTypedDispatch } from "@theme/ApiItem/hooks";
 
 export interface ParamProps {
   param: Param;
@@ -21,8 +21,9 @@ export default function ParamTextFormItem(props: ParamProps) {
         paramName={param.name}
         placeholder={param.description || param.name}
         prefix={prefix}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          dispatch(
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          console.log("DISPATCH", e);
+          return dispatch(
             setParam({
               ...param,
               value:
@@ -30,8 +31,8 @@ export default function ParamTextFormItem(props: ParamProps) {
                   ? `${prefix}${e.target.value.replace(/\s/g, "%20")}`
                   : `${prefix}${e.target.value}`,
             }),
-          )
-        }
+          );
+        }}
       />
     </Box>
   );

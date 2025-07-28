@@ -129,6 +129,7 @@ html[data-theme="dark"] {
   --ifm-color-primary-lightest: var(--accent-7);
 
   --color-background: var(--gray-3);
+  --segmented-control-indicator-background-color: var(--color-panel);
   --ifm-background-color: var(--gray-3);
   --base-card-surface-hover-box-shadow: 0 0 0 1px
     color-mix(in oklab, var(--gray-a8), var(--gray-8) 25%);
