@@ -1,8 +1,9 @@
 import type React from "react";
-import { forwardRef, useCallback } from "react";
+import { forwardRef, useCallback, useEffect } from "react";
 
+import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import { ErrorMessage } from "@hookform/error-message";
-import { Text, TextField } from "@radix-ui/themes";
+import { Box, Text, TextArea, TextField } from "@radix-ui/themes";
 import { useController, useFormContext } from "react-hook-form";
 
 export interface Props {
@@ -11,11 +12,11 @@ export interface Props {
   value?: string;
   placeholder?: string;
   password?: boolean;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   prefix?: string;
 }
 
-const FormTextInput = forwardRef<HTMLInputElement, Props>(
+const FormTextInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
   (
     {
       isRequired,
@@ -28,8 +29,6 @@ const FormTextInput = forwardRef<HTMLInputElement, Props>(
     }: Props,
     ref,
   ) => {
-    console.log(props);
-
     placeholder = placeholder?.split("\n")[0];
 
     const {
@@ -46,17 +45,56 @@ const FormTextInput = forwardRef<HTMLInputElement, Props>(
     });
 
     const onChange = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
+      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         controller.field.onChange(e);
         props.onChange?.(e);
       },
       [controller, props.onChange],
     );
 
+    const docId = useDoc().metadata.id;
+    const isJobConfig =
+      docId === "api-ref/batch/create-a-new-job" && paramName === "config";
+
+    useEffect(() => {
+      if (isJobConfig) {
+        controller.field.onChange(ref?.current?.value);
+      }
+    }, [isJobConfig, controller]);
+
+    if (isJobConfig) {
+      return (
+        <>
+          <Box asChild my="2" minHeight="12em">
+            <TextArea
+              // Slightly bad typing here, if there's a better way I'd love to know it
+              ref={ref as React.Ref<HTMLTextAreaElement>}
+              {...props}
+              value={controller.field.value}
+              defaultValue={DEFAULT_JOB_CONFIG}
+              onChange={onChange}
+              style={{
+                fontFamily: "var(--code-font-family)",
+              }}
+            />
+          </Box>
+          {showErrorMessage && (
+            <ErrorMessage
+              errors={errors}
+              name={paramName}
+              render={({ message }) => (
+                <div className="openapi-explorer__input-error">{message}</div>
+              )}
+            />
+          )}
+        </>
+      );
+    }
     return (
       <>
         <TextField.Root
-          ref={ref}
+          // Slightly bad typing here, if there's a better way I'd love to know it
+          ref={ref as React.Ref<HTMLInputElement>}
           {...props}
           type={password ? "password" : "text"}
           onChange={onChange}
@@ -77,50 +115,19 @@ const FormTextInput = forwardRef<HTMLInputElement, Props>(
         )}
       </>
     );
-    // return (
-    //   <>
-    //     {paramName ? (
-    //       <input
-    //         {...props}
-    //         ref={ref}
-    //         {...register(paramName, {
-    //           required: isRequired ? "This field is required" : false,
-    //         })}
-    //         className={clsx("openapi-explorer__form-item-input", {
-    //           error: showErrorMessage,
-    //         })}
-    //         type={password ? "password" : "text"}
-    //         placeholder={placeholder}
-    //         title={placeholder}
-    //         value={value}
-    //         onChange={onChange}
-    //         autoComplete="off"
-    //       />
-    //     ) : (
-    //       <input
-    //         {...props}
-    //         ref={ref}
-    //         className="openapi-explorer__form-item-input"
-    //         type={password ? "password" : "text"}
-    //         placeholder={placeholder}
-    //         title={placeholder}
-    //         value={value}
-    //         onChange={onChange}
-    //         autoComplete="off"
-    //       />
-    //     )}
-    //     {showErrorMessage && (
-    //       <ErrorMessage
-    //         errors={errors}
-    //         name={paramName}
-    //         render={({ message }) => (
-    //           <div className="openapi-explorer__input-error">{message}</div>
-    //         )}
-    //       />
-    //     )}
-    //   </>
-    // );
   },
+);
+
+const DEFAULT_JOB_CONFIG = JSON.stringify(
+  {
+    type: "transcription",
+    transcription_config: {
+      language: "en",
+      operating_point: "enhanced",
+    },
+  },
+  null,
+  2,
 );
 
 export default FormTextInput;
