@@ -1,9 +1,9 @@
 import type React from "react";
-import { forwardRef, useCallback, useEffect } from "react";
+import { forwardRef, useCallback, useEffect, useRef } from "react";
 
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import { ErrorMessage } from "@hookform/error-message";
-import { Box, Text, TextArea, TextField } from "@radix-ui/themes";
+import { Box, Button, Text, TextArea, TextField } from "@radix-ui/themes";
 import { useController, useFormContext } from "react-hook-form";
 
 export interface Props {
@@ -46,6 +46,7 @@ const FormTextInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
 
     const onChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        console.log("ONCHANGE");
         controller.field.onChange(e);
         props.onChange?.(e);
       },
@@ -56,22 +57,30 @@ const FormTextInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
     const isJobConfig =
       docId === "api-ref/batch/create-a-new-job" && paramName === "config";
 
-    useEffect(() => {
-      if (isJobConfig) {
-        controller.field.onChange(ref?.current?.value);
-      }
-    }, [isJobConfig, controller]);
-
     if (isJobConfig) {
       return (
         <>
+          <Button
+            size="1"
+            variant="soft"
+            color="gray"
+            onClick={() => {
+              controller.field.onChange(DEFAULT_JOB_CONFIG);
+              onChange({
+                target: {
+                  value: DEFAULT_JOB_CONFIG,
+                },
+              });
+            }}
+          >
+            Set default
+          </Button>
           <Box asChild my="2" minHeight="12em">
             <TextArea
               // Slightly bad typing here, if there's a better way I'd love to know it
               ref={ref as React.Ref<HTMLTextAreaElement>}
               {...props}
               value={controller.field.value}
-              defaultValue={DEFAULT_JOB_CONFIG}
               onChange={onChange}
               style={{
                 fontFamily: "var(--code-font-family)",

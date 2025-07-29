@@ -11,7 +11,7 @@ export interface ParamProps {
 
 export default function ParamTextFormItem(props: ParamProps) {
   const { param } = props;
-  const prefix = param["x-docusaurus-example-prefix"];
+  const prefix = param["x-docusaurus-example-prefix"] || "";
 
   const dispatch = useTypedDispatch();
   return (
