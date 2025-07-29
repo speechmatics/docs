@@ -1,6 +1,6 @@
 import type React from "react";
 
-import { Box, Code, Flex } from "@radix-ui/themes";
+import { Box } from "@radix-ui/themes";
 import FormTextInput from "@theme/ApiExplorer/FormTextInput";
 import { type Param, setParam } from "@theme/ApiExplorer/ParamOptions/slice";
 import { useTypedDispatch } from "@theme/ApiItem/hooks";

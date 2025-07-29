@@ -46,7 +46,6 @@ const FormTextInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
 
     const onChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        console.log("ONCHANGE");
         controller.field.onChange(e);
         props.onChange?.(e);
       },
@@ -64,9 +63,11 @@ const FormTextInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
             size="1"
             variant="soft"
             color="gray"
+            type="button"
             onClick={() => {
               controller.field.onChange(DEFAULT_JOB_CONFIG);
               onChange({
+                // @ts-ignore: This can be refined another time
                 target: {
                   value: DEFAULT_JOB_CONFIG,
                 },
