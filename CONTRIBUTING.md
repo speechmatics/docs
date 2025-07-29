@@ -4,7 +4,7 @@ We welcome contributions to the docs. Please file an issue, or open a PR if you 
 
 ## Style guide
 
-Please refer to the [style guide][./windsurf/rules/docs-style-guide.md] for information on writing standards, style and tone of voice. If you're using Windsurf, these rules should be taken into account automatically.
+Please refer to the [style guide](./windsurf/rules/docs-style-guide.md) for information on writing standards, style and tone of voice. If you're using Windsurf, these rules should be taken into account automatically.
 
 ## Project structure
 
