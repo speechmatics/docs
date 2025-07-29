@@ -8,6 +8,8 @@ This project has been started as part of ongoing work to revamp the existing doc
 
 At the moment, this repo is private, and is deployed to Vercel for visibility. It's just here to get the initial work going before we launch.
 
+## Project overview
+
 ### Installation
 
 ```
