@@ -723,6 +723,7 @@ components:
           minimum: 0
           maximum: 100
     TranscriptFilteringConfig:
+      type: object
       properties:
         remove_disfluencies:
           type: boolean
