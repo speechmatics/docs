@@ -50,12 +50,11 @@ const MixpanelTracker = React.memo(
 
     const routerLocation = useLocation();
 
-    // Track page views with a delay to ensure the title is updated
+    // Track page views using MutationObserver to detect title changes
     useEffect(() => {
       if (typeof window === "undefined" || !token || !hasConsent) return;
 
-      // Set a timeout to track the page view after a delay
-      const timer = setTimeout(() => {
+      const trackPageView = () => {
         const pageTitle = document.title;
         const url =
           window.location.origin +
@@ -69,7 +68,6 @@ const MixpanelTracker = React.memo(
           pageTitle !== "Loading..." &&
           !pageTitle.includes("undefined")
         ) {
-          console.log("Tracking page view with title: ", pageTitle);
           mixpanel.track("Page View", {
             "Page Title": pageTitle,
             URL: url,
@@ -78,10 +76,48 @@ const MixpanelTracker = React.memo(
             event_source: "docs",
           });
         }
-      }, 1000); // 1 second delay
+      };
 
-      // Cleanup function to clear the timeout if the component unmounts or dependencies change
-      return () => clearTimeout(timer);
+      let initialPageViewTimer: ReturnType<typeof setTimeout> | undefined;
+
+      const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          if (
+            mutation.type === "childList" &&
+            mutation.target.nodeName === "TITLE"
+          ) {
+            // Clear any pending initial page view timer since we have a title change
+            if (initialPageViewTimer) {
+              clearTimeout(initialPageViewTimer);
+              initialPageViewTimer = undefined;
+            }
+
+            // Title has changed, now we can use document.title
+            trackPageView();
+          }
+        }
+      });
+
+      // Observe changes to the title element
+      const titleElement = document.querySelector("title");
+
+      if (titleElement) {
+        observer.observe(titleElement, { childList: true });
+
+        // Set a timeout to track the initial page view if the title doesn't change
+        // This handles direct URL visits where the title doesn't change dynamically
+        initialPageViewTimer = setTimeout(() => {
+          initialPageViewTimer = undefined;
+          trackPageView();
+        }, 500); // 500ms delay to allow for any title changes to happen first
+      }
+
+      return () => {
+        if (initialPageViewTimer) {
+          clearTimeout(initialPageViewTimer);
+        }
+        observer.disconnect();
+      };
     }, [routerLocation.pathname, routerLocation.search, hasConsent, token]);
 
     return null;
