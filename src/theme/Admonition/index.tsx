@@ -26,7 +26,7 @@ export default function Admonition(unprocessedProps: Props): ReactNode {
   const color = admonitionMap[props.type].color;
 
   return (
-    <Box asChild mb="3">
+    <Box asChild mb="3" minWidth="0">
       <Callout.Root
         variant="surface"
         color={color}
@@ -38,7 +38,7 @@ export default function Admonition(unprocessedProps: Props): ReactNode {
             <Icon />
           </Box>
         </Callout.Icon>
-        <Text size="2" as="span">
+        <Text size="2" as="span" style={{ minWidth: 0 }}>
           {props.children}
         </Text>
       </Callout.Root>

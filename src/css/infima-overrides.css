@@ -105,6 +105,7 @@ html[data-theme="dark"] {
   --docusaurus-progress-bar-color: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-secondary-darkest);
   --ifm-menu-color-active: var(--ifm-color-secondary-darkest);
+  --ifm-link-color: var(--cyan-10);
 
   --ifm-color-content: var(--ifm-color-emphasis-900);
   --ifm-color-content-inverse: var(--ifm-color-content);
@@ -147,6 +148,15 @@ html {
 
 .radix-themes * {
   outline-color: var(--accent-a9);
+}
+
+/* Make links theme-aligned by default */
+.radix-themes a:not([class]) {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+
+  color: var(--accent-11);
 }
 
 /* Duplicating the Radix link styles, since Docusaurus imposes them at higher specificity */
