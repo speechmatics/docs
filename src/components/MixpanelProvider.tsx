@@ -27,10 +27,6 @@ export default function MixpanelProvider({ children }) {
           capture_text_content: false,
         },
       });
-
-      mixpanel.register({
-        event_source: "docs",
-      });
     }
   }, [token]);
 
