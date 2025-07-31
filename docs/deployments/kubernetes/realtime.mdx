@@ -11,6 +11,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Real-Time
 
+:::info
+Speechmatics helm charts are currently a preview offering.
+:::
+
 ## Quick Start
 
 ### Installation
@@ -167,8 +171,7 @@ helm uninstall speechmatics-realtime
 
 *Why should I use the sm-realtime Helm chart over a Docker container deployment?*
 
-> The sm-realtime chart is the recommended way of running Speechmatics containers for production environments.
-  It provides a set of containers which will help protect and auto-scale sensitive websocket connections, and ensure performance with session capacity management. 
+> The sm-realtime chart provides a set of containers which will help protect and auto-scale sensitive websocket connections, and ensure performance with session capacity management. 
   It also provides cost benefits with custom scheduling to help bin-pack active workers onto busy Kubernetes nodes.
 
 *What is SessionGroups?*
