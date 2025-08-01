@@ -10,7 +10,7 @@ import SchemaNode from '@theme/Schema'
 import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
 import checkJobStatusUnixSample from './assets/check-job-status.sh'
 import checkMultipleJobsStatusUnixSample from './assets/check-multiple-jobs-status.sh'
-import transcriptResponseSchema from "!openapi-schema-loader!@site/spec/batch.yaml"
+import batchSchema from "!openapi-schema-loader!@site/spec/batch.yaml"
 
 # Output
 
@@ -116,4 +116,46 @@ Below is the schema for the transcript response when using the default JSON form
 
 Please refer to our [API Reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#responses) for further details.
 
-<SchemaNode schema={transcriptResponseSchema.paths["/jobs/{jobid}/transcript"].get.responses["200"].schema} />
+<SchemaNode schema={batchSchema.paths["/jobs/{jobid}/transcript"].get.responses["200"].schema} />
+
+## Tracking metadata
+
+You can optionally add tracking metadata to a job when you create it. This can be used for tracking the job through your own management workflow.
+
+The metadata will be returned when you [check job status](#check-single-job-status), or [get the transcript](/api-ref/batch/get-the-transcript-for-a-transcription-job) for a transcription job.
+
+The metadata object can contain the following properties:
+
+### `tracking`
+
+<SchemaNode schema={batchSchema.definitions.TrackingData} />
+
+For example:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en"
+  },
+  // highlight-start
+  "tracking": {
+    "title": "ACME Q12018 Statement",
+    "reference": "/data/clients/ACME/statements/segs/2018Q1-seg8",
+    "tags": [
+      "quick-review",
+      "segment"
+    ],
+    "details": {
+      "user_type": "agent",
+      "client": {
+        "name": "ACME Corp",
+        "type": "enterprise"
+        },
+      "seg_start": 963.201,
+      "seg_end": 1091.481
+    }
+  }
+  // highlight-end
+}
+```

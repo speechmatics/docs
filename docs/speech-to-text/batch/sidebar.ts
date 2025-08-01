@@ -40,10 +40,6 @@ export default {
       type: "doc",
       id: "speech-to-text/batch/srt-format",
     },
-    {
-      type: "doc",
-      id: "speech-to-text/batch/tracking",
-    },
     // TODO see about usage requests
     // {
     //   type: "doc",
