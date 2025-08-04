@@ -50,7 +50,7 @@ sequenceDiagram
 :::warning
 #### Browser based transcription
 
-When starting a Real-Time transcription session **in the browser**, [temporary keys](/get-started/authentication#temporary-keys) should be used to avoid exposing your long-lived API key.
+When starting a Realtime transcription session **in the browser**, [temporary keys](/get-started/authentication#temporary-keys) should be used to avoid exposing your long-lived API key.
 
 To do so, you must provide the temporary key as a part of a query parameter. This is due to a browser limitation. For example:
 
@@ -60,7 +60,7 @@ To do so, you must provide the temporary key as a part of a query parameter. Thi
 :::
 
 
-### Handshake Responses
+### Handshake responses
 
 **Successful Response**
 
@@ -91,7 +91,7 @@ Upgrade: WebSocket
 Sec-WebSocket-Accept: 87kiC/LI5WgXG52nSylnfXdz260=
 ```
 
-**Malformed Request**
+**Malformed request**
 
 A malformed handshake request will result in one of the following HTTP responses:
 
@@ -153,7 +153,7 @@ The following values of the `message` field are supported:
 
 ## Websocket errors
 
-In the Real-time SaaS, an in-band error message can be followed by a WebSocket close message. The table below shows the possible WebSocket close codes and associated error types. The error types are provided in the payload of the close message.
+In the Realtime SaaS, an in-band error message can be followed by a WebSocket close message. The table below shows the possible WebSocket close codes and associated error types. The error types are provided in the payload of the close message.
 
 | WebSocket Close Code | WebSocket Close Payload |
 | --- | --- |
