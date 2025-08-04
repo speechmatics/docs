@@ -1,5 +1,6 @@
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import { Flex, Heading as RadixHeading, Text } from "@radix-ui/themes";
+import { CopyPageButton } from "@site/src/components/CopyPageButton";
 import Heading from "@theme/Heading";
 import type { Props } from "@theme/MDXComponents/Heading";
 import React, { type ReactNode } from "react";
@@ -11,9 +12,17 @@ export default function MDXHeading(props: Props): ReactNode {
 
   return (
     <Flex direction="column" gap="2">
-      <RadixHeading asChild size={size} mt="5" mb={desc ? "0" : "5"}>
-        <Heading {...props} />
-      </RadixHeading>
+      <Flex
+        width="100%"
+        justify="between"
+        align="center"
+        direction={{ initial: "column", sm: "row" }}
+      >
+        <RadixHeading asChild size={size} mt="5" mb={desc ? "0" : "5"}>
+          <Heading {...props} />
+        </RadixHeading>
+        {props.as === "h1" && <CopyPageButton />}
+      </Flex>
       {desc && (
         <Text size="3" color="gray" mb="5">
           {desc}
