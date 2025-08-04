@@ -40,7 +40,7 @@
   },
   {
     "source": "/features-other/tracking",
-    "destination": "/speech-to-text/batch/tracking"
+    "destination": "/speech-to-text/batch/output#tracking"
   },
   {
     "source": "/features-other/translation",

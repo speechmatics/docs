@@ -1,5 +1,5 @@
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { useLocation } from "@docusaurus/router";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import mixpanel from "mixpanel-browser";
 import React, { useEffect } from "react";
 import { useCookieConsent } from "../hooks/useCookieConsent";
