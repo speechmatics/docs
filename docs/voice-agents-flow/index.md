@@ -6,7 +6,7 @@ description: Build conversational AI agents with the Flow API
 # Overview
 
 :::info
-Try Flow free for up to 50 hours per month. Production pricing starts from $0.08/minute, including LLM costs.
+Try Flow free for up to 50 hours per month. 
 :::
 
 [**Flow**](https://speechmatics.com/flow) is our Voice Agent API that allows you to add responsive, real-time speech-to-speech interactions to any product. 
