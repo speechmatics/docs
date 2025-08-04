@@ -221,9 +221,9 @@ The following example shows how to use `--all-formats` parameter. In this scenar
 </CodeBlock>
 
 
-## Real-time transcription
+## Realtime transcription
 
-The Real-time container provides the ability to transcribe speech data in a predefined language from a live stream or a recorded audio file.
+The Realtime container provides the ability to transcribe speech data in a predefined language from a live stream or a recorded audio file.
 
 - Multiple instances of the container can be run on the same Docker host. This enables scaling of a single language or multiple languages as required
 - All data is transitory, once a container completes its transcription it removes all record of the operation, no data is persisted
@@ -269,7 +269,7 @@ The parameters are:
 
 ### Input modes
 
-The supported method for passing audio to a Real-Time Container is to use a WebSocket. A session is setup with configuration parameters passed in using a `StartRecognition` message, and thereafter audio is sent to the container in binary chunks, with transcripts being returned in an `AddTranscript` message.
+The supported method for passing audio to a Realtime Container is to use a WebSocket. A session is setup with configuration parameters passed in using a `StartRecognition` message, and thereafter audio is sent to the container in binary chunks, with transcripts being returned in an `AddTranscript` message.
 
 In the `AddTranscript` message individual result segments are returned, corresponding to audio segments defined by pauses (and other latency measurements).
 
@@ -358,7 +358,7 @@ If customers want to use the shared Custom Dictionary Cache feature, they must a
 
 ### Running container as a non-root user
 
-A Real-Time Container can be run as a non-root user with no impact to feature functionality. This may be required if a hosting environment or a company's internal regulations specify that a Container must be run as a named user.
+A Realtime Container can be run as a non-root user with no impact to feature functionality. This may be required if a hosting environment or a company's internal regulations specify that a Container must be run as a named user.
 
 Users may specify the non-root command by the `docker run –-user $USERNUMBER:$GROUPID`. User number and group ID are non-zero numerical values from a value of **1** up to a value of **65535**
 
@@ -374,7 +374,7 @@ An example is below:
 
 ## How to use a shared Custom Dictionary cache
 
-The Speechmatics Real-Time Container includes an optional [Custom Dictionary](/speech-to-text/features/custom-dictionary) cache mechanism to reduce session initialisation times. 
+The Speechmatics Realtime Container includes an optional [Custom Dictionary](/speech-to-text/features/custom-dictionary) cache mechanism to reduce session initialization times. 
 
 You will see improvements when reusing an identical Custom Dictionary from the second time onwards.
 
@@ -401,7 +401,7 @@ The shared cache is enabled by setting the following value when running transcri
 
 ### Maintaining the shared cache
 
-If you specify the shared cache to be used and your Custom Dictionary is within the permitted size, Speechmatics Real-Time Container will always try to cache the Custom Dictionary. If a Custom Dictionary cannot occupy the shared cache due to other cached Custom Dictionaries within the allocated cache, then older Custom Dictionaries will be removed from the cache to free up as much space as necessary for the new Custom Dictionary. This is carried out in order of the least recent Custom Dictionary to be used.
+If you specify the shared cache to be used and your Custom Dictionary is within the permitted size, Speechmatics Realtime Container will always try to cache the Custom Dictionary. If a Custom Dictionary cannot occupy the shared cache due to other cached Custom Dictionaries within the allocated cache, then older Custom Dictionaries will be removed from the cache to free up as much space as necessary for the new Custom Dictionary. This is carried out in order of the least recent Custom Dictionary to be used.
 
 Therefore, you must ensure your cache allocation large enough to handle the number of Custom Dictionaries you plan to store. We recommend a relatively large cache to avoid this situation if you are processing multiple Custom Dictionaries using the batch container (e.g 50 MB). If you don't allocate sufficient storage this could mean one or multiple Custom Dictionaries are deleted when you are trying to store a new Custom Dictionary.
 
@@ -426,7 +426,7 @@ docker run -i -v /home/user/sm_audio.wav:/input.audio \\
   }
   </CodeBlock>
 </TabItem>
-  <TabItem value="Real-Time">
+  <TabItem value="Realtime">
     <CodeBlock>
       {`docker volume create speechmatics-cache
       \0
@@ -495,9 +495,9 @@ If this test fails, the transcription will terminate with an error.
 In the event of a connection error during transcription, the transcriber will retry for up to 60 seconds using an exponential back off.
 The length of this retry period can be configured with the `SM_SPLIT_RETRY_TIMEOUT` environment variable, which is a whole number of seconds.
 
-#### Real-time
+#### Realtime
 
-In Real-Time mode, the transcriber will retry connection to the server for a maximum of 250ms before giving up.
+In Realtime mode, the transcriber will retry connection to the server for a maximum of 250ms before giving up.
 
 For more details see [GPU Inference Container](/deployments/container/gpu-speech-to-text)
 
