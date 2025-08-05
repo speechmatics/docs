@@ -1,7 +1,7 @@
 export default [
   {
     type: "category",
-    label: "Virtual Appliance",
+    label: "Virtual appliance",
     items: [
       {
         type: "doc",

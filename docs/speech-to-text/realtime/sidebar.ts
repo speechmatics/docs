@@ -34,7 +34,7 @@ export default {
     },
     {
       type: "link",
-      label: "API Reference",
+      label: "API reference",
       href: "/api-ref/realtime-transcription-websocket",
     },
   ],
