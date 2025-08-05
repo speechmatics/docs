@@ -165,3 +165,55 @@ a.rt-Link:hover {
   text-decoration-color: var(--accent-a6);
   color: var(--accent-a11);
 }
+
+/* Below we duplicate the exact selectors in Infima, and revert those exact layers
+  Doing it more generally with something like table * does not work
+ */
+
+table {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table thead {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table thead tr {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table tbody tr {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table tr:nth-child(2n) {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table thead tr th {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table th {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table td {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
