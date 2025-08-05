@@ -16,7 +16,7 @@ export default [
     type: "category",
     collapsible: false,
     collapsed: false,
-    label: "Flow — Voice AI",
+    label: "Flow – Voice AI",
     items: [
       {
         type: "doc",
@@ -35,7 +35,7 @@ export default [
       {
         type: "doc",
         id: "api-ref/realtime-transcription-websocket",
-        label: "Transcribe real-time audio",
+        label: "Transcribe Realtime audio",
         className: "wss api-method",
       },
       {

@@ -1,6 +1,6 @@
 export default {
   type: "category",
-  label: "Voice Agents — Flow",
+  label: "Voice agents – Flow",
   collapsible: false,
   collapsed: false,
   items: [
