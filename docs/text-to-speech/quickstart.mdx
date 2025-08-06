@@ -1,0 +1,123 @@
+---
+description: Convert text to natural-sounding speech with our text to speech API.
+---
+
+import Admonition from '@theme/Admonition';
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Quickstart
+
+Transform written text into high-quality, natural-sounding speech using our advanced text to speech API.
+
+:::warning Free Beta
+Text to speech is currently in free beta. Features and pricing may change as we continue to improve the service. We welcome your feedback to help shape the final product.
+:::
+
+## Use Cases
+
+Our text to speech API is perfect for:
+
+- **Voice AI**: Voice assistants, chatbots, and IVR systems
+- **Accessibility applications**: Screen readers and assistive technologies
+- **Content creation**: Podcasts, audiobooks, and voice-overs
+- **E-learning platforms**: Course narration and educational content
+- **Gaming**: Character voices and dynamic dialogue
+- **Media production**: News broadcasts and automated announcements
+
+## Getting Started
+
+### 1. Get your API key
+
+[Create an API key in the portal](https://portal.speechmatics.com/settings/api-keys) to access the Text-to-Speech API. Store your key securely as a managed secret.
+
+:::info
+Enterprise customers may need to contact [Support](https://support.speechmatics.com) for API key provisioning.
+:::
+
+### 2. Install dependencies
+
+```bash
+pip install requests numpy
+```
+
+### 3. Make your first request
+
+Replace `YOUR_API_KEY` with your actual API key from the portal:
+
+```python
+import requests
+import wave
+import numpy as np
+
+url = "https://preview.tts.speechmatics.com/generate"
+headers = {
+    "Authorization": "Bearer PlDNHFJxkKTJ6ZA7fLDY0QF6DfrMlFfS"
+}
+data = {
+    "text": "Hello world! This is my first text-to-speech conversion."
+}
+
+response = requests.post(url, headers=headers, json=data)
+
+if response.status_code == 200:
+    # Get raw PCM data (32-bit float, little-endian)
+    raw_audio = response.content
+    
+    # Convert raw bytes to numpy array of 32-bit floats (little-endian)
+    float_samples = np.frombuffer(raw_audio, dtype='<f4')  # '<f4' = little-endian 32-bit float
+    
+    # Convert float samples (-1.0 to 1.0) to 16-bit integers for WAV compatibility
+    # Scale to 16-bit range and convert to integers
+    int16_samples = (float_samples * 32767).astype(np.int16)
+    
+    # WAV file parameters
+    sample_rate = 16000  # 16 kHz
+    channels = 1         # Mono
+    sample_width = 2     # 16-bit = 2 bytes (for compatibility)
+    
+    # Create WAV file
+    with wave.open("output.wav", "wb") as wav_file:
+        wav_file.setnchannels(channels)
+        wav_file.setsampwidth(sample_width)
+        wav_file.setframerate(sample_rate)
+        wav_file.writeframes(int16_samples.tobytes())
+    
+    duration = len(float_samples) / sample_rate
+    print(f"Speech synthesis completed! Saved {len(raw_audio)} bytes as output.wav")
+    print(f"Converted {len(float_samples)} float32 samples to 16-bit WAV")
+    print(f"Duration: {duration:.2f} seconds")
+else:
+    print(f"Error: {response.status_code}")
+    print(f"Response: {response.text}")
+```
+
+## Output Format
+
+The Text-to-Speech API returns raw PCM audio data with the following specifications:
+
+- **Format**: Raw PCM (Pulse Code Modulation)
+- **Sample Rate**: 16 kHz
+- **Bit Depth**: 32-bit
+- **Channels**: Mono (single channel)
+- **Byte Order**: Little-endian
+
+## Best Practices
+
+- **Use proper punctuation**: Periods, commas, and question marks improve natural speech flow
+- **Spell out abbreviations**: Write "Doctor" instead of "Dr." for clearer pronunciation
+- **Batch requests**: Combine multiple short texts into longer requests when possible
+- **Cache audio**: Store generated audio files to avoid repeated API calls for identical text
+
+## Next Steps
+
+Ready to build something amazing with text to speech? We'd love to hear about your project and help you succeed.
+
+**Get in touch with us:**
+- Share your feedback and feature requests
+- Ask questions about implementation
+- Discuss enterprise pricing and custom voices
+- Report any issues or bugs you encounter
+
+[Contact our team](https://support.speechmatics.com) or join our developer community to connect with other builders using text to-Speech.
