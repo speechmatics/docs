@@ -11,24 +11,25 @@ import pythonTtsQuickstart from "./assets/tts-quickstart.py?raw"
 
 # Quickstart
 
-Transform written text into high-quality, natural-sounding speech using our advanced text to speech API.
+Transform written text into high-quality, natural-sounding speech using our advanced text to speech API. Built for low-latency use cases where speed is essential.
 
-:::warning Free Beta
-Text to speech is currently in free beta. Features and pricing may change as we continue to improve the service. We welcome your feedback to help shape the final product.
+:::warning Free Preview
+Text to speech is currently in preview and free to use. Features and pricing may change as we continue to improve the service. We welcome your feedback to help shape the final product.
 :::
 
-## Use Cases
+## Use cases
 
 Our text to speech API is perfect for:
 
 - **Voice AI**: Voice assistants, chatbots, and IVR systems
+- **Translation**: Realtime translation of live events or media
 - **Accessibility applications**: Screen readers and assistive technologies
-- **Content creation**: Podcasts, audiobooks, and voice-overs
+- **Content creation**: Podcasts, dubbing, audiobooks, and voice-overs
+- **Media production**: News broadcasts and automated announcements
 - **E-learning platforms**: Course narration and educational content
 - **Gaming**: Character voices and dynamic dialogue
-- **Media production**: News broadcasts and automated announcements
 
-## Getting Started
+## Getting started
 
 ### 1. Get your API key
 
@@ -48,24 +49,31 @@ Replace `YOUR_API_KEY` with your actual API key from the portal:
   {pythonTtsQuickstart}
 </CodeBlock>
 
-## Output Format
+## Output format
 
 The Text-to-Speech API returns raw PCM audio data with the following specifications:
 
 - **Format**: Raw PCM (Pulse Code Modulation)
 - **Sample Rate**: 16 kHz
-- **Bit Depth**: 32-bit
+- **Bit Depth**: 32-bit float
 - **Channels**: Mono (single channel)
 - **Byte Order**: Little-endian
 
-## Best Practices
+## Best practices
 
 - **Use proper punctuation**: Periods, commas, and question marks improve natural speech flow
 - **Spell out abbreviations**: Write "Doctor" instead of "Dr." for clearer pronunciation
+- **Spell out numbers**: Write "Twenty-five dollars" instead of "$25"
 - **Batch requests**: Combine multiple short texts into longer requests when possible
 - **Cache audio**: Store generated audio files to avoid repeated API calls for identical text
 
-## Next Steps
+## Deployment
+
+Speechmatics provides flexible deployment options. You can use our managed service, host our Text-to-Speech API in your own environment or choose a hybrid approach.
+
+For deploying our API in your environment, [contact sales](https://www.speechmatics.com/speak-to-sales).
+
+## Next steps
 
 Ready to build something amazing with text to speech? We'd love to hear about your project and help you succeed.
 
@@ -75,4 +83,4 @@ Ready to build something amazing with text to speech? We'd love to hear about yo
 - Discuss enterprise pricing and custom voices
 - Report any issues or bugs you encounter
 
-[Contact our team](https://support.speechmatics.com) or join our developer community to connect with other builders using text to-Speech.
+[Contact our team](https://support.speechmatics.com) or join our developer community (https://www.reddit.com/r/Speechmatics) to connect with other builders using text to-Speech.
