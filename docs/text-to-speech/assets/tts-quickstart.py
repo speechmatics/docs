@@ -7,7 +7,7 @@ headers = {
     "Authorization": "Bearer YOUR_API_KEY"
 }
 data = {
-    "text": "Hello world! This is my first text-to-speech conversion."
+    "text": "Hi there. This is a quick mic check."
 }
 
 response = requests.post(url, headers=headers, json=data)
