@@ -1,0 +1,78 @@
+---
+description: Convert text to natural-sounding speech with our text to speech API.
+---
+
+import Admonition from '@theme/Admonition';
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+import pythonTtsQuickstart from "./assets/tts-quickstart.py?raw"
+
+# Quickstart
+
+Transform written text into high-quality, natural-sounding speech using our advanced text to speech API.
+
+:::warning Free Beta
+Text to speech is currently in free beta. Features and pricing may change as we continue to improve the service. We welcome your feedback to help shape the final product.
+:::
+
+## Use Cases
+
+Our text to speech API is perfect for:
+
+- **Voice AI**: Voice assistants, chatbots, and IVR systems
+- **Accessibility applications**: Screen readers and assistive technologies
+- **Content creation**: Podcasts, audiobooks, and voice-overs
+- **E-learning platforms**: Course narration and educational content
+- **Gaming**: Character voices and dynamic dialogue
+- **Media production**: News broadcasts and automated announcements
+
+## Getting Started
+
+### 1. Get your API key
+
+[Create an API key in the portal](https://portal.speechmatics.com/settings/api-keys) to access the Text-to-Speech API. Store your key securely as a managed secret.
+
+### 2. Install dependencies
+
+```bash
+pip install requests numpy
+```
+
+### 3. Make your first request
+
+Replace `YOUR_API_KEY` with your actual API key from the portal:
+
+<CodeBlock language="python">
+  {pythonTtsQuickstart}
+</CodeBlock>
+
+## Output Format
+
+The Text-to-Speech API returns raw PCM audio data with the following specifications:
+
+- **Format**: Raw PCM (Pulse Code Modulation)
+- **Sample Rate**: 16 kHz
+- **Bit Depth**: 32-bit
+- **Channels**: Mono (single channel)
+- **Byte Order**: Little-endian
+
+## Best Practices
+
+- **Use proper punctuation**: Periods, commas, and question marks improve natural speech flow
+- **Spell out abbreviations**: Write "Doctor" instead of "Dr." for clearer pronunciation
+- **Batch requests**: Combine multiple short texts into longer requests when possible
+- **Cache audio**: Store generated audio files to avoid repeated API calls for identical text
+
+## Next Steps
+
+Ready to build something amazing with text to speech? We'd love to hear about your project and help you succeed.
+
+**Get in touch with us:**
+- Share your feedback and feature requests
+- Ask questions about implementation
+- Discuss enterprise pricing and custom voices
+- Report any issues or bugs you encounter
+
+[Contact our team](https://support.speechmatics.com) or join our developer community to connect with other builders using text to-Speech.
