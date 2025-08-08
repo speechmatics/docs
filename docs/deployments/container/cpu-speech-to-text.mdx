@@ -251,14 +251,14 @@ CPU usage scales with the number of active sessions, whereas most memory usage i
 The first-session loading time can be reduced down to several hundred milliseconds by prewarming the transcriber.
 
 You can enable this feature by setting the `SM_PREWARM_ENGINE_MODES` environment variable, with a semicolon separated list describing the required engine modes. For example, to prewarm 1 English GPU Standard and 2 English GPU Enhanced:
-`SM_PREWARM_ENGINE_MODES='en_gpu_standard:1;en_gpu_enhanced:2'`
+`SM_PREWARM_ENGINE_MODES='en_general_gpu_standard:1;en_general_gpu_enhanced:2'`
 
 In general, the format is: `{language}_{domain}_{processor}_{operating_point}:{prewarm_connections}`.
 
 The parameters are:
 - `language` - One of the supported [language codes](/speech-to-text/languages)
 
-- `domain` - Optional. One of `general` or a domain used for some [multi-lingual transcription](/speech-to-text/languages#multilingual-speech-to-text) use cases. For example: `SM_PREWARM_ENGINE_MODES='es_bilingual-en_gpu_standard:1'`
+- `domain` - One of `general` or a domain used for some [multi-lingual transcription](/speech-to-text/languages#multilingual-speech-to-text) use cases. For example: `SM_PREWARM_ENGINE_MODES='es_bilingual-en_gpu_standard:1'`
 
 - `processor` - One of `cpu` or `gpu`. Note that selecting `gpu` requires a [GPU Inference Container](/deployments/container/gpu-speech-to-text)
 
