@@ -1,13 +1,29 @@
 import { useLocation } from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import mixpanel from "mixpanel-browser";
-import React, { useEffect } from "react";
+import type Mixpanel from "mixpanel-browser";
+import React, { useEffect, useState } from "react";
 import { useCookieConsent } from "../hooks/useCookieConsent";
+
+function useMixPanel() {
+  const [mixPanel, setMixPanel] = useState<typeof Mixpanel | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    import("mixpanel-browser").then((mixpanel) => {
+      setMixPanel(mixpanel.default);
+    });
+  }, []);
+
+  return mixPanel;
+}
 
 // Memoize the provider component to prevent unnecessary re-renders
 const MixpanelTracker = React.memo(
   ({ token, hasConsent }: { token: string; hasConsent: boolean }) => {
     const location = useLocation();
+
+    const mixpanel = useMixPanel();
 
     // Initialize Mixpanel - only runs once when token changes
     useEffect(() => {
@@ -35,7 +51,7 @@ const MixpanelTracker = React.memo(
       mixpanel.register({
         event_source: "docs",
       });
-    }, [token]);
+    }, [token, mixpanel]);
 
     // Handle user consent - only runs when consent changes
     useEffect(() => {
@@ -46,7 +62,7 @@ const MixpanelTracker = React.memo(
       } else {
         mixpanel.opt_out_tracking();
       }
-    }, [hasConsent, token]);
+    }, [hasConsent, token, mixpanel]);
 
     const routerLocation = useLocation();
 
@@ -118,7 +134,13 @@ const MixpanelTracker = React.memo(
         }
         observer.disconnect();
       };
-    }, [routerLocation.pathname, routerLocation.search, hasConsent, token]);
+    }, [
+      routerLocation.pathname,
+      routerLocation.search,
+      hasConsent,
+      token,
+      mixpanel,
+    ]);
 
     return null;
   },
