@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useCookieConsent } from "../hooks/useCookieConsent";
 
 function useMixPanel() {
-  const [mixPanel, setMixPanel] = useState<typeof Mixpanel | null>(null);
+  const [mixPanel, setMixPanel] = useState<typeof Mixpanel | undefined>();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -29,7 +29,7 @@ const MixpanelTracker = React.memo(
     useEffect(() => {
       if (typeof window === "undefined" || !token) return;
 
-      mixpanel.init(token, {
+      mixpanel?.init(token, {
         // We're disabling automatic pageview tracking because we want to manually track page views
         // to ensure consistency between the URL and document.title. Automatic tracking might fire
         // before the document title is updated, especially in client-side rendered apps.
@@ -48,7 +48,7 @@ const MixpanelTracker = React.memo(
         },
       });
 
-      mixpanel.register({
+      mixpanel?.register({
         event_source: "docs",
       });
     }, [token, mixpanel]);
@@ -58,9 +58,9 @@ const MixpanelTracker = React.memo(
       if (typeof window === "undefined" || !token) return;
 
       if (hasConsent) {
-        mixpanel.opt_in_tracking();
+        mixpanel?.opt_in_tracking();
       } else {
-        mixpanel.opt_out_tracking();
+        mixpanel?.opt_out_tracking();
       }
     }, [hasConsent, token, mixpanel]);
 
@@ -84,7 +84,7 @@ const MixpanelTracker = React.memo(
           pageTitle !== "Loading..." &&
           !pageTitle.includes("undefined")
         ) {
-          mixpanel.track("Page View", {
+          mixpanel?.track("Page View", {
             "Page Title": pageTitle,
             URL: url,
             "URL Path": path,
@@ -152,7 +152,7 @@ export default function MixpanelProvider({
 }: { children: React.ReactNode }) {
   const { siteConfig } = useDocusaurusContext();
   const { statistics } = useCookieConsent();
-  const token = siteConfig.customFields.mixpanelToken as string;
+  const token = siteConfig?.customFields?.mixpanelToken as string | undefined;
 
   if (!token) return <>{children}</>;
 
