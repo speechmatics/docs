@@ -1,35 +1,19 @@
 import { useLocation } from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import type Mixpanel from "mixpanel-browser";
-import React, { useEffect, useState } from "react";
+import mixpanel from "mixpanel-browser";
+import React, { useEffect } from "react";
 import { useCookieConsent } from "../hooks/useCookieConsent";
-
-function useMixPanel() {
-  const [mixPanel, setMixPanel] = useState<typeof Mixpanel | undefined>();
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    import("mixpanel-browser").then((mixpanel) => {
-      setMixPanel(mixpanel.default);
-    });
-  }, []);
-
-  return mixPanel;
-}
 
 // Memoize the provider component to prevent unnecessary re-renders
 const MixpanelTracker = React.memo(
   ({ token, hasConsent }: { token: string; hasConsent: boolean }) => {
     const location = useLocation();
 
-    const mixpanel = useMixPanel();
-
     // Initialize Mixpanel - only runs once when token changes
     useEffect(() => {
       if (typeof window === "undefined" || !token) return;
 
-      mixpanel?.init(token, {
+      mixpanel.init(token, {
         // We're disabling automatic pageview tracking because we want to manually track page views
         // to ensure consistency between the URL and document.title. Automatic tracking might fire
         // before the document title is updated, especially in client-side rendered apps.
@@ -48,21 +32,21 @@ const MixpanelTracker = React.memo(
         },
       });
 
-      mixpanel?.register({
+      mixpanel.register({
         event_source: "docs",
       });
-    }, [token, mixpanel]);
+    }, [token]);
 
     // Handle user consent - only runs when consent changes
     useEffect(() => {
       if (typeof window === "undefined" || !token) return;
 
       if (hasConsent) {
-        mixpanel?.opt_in_tracking();
+        mixpanel.opt_in_tracking();
       } else {
-        mixpanel?.opt_out_tracking();
+        mixpanel.opt_out_tracking();
       }
-    }, [hasConsent, token, mixpanel]);
+    }, [hasConsent, token]);
 
     const routerLocation = useLocation();
 
@@ -84,7 +68,7 @@ const MixpanelTracker = React.memo(
           pageTitle !== "Loading..." &&
           !pageTitle.includes("undefined")
         ) {
-          mixpanel?.track("Page View", {
+          mixpanel.track("Page View", {
             "Page Title": pageTitle,
             URL: url,
             "URL Path": path,
@@ -134,13 +118,7 @@ const MixpanelTracker = React.memo(
         }
         observer.disconnect();
       };
-    }, [
-      routerLocation.pathname,
-      routerLocation.search,
-      hasConsent,
-      token,
-      mixpanel,
-    ]);
+    }, [routerLocation.pathname, routerLocation.search, hasConsent, token]);
 
     return null;
   },
@@ -152,7 +130,7 @@ export default function MixpanelProvider({
 }: { children: React.ReactNode }) {
   const { siteConfig } = useDocusaurusContext();
   const { statistics } = useCookieConsent();
-  const token = siteConfig?.customFields?.mixpanelToken as string | undefined;
+  const token = siteConfig.customFields.mixpanelToken as string;
 
   if (!token) return <>{children}</>;
 
