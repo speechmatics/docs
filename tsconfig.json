@@ -6,7 +6,7 @@
     "lib": ["ES2023", "DOM"],
     "target": "ES2023",
     "types": ["docusaurus-theme-openapi-docs"],
-    "strictNullChecks":true 
+    "strictNullChecks": true
   },
   "exclude": [".docusaurus", "build", "**/*.example.{ts,tsx}"]
 }
