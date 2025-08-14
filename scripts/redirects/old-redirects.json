@@ -430,5 +430,9 @@
   {
     "destination": "/deployments/virtual-appliance/installation/licensing",
     "source": "/on-prem/virtual-appliance/installation/licensing"
+  },
+  {
+    "destination": "/batch.yaml",
+    "source": "/api/jobs-spec-final.yaml"
   }
 ]

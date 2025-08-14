@@ -587,6 +587,11 @@
       "permanent": true
     },
     {
+      "destination": "/batch.yaml",
+      "source": "/api/jobs-spec-final.yaml",
+      "permanent": true
+    },
+    {
       "source": "/en",
       "destination": "/",
       "permanent": true
