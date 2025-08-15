@@ -13,12 +13,16 @@ export default function DocBreadcrumbs(): ReactNode {
     return null;
   }
 
+  // TODO: Could use toSpliced here instead, but some browsers don't support it in 2025. Update when this changes
+  const spliced = [...breadcrumbs];
+  spliced.splice(-1, 1);
+
   return (
     <>
       <DocBreadcrumbsStructuredData breadcrumbs={breadcrumbs} />
       <Flex gap="2" align="center">
-        {breadcrumbs.toSpliced(-1, 1).map((item, idx, { length }) => {
-          if (item.type !== "category" && !item.docId.includes("index")) {
+        {spliced.map((item, idx, { length }) => {
+          if (item.type !== "category" && !item.docId?.includes("index")) {
             return null;
           }
           const isTopLevel = item.type === "category" && !item.collapsible;
