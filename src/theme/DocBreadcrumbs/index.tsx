@@ -17,8 +17,8 @@ export default function DocBreadcrumbs(): ReactNode {
     <>
       <DocBreadcrumbsStructuredData breadcrumbs={breadcrumbs} />
       <Flex gap="2" align="center">
-        {breadcrumbs.toSpliced(-1, 1).map((item, idx, { length }) => {
-          if (item.type !== "category" && !item.docId.includes("index")) {
+        {breadcrumbs?.toSpliced(-1, 1).map((item, idx, { length }) => {
+          if (item.type !== "category" && !item?.docId?.includes("index")) {
             return null;
           }
           const isTopLevel = item.type === "category" && !item.collapsible;
