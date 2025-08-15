@@ -2,6 +2,14 @@
 
 We welcome contributions to the docs. Please file an issue, or open a PR if you find something that needs to be fixed or improved.
 
+## For Speechmatics employees
+
+Open a pull request to the `main` branch. The CI pipeline will build and deploy the docs to Vercel.
+
+## For external contributors
+
+Fork this repository, and open a PR against the `main` branch. Note that this will *not* create a preview link.
+
 ## Style guide
 
 Please refer to the [style guide](https://github.com/speechmatics/docs/blob/add-contributing/.windsurf/rules/docs-style-guide.md) for information on writing standards, style and tone of voice. If you're using Windsurf, these rules should be taken into account automatically.
