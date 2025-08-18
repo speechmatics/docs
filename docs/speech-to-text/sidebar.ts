@@ -38,5 +38,10 @@ export default {
       label: "Accuracy benchmarking",
       id: "speech-to-text/accuracy-benchmarking",
     },
+    {
+      type: "doc",
+      label: "App analytics",
+      id: "speech-to-text/app-analytics",
+    },
   ],
 };
