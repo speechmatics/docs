@@ -7,7 +7,7 @@
     "start": "run-p build:jobs-api-ref && dotenv -e .env -e .env.local node_modules/.bin/docusaurus start",
     "build": "run-p build:jobs-api-ref && dotenv -e .env -e .env.local node_modules/.bin/docusaurus build",
     "build:jobs-spec": "tsx scripts/generate-batch-spec.ts",
-    "build:jobs-api-ref": "rm -rf docs/api-ref/jobs && npm run build:jobs-spec && docusaurus gen-api-docs jobs",
+    "build:jobs-api-ref": "rimraf docs/api-ref/jobs && npm run build:jobs-spec && docusaurus gen-api-docs jobs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -53,6 +53,7 @@
     "dotenv-cli": "^9.0.0",
     "npm-run-all": "^4.1.5",
     "raw-loader": "^4.0.2",
+    "rimraf": "^6.0.1",
     "tsx": "^4.19.4",
     "typescript": "~5.6.2",
     "yaml": "^2.8.0"
@@ -61,7 +62,11 @@
     "postman-code-generators": "1.10.1"
   },
   "browserslist": {
-    "production": [">0.5%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 3 chrome version",
       "last 3 firefox version",
