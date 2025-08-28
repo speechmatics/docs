@@ -44,6 +44,17 @@ Speechmatics offers two different modes for separating out different speakers in
       </Text>
     </DataList.Value>
   </DataList.Item>
+    <DataList.Item>
+    <DataList.Label>
+    [Channel & speaker diarization](#realtime-usage)
+    </DataList.Label>
+    <DataList.Value>
+      <Text asChild mb="0">
+        Each audio channel will be transcribed separately and will identify unique speakers.<br/>
+        Used when it's possible to record multiple speakers on multiple audio channels.
+      </Text>
+    </DataList.Value>
+  </DataList.Item>
 </DataList.Root>
 </Card>
 
@@ -214,11 +225,17 @@ The legacy Speaker Change Detection feature was removed on 1st July 2024. From t
 
 ### Overview
 
-Channel diarization enables each channel in multi-channel audio to be transcribed separately and collated into a single transcript. This provides perfect diarization at the channel level as well as better handling of cross-talk between channels. Using Channel diarization, files with up to 100 separate input channels are supported.
+Channel diarization enables each channel in multi-channel audio to be transcribed separately and collated into a single transcript. This provides perfect diarization at the channel level as well as better handling of cross-talk between channels. 
+
+### Batch usage
 
 This is particularly useful for the Contact Centre use case, where audio is often recorded in stereo with separate channels for the agent and the caller.
 
-In order to use this feature you set the `diarization` property to `channel`. You optionally name these channels by using the `channel_diarization_labels` in the configuration:
+For Batch, channel diarization supports up to 100 separate input files.
+
+To use this feature, set the `diarization` property to `channel`. 
+
+You can optionally name these channels by using the `channel_diarization_labels` in the configuration:
 
 ```json
 {
@@ -251,4 +268,85 @@ If you do not specify any labels then defaults will be used (e.g. Channel 1). Th
     ]
   }
 ]
+```
+
+### Realtime usage
+
+Realtime channel diarization is useful for remote conference calls, where separate audio streams may include multiple speakers.  
+
+The maximum number of channels depends on whether you use a multi-session container and its connection limits.  
+
+To enable the feature, set the `diarization` property to `channel` or `channel_and_speaker`, and define each channel name under `channel_diarization_labels`.
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    // highlight-start
+    "diarization": "channel_and_speaker",
+    "channel_diarization_labels": ["New_York", "Shanghai", "Paris"]
+    // highlight-end
+  }
+}
+```
+
+The Transcriber confirms by including the channel diarization labels in the `channels` field of the `RecognitionStarted` message:
+
+```json
+{
+  "message": "RecognitionStarted",
+  ...
+  // highlight-start
+  "channels": ["New_York", "Shanghai", "Paris"]
+  // highlight-end
+}
+```
+
+You can send audio for a specific channel using the `AddChannelAudio` message:
+
+```json
+{
+  "message": "AddChannelAudio",
+  "channel": "New_York",
+  "data": <base_64_encoded_data>
+}
+```
+
+The Transcriber responds with a `ChannelAudioAdded` message:
+
+```json
+{
+  "message": "ChannelAudioAdded",
+  "channel": "New_York",
+  "seq_no": <10>
+}
+```
+
+When transcripts are returned, the `channel` property identifies the channel.
+For `channel_and_speaker` diarization, the `speaker` property identifies speakers:
+
+```json
+{
+  "message": "AddTranscript",
+  // highlight-start
+  "channel": "New_York",
+  // highlight-end
+  ...
+  "results": [
+    {
+      "type": "word",
+      "start_time": 1.45,
+      "end_time": 1.8,
+      "alternatives": [{
+        "language": "en",
+        "content": "Hello,",
+        "confidence": 0.98,
+        // highlight-start
+        "speaker": "S1",
+        // highlight-end
+      }]
+    },
+  ]
+}
 ```
