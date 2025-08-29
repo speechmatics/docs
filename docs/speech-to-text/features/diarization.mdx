@@ -276,7 +276,7 @@ Realtime channel diarization is useful for remote conference calls, where separa
 
 The maximum number of channels depends on whether you use a multi-session container and its connection limits.  
 
-To enable the feature, set the `diarization` property to `channel` or `channel_and_speaker`, and define each channel name under `channel_diarization_labels`.
+You can enable this feature by setting the `diarization` property to `channel` or `channel_and_speaker`, and define each channel name under `channel_diarization_labels`.
 
 ```json
 {
@@ -291,7 +291,7 @@ To enable the feature, set the `diarization` property to `channel` or `channel_a
 }
 ```
 
-The Transcriber confirms by including the channel diarization labels in the `channels` field of the `RecognitionStarted` message:
+When you use channel diarization, you should see an additional `channels` field in the `RecognitionStarted` message which lists all the channels you requested:
 
 ```json
 {
@@ -313,7 +313,7 @@ You can send audio for a specific channel using the `AddChannelAudio` message:
 }
 ```
 
-The Transcriber responds with a `ChannelAudioAdded` message:
+You'll get an acknowledgement in the form of a `ChannelAudioAdded` message from the server:
 
 ```json
 {
@@ -323,8 +323,7 @@ The Transcriber responds with a `ChannelAudioAdded` message:
 }
 ```
 
-When transcripts are returned, the `channel` property identifies the channel.
-For `channel_and_speaker` diarization, the `speaker` property identifies speakers:
+You can use the `channel` property in transcript outputs to identify the channel. For `channel_and_speaker` diarization, you can also use the `speaker` property to identify speakers:
 
 ```json
 {
