@@ -20,6 +20,10 @@ export default {
     },
     {
       type: "doc",
+      id: "speech-to-text/realtime/realtime_diarization"
+    },
+    {
+      type: "doc",
       id: "speech-to-text/realtime/end-of-turn",
     },
     {
