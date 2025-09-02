@@ -32,7 +32,7 @@ Real-time diarization offers the following ways to separate speakers in audio:
     </DataList.Label>
     <DataList.Value>
       <Text asChild mb="0">
-        Speakers identified by voice. <br/>
+        Each speaker is identified by their voice. <br/>
         Useful when there are multiple speakers in the same audio stream.
       </Text>
     </DataList.Value>
@@ -195,9 +195,6 @@ Transcripts are returned independently for each channel, with the `channel` prop
         "language": "en",
         "content": "Hello,",
         "confidence": 0.98,
-        // highlight-start
-        "speaker": "S1",
-        // highlight-end
       }]
     },
   ]
@@ -206,9 +203,9 @@ Transcripts are returned independently for each channel, with the `channel` prop
 
 ### Channel and speaker diarization
 
-Channel and speaker diarization acts combines both [Speaker diarization](#speaker-diarization) and [Channel diarization](#channel-diarization), splitting transcripts per channel whilst also separating individual speakers in each channel.
+Channel and speaker diarization acts combines both Speaker diarization and Channel diarization, splitting transcripts per channel whilst also separating individual speakers in each channel.
 
-To enable this mode, follow the steps in [enabling channel diarization](#enabling-channel-diarization) and set the `diarization` mode to `channel_and_speaker`.
+To enable this mode, follow the steps in [Speaker diarization](#speaker-diarization) and set the `diarization` mode to `channel_and_speaker`.
 
 To send audio to a channel, follow the instructions in [send audio to a channel](#send-audio-to-a-channel). 
 
@@ -249,7 +246,6 @@ Transcripts are returned in the same way as channel diarization, but with indivi
 ## Configuring diarization
 
 You can customize diarization to match your use case by adjusting settings for sensitivity, limiting the maximum number of speakers, preferring the current speaker to reduce false switches, and controlling how punctuation influences accuracy. Timeout rules also apply to ensure diarization completes reliably on long audio files.
-
 
 ### Speaker sensitivity
 
@@ -346,3 +342,4 @@ For API-related questions, contact [Support](https://support.speechmatics.com).
 
 ## Considerations
 - Enabling diarization for a file increases the amount of time taken to transcribe an audio file. In general, we expect the use of Diarization to increase the overall processing time by 10-50%.
+- When running realtime `channel` and `channel_and_speaker` diarization, the processing of multiple audio streams can be computationally demanding and increase latency. To offset this, we highly reccomend [using a GPU](../../deployments/virtual-appliance/administration/using-a-gpu.mdx)
