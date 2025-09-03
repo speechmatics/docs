@@ -311,5 +311,11 @@ The Speaker Change Detection feature was removed in July 2024. The `speaker_chan
 
 For API-related questions, contact [Support](https://support.speechmatics.com).
 
-## Considerations
-- When running realtime `channel` and `channel_and_speaker` diarization using on-prem deployments, the processing of multiple audio streams can be computationally demanding and increase latency. To offset this, we highly reccomend [using a GPU](../../deployments/virtual-appliance/administration/using-a-gpu.mdx)
+## On-prem
+
+To run `channel` or `channel_and_speaker` diarization with an on-prem deployment, configure your environment as follows:
+
+- Use a [GPU Speech-to-Text container](../../deployments/container/gpu-speech-to-text.mdx). Handling multiple audio streams is computationally intensive and benefits from GPU acceleration.  
+- Set the `SM_MAX_CONCURRENT_CONNECTIONS` environment variable to match the number of channels you want to process.  
+
+For more details on container setup, see the [On-prem deployment docs](../../deployments/index.md).
