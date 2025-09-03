@@ -91,7 +91,7 @@ Core writing principles
 
 The ✅ emoji precedes a correct use example. 
 
-The ❌ emoji precedes an incorrect use exampl.e
+The ❌ emoji precedes an incorrect use example.
 
 ### Keep it concise
 
