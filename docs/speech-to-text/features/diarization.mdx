@@ -33,43 +33,14 @@ It’s especially useful in conversations, meetings, interviews, or multi-channe
 
 Speechmatics offer the following diarization modes:
 
-<Card mb="4">
-  <DataList.Root size="3">
-  <DataList.Item>
-    <DataList.Label>
-    Speaker diarization
-    </DataList.Label>
-    <DataList.Value>
-      <Text asChild mb="0">
-        Each speaker will be identified by their voice. <br/>
-        Used in cases where there are multiple speakers in the same audio recording.
-      </Text>
-    </DataList.Value>
-  </DataList.Item>
-  <DataList.Item>
-    <DataList.Label>
-    Channel diarization
-    </DataList.Label>
-    <DataList.Value>
-      <Text asChild mb="0">
-        Each audio channel will be transcribed separately. <br/>
-        Used when it's possible to record each speaker on a separate audio channel.
-      </Text>
-    </DataList.Value>
-  </DataList.Item>
-      <DataList.Item>
-    <DataList.Label>
-    Channel & speaker diarization
-    </DataList.Label>
-    <DataList.Value>
-      <Text asChild mb="0">
-        Each channel will be transcribed separately and will identify unique speakers.<br/>
-        Used when it's possible to record multiple speakers on multiple audio channels.
-      </Text>
-    </DataList.Value>
-  </DataList.Item>
-</DataList.Root>
-</Card>
+- **Speaker diarization** — Identifies each speaker by their voice.  
+  Useful when there are multiple speakers in the same audio recording.  
+
+- **Channel diarization** — Transcribes each audio channel separately.  
+  Useful when each speaker is recorded on a separate audio channel.  
+
+- **Channel & speaker diarization** — Transcribes each channel separately and also identifies individual speakers within each channel.  
+  Useful when multiple speakers are recorded across multiple channels. 
 
 :::info
 Channel and speaker diarization is only available for Realtime transcription.

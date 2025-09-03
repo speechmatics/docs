@@ -21,32 +21,11 @@ import { Card, DataList, Text } from '@radix-ui/themes';
 
 Batch diarization offers the following ways to separate speakers in audio:
 
-<Card mb="4">
-  <DataList.Root size="3">
-  <DataList.Item>
-    <DataList.Label>
-    [Speaker diarization](#speaker-diarization)
-    </DataList.Label>
-    <DataList.Value>
-      <Text asChild mb="0">
-        Each speaker will be identified by their voice. <br/>
-        Used in cases where there are multiple speakers in the same audio recording.
-      </Text>
-    </DataList.Value>
-  </DataList.Item>
-  <DataList.Item>
-    <DataList.Label>
-    [Channel diarization](#channel-diarization)
-    </DataList.Label>
-    <DataList.Value>
-      <Text asChild mb="0">
-        Each audio channel will be transcribed separately. <br/>
-        Used when it's possible to record each speaker on a separate audio channel.
-      </Text>
-    </DataList.Value>
-  </DataList.Item>
-</DataList.Root>
-</Card>
+- [**Speaker diarization**](#speaker-diarization) — Identifies each speaker by their voice.  
+  Useful when there are multiple speakers in the same audio stream.  
+
+- [**Channel diarization**](#channel-diarization) — Transcribes each audio channel separately.  
+  Useful when each speaker is recorded on their own channel.  
 
 ## Speaker diarization
 
