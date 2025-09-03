@@ -118,7 +118,7 @@ When diarization is enabled, each `word` and `punctuation` object in the transcr
 ## Channel diarization
 
 :::info SaaS availability
-This feature is currently only available for [On-prem](../../deployments/index.md#on-prem) deployments.
+This feature is currently only available for [on-prem](../../deployments/index.md#on-prem) deployments.
 
 We’re working hard to bring realtime diarization to [SaaS](../../deployments/index.md#cloud) soon!
 :::
@@ -127,7 +127,7 @@ Channel diarization processes audio with multiple channels and returns a separat
 
 The maximum number of channels depends on your [Multi-session container's](../../deployments/container/cpu-speech-to-text.mdx#multi-session-containers) maximum number of connections.
 
-To enable Channel diarization, `diarization` must be set to `channel` and labels for each channel provided in `channel_diarization_labels` in the transcription config of the `StartRecognition` message:
+To enable channel diarization, `diarization` must be set to `channel` and labels for each channel provided in `channel_diarization_labels` in the transcription config of the `StartRecognition` message:
 
 ```json
 {
@@ -175,7 +175,7 @@ You should get an acknowledgement in the form of a `ChannelAudioAdded` message f
 }
 ```
 
-### Getting transcripts
+### Transcript response
 
 Transcripts are returned independently for each channel, with the `channel` property identifying the channel.
 
@@ -203,13 +203,13 @@ Transcripts are returned independently for each channel, with the `channel` prop
 
 ### Channel and speaker diarization
 
-Channel and speaker diarization acts combines both Speaker diarization and Channel diarization, splitting transcripts per channel whilst also separating individual speakers in each channel.
+Channel and speaker diarization combines speaker diarization and shannel diarization, splitting transcripts per channel whilst also separating individual speakers in each channel.
 
-To enable this mode, follow the steps in [Speaker diarization](#speaker-diarization) and set the `diarization` mode to `channel_and_speaker`.
+To enable this mode, follow the steps in [speaker diarization](#speaker-diarization) and set the `diarization` mode to `channel_and_speaker`.
 
 To send audio to a channel, follow the instructions in [send audio to a channel](#send-audio-to-a-channel). 
 
-To send audio to a specific channel, follow the directions in [Send audio to a channel](#send-audio-to-a-channel).
+To send audio to a specific channel, follow the directions for [sending audio to a channel](#send-audio-to-a-channel).
 
 Transcripts are returned in the same way as channel diarization, but with individual speakers identified:
 
@@ -243,7 +243,7 @@ Transcripts are returned in the same way as channel diarization, but with indivi
 }
 ```
 
-## Configuring diarization
+## Configuration
 
 You can customize diarization to match your use case by adjusting settings for sensitivity, limiting the maximum number of speakers, preferring the current speaker to reduce false switches, and controlling how punctuation influences accuracy. Timeout rules also apply to ensure diarization completes reliably on long audio files.
 
@@ -319,7 +319,7 @@ You can prevent too many speakers from being detected by using the `max_speakers
 
 The default value is 50, but it can take any integer value between 2 and 100 inclusive.
 
-### Speaker diarization and punctuation
+### Punctuation
 
 Speaker diarization uses punctuation to improve accuracy. Small corrections are applied to speaker labels based on sentence boundaries.  
 
