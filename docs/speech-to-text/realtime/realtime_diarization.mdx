@@ -93,14 +93,12 @@ When diarization is enabled, each `word` and `punctuation` object in the transcr
 ## Channel diarization
 
 :::info SaaS availability
-This feature is currently only available for [on-prem](../../deployments/index.md#on-prem) deployments.
+This feature is coming soon!
 
-We’re working hard to bring realtime diarization to [SaaS](../../deployments/index.md#cloud) soon!
+Subscribe to our [release notes](https://www.speechmatics.com/release-notes/) to be notified when it's available.
 :::
 
 Channel diarization processes audio with multiple channels and returns a separate transcript for each one. This gives you perfect speaker separation at the channel level and more accurate handling of cross-talk.
-
-The maximum number of channels depends on your [Multi-session container's](../../deployments/container/cpu-speech-to-text.mdx#multi-session-containers) maximum number of connections.
 
 To enable channel diarization, `diarization` must be set to `channel` and labels for each channel provided in `channel_diarization_labels` in the transcription config of the `StartRecognition` message:
 
@@ -217,6 +215,11 @@ Transcripts are returned in the same way as channel diarization, but with indivi
   ]
 }
 ```
+### Limits
+
+For SaaS customers, the maximum number of channels is 2.
+
+For On-prem Container customers, the maximum number of channels depends on your [Multi-session container's](../../deployments/container/cpu-speech-to-text.mdx#multi-session-containers) maximum number of connections.
 
 ## Configuration
 
