@@ -114,6 +114,8 @@ components:
         - `max_delay`
         - `max_delay_mode`
         - `enable_partials`
+        - `volume_threshold`
+        - `end_of_utterance_silence_trigger`
 
         If you wish to alter any other parameters you must terminate the session and restart with the altered configuration. Attempting otherwise will result in an error.
 
