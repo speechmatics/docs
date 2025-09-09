@@ -82,6 +82,10 @@ export default {
       ],
     },
     {
+      type: "doc",
+      id: "get-started/projects",
+    },
+    {
       type: "link",
       href: "https://speechmatics.featurebase.app/en/changelog",
       label: "Release notes",
