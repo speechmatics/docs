@@ -21,8 +21,6 @@ function useMixPanel() {
 // Memoize the provider component to prevent unnecessary re-renders
 const MixpanelTracker = React.memo(
   ({ token, hasConsent }: { token: string; hasConsent: boolean }) => {
-    const location = useLocation();
-
     const mixpanel = useMixPanel();
 
     // Initialize Mixpanel - only runs once when token changes
@@ -64,35 +62,9 @@ const MixpanelTracker = React.memo(
       }
     }, [hasConsent, token, mixpanel]);
 
-    const routerLocation = useLocation();
-
     // Track page views using MutationObserver to detect title changes
     useEffect(() => {
       if (typeof window === "undefined" || !token || !hasConsent) return;
-
-      const trackPageView = () => {
-        const pageTitle = document.title;
-        const url =
-          window.location.origin +
-          routerLocation.pathname +
-          routerLocation.search;
-        const path = routerLocation.pathname;
-
-        // Only track if we have a valid title (not the default or empty)
-        if (
-          pageTitle &&
-          pageTitle !== "Loading..." &&
-          !pageTitle.includes("undefined")
-        ) {
-          mixpanel?.track("Page View", {
-            "Page Title": pageTitle,
-            URL: url,
-            "URL Path": path,
-            Referrer: document.referrer,
-            event_source: "docs",
-          });
-        }
-      };
 
       let initialPageViewTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -107,9 +79,7 @@ const MixpanelTracker = React.memo(
               clearTimeout(initialPageViewTimer);
               initialPageViewTimer = undefined;
             }
-
-            // Title has changed, now we can use document.title
-            trackPageView();
+            mixpanel?.track_pageview();
           }
         }
       });
@@ -124,7 +94,7 @@ const MixpanelTracker = React.memo(
         // This handles direct URL visits where the title doesn't change dynamically
         initialPageViewTimer = setTimeout(() => {
           initialPageViewTimer = undefined;
-          trackPageView();
+          mixpanel?.track_pageview();
         }, 500); // 500ms delay to allow for any title changes to happen first
       }
 
@@ -134,13 +104,7 @@ const MixpanelTracker = React.memo(
         }
         observer.disconnect();
       };
-    }, [
-      routerLocation.pathname,
-      routerLocation.search,
-      hasConsent,
-      token,
-      mixpanel,
-    ]);
+    }, [hasConsent, token, mixpanel]);
 
     return null;
   },
