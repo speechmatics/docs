@@ -1,0 +1,198 @@
+---
+sidebar_label: 'Batch diarization'
+description: "Learn how to use the Speechmatics API to separate speakers in Batch"
+keywords:
+  [
+    speechmatics,
+    batch,
+    diarization,
+    transcription,
+    speech recognition,
+    automatic speech recognition,
+    asr,
+  ]
+sidebar_position: 2
+---
+
+import DocCardList from '@theme/DocCardList';
+import { Card, DataList, Text } from '@radix-ui/themes';
+
+# Batch diarization
+
+:::tip
+To learn more about diarization as a feature, check out the [diarization](../features/diarization.mdx) page.
+:::
+
+Batch diarization offers the following ways to separate speakers in audio:
+
+- [**Speaker diarization**](#speaker-diarization) — Identifies each speaker by their voice.  
+  Useful when there are multiple speakers in the same audio stream.  
+
+- [**Channel diarization**](#channel-diarization) — Transcribes each audio channel separately.  
+  Useful when each speaker is recorded on their own channel.  
+
+## Speaker diarization
+
+Speaker diarization aggregates all audio channels into a single stream for processing, and picks out different speakers based on acoustic matching.
+
+The feature is disabled by default. To enable speaker diarization, `diarization` must be set to `speaker` in the transcription config:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    // highlight-start
+    "diarization": "speaker"
+    // highlight-end
+  }
+}
+```
+
+When diarization is enabled, each `word` and `punctuation` object in the transcript includes a `speaker` property that identifies who spoke it. There are two types of labels:
+
+- `S#` – S stands for speaker, and `#` is a sequential number identifying each speaker. S1 appears first in the results, followed by S2, S3, and so on.
+- `UU` – Used when the speaker cannot be identified or diarization is not applied (i.e. running batch mode on CPU operating points), for example, if background noise is transcribed as speech but no speaker can be determined.
+
+```json
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.93,
+          "content": "hello",
+          "language": "en",
+          // highlight-start
+          "speaker": "S1"
+          // highlight-end
+        }
+      ],
+      ...
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "hi",
+          "language": "en",
+          // highlight-start
+          "speaker": "S2"
+          // highlight-end
+        }
+      ],
+    }]
+```
+
+## Channel diarization
+
+With channel diarization, each channel in your audio is transcribed on its own and then merged into a single transcript. This gives you perfect separation at the channel level and cleaner results when speakers overlap.
+
+Batch channel diarization supports up to 100 separate input files.
+
+To enable it, set the `diarization` property to `channel`. You can also add custom names for each channel with the `channel_diarization_labels` setting:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    // highlight-start
+    "diarization": "channel",
+    "channel_diarization_labels": ["Agent", "Caller"]
+    // highlight-end
+  }
+}
+```
+
+If no labels are provided, default names like `Channel 1` are used. The number of labels should match the number of channels in your audio; any extra labels are ignored.
+
+In the transcript, each word includes a `channel` property that indicates the speaker:
+
+```json
+"results": [
+  {
+    "type": "word",
+    "end_time": 1.8,
+    "start_time": 1.45,
+    "channel": "Agent",
+    "alternatives": [
+      {
+        "language": "en",
+        "content": "Hello",
+        "confidence": 0.76
+      }
+    ]
+  }
+]
+```
+## Configuration
+
+You can customize diarization to match your use case by adjusting settings for sensitivity, preferring the current speaker to reduce false switches, and controlling how punctuation influences accuracy.
+
+### Speaker sensitivity
+
+You can configure the sensitivity of speaker detection by using the `speaker_sensitivity` setting in the `speaker_diarization_config` section of the job config object as shown below:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    // highlight-start
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      "speaker_sensitivity": 0.6
+    }
+    // highlight-end
+  }
+}
+```
+
+This takes a value between 0 and 1 (the default is 0.5). A higher sensitivity will
+increase the likelihood of more unique speakers returning.
+
+
+### Prefer current speaker
+
+You can reduce the likelihood of incorrectly switching between similar sounding speakers by setting the `prefer_current_speaker` flag in the `speaker_diarization_config`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    // highlight-start
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      "prefer_current_speaker": true
+    }
+    // highlight-end
+  }
+}
+```
+By default this flag is `false`.  When this flag is set to `true`, the system will stay with the speaker of the previous word, if they closely match the speaker of the new word.
+
+This may result in some shorter speaker turn changes between similar speakers being missed.
+
+### Speaker diarization and punctuation
+
+Speaker diarization uses punctuation to improve accuracy. Small corrections are applied to speaker labels based on sentence boundaries.  
+
+For example, if the system initially assigns 9 words in a sentence to S1 and 1 word to S2, the lone S2 word may be corrected to S1.  
+
+This adjustment only works when punctuation is enabled. Disabling punctuation via the `permitted_marks` setting in `punctuation_overrides` can reduce diarization accuracy.  
+
+Adjusting punctuation sensitivity can also affect how accurately speakers are identified.
+
+### Speaker diarization Timeout
+
+Speaker diarization will time out if it takes too long to run for a particular audio file. Currently, the timeout is set to 5 minutes or 0.5 \* the audio duration, whichever is longer. For example, with a 2 hour audio file, the timeout is 1 hour. If a timeout happens, the transcript will still be returned and all speaker labels in the output will be labelled as UU.
+
+### Speaker change (legacy)
+
+The speaker change detection feature was removed in July 2024. The `speaker_change` and `channel_and_speaker_change` parameters are no longer supported. Use the [speaker diarization](#speaker-diarization) feature for speaker labeling.  
+
+For API-related questions, contact [Support](https://support.speechmatics.com).
+
+## Considerations
+- Enabling diarization for a file increases the amount of time taken to transcribe an audio file. In general, we expect the use of diarization to increase the overall processing time by 10-50%.

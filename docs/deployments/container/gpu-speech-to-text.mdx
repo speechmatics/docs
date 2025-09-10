@@ -40,13 +40,9 @@ If you are running on a data center GPU (e.g, a T4) you can use drivers: 470.57 
 
 Driver installation can be validated by running `nvidia-smi`. This command should return the Nvidia driver version and show additional information about the GPU(s).
 
-#### Azure instances
+#### Cloud instances
 
-The GPU node can be provisioned in the cloud. Our SaaS deployment uses
-
-- Azure [Standard_NC8as_T4_v3](https://learn.microsoft.com/en-us/azure/virtual-machines/nct4-v3-series)
-
-but any `NC` or `ND` series with sufficient memory should work.
+The GPU node can be provisioned in the cloud.
 
 ## Running the image
 
@@ -76,13 +72,11 @@ I1215 11:43:57.300390 1 server.cc:633]
 | am_en_standard       | 1       | READY  |
 | body_enhanced        | 1       | READY  |
 | body_standard        | 1       | READY  |
-| decoder_enhanced     | 1       | READY  |
-| decoder_standard     | 1       | READY  |
 | diar_enhanced        | 1       | READY  |
 | diar_standard        | 1       | READY  |
 | ensemble_en_enhanced | 1       | READY  |
 | ensemble_en_standard | 1       | READY  |
-| lm_enhanced          | 1       | READY  |
+| lm_en_enhanced       | 1       | READY  |
 +----------------------+---------+--------+
 ...
 I1215 11:43:57.375233 1 grpc_server.cc:4819] Started GRPCInferenceService at 0.0.0.0:8001

@@ -19,6 +19,10 @@ export default {
       id: "speech-to-text/batch/limits",
     },
     {
+      type: "doc",
+      id: "speech-to-text/batch/batch_diarization",
+    },
+    {
       type: "category",
       label: "Speech intelligence",
       items: [

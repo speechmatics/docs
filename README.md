@@ -4,9 +4,17 @@ Documentation for Speechmatics APIs, products and other software
 
 This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
-This project has been started as part of ongoing work to revamp the existing docs (also built with Docusaurus, but on an older version).
+## Contributing
 
-At the moment, this repo is private, and is deployed to Vercel for visibility. It's just here to get the initial work going before we launch.
+We welcome contributions to the docs! Please see `CONTRIBUTING.md` for information on contributions and style.
+
+## For Speechmatics employees
+
+Open a pull request to the `main` branch. The CI pipeline will build and deploy the docs to Vercel.
+
+## For external contributors
+
+Fork this repository, and open a PR against the `main` branch. Note that this will *not* create a preview link.
 
 ## Project overview
 
@@ -36,8 +44,5 @@ This command generates static content into the `build` directory and can be serv
 
 To use Mixpanel, set the `MIXPANEL_PROJECT_TOKEN` environment variable when running the app locally (`npm run start`) or building it (`npm run build`). You can store the token in a `.env.local` file. If you're developing and want to use the token from Vercel's preview environment, run `vercel env pull --environment=preview` to populate the file.
 
-### Deployment
-
-TBD
 
 NOTE: The `MIXPANEL_PROJECT_TOKEN` env variable containing the **production** token should be available at build time in order to get a build that uses MixPanel suitable for a production deployment.
