@@ -109,7 +109,7 @@ To enable channel diarization, `diarization` must be set to `channel` and labels
     "language": "en",
     // highlight-start
     "diarization": "channel",
-    "channel_diarization_labels": ["New_York", "Shanghai", "Paris"]
+    "channel_diarization_labels": ["New_York", "Shanghai"]
     // highlight-end
   }
 }
@@ -122,7 +122,7 @@ You should see a `channels` field in the `RecognitionStarted` message which list
   "message": "RecognitionStarted",
   ...
   // highlight-start
-  "channels": ["New_York", "Shanghai", "Paris"]
+  "channels": ["New_York", "Shanghai"]
   // highlight-end
 }
 ```
