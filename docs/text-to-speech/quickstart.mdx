@@ -36,26 +36,48 @@ Our text to speech API is perfect for:
 ### 2. Install dependencies
 
 ```bash
-pip install requests numpy
+pip install requests
 ```
 
 ### 3. Make your first request
 
 Replace `YOUR_API_KEY` with your actual API key from the portal:
 
-<CodeBlock language="python">
-  {pythonTtsQuickstart}
-</CodeBlock>
+<Tabs>
+  <TabItem value="curl" label="cURL">
+  ```bash
+  curl -X POST "https://preview.tts.speechmatics.com/generate/sarah" \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"text": "Welcome to the future of speech technology!"}' \
+    --output output.wav
+  ```
+  </TabItem>
+  <TabItem value="python" label="Python">
+  <CodeBlock language="python">
+    {pythonTtsQuickstart}
+  </CodeBlock>
+  </TabItem>
+</Tabs>
 
-## Output format
+## Output formats
 
-The Text-to-Speech API returns raw PCM audio data with the following specifications:
+The Text-to-Speech API supports two output formats that you can specify using the `output_format` query parameter:
 
-- **Format**: Raw PCM (Pulse Code Modulation)
+### `wav_16000` (default)
+- **Format**: Complete WAV file with headers
 - **Sample Rate**: 16 kHz
-- **Bit Depth**: 32-bit float
+- **Bit Depth**: 16-bit signed integer
+- **Channels**: Mono (single channel)
+- **Usage**: `?output_format=wav_16000` (or omit parameter for default)
+
+### `pcm_16000`
+- **Format**: Raw PCM (Pulse Code Modulation) data
+- **Sample Rate**: 16 kHz
+- **Bit Depth**: 16-bit signed integer
 - **Channels**: Mono (single channel)
 - **Byte Order**: Little-endian
+- **Usage**: `?output_format=pcm_16000`
 
 :::tip
 You can start consuming the generated audio as soon as it's ready. There's no need to wait for the request to complete!
