@@ -52,3 +52,41 @@ The Speechmatics Real-Time SaaS caches Custom Dictionaries to reduce session ini
 You will see improvements when reusing an identical Custom Dictionary from the second time onwards. Cache entries expire when they are not used for 24 hours.
 
 On-prem Real-time Containers can also make use of a [Shared Custom Dictionary Cache](/deployments/container/cpu-speech-to-text#how-to-use-a-shared-custom-dictionary-cache).
+
+## Custom Dictionary Content Limits (Real-Time)
+
+In the Speechmatics Real-Time SaaS Custom dictionaries have a limit on their content in the form of a max word count of 6 words per individual element. This applies to both `content` and `sounds_like` properties of the customer dictionary. 
+
+Any elements that surpass this limit will be dropped before transcription starts, with a in-band warning message of type `validation_warning` sent to the client.
+
+e.g. 
+
+The following custom dictionary
+
+```
+[{"content":"this is a element that surpasses the limit"}, {"content":"this is ok"}]
+```
+
+After applying the limit, becomes
+
+```
+[{"content":"this is ok"}]
+``` 
+
+The same limit applies for sounds_like
+
+```
+[{"content":"this is ok", "sounds_like":["this is ok", "this is a element that surpasses the limit"]}]
+```
+
+After applying the limit, becomes
+
+```
+[{"content":"this is ok", "sounds_like":["this is ok"]}]
+```
+
+The following custom dictionary would not be affected, it contains 7 elements but each individual element is below the 6 word limit.
+
+```
+["apple", "orange", "banana", "lemon", "lime", "melon", "pear"]
+```
