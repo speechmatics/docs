@@ -412,6 +412,11 @@
       "permanent": true
     },
     {
+      "source": "/private/preview-mode",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/release-notes",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
