@@ -47,26 +47,23 @@ Prior to using this feature, consider the following:
 In the above example, the words _gnocchi_ and _CEO_ have pronunciations applied to them; the phrase _financial crisis_ does not require a pronunciation. The `content` property represents how you want the word to be output in the transcript.
 
 ## Custom Dictionary Caching
-The Speechmatics Real-Time SaaS caches Custom Dictionaries to reduce session initialisation times. 
+The Speechmatics Realtime SaaS caches Custom Dictionaries to reduce session initialisation times. 
 
 You will see improvements when reusing an identical Custom Dictionary from the second time onwards. Cache entries expire when they are not used for 24 hours.
 
-On-prem Real-time Containers can also make use of a [Shared Custom Dictionary Cache](/deployments/container/cpu-speech-to-text#how-to-use-a-shared-custom-dictionary-cache).
+On-prem Realtime Containers can also make use of a [Shared Custom Dictionary Cache](/deployments/container/cpu-speech-to-text#how-to-use-a-shared-custom-dictionary-cache).
 
-## Custom Dictionary Content Limits (Real-Time)
+## Custom Dictionary Content Limits (Realtime)
 
 :::info
-Starting November 1st, 2025, we're introducing new limits for custom dictionaries in Real-Time SaaS to help optimize performance for all users, please review and adjust your integrations if needed.
+From **November 1st, 2025** onwards, we are introducing limits to the length of Custom Dictionaries entries in our Realtime SaaS service. Please review the documentation below and update your integration if necessary.
 :::
 
-In the Speechmatics Real-Time SaaS Custom dictionaries have a limit on their content in the form of a max word count of 6 words per individual element. This applies to both `content` and `sounds_like` properties of the customer dictionary. 
+Any individual Custom Dictionary (`additional_vocab`) element longer than 6 words will be automatically dropped from the config before transcription starts. This applies to both the `content` and `sounds_like` fields.
 
-Any elements that surpass this limit will be dropped before transcription starts, with a in-band warning message of type `validation_warning` sent to the client prior to recieving the `RecognitionStarted` message, see the [Real-Time API Reference](/api-ref/realtime-transcription-websocket#warning) for more details.
+Any elements that exceed this limit will be dropped before transcription starts. The server will send an in-band warning message of type validation_warning to the client prior to the RecognitionStarted message. See the [Realtime API Reference](/api-ref/realtime-transcription-websocket#warning) for more details.
 
-e.g. 
-
-The following custom dictionary
-
+For example, consider the following custom dictionary:
 ```
 [{"content":"this is a element that surpasses the limit"}, {"content":"this is ok"}]
 ```
@@ -77,7 +74,7 @@ After applying the limit, becomes
 [{"content":"this is ok"}]
 ``` 
 
-The same limit applies for sounds_like
+The same limit applies for `sounds_like`:
 
 ```
 [{"content":"this is ok", "sounds_like":["this is ok", "this is a element that surpasses the limit"]}]
@@ -89,7 +86,7 @@ After applying the limit, becomes
 [{"content":"this is ok", "sounds_like":["this is ok"]}]
 ```
 
-The following custom dictionary would not be affected, it contains 7 elements but each individual element is below the 6 word limit.
+The following custom dictionary would not be affected - it contains 7 elements but each individual element is below the 6 word limit.
 
 ```
 ["apple", "orange", "banana", "lemon", "lime", "melon", "pear"]
