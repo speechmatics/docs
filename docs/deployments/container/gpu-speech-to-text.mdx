@@ -1,7 +1,7 @@
 ---
 toc_max_heading_level: 3
 description: 'Learn about the Speechmatics Transcription GPU container system'
-keywords: [speechmatics, container, gpu, GPU, performance, NVIDIA, CUDA, SaaS, on-prem]
+keywords: [speechmatics, container, gpu, GPU, NVIDIA, CUDA, SaaS, on-prem]
 ---
 
 import Tabs from '@theme/Tabs';
@@ -130,33 +130,3 @@ This Docker Compose file will create a Speechmatics GPU Inference Server:
 <CodeBlock language="yaml" title="docker-compose.yml">
 {gpuSttDockerCompose.replace('{{ CONTAINER_VERSION }}', smVariables.latestContainerVersion)}
 </CodeBlock>
-
-## GPU Inference Performance
-
-This is a comparison of the performance and estimated running costs of transcription executing on
-standard Azure VMs.
-
-### Benchmark metrics
-
-| Operating Point                            | CPU Standard | CPU Enhanced | GPU Standard | GPU Enhanced |
-|--------------------------------------------|--------------|--------------|--------------|--------------|
-| Lowest Processing Cost (US ¢ per hour)     | 1.7          | 3.8          | 0.71         | 2.21         |
-| Cost vs CPU Standard (%)                   | -            | 224%         | 42%          | 130%         |
-| Cost vs CPU Enhanced (%)                   | 45%          | -            | 19%          | 58%          |
-| Maximum Throughput[^1]                     | 53.2         | 23.7         | 170          | 34           |
-| Representative Real-Time Factor (RTF)[^2]  | 0.085        | 0.2          | 0.035        | 0.08         |
-| Transcriber Count                          | 20           | 20           | 20           | 13           |
-
-The benchmark uses the following configuration:
-
-| Benchmark details |                                     |
-| ----------------- | ----------------------------------- |
-| CPU               | D16ds_v5                            |
-| GPU Standard      | Standard_NC16as_T4_v3               |
-| GPU Enhanced      | Standard_NC8as_T4_v3                |
-| Price Basis       | Azure PAYG East US, Linux, Standard |
-
-For GPU Operating Points, Transcribers and Inference Server were all run on a single VM node.
-
-[^1]: Throughput is measured as hours of audio per hour of runtime. A throughput of 50 would mean that in one hour, the system as a whole can transcribe 50 hours of audio.
-[^2]: An RTF of 1 would mean that a one hour file would take one hour to transcribe. An RTF of 0.1 would mean that a one hour file would take six minutes to transcribe. Benchmark RTFs are representative for processing audio files over 20 minutes in duration using `parallel=4`.

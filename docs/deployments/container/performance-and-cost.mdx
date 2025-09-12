@@ -1,0 +1,66 @@
+---
+description: "Get an overview of the performance and cost of Speechmatics container deployments"
+---
+# Performance and cost
+
+## Speech to text containers
+
+Below are comparisons of the performance and estimated running costs of transcription executing on
+standard Azure VMs.
+
+### Batch transcription
+
+
+| Operating Point                            | [CPU Standard](./cpu-speech-to-text) | [CPU Enhanced](./cpu-speech-to-text) | [GPU Standard](./gpu-speech-to-text) | [GPU Enhanced](./gpu-speech-to-text) |
+|--------------------------------------------|--------------|--------------|--------------|--------------|
+| Lowest Processing Cost (US ¢ per hour)     | 1.7          | 3.8          | 0.71         | 2.21         |
+| Cost vs CPU Standard (%)                   | -            | 224%         | 42%          | 130%         |
+| Cost vs CPU Enhanced (%)                   | 45%          | -            | 19%          | 58%          |
+| Maximum Throughput[^1]                     | 53.2         | 23.7         | 170          | 34           |
+| Representative Real-Time Factor (RTF)[^2]  | 0.085        | 0.2          | 0.035        | 0.08         |
+| Transcriber Count                          | 20           | 20           | 20           | 13           |
+
+The benchmark uses the following configuration:
+
+| Benchmark details |                                     |
+| ----------------- | ----------------------------------- |
+| CPU               | D16ds_v5                            |
+| GPU Standard      | Standard_NC16as_T4_v3               |
+| GPU Enhanced      | Standard_NC8as_T4_v3                |
+| Price Basis       | Azure PAYG East US, Linux, Standard |
+
+:::note
+For GPU Operating Points, transcribers and inference servers were all run on a single VM node.
+:::
+
+
+### Real-time transcription
+
+| Operating Point                            | [CPU Standard](./cpu-speech-to-text#realtime-transcription) | [CPU Enhanced](./cpu-speech-to-text#realtime-transcription) | [GPU Standard](./gpu-speech-to-text#batch-and-real-time-inference) | [GPU Enhanced](./gpu-speech-to-text#batch-and-real-time-inference) |
+|--------------------------------------------|--------------|--------------|--------------|--------------|
+| Cents per Session Hour (US ¢ per hour)     | 1.97         | 2.95         | 0.86         | 2.51         |
+| Session Density                            | 40           | 24           | 140[^1]       | 30[^1]       |
+
+This benchmark uses the following configuration:
+
+| Benchmark details | Value                               |
+| ------------------| ----------------------------------- |
+| CPU               | D16ds_v5                            |
+| GPU Standard      | Standard_NC16as_T4_v3               |
+| GPU Enhanced      | Standard_NC8as_T4_v3                |
+| Price Basis       | Azure PAYG East US, Linux, Standard |
+
+:::note
+For GPU Operating Points, the transcribers and inference servers were run on a single VM node.
+
+Each first session, transcriber requires 0.25 cores for both OPs, with 1.2 GB memory (Standard OP) or 3 GB memory (Enhanced OP). Every additional session consumes 0.1 cores and 100 MB of memory.
+:::
+
+
+[^1]: Throughput is measured as hours of audio per hour of runtime. A throughput of 50 would mean that in one hour, the system as a whole can transcribe 50 hours of audio.
+[^2]: An RTF of 1 would mean that a one hour file would take one hour to transcribe. An RTF of 0.1 would mean that a one hour file would take six minutes to transcribe. Benchmark RTFs are representative for processing audio files over 20 minutes in duration using `parallel=4`.
+
+
+## Translation (GPU)
+
+[Translation](./gpu-translation) running on a 4-core T4 has an RTF of roughly 0.008. It can handle up to 125 hours of batch audio per hour, or 125 Real-Time Transcription streams. However, each translation target language is counted as a stream, meaning that a single Real-Time Transcription stream which requests 5 target languages adds the same load on the Translation Inference Server as 5 transcription streams each requesting a single target language.
