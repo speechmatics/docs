@@ -1,6 +1,6 @@
 ---
 description: "Get an overview of the performance and cost of Speechmatics container deployments"
-keywords: [speechmatics, container, performance, cost, gpu, cpu, GPU, CPU, on-prem]
+keywords: [speechmatics, container, performance, cost, gpu, cpu, GPU, CPU, on-prem, TCO]
 ---
 # Performance and cost
 
@@ -39,10 +39,10 @@ For GPU Operating Points, transcribers and inference servers were all run on a s
 
 | Operating Point                            | [CPU Standard](./cpu-speech-to-text#realtime-transcription) | [CPU Enhanced](./cpu-speech-to-text#realtime-transcription) | [GPU Standard](./gpu-speech-to-text#batch-and-real-time-inference) | [GPU Enhanced](./gpu-speech-to-text#batch-and-real-time-inference) |
 |--------------------------------------------|--------------|--------------|--------------|--------------|
-| Cents per Session Hour (US ¢ per hour)     | 1.97         | 2.95         | 0.86         | 2.51         |
-| Session Density                            | 40           | 24           | 140[^1]       | 30[^1]       |
+| Lowest Processing Cost (US ¢ per hour)     | 1.97         | 2.95         | 0.86         | 2.51         |
+| Session Density                            | 40           | 24           | 140[^3]       | 30[^3]       |
 
-This benchmark uses the following configuration:
+This benchmark uses the following configuration[^4]:
 
 | Benchmark details | Value                               |
 | ------------------| ----------------------------------- |
@@ -60,7 +60,8 @@ Each first session, transcriber requires 0.25 cores for both OPs, with 1.2 GB me
 
 [^1]: Throughput is measured as hours of audio per hour of runtime. A throughput of 50 would mean that in one hour, the system as a whole can transcribe 50 hours of audio.
 [^2]: An RTF of 1 would mean that a one hour file would take one hour to transcribe. An RTF of 0.1 would mean that a one hour file would take six minutes to transcribe. Benchmark RTFs are representative for processing audio files over 20 minutes in duration using `parallel=4`.
-
+[^3]: Multiple sessions are handled by a single worker configured with the required concurrency.
+[^4]: Benchmark results reflect performance on a fully loaded inference server operating at the session density recommended for the respective GPU platform.
 
 ## Translation (GPU)
 
