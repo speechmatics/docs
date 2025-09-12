@@ -55,6 +55,10 @@ On-prem Real-time Containers can also make use of a [Shared Custom Dictionary Ca
 
 ## Custom Dictionary Content Limits (Real-Time)
 
+:::info
+Starting November 1st, 2025, we're introducing new limits for custom dictionaries in Real-Time SaaS to help optimize performance for all users, please review and adjust your integrations if needed.
+:::
+
 In the Speechmatics Real-Time SaaS Custom dictionaries have a limit on their content in the form of a max word count of 6 words per individual element. This applies to both `content` and `sounds_like` properties of the customer dictionary. 
 
 Any elements that surpass this limit will be dropped before transcription starts, with a in-band warning message of type `validation_warning` sent to the client prior to recieving the `RecognitionStarted` message, see the [Real-Time API Reference](/api-ref/realtime-transcription-websocket#warning) for more details.
