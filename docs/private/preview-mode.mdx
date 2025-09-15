@@ -1,0 +1,84 @@
+---
+description: Get early access to features
+---
+
+# Preview Mode
+## Introduction
+
+Preview mode allows you to test out new features before they are available in production.
+Note that Preview Mode is currently available for **real-time transcription only**. 
+
+
+:::warning
+Its important to make sure that you are aware of the following:
+- Preview should not be used for live production traffic. Some features may be limited in Preview, and the system will be less stable than our production endpoints.
+- There are no uptime or performance SLAs.
+- Preview features may be cancelled at any time or never be released publicly.
+:::
+
+
+### Using Preview Mode via UI
+
+You can enable Preview Mode using the menu in the top right of your Portal account. Your Portal demos will now enable the Preview Mode capabilities. If you don't see this option, speak to your Customer Success Manager.
+
+![Enabling Preview Mode](/img/preview-mode.png)
+
+### Using Preview Mode via API
+
+Use your Portal API key to start an RT session using the URL: `wss://preview.rt.speechmatics.com/v2`
+
+## Supported languages
+- Arabic
+- English
+- Spanish
+- Spanish & English bilingual
+
+Additional languages available on request
+
+## Release notes
+
+### 2025-01-06
+- Real-time Speaker Diarization (speaker labelling) major accuracy improvements
+    - These updates enhance both speaker change detection (20% better at 1 second latency) and speaker label accuracy (25% better at 1 second latency)
+- New English Real-time model with faster Partials and gives a higher accuracy at low latency
+    - Expect Partials to return in approximately 300ms, a notable improvement from the previous 500ms
+
+**Impact of the Diarization updates on Your Use Case:**
+- If you do not use Diarization, this change will not affect you
+- If Diarization is a part of your workflow, we recommend evaluating the changes since this will now mean that more short interjections will be captured. Also, fast back-and-forth conversations will now be better represented in real-time
+
+**Impact of the new English model on Your Use Case:**
+- If you do not use Partials this change is not expected to affect you.
+- If you rely on the words returned in Partials for your product and accuracy is crucial, you should re-evaluate. If this is an issue, we recommend waiting for a minimum time before you use the Partial for recent words
+- If you use Partials primarily to determine if someone is still speaking, this update will enhance your product's performance since feedback will be faster
+
+**What does this new English model mean for you?**
+- **Lower-Latency Partial Responses:** The most recent spoken words will be delivered in Partials more swiftly, enhancing the overall responsiveness of our service and especially low-latency use cases such as Conversational AI
+- **Accuracy Considerations:** While the latency of Partials will decrease, it is important to note that this may lead to lower accuracy for the most recent words. For example, if a user is speaking the word "thirteenth," you might initially receive "third" as a partial before the correct word is finalized. (This is not new behavior, but will happen more frequently). The accuracy of Finals for a given latency should see a small improvement
+
+
+
+### 2024-10-04
+- Faster Real-Time Transcription with More Consistent Latency
+    - Fewer words are included in each Final (typically 1-2 words per final)
+    - The latency for final word transcriptions is now more consistent
+    - Average latency reduced by 300-400ms for a given max_delay
+- Improved Partials - Partials now include numeral formatting, enhanced punctuation, and better casing
+
+We recommend re-evaluating the best max_delay for your use case. In most cases, you can reduce the max_delay and still get the same accuracy!
+
+### 2024-09-18
+- Improved diarization accuracy, especially for low latencies
+- Fixes for confidence scores, word timings and sentence breaks
+
+### 2024-08-30
+- Added support for Arabic
+
+### 2024-07-01
+Preview Mode will allow you to try out our latest improvements in real-time transcription. The main benefits are:
+- Improved accuracy for low latencies beyond our already market-leading real-time transcription
+- Allows for max_delay lower than the current limit of 2 seconds. Partials latency is unchanged at around 0.7 seconds
+- Final transcript outputs are returned more 'smoothly', rather than returning longer chunks of text less frequently
+- Partial transcripts now support numeral formatting
+- Partial transcripts now support returning full punctuation , . ? ! (note: this can update when a final is received)
+- Compatible with all existing config options and features
