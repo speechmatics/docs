@@ -1,5 +1,5 @@
 ---
-title: Voice agents – Flow overview
+title: Overview
 description: Build conversational AI agents with the Flow API
 ---
 

@@ -1,0 +1,63 @@
+---
+toc_max_heading_level: 3
+description: 'Manage access and monitor usage for different groups with Projects'
+keywords: [projects, project, API key, access control, usage tracking]
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Using projects
+
+Projects allow you to isolate data across different environments or applications. API keys within one project will not be able to access the transcription results of another project.
+
+This guide explains how to create, manage, and work with projects effectively.
+
+## What are projects?
+Projects act as organisational 'environments' for API keys, the transcriptions produced by them, as well as any Voice Agent configurations.
+
+:::info
+Some settings such as profile information, model training preference and billing details are configured at the account level.
+:::
+
+Your account will start with a default project which cannot be deleted. This ensures you always have at least one working environment. 
+
+Your account will also be capped at 1000 projects. For use cases requiring more projects, consider using [temporary keys](../get-started/authentication#batch-transcription), or reach out to [support](https://support.speechmatics.com).
+
+
+## Common use cases
+* **Development workflows** - Use projects for your different environments, such as Development, Staging, and Production
+* **Organisation segmentation** - Use projects to monitor usage by product line, department or businesses sub-division
+* **Multi-client service providers** - For customers who resell Speechmatics' services to other businesses, use projects to provide client-specific API keys, isolate billing and usage data, and validate client-specific usage reports
+
+## Managing and using projects
+
+### Creating projects
+After signing in to the [web portal](https://portal.speechmatics.com/):
+1. Open the projects dropdown in the top navigation
+1. Select Create Project
+1. Enter a descriptive name
+1. Click Create
+
+### Using projects
+Within the [web portal UI](https://portal.speechmatics.com/), your active project is always shown in the top navigation. To switch projects:
+1. Click the project dropdown
+1. Select the desired project
+
+All relevant actions such as transcribing via the UI and managing API keys will apply to the selected project.
+
+:::info
+When [using the API](../get-started/quickstart.mdx), there is no need to explicitly specify a project, since all API keys are associated with only one project.
+:::
+
+### Managing projects
+Projects can be renamed and deleted via the web portal [Settings > Projects](https://portal.speechmatics.com/settings/projects). Note that the project ID is read-only and the default project cannot be deleted.
+
+:::warning
+Deleting a project permanently removes all associated transcripts, usage history, and API keys. This action cannot be undone. 
+:::
+
+## Usage Tracking
+You are able to monitor project usage via the web portal's Account Usage section. For granular insights into your usage:
+1. Navigate to [Settings > Usage](https://portal.speechmatics.com/settings/usage)
+1. Select a project (or All Projects) from the dropdown
+1. Choose a month from the Date filter to view data
