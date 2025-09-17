@@ -12,7 +12,7 @@ Fork this repository, and open a PR against the `main` branch. Note that this wi
 
 ## Style guide
 
-Please refer to the [style guide](https://speechmatics.atlassian.net/wiki/spaces/OCE/pages/4858937507/How+to+contribute+to+the+docs) for information on writing standards, style and tone of voice. If you're using Windsurf, these rules should be taken into account automatically.
+Please refer to the [style guide](https://github.com/speechmatics/docs/blob/main/.windsurf/rules/docs-style-guide.md) for information on writing standards, style and tone of voice. If you're using Windsurf, these rules should be taken into account automatically.
 
 ## Project structure
 
