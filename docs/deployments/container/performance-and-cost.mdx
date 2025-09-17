@@ -6,8 +6,7 @@ keywords: [speechmatics, container, performance, cost, gpu, cpu, GPU, CPU, on-pr
 
 ## Speech to text containers
 
-Below are comparisons of the performance and estimated running costs of transcription executing on
-standard Azure VMs.
+This is a comparison of the performance and estimated running costs of transcription executing on standard Azure VMs. The comparison highlights the maximum number of concurrent real-time sessions (session density) and the maximum throughput for batch jobs on a single instance.
 
 ### Batch transcription
 
@@ -40,7 +39,9 @@ For GPU Operating Points, transcribers and inference servers were all run on a s
 | Operating Point                            | [CPU Standard](./cpu-speech-to-text#realtime-transcription) | [CPU Enhanced](./cpu-speech-to-text#realtime-transcription) | [GPU Standard](./gpu-speech-to-text#batch-and-real-time-inference) | [GPU Enhanced](./gpu-speech-to-text#batch-and-real-time-inference) |
 |--------------------------------------------|--------------|--------------|--------------|--------------|
 | Lowest Processing Cost (US ¢ per hour)     | 1.97         | 2.95         | 0.86         | 2.51         |
-| Session Density                            | 40           | 24           | 140[^3]       | 30[^3]       |
+| Cost vs. CPU Standard (%)                  | -            | 150%         | 44%          | 127%         |
+| Cost vs. CPU Enhanced (%)                  | 67%          | -            | 29%          | 85%          |
+| Session Density                            | 40           | 24           | 140[^3]      | 30[^3]       |
 
 This benchmark uses the following configuration[^4]:
 
