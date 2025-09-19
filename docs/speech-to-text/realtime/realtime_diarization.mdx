@@ -174,6 +174,8 @@ Transcripts are returned independently for each channel, with the `channel` prop
 }
 ```
 
+Note that the `channel` property will be returned for `AddTranscript` and `AddPartialTranscript` messages only. Features such as [audio events](/speech-to-text/features/audio-events) do not currently include this property. To request this feature, please contact [support](https://support.speechmatics.com).
+
 ### Channel and speaker diarization
 
 Channel and speaker diarization combines speaker diarization and shannel diarization, splitting transcripts per channel whilst also separating individual speakers in each channel.
