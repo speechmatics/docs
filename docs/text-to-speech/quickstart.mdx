@@ -1,5 +1,5 @@
 ---
-description: Convert text to natural-sounding speech with our text to speech API.
+description: Learn how to convert text to speech using our API.
 ---
 
 import Admonition from '@theme/Admonition';
@@ -75,6 +75,106 @@ You can start consuming the generated audio as soon as it's ready. There's no ne
 Our text to speech API can be consumed via our managed service or deployed in your own environment.
 
 To find out more about deploying our API in your environment, [speak to sales](https://www.speechmatics.com/speak-to-sales).
+
+## FAQ
+
+### Core functionality
+
+<details>
+<summary>What languages do you support?</summary>
+
+We support English. We plan to launch additional languages in 2025. Need a specific language? Raise it as a [request on our GitHub](https://github.com/orgs/speechmatics/discussions).
+</details>
+
+<details>
+<summary>What voices are available?</summary>
+
+We are rapidly expanding the available list of voices, providing speech synthesis in multiple languages, accents and dialects. More voice options will be added during the preview period.
+</details>
+
+<details>
+<summary>Can I control voice speed, pitch, or emphasis?</summary>
+
+Not yet. The API outputs natural speech with prosody driven by the text content. Fine-grained voice control features may be added in future releases.
+</details>
+
+### Technical
+
+<details>
+<summary>How much latency should I expect?</summary>
+
+The initial audio chunk typically returns in less than 200ms, with subsequent audio chunks returning faster than real time.
+</details>
+
+<details>
+<summary>Is there a streaming API for real-time generation?</summary>
+
+The API supports streaming audio output (you can play audio as it arrives), but not full bidirectional streaming. We plan to add support for this in the future.
+</details>
+
+<details>
+<summary>What concurrency is supported and are there rate limits?</summary>
+
+We expect to support high concurrency when released. If you encounter rate limit errors, use retry with exponential backoff.
+</details>
+
+<details>
+<summary>How large can a text input be?</summary>
+
+Our service handles text splitting server-side and can process long paragraphs of text. However, for the lowest latency, sending smaller amounts of text will provide the best performance.
+</details>
+
+<details>
+<summary>Do you support webhooks or callbacks for long-running requests?</summary>
+
+Webhook and callback support is not available. This feature may be added in future releases for handling long-running synthesis requests.
+</details>
+
+<details>
+<summary>Are there official SDKs available?</summary>
+
+Official SDKs for different programming languages are not available yet. The API can be accessed using standard HTTP requests as shown in the [quickstart example](#3-make-your-first-request). We will release official SDKs later.
+</details>
+
+### Commercial
+
+<details>
+<summary>What is the price?</summary>
+
+We will announce pricing in September 2025. The service is currently free during the preview period. Billing will start on the 1st of October. We will announce pricing at least 2 weeks ahead of billing for usage.
+
+There will be a generous free tier.
+</details>
+
+<details>
+<summary>Can I use this for commercial applications?</summary>
+
+Text to speech is currently in preview and free to use. Features and pricing may change as the service evolves. For commercial use and enterprise pricing, [speak to sales](https://www.speechmatics.com/speak-to-sales) to discuss your specific needs.
+</details>
+
+<details>
+<summary>What happens to my data after synthesis?</summary>
+
+During the preview, we will be storing input text and generated audio to help improve our service. In production, Speechmatics will offer both non-retentive and data-retentive options. Customers who allow retention may be eligible for discounted pricing.
+
+Retained data helps improve system quality over time.
+</details>
+
+### Implementation and deployment
+
+<details>
+<summary>Can I deploy this in my own environment?</summary>
+
+Yes! The text to speech API can be consumed via our managed service or deployed in your own environment. To learn more about on-premises deployment options, [speak to sales](https://www.speechmatics.com/speak-to-sales).
+</details>
+
+### Support
+
+<details>
+<summary>Where can I provide feedback or get help?</summary>
+
+You can submit feedback, bug reports, or feature requests through the Speechmatics [GitHub discussions](https://github.com/orgs/speechmatics/discussions).
+</details>
 
 ## Next steps
 
