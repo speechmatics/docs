@@ -49,10 +49,10 @@ Speechmatics Batch SaaS supports the following endpoints for production use:
 
 | Customer type | Region | Environment | Endpoints                                                                                             |
 | ------------- | ------ | ----------- | ----------------------------------------------------------------------------------------------------- |
-| On-demand     | N/A    | N/A         | **asr.api.speechmatics.com**                                                                          |
-| Enterprise    | EU     | EU1         | **eu.asr.api.speechmatics.com**<br/>**eu1.asr.api.speechmatics.com**<br/>**asr.api.speechmatics.com** |
+| All     | N/A    | N/A         | **asr.api.speechmatics.com**                                                                          |
+| All    | EU     | EU1         | **eu.asr.api.speechmatics.com**<br/>**eu1.asr.api.speechmatics.com**<br/>**asr.api.speechmatics.com** |
 | Enterprise    | EU     | EU2         | **eu2.asr.api.speechmatics.com**                                                                      |
-| Enterprise    | US     | US1         | **us.asr.api.speechmatics.com**<br/>**us1.asr.api.speechmatics.com**                                  |
+| All    | US     | US1         | **us.asr.api.speechmatics.com**<br/>**us1.asr.api.speechmatics.com**                                  |
 | Enterprise    | US     | US2         | **us2.asr.api.speechmatics.com**                                                                      |
 | Enterprise    | AU     | AU1         | **au1.asr.api.speechmatics.com**                                                                      |
 
@@ -60,11 +60,11 @@ Speechmatics Real-Time SaaS supports the following endpoints for production use:
 
 | Customer type | Region | Environment | Endpoints               |
 | ------------- | ------ | ----------- | ----------------------- |
-| On-demand     | EU     | EU2         | eu2.rt.speechmatics.com |
-| Enterprise    | EU     | EU1         | neu.rt.speechmatics.com |
-| Enterprise    | US     | US1         | wus.rt.speechmatics.com |
+| All     | EU     | EU2         | eu2.rt.speechmatics.com |
+| All    | EU     | EU1         | neu.rt.speechmatics.com |
+| All    | US     | US1         | wus.rt.speechmatics.com |
 
-API keys are replicated between all environments in the same region. Therefore, you can use any environment in a region that you are entitled to access. Note that for Enterprise customers with access to the Portal, only jobs created in the EU1 environment will appear in the [Jobs list](https://portal.speechmatics.com/jobs).
+Note that for Enterprise customers with access to the Portal, only jobs created in the EU1 environment will appear in the [Jobs list](https://portal.speechmatics.com/jobs).
 
 All production environments are active and highly available. Multiple environments can be used to balance requests or provide a failover in the event of disruption to one environment.
 
