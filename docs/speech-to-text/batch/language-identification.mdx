@@ -61,7 +61,7 @@ If you expect the audio to be one of a restricted set of languages, you can prov
 
 If the language detected is not in the `expected_languages` list, the job will be [rejected](#language-not-in-expected-languages-list).
 
-A list of possible [Language Codes can be found here](/speech-to-text/languages). The following languages are not supported for Language Identification: Interlingua (ia), Esperanto (eo), Uyghur (ug), Cantonese (yue), Irish (ga), Maltese (mt), Urdu (ur), Bengali (bn), Swahili (sw).
+A list of possible [Language Codes can be found here](/speech-to-text/languages). The following languages are not supported for Language Identification: Bengali (bn), Cantonese (yue), Esperanto (eo), Interlingua (ia), Irish (ga), Maltese (mt), Tagalog (tl), Urdu (ur), Uyghur (ug), Swahili (sw).
 
 ### Low confidence action
 By default, the job will be rejected if no language is identified with [high enough confidence](#low-confidence).
@@ -335,7 +335,7 @@ This error is available when checking the [job details](//api-ref/batch/get-job-
         "status": "rejected",
         "errors": [
             {
-                "message": "The identified language 'sw' is not supported for transcription",
+                "message": "The identified language 'uz' is not supported for transcription",
                 "timestamp": "2023-02-27T12:11:24.321Z"
             }
         ],
