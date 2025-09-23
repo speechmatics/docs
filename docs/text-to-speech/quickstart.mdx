@@ -60,6 +60,22 @@ Replace `YOUR_API_KEY` with your actual API key from the portal:
   </TabItem>
 </Tabs>
 
+## Available voices
+
+The Text-to-Speech API offers three distinct voices to choose from.
+
+| Voice ID | Description |
+|----------|-------------|
+| `sarah` | English Female (UK) |
+| `theo` | English Male (UK) |
+| `megan` | English Female (US) |
+
+To use a specific voice, include the voice ID in your API endpoint:
+
+```
+https://preview.tts.speechmatics.com/generate/<voice_id>
+```
+
 ## Output formats
 
 The Text-to-Speech API supports two output formats that you can specify using the `output_format` query parameter:
