@@ -31,7 +31,7 @@ Our text to speech API is perfect for:
 
 ### 1. Get your API key
 
-[Create an API key in the portal](https://portal.speechmatics.com/settings/api-keys) to access the Text-to-Speech API. Store your key securely as a managed secret.
+[Create an API key in the portal](https://portal.speechmatics.com/settings/api-keys) to access the text to speech API. Store your key securely as a managed secret.
 
 ### 2. Install dependencies
 
@@ -60,9 +60,9 @@ Replace `YOUR_API_KEY` with your actual API key from the portal:
   </TabItem>
 </Tabs>
 
-## Available voices
+## Voices
 
-The Text-to-Speech API offers three distinct voices to choose from.
+We offer three voices you can choose from:
 
 | Voice ID | Description |
 |----------|-------------|
@@ -76,9 +76,11 @@ To use a specific voice, include the voice ID in your API endpoint:
 https://preview.tts.speechmatics.com/generate/<voice_id>
 ```
 
+We'll soon be adding more voices to our API. We'd love your feedback on what kind of voices you'd like us to add!
+
 ## Output formats
 
-The Text-to-Speech API supports two output formats that you can specify using the `output_format` query parameter:
+The text to speech API supports two output formats that you can specify using the `output_format` query parameter:
 
 ### `wav_16000` (default)
 - **Format**: Complete WAV file with headers
