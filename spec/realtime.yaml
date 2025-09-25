@@ -28,6 +28,8 @@ channels:
         $ref: "#/components/messages/StartRecognition"
       AddAudio:
         $ref: "#/components/messages/AddAudio"
+      AddChannelAudio:
+        $ref: "#/components/messages/AddChannelAudio"
       EndOfStream:
         $ref: "#/components/messages/EndOfStream"
       SetRecognitionConfig:
@@ -39,6 +41,8 @@ channels:
         $ref: "#/components/messages/RecognitionStarted"
       AudioAdded:
         $ref: "#/components/messages/AudioAdded"
+      ChannelAudioAdded:
+        $ref: "#/components/messages/ChannelAudioAdded"
       AddPartialTranscript:
         $ref: "#/components/messages/AddPartialTranscript"
       AddTranscript:
@@ -69,6 +73,7 @@ operations:
     messages:
       - $ref: "#/channels/publish/messages/StartRecognition"
       - $ref: "#/channels/publish/messages/AddAudio"
+      - $ref: "#/channels/publish/messages/AddChannelAudio"
       - $ref: "#/channels/publish/messages/EndOfStream"
       - $ref: "#/channels/publish/messages/SetRecognitionConfig"
   subscribe:
@@ -78,6 +83,7 @@ operations:
     messages:
       - $ref: "#/channels/subscribe/messages/RecognitionStarted"
       - $ref: "#/channels/subscribe/messages/AudioAdded"
+      - $ref: "#/channels/subscribe/messages/ChannelAudioAdded"
       - $ref: "#/channels/subscribe/messages/AddPartialTranscript"
       - $ref: "#/channels/subscribe/messages/AddTranscript"
       - $ref: "#/channels/subscribe/messages/AddPartialTranslation"
@@ -120,6 +126,17 @@ components:
         :::
       payload:
         $ref: "#/components/schemas/SetRecognitionConfig"
+    AddChannelAudio:
+      summary: |
+        Adds audio to a specific channel.
+
+        :::note
+
+        **`channel` or `channel_and_speaker` diarization must be enabled to use this.**
+        
+        To learn more about diarization and how to enable it, please visit the [realtime diarization](https://docs.speechmatics.com/speech-to-text/realtime/realtime_diarization) page.
+      payload:
+        $ref: "#/components/schemas/AddChannelAudio"
     RecognitionStarted:
       summary: Server response to StartRecognition, acknowledging that a recognition session has started.
       payload:
@@ -154,6 +171,11 @@ components:
       summary: Contains the final transcript of a part of the audio that the client has sent.
       payload:
         $ref: "#/components/schemas/AddTranscript"
+    ChannelAudioAdded:
+      summary: |
+        Server response to AddChannelAudio, indicating that audio has been added successfully to a specific channel.
+      payload:
+        $ref: "#/components/schemas/ChannelAudioAdded"
     EndOfUtterance:
       summary: |
         Indicates the end of an utterance, triggered by a configurable period of non-speech.
@@ -250,6 +272,21 @@ components:
       required:
         - message
         - last_seq_no
+    AddChannelAudio:
+      type: object
+      properties:
+        message:
+          const: AddChannelAudio
+        channel:
+          type: string
+          description: The channel identifier to which the audio belongs.
+        data:
+          type: string
+          description: The audio data in base64 format
+      required:
+        - message
+        - channel
+        - data
     SetRecognitionConfig:
       type: object
       properties:
@@ -294,6 +331,20 @@ components:
       required:
         - message
         - seq_no
+    ChannelAudioAdded:
+      type: object
+      properties: 
+        message:
+          const: ChannelAudioAdded
+        channel:
+          type: string
+          description: The channel identifier to which the audio belongs
+        seq_no:
+          type: integer
+      required:
+        - message
+        - channel
+        - number
     AddPartialTranscript:
       type: object
       properties:
