@@ -218,13 +218,16 @@ Transcripts are returned in the same way as channel diarization, but with indivi
   ]
 }
 ```
+
+When using `channel_and_speaker` diarization, speaker labelling is specific to channels even if the speaker labels are the same. S1 on channel 1 is not the same as S1 on channel 2.
+
 ### Limits
 
 For SaaS customers, the maximum number of channels is 2.
 
 For On-prem Container customers, the maximum number of channels depends on your [Multi-session container's](../../deployments/container/cpu-speech-to-text.mdx#multi-session-containers) maximum number of connections.
 
-
+The Speechmatics Python client CLI is currently limited to transcribing multi-channel audio in via files and not streaming/raw audio. 
 
 ## Configuration
 
