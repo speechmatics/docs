@@ -111,6 +111,7 @@ components:
         $ref: "#/components/schemas/AddAudio"
     AddChannelAudio:
       x-available-deployments: ["container"]
+      x-preview-mode: true
       summary: Audio belonging to a specific channel.
       payload:
         $ref: "#/components/schemas/AddChannelAudio"
@@ -120,6 +121,7 @@ components:
         $ref: "#/components/schemas/EndOfStream"
     EndOfChannel:
       x-available-deployments: ["container"]
+      x-preview-mode: true
       summary: Declares that the channel has no more audio to send.
       payload:
         $ref: "#/components/schemas/EndOfChannel"
@@ -156,6 +158,7 @@ components:
         $ref: "#/components/schemas/AudioAdded"
     ChannelAudioAdded:
       x-available-deployments: ["container"]
+      x-preview-mode: true
       summary: Server response to AddChannelAudio, indicating that audio has been added successfully.
       payload:
         $ref: "#/components/schemas/ChannelAudioAdded"
@@ -265,7 +268,6 @@ components:
       type: string
       format: binary
     AddChannelAudio:
-      x-available-deployments: ["container"]
       type: object
       properties:
         message:
@@ -291,7 +293,6 @@ components:
         - message
         - last_seq_no
     EndOfChannel:
-      x-available-deployments: ["container"]
       type: object
       properties:
         message:
@@ -400,7 +401,14 @@ components:
             $ref: "#/components/schemas/RecognitionResult"
         channel:
           type: string
-          description: The channel identifier to which the audio belongs. This field is only seen in multichannel.
+          description: |
+            The channel identifier to which the audio belongs. This field is only seen in multichannel.
+
+            :::note
+
+            This field is only available in [preview mode](https://docs.speechmatics.com/private/preview-mode).
+
+            :::
       required:
         - message
         - metadata
@@ -1023,7 +1031,6 @@ components:
         | `session_timeout` | Informs that the session is approaching the max session duration limit (maximum session duration of 48 hours), with a `reason` of the form: <p>`Session will timeout in {time_remaining}m due to max duration, session has been active for {time_elapsed}m`</p> Currently the server will send messages at 45, 30 and 15m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).|
         | `empty_translation_target_list` | No supported translation target languages specified. Translation will not run.
         | `add_audio_after_eos` | Protocol specification doesn't allow adding audio after `EndOfStream` has been received. Any `AddAudio messages after this, will be ignored.
-        | `validation_warning` | Informs that there was a warning raised during the validation of the session config, the offending config will be ignored and the session will continue to start.
       enum:
         - duration_limit_exceeded
         - unsupported_translation_pair
@@ -1031,7 +1038,6 @@ components:
         - session_timeout
         - empty_translation_target_list
         - add_audio_after_eos
-        - validation_warning
     ErrorTypeEnum:
       type: string
       # TODO if OpenAPI/AsyncAPI ever adds enum descriptors, we can move this description there
