@@ -21,13 +21,34 @@ keywords:
     es-pr,
     es-ar,
     pt-br,
+    operating point,
+    standard,
+    enhanced,
   ]
 ---
 
-# Languages
+# Languages & Models
 
-This page lists the range of languages supported by Speechmatics.
 
+### Operating points
+
+Choose between two accuracy models when configuring your transcription session:
+- **Standard** — optimized for faster turnaround with strong accuracy. Recommended when speed and efficiency are your priorities
+- **Enhanced** — our highest-accuracy model with strong turnaround times. Recommended when precision is critical, and especially for complex audio (e.g. noisy environments, varied accents)
+
+By default, the `standard` operating point is used. You can specify the `enhanced` operating point as a part of the transcription config. For example:
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "operating_point": "enhanced"
+  }
+}
+```
+
+
+## Transcription languages
 :::info
 To automatically identify the language in an audio file, use our [Language Identification](/speech-to-text/batch/language-identification) feature.
 
@@ -104,7 +125,7 @@ Speechmatics takes a global-first approach to our languages. In a single languag
 
 Each language above is uniquely identified by a two-letter code (ISO639-1) or three-letter code (ISO639-3) in API requests and responses.
 
-## Translation Languages
+## Translation languages
 
 Translation is supported for the majority of Speechmatics' languages. The supported translation pairs are listed below.
 For more details, see [Translation](/speech-to-text/features/translation).
@@ -136,7 +157,7 @@ Bilingual (excluding Spanish and English) example:
 {
   "type": "transcription",
   "transcription_config": {
-    "language": "cmn_en",
+    "language": "cmn_en"
   }
 }
 ```
@@ -152,3 +173,32 @@ Bilingual Spanish and English example:
   }
 }
 ```
+
+
+## Healthcare transcription
+Speechmatics offers industry-leading accuracy in the healthcare domain when using the default `enhanced` [operating point](#operating-points). For customers working exclusively in the healthcare domain, we recommend using the medical domain-specific model. 
+
+The model is kept up to date using officially maintained sources. This brings significant improvements in recognition of medical terminology such as names of procedures, medications, conditions, and anatomy.
+
+:::info
+The medical domain-specific model must be used with the `enhanced` operating point.
+:::
+ 
+Medical domain example:
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "operating_point": "enhanced",
+    "domain": "medical"
+  }
+}
+```
+
+
+
+|Language| Real-time | Batch|
+|----------------|--|-|
+|English| [Public preview](../private/preview-mode.mdx) | [Limited preview](https://www.speechmatics.com/speak-to-sales)|
+|Additional languages|Coming soon!|Coming soon!|

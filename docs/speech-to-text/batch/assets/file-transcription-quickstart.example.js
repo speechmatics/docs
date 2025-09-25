@@ -20,6 +20,7 @@ async function transcribeFile() {
     {
       transcription_config: {
         language: "en",
+        operating_point: "enhanced",
       },
     },
     "json-v2",
