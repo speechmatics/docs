@@ -360,6 +360,9 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RecognitionResult"
+        channel:
+          type: string
+          description: The channel identifier to which the audio belongs. Only used with multichannel diarization.
       required:
         - message
         - metadata
@@ -379,6 +382,9 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RecognitionResult"
+        channel:
+          type: string
+          description: The channel identifier to which the audio belongs. Only used with multichannel diarization.
       required:
         - message
         - metadata
@@ -819,8 +825,6 @@ components:
         end_time:
           type: number
           format: float
-        channel:
-          type: string
         attaches_to:
           $ref: "#/components/schemas/AttachesToEnum"
         is_eos:
