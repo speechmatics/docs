@@ -38,7 +38,7 @@ export function AsyncAPIMessage({
     }
 
     if (message["x-available-deployments"]) {
-      text += ` ${message["x-preview-mode"] ? "and" : "for"} ${message["x-available-deployments"].map((d: string) => `**${d}**`).join(" and ")} deployments`;
+      text += ` ${message["x-preview-mode"] ? "and" : "for"} ${message["x-available-deployments"].map((d: string) => `${d}`).join(" and ")} deployments`;
     }
 
     text += ".";
