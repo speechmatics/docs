@@ -1,12 +1,22 @@
 import type { MessageObject } from "@asyncapi/parser/esm/spec-types/v3";
-import { Box, Button, Card, Dialog, Flex, Separator } from "@radix-ui/themes";
+import {
+  Badge,
+  Box,
+  Button,
+  Card,
+  Dialog,
+  Flex,
+  Callout,
+  Text,
+} from "@radix-ui/themes";
 import CodeBlock from "@theme/CodeBlock";
 import CodeInline from "@theme/CodeInline";
 import Heading from "@theme/Heading";
 import Markdown from "@theme/Markdown";
 import SchemaNode from "@theme/Schema";
-import { BracesIcon } from "lucide-react";
+import { BracesIcon, InfoIcon } from "lucide-react";
 import WebsocketMessageArrow from "./WebsocketMessageArrow";
+import { useMemo } from "react";
 
 export function AsyncAPIMessage({
   messageName,
@@ -17,6 +27,25 @@ export function AsyncAPIMessage({
   message: MessageObject;
   channel: "publish" | "subscribe";
 }) {
+  const calloutText = useMemo(() => {
+    if (!message["x-available-deployments"] && !message["x-preview-mode"]) {
+      return null;
+    }
+    let text = "Currently available";
+
+    if (message["x-preview-mode"]) {
+      text += " in [preview mode](/private/preview-mode)";
+    }
+
+    if (message["x-available-deployments"]) {
+      text += ` ${message["x-preview-mode"] ? "and" : "for"} ${message["x-available-deployments"].map((d: string) => `${d}`).join(" and ")} deployments`;
+    }
+
+    text += ".";
+
+    return text;
+  }, [message["x-available-deployments"], message["x-preview-mode"]]);
+
   return (
     <Card size="1">
       <Flex direction="column" my="3">
@@ -43,6 +72,18 @@ export function AsyncAPIMessage({
           )}
         </Flex>
         <Flex direction="column" gap="2">
+          {calloutText && (
+            <Flex>
+              <Callout.Root size="1" color="gray">
+                <Callout.Icon>
+                  <InfoIcon size="12" />
+                </Callout.Icon>
+                <Callout.Text>
+                  <Markdown>{calloutText}</Markdown>
+                </Callout.Text>
+              </Callout.Root>
+            </Flex>
+          )}
           <Markdown>{message.summary || "No summary"}</Markdown>
           <SchemaNode schema={message.payload} />
         </Flex>

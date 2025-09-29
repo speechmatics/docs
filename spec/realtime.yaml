@@ -28,8 +28,12 @@ channels:
         $ref: "#/components/messages/StartRecognition"
       AddAudio:
         $ref: "#/components/messages/AddAudio"
+      AddChannelAudio:
+        $ref: "#/components/messages/AddChannelAudio"
       EndOfStream:
         $ref: "#/components/messages/EndOfStream"
+      EndOfChannel:
+        $ref: "#/components/messages/EndOfChannel"
       SetRecognitionConfig:
         $ref: "#/components/messages/SetRecognitionConfig"
   subscribe:
@@ -39,6 +43,8 @@ channels:
         $ref: "#/components/messages/RecognitionStarted"
       AudioAdded:
         $ref: "#/components/messages/AudioAdded"
+      ChannelAudioAdded:
+        $ref: "#/components/messages/ChannelAudioAdded"
       AddPartialTranscript:
         $ref: "#/components/messages/AddPartialTranscript"
       AddTranscript:
@@ -69,7 +75,9 @@ operations:
     messages:
       - $ref: "#/channels/publish/messages/StartRecognition"
       - $ref: "#/channels/publish/messages/AddAudio"
+      - $ref: "#/channels/publish/messages/AddChannelAudio"
       - $ref: "#/channels/publish/messages/EndOfStream"
+      - $ref: "#/channels/publish/messages/EndOfChannel"
       - $ref: "#/channels/publish/messages/SetRecognitionConfig"
   subscribe:
     action: receive
@@ -78,6 +86,7 @@ operations:
     messages:
       - $ref: "#/channels/subscribe/messages/RecognitionStarted"
       - $ref: "#/channels/subscribe/messages/AudioAdded"
+      - $ref: "#/channels/subscribe/messages/ChannelAudioAdded"
       - $ref: "#/channels/subscribe/messages/AddPartialTranscript"
       - $ref: "#/channels/subscribe/messages/AddTranscript"
       - $ref: "#/channels/subscribe/messages/AddPartialTranslation"
@@ -100,17 +109,29 @@ components:
       contentType: application/octet-stream
       payload:
         $ref: "#/components/schemas/AddAudio"
+    AddChannelAudio:
+      x-available-deployments: ["container"]
+      x-preview-mode: true
+      summary: Audio belonging to a specific channel.
+      payload:
+        $ref: "#/components/schemas/AddChannelAudio"
     EndOfStream:
       summary: Declares that the client has no more audio to send.
       payload:
         $ref: "#/components/schemas/EndOfStream"
+    EndOfChannel:
+      x-available-deployments: ["container"]
+      x-preview-mode: true
+      summary: Declares that the channel has no more audio to send.
+      payload:
+        $ref: "#/components/schemas/EndOfChannel"
     SetRecognitionConfig:
       summary: |
         Allows the client to re-configure the recognition session.
 
         :::note
 
-        **Only the following fields can be set through a SetRecognitionConfig message:**
+        **Only the following fields can be set through a `SetRecognitionConfig` message:**
         - `max_delay`
         - `max_delay_mode`
         - `enable_partials`
@@ -130,14 +151,20 @@ components:
 
         :::info
 
-        When clients send audio faster than real-time, the server may read data slower than it's sent. If binary AddAudio messages exceed the server's internal buffer, the server will process other WebSocket messages until buffer space is available. Clients receive AudioAdded responses only after binary data is read. This can fill TCP buffers, potentially causing WebSocket write failures and connection closure [with prejudice](https://websockets.spec.whatwg.org#the-closeevent-interface). Clients can monitor the WebSocket's [`bufferedAmount`](https://www.w3.org/TR/websockets#dom-websocket-bufferedamount) attribute to prevent this.
+        When clients send audio faster than real-time, the server may read data slower than it's sent. If binary `AddAudio` messages exceed the server's internal buffer, the server will process other WebSocket messages until buffer space is available. Clients receive `AudioAdded` responses only after binary data is read. This can fill TCP buffers, potentially causing WebSocket write failures and connection closure [with prejudice](https://websockets.spec.whatwg.org#the-closeevent-interface). Clients can monitor the WebSocket's [`bufferedAmount`](https://www.w3.org/TR/websockets#dom-websocket-bufferedamount) attribute to prevent this.
 
         :::
       payload:
         $ref: "#/components/schemas/AudioAdded"
+    ChannelAudioAdded:
+      x-available-deployments: ["container"]
+      x-preview-mode: true
+      summary: Server response to AddChannelAudio, indicating that audio has been added successfully.
+      payload:
+        $ref: "#/components/schemas/ChannelAudioAdded"
     AddPartialTranscript:
       summary: |
-        A partial transcript is a transcript that can be changed in a future `AddPartialTranscript` as more words are spoken until the `AddTranscript` **Final** message is sent for that audio. 
+        A partial transcript is a transcript that can be changed in a future `AddPartialTranscript` as more words are spoken until the `AddTranscript` **Final** message is sent for that audio.
 
         Partials will only be sent if `transcription_config.enable_partials` is set to `true` in the `StartRecognition` message.
 
@@ -240,6 +267,21 @@ components:
     AddAudio:
       type: string
       format: binary
+    AddChannelAudio:
+      type: object
+      properties:
+        message:
+          const: AddChannelAudio
+        channel:
+          type: string
+          description: The channel identifier to which the audio belongs.
+        data:
+          type: string
+          description: The audio data in base64 format.
+      required:
+        - message
+        - channel
+        - data
     EndOfStream:
       type: object
       properties:
@@ -249,6 +291,20 @@ components:
           type: integer
       required:
         - message
+        - last_seq_no
+    EndOfChannel:
+      type: object
+      properties:
+        message:
+          const: EndOfChannel
+        channel:
+          type: string
+          description: The channel identifier to which the audio belongs.
+        last_seq_no:
+          type: integer
+      required:
+        - message
+        - channel
         - last_seq_no
     SetRecognitionConfig:
       type: object
@@ -269,6 +325,8 @@ components:
           type: string
         id:
           type: string
+        language_pack_info:
+          $ref: "#/components/schemas/LanguagePackInfo"
       required:
         - message
       example:
@@ -293,6 +351,19 @@ components:
           type: integer
       required:
         - message
+        - seq_no
+    ChannelAudioAdded:
+      type: object
+      properties:
+        message:
+          const: ChannelAudioAdded
+        seq_no:
+          type: integer
+        channel:
+          type: string
+      required:
+        - message
+        - channel
         - seq_no
     AddPartialTranscript:
       type: object
@@ -328,6 +399,16 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RecognitionResult"
+        channel:
+          type: string
+          description: |
+            The channel identifier to which the audio belongs. This field is only seen in multichannel.
+
+            :::note
+
+            This field is only available in [preview mode](https://docs.speechmatics.com/private/preview-mode).
+
+            :::
       required:
         - message
         - metadata
@@ -640,7 +721,7 @@ components:
             type: string
         enable_partials:
           type: boolean
-          description: Whether or not to send Partials (i.e. `AddPartialTranslation` messages) as well as Finals (i.e. `AddTranslation` messages). 
+          description: Whether or not to send Partials (i.e. `AddPartialTranslation` messages) as well as Finals (i.e. `AddTranslation` messages).
           default: false
       required:
         - target_languages
@@ -694,10 +775,9 @@ components:
       type: object
       properties:
         max_speakers:
-          type: number
+          type: integer
           description: |
             Configure the maximum number of speakers to detect. See [Max Speakers](http://docs.speechmatics.com/speech-to-text/features/diarization#max-speakers).
-          format: integer
           minimum: 2
           maximum: 100
           default: 50
@@ -739,6 +819,32 @@ components:
       description: |
         Configure locale for outputted transcription. See [output formatting](https://docs.speechmatics.com/speech-to-text/formatting#output-locale).
       minLength: 1
+    LanguagePackInfo:
+      type: object
+      description: Properties of the language pack.
+      required: [
+        word_delimiter
+      ]
+      properties:
+        language_description:
+          type: string
+          description: Full descriptive name of the language, e.g. 'Japanese'.
+        word_delimiter:
+          type: string
+          description: The character to use to separate words.
+        writing_direction:
+          type: string
+          enum: [
+            left-to-right,
+            right-to-left
+          ]
+          description: The direction that words in the language should be written and read in.
+        itn:
+          type: boolean
+          description: Whether or not ITN (inverse text normalization) is available for the language pack.
+        adapted:
+          type: boolean
+          description: Whether or not language model adaptation has been applied to the language pack.
     RecognitionMetadata:
       type: object
       properties:
@@ -769,6 +875,7 @@ components:
           type: number
           format: float
         channel:
+          x-available-deployments: ["container"]
           type: string
         attaches_to:
           $ref: "#/components/schemas/AttachesToEnum"
@@ -923,7 +1030,6 @@ components:
         | `session_timeout` | Informs that the session is approaching the max session duration limit (maximum session duration of 48 hours), with a `reason` of the form: <p>`Session will timeout in {time_remaining}m due to max duration, session has been active for {time_elapsed}m`</p> Currently the server will send messages at 45, 30 and 15m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).|
         | `empty_translation_target_list` | No supported translation target languages specified. Translation will not run.
         | `add_audio_after_eos` | Protocol specification doesn't allow adding audio after `EndOfStream` has been received. Any `AddAudio messages after this, will be ignored.
-        | `validation_warning` | Informs that there was a warning raised during the validation of the session config, the offending config will be ignored and the session will continue to start.
       enum:
         - duration_limit_exceeded
         - unsupported_translation_pair
@@ -931,7 +1037,6 @@ components:
         - session_timeout
         - empty_translation_target_list
         - add_audio_after_eos
-        - validation_warning
     ErrorTypeEnum:
       type: string
       # TODO if OpenAPI/AsyncAPI ever adds enum descriptors, we can move this description there
