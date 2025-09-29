@@ -164,7 +164,7 @@ components:
         $ref: "#/components/schemas/ChannelAudioAdded"
     AddPartialTranscript:
       summary: |
-        A partial transcript is a transcript that can be changed in a future `AddPartialTranscript` as more words are spoken until the `AddTranscript` **Final** message is sent for that audio. 
+        A partial transcript is a transcript that can be changed in a future `AddPartialTranscript` as more words are spoken until the `AddTranscript` **Final** message is sent for that audio.
 
         Partials will only be sent if `transcription_config.enable_partials` is set to `true` in the `StartRecognition` message.
 
@@ -721,7 +721,7 @@ components:
             type: string
         enable_partials:
           type: boolean
-          description: Whether or not to send Partials (i.e. `AddPartialTranslation` messages) as well as Finals (i.e. `AddTranslation` messages). 
+          description: Whether or not to send Partials (i.e. `AddPartialTranslation` messages) as well as Finals (i.e. `AddTranslation` messages).
           default: false
       required:
         - target_languages
@@ -775,10 +775,9 @@ components:
       type: object
       properties:
         max_speakers:
-          type: number
+          type: integer
           description: |
             Configure the maximum number of speakers to detect. See [Max Speakers](http://docs.speechmatics.com/speech-to-text/features/diarization#max-speakers).
-          format: integer
           minimum: 2
           maximum: 100
           default: 50
