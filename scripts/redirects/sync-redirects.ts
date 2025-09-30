@@ -22,13 +22,28 @@ const vercelRedirects: VercelRedirect[] = [];
 
 const newRedirectLookup = new Map<string, string>();
 
-for (const redirect of oldRedirects) {
+// Add newest redirects from redirects.json
+for (const redirect of redirects) {
   vercelRedirects.push({
     ...redirect,
     source: normalizePath(redirect.source),
     permanent: true,
   });
   newRedirectLookup.set(redirect.source, redirect.destination);
+}
+
+for (const redirect of oldRedirects) {
+  const target =
+    newRedirectLookup.get(redirect.destination) ?? redirect.destination;
+
+  vercelRedirects.push({
+    ...redirect,
+    source: normalizePath(redirect.source),
+    destination: target,
+    permanent: true,
+  });
+
+  newRedirectLookup.set(redirect.source, target);
 }
 
 for (const redirect of superOldRedirects) {
@@ -76,15 +91,6 @@ for (const redirect of taggedRedirects) {
       permanent: true,
     });
   }
-}
-
-// Add redirects from redirects.json
-for (const redirect of redirects) {
-  vercelRedirects.push({
-    ...redirect,
-    source: normalizePath(redirect.source),
-    permanent: true,
-  });
 }
 
 writeFileSync(
