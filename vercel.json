@@ -4025,6 +4025,11 @@
       "source": "/en/real-time-container/release-notes",
       "destination": "https://speechmatics.featurebase.app/en/changelog",
       "permanent": true
+    },
+    {
+      "source": "/speech-to-text/batch/tracking",
+      "destination": "/speech-to-text/batch/output#tracking-metadata",
+      "permanent": true
     }
   ]
 }

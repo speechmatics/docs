@@ -1,4 +1,6 @@
-{
-  "source": "/speech-to-text/batch/tracking",
-  "destination": "/speech-to-text/batch/output#tracking-metadata"
-}
+[
+  {
+    "source": "/speech-to-text/batch/tracking",
+    "destination": "/speech-to-text/batch/output#tracking-metadata"
+  }
+]

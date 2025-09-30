@@ -3,15 +3,22 @@ import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import vercelJSON from "../../vercel.json" with { type: "json" };
 import { normalizePath } from "./check-redirects";
+import redirects from "./redirects.json" with { type: "json" };
 import oldRedirects from "./old-redirects.json" with { type: "json" };
 import superOldRedirects from "./super-old-redirects.json" with {
   type: "json",
 };
 import { tagMap, tagSets, taggedRedirects } from "./tagged-redirects";
 
+type VercelRedirect = {
+  source: string;
+  destination: string;
+  permanent: boolean;
+};
+
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 
-const vercelRedirects = [];
+const vercelRedirects: VercelRedirect[] = [];
 
 const newRedirectLookup = new Map<string, string>();
 
@@ -69,6 +76,15 @@ for (const redirect of taggedRedirects) {
       permanent: true,
     });
   }
+}
+
+// Add redirects from redirects.json
+for (const redirect of redirects) {
+  vercelRedirects.push({
+    ...redirect,
+    source: normalizePath(redirect.source),
+    permanent: true,
+  });
 }
 
 writeFileSync(
