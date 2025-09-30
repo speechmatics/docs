@@ -174,17 +174,18 @@ Transcripts are returned independently for each channel, with the `channel` prop
 }
 ```
 
-Note that the `channel` property will be returned for `AddTranscript` and `AddPartialTranscript` messages only. Features such as [audio events](/speech-to-text/features/audio-events) do not currently include this property. To request this feature, please contact [support](https://support.speechmatics.com).
+:::warning
+The `channel` property will be returned for `AddTranscript` and `AddPartialTranscript` messages only. 
+Features such as [audio events](/speech-to-text/features/audio-events), [translation](/speech-to-text/features/translation) and [end of turn detection](/speech-to-text/realtime/end-of-turn) do not currently include this property. To request this feature, please contact [support](https://support.speechmatics.com).
+:::
 
 ### Channel and speaker diarization
 
-Channel and speaker diarization combines speaker diarization and shannel diarization, splitting transcripts per channel whilst also separating individual speakers in each channel.
+Channel and speaker diarization combines speaker diarization and channel diarization, splitting transcripts per channel whilst also separating individual speakers in each channel.
 
 To enable this mode, follow the steps in [speaker diarization](#speaker-diarization) and set the `diarization` mode to `channel_and_speaker`.
 
 To send audio to a channel, follow the instructions in [send audio to a channel](#send-audio-to-a-channel). 
-
-To send audio to a specific channel, follow the directions for [sending audio to a channel](#send-audio-to-a-channel).
 
 Transcripts are returned in the same way as channel diarization, but with individual speakers identified:
 
@@ -217,11 +218,16 @@ Transcripts are returned in the same way as channel diarization, but with indivi
   ]
 }
 ```
+
+When using `channel_and_speaker` diarization, speaker labelling is specific to channels even if the speaker labels are the same. S1 on channel 1 is not necessarily the same as S1 on channel 2.
+
 ### Limits
 
 For SaaS customers, the maximum number of channels is 2.
 
 For On-prem Container customers, the maximum number of channels depends on your [Multi-session container's](../../deployments/container/cpu-speech-to-text.mdx#multi-session-containers) maximum number of connections.
+
+The Speechmatics Python client CLI is currently limited to transcribing multi-channel audio in via files and not streaming/raw audio. 
 
 ## Configuration
 

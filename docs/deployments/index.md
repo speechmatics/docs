@@ -47,5 +47,5 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Sentiment Analysis](/speech-to-text/batch/speech-intelligence/sentiment-analysis) | Batch | SaaS, On-prem |
 | [Summarization](/speech-to-text/batch/speech-intelligence/summarization) | Batch | SaaS |
 | [Topic Detection](/speech-to-text/batch/speech-intelligence/topic-detection) | Batch | SaaS |
-| [Tracking](/speech-to-text/batch/output#tracking) | Batch, Realtime | SaaS, On-prem |
+| [Tracking](/speech-to-text/batch/output#tracking-metadata) | Batch, Realtime | SaaS, On-prem |
 | [Translation](/speech-to-text/features/translation) | Batch, Realtime | SaaS, On-prem |

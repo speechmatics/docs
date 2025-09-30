@@ -18,6 +18,15 @@ Please refer to the [style guide](https://github.com/speechmatics/docs/blob/main
 
 This site is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
+## URLs and redirects
+
+When changing the URL of a page, you need to take some steps to avoid broken links
+
+1. Update the `/scripts/redirects.json` file with the `source` and `target` URLs
+2. Run `npm run sync-redirects` to update `vercel.json`.
+3. Commit the changes to `vercel.json` and `scripts/redirects/redirects.json`.
+4. Update any pages which link to the old URL (CI pipeline should fail with an exhaustive list if any are found)
+
 ### Content
 
 The pages for the site are located in the `/docs` directory. Sidebars are configured using the `sidebar.ts` files located in the respective sections.
