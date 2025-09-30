@@ -42,6 +42,8 @@ sequenceDiagram
     API-->>Client: AudioAdded
     API-->>Client: AddPartialTranscript (optional)
     API-->>Client: AddTranscript (optional)
+    Client->>API: GetSpeakers (optional)
+    API-->>Client: SpeakersResult (optional)
   end
   Client->>API: EndOfStream
   API-->>Client: EndOfTranscript
