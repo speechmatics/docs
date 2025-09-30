@@ -1,0 +1,58 @@
+---
+description: "Learn how Speechmatics identifies speakers in audio"
+keywords:
+  [
+    speechmatics,
+    features,
+    speaker identification,
+    diarization,
+    transcription,
+    speech recognition,
+    automatic speech recognition,
+    asr,
+  ]
+sidebar_position: 2
+---
+
+# Speaker identification
+
+Speaker identification lets you tag speakers consistently across recordings with the help of speaker identifiers. You can generate these string-encoded voice representations using short audio samples of the target speakers.
+
+By tagging known speakers with consistent labels, speaker identification makes transcripts more accurate, searchable, and easier to analyze over time. Providing speaker identifiers can also increase the accuracy of our diarization system.
+
+## Use cases
+
+- **Contact centers** – Recognize and tag individual agents and returning customers by name for personalized service, training, and compliance tracking.
+- **Video conferences** – Automatically label participants across multiple meetings to know who said what and maintain consistent speaker records and analytics.
+- **Medical consultations** – Identify doctors and patients across sessions for accurate records and follow-up care.
+- **Media production** – Consistently label recurring speakers or public figures across episodes or segments, which is valuable in subtitling, media search and archiving.
+
+## How it works
+
+To use speaker identification you must enable diarization in the [speaker mode](../features/diarization.mdx#diarization-modes) and then follow the two steps below:
+
+- **Enrollment** — For each speaker you want to recognize, generate identifiers from short audio clips (5–30s) where they ideally speak alone.
+  To improve robustness, you can enroll the same speaker with multiple clips recorded under different acoustic conditions, selected to represent the degree of variety and quality that could be expected in the target audio.
+
+- **Identification** — Use the enrolled identifiers in transcription jobs to label known speakers with meaningful names (for example, `Alice` or `John`).  The system matches voices to identifiers and tags the output with the desired labels.
+
+:::info
+Labels for identified speakers must not use reserved internal labels (UU, S1, S2, etc.) and must not include leading or trailing spaces.
+:::
+
+## Known caveats
+
+Speaker identifiers have the following limitations and scoping rules:
+
+- **Model-specific** — Identifiers are tied to the model used to generate them and are valid only within the same operating point. Using identifiers across different operating points is not supported and any such identifiers will be ignored.
+  Whenever a model within an operating point is updated, existing identifiers must always be regenerated.
+
+- **Encrypted and scoped** — Identifiers are securely encrypted and scoped to your account context:
+  - **Per customer** — Identifiers are unique to each customer and cannot be shared or reused across customers.
+  - **Per project** — If you use multiple [projects](/guides/projects#what-are-projects) under the same customer, identifiers are isolated per project and cannot be used across them.
+
+In all of the above cases — including model mismatches or attempts to use identifiers across customers or projects — a **warning will be issued** to alert you that the affected identifiers have been ignored.
+
+## Supported modes
+
+Speaker identification is currently only supported in **[Realtime speaker identification](../realtime/realtime-speaker-identification.mdx)**<br/> mode with the batch support coming soon.
