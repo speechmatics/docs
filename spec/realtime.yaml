@@ -267,21 +267,6 @@ components:
     AddAudio:
       type: string
       format: binary
-    AddChannelAudio:
-      type: object
-      properties:
-        message:
-          const: AddChannelAudio
-        channel:
-          type: string
-          description: The channel identifier to which the audio belongs.
-        data:
-          type: string
-          description: The audio data in base64 format.
-      required:
-        - message
-        - channel
-        - data
     EndOfStream:
       type: object
       properties:
@@ -292,6 +277,21 @@ components:
       required:
         - message
         - last_seq_no
+    AddChannelAudio:
+      type: object
+      properties:
+        message:
+          const: AddChannelAudio
+        channel:
+          type: string
+          description: The channel identifier to which the audio belongs.
+        data:
+          type: string
+          description: The audio data in base64 format
+      required:
+        - message
+        - channel
+        - data
     EndOfChannel:
       type: object
       properties:
@@ -361,6 +361,7 @@ components:
           type: integer
         channel:
           type: string
+          description: The channel identifier to which the audio belongs
       required:
         - message
         - channel
@@ -380,6 +381,16 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RecognitionResult"
+        channel:
+          type: string
+          description: |
+            The channel identifier to which the audio belongs. This field is only seen in multichannel.
+
+            :::note
+
+            This field is only available in [preview mode](https://docs.speechmatics.com/private/preview-mode).
+
+            :::
       required:
         - message
         - metadata
@@ -874,9 +885,6 @@ components:
         end_time:
           type: number
           format: float
-        channel:
-          x-available-deployments: ["container"]
-          type: string
         attaches_to:
           $ref: "#/components/schemas/AttachesToEnum"
         is_eos:
