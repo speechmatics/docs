@@ -242,7 +242,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/GetSpeakersEnum"
+          const: GetSpeakers
         final:
           type: boolean
           description: >-
@@ -264,7 +264,7 @@ components:
       type: object
       properties:
         message:
-          $ref: "#/components/schemas/SpeakersResultEnum"
+          const: SpeakersResult
         speakers:
           type: array
           items:
@@ -1236,11 +1236,3 @@ components:
         - pcm_f32le
         - pcm_s16le
         - mulaw
-    GetSpeakersEnum:
-      type: string
-      enum:
-        - GetSpeakers
-    SpeakersResultEnum:
-      type: string
-      enum:
-        - SpeakersResult
