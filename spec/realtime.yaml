@@ -36,6 +36,8 @@ channels:
         $ref: "#/components/messages/EndOfChannel"
       SetRecognitionConfig:
         $ref: "#/components/messages/SetRecognitionConfig"
+      GetSpeakers:
+        $ref: "#/components/messages/GetSpeakers"
   subscribe:
     address: /
     messages:
@@ -67,6 +69,8 @@ channels:
         $ref: "#/components/messages/Warning"
       Error:
         $ref: "#/components/messages/Error"
+      SpeakersResult:
+        $ref: "#/components/messages/SpeakersResult"
 operations:
   publish:
     action: send
@@ -79,6 +83,7 @@ operations:
       - $ref: "#/channels/publish/messages/EndOfStream"
       - $ref: "#/channels/publish/messages/EndOfChannel"
       - $ref: "#/channels/publish/messages/SetRecognitionConfig"
+      - $ref: "#/channels/publish/messages/GetSpeakers"
   subscribe:
     action: receive
     channel:
@@ -98,8 +103,19 @@ operations:
       - $ref: "#/channels/subscribe/messages/Info"
       - $ref: "#/channels/subscribe/messages/Warning"
       - $ref: "#/channels/subscribe/messages/Error"
+      - $ref: "#/channels/subscribe/messages/SpeakersResult"
 components:
   messages:
+    GetSpeakers:
+      summary: Requests any detected speaker identifiers to be returned.
+      x-preview-mode: true
+      payload:
+        $ref: "#/components/schemas/GetSpeakers"
+    SpeakersResult:
+      x-preview-mode: true
+      summary: Server response to GetSpeakers request returning any detected speaker identifiers.
+      payload:
+        $ref: "#/components/schemas/SpeakersResult"
     StartRecognition:
       summary: Initiates a new recognition session.
       payload:
@@ -222,6 +238,78 @@ components:
       payload:
         $ref: "#/components/schemas/Error"
   schemas:
+    GetSpeakers:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/GetSpeakersEnum"
+        final:
+          type: boolean
+          description: >-
+            Optional. This flag controls when speaker identifiers are returned.
+            Defaults to false if omitted.
+
+            When false, multiple GetSpeakers requests can be sent during transcription,
+            each returning the speaker identifiers generated so far. To reduce the
+            chance of empty results, send requests after at least one TranscriptAdded
+            message is received to make sure that the server has processed some audio.
+
+            When true, speaker identifiers are returned only once at the end of the
+            transcription, regardless of how many final: true requests are sent.
+            Even with final: true requests, you can still send final: false requests
+            to receive intermediate speaker identifier updates.
+      required:
+        - message
+    SpeakersResult:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/SpeakersResultEnum"
+        speakers:
+          type: array
+          items:
+            $ref: "#/components/schemas/SpeakersResultItem"
+      required:
+        - message
+        - speakers
+    SpeakersResultItem:
+      type: object
+      properties:
+        label:
+          type: string
+          minLength: 1
+          description: Speaker label.
+        speaker_identifiers:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            type: string
+            format: bytes
+            description: Speaker identifiers.
+      required:
+        - label
+        - speaker_identifiers
+    SpeakersInputItem:
+      type: object
+      properties:
+        label:
+          type: string
+          minLength: 1
+          not:
+            pattern: '^(S\d+|UU|\s+.*|\S+.*\s+)$'
+          description: Speaker label, which must not match the format used internally (e.g. S1, S2, etc)
+        speaker_identifiers:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            type: string
+            format: bytes
+            description: Speaker identifiers.
+      required:
+        - label
+        - speaker_identifiers
     StartRecognition:
       type: object
       properties:
@@ -267,16 +355,6 @@ components:
     AddAudio:
       type: string
       format: binary
-    EndOfStream:
-      type: object
-      properties:
-        message:
-          const: EndOfStream
-        last_seq_no:
-          type: integer
-      required:
-        - message
-        - last_seq_no
     AddChannelAudio:
       type: object
       properties:
@@ -287,11 +365,21 @@ components:
           description: The channel identifier to which the audio belongs.
         data:
           type: string
-          description: The audio data in base64 format
+          description: The audio data in base64 format.
       required:
         - message
         - channel
         - data
+    EndOfStream:
+      type: object
+      properties:
+        message:
+          const: EndOfStream
+        last_seq_no:
+          type: integer
+      required:
+        - message
+        - last_seq_no
     EndOfChannel:
       type: object
       properties:
@@ -361,7 +449,6 @@ components:
           type: integer
         channel:
           type: string
-          description: The channel identifier to which the audio belongs
       required:
         - message
         - channel
@@ -381,16 +468,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RecognitionResult"
-        channel:
-          type: string
-          description: |
-            The channel identifier to which the audio belongs. This field is only seen in multichannel.
-
-            :::note
-
-            This field is only available in [preview mode](https://docs.speechmatics.com/private/preview-mode).
-
-            :::
       required:
         - message
         - metadata
@@ -803,6 +880,21 @@ components:
           format: float
           minimum: 0
           maximum: 1
+        speakers:
+          type: array
+          description: >-
+            Use this option to provide speaker labels linked to their speaker identifiers.
+            When passed, the transcription system will tag spoken words in the transcript
+            with the provided speaker labels whenever any of the specified speakers
+            is detected in the audio.
+
+            :::note
+
+            This feature is currently in [preview mode](https://docs.speechmatics.com/private/preview-mode).
+
+            :::
+          items:
+            $ref: "#/components/schemas/SpeakersInputItem"
     AudioFilteringConfig:
       type: object
       description: |
@@ -885,6 +977,9 @@ components:
         end_time:
           type: number
           format: float
+        channel:
+          x-available-deployments: ["container"]
+          type: string
         attaches_to:
           $ref: "#/components/schemas/AttachesToEnum"
         is_eos:
@@ -1038,6 +1133,7 @@ components:
         | `session_timeout` | Informs that the session is approaching the max session duration limit (maximum session duration of 48 hours), with a `reason` of the form: <p>`Session will timeout in {time_remaining}m due to max duration, session has been active for {time_elapsed}m`</p> Currently the server will send messages at 45, 30 and 15m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).|
         | `empty_translation_target_list` | No supported translation target languages specified. Translation will not run.
         | `add_audio_after_eos` | Protocol specification doesn't allow adding audio after `EndOfStream` has been received. Any `AddAudio messages after this, will be ignored.
+        | `speaker_id` | Informs the client about any speaker ID related issues. |
       enum:
         - duration_limit_exceeded
         - unsupported_translation_pair
@@ -1045,6 +1141,7 @@ components:
         - session_timeout
         - empty_translation_target_list
         - add_audio_after_eos
+        - speaker_id
     ErrorTypeEnum:
       type: string
       # TODO if OpenAPI/AsyncAPI ever adds enum descriptors, we can move this description there
@@ -1139,3 +1236,11 @@ components:
         - pcm_f32le
         - pcm_s16le
         - mulaw
+    GetSpeakersEnum:
+      type: string
+      enum:
+        - GetSpeakers
+    SpeakersResultEnum:
+      type: string
+      enum:
+        - SpeakersResult
