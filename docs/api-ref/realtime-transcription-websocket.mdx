@@ -45,6 +45,7 @@ sequenceDiagram
     API-->>Client: AddPartialTranscript (optional)
     API-->>Client: AddTranscript (optional)
   end
+  Client->>API: EndOfChannel (optional)
   Client->>API: EndOfStream
   API-->>Client: EndOfTranscript
 ```
