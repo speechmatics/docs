@@ -52,7 +52,7 @@ The feature is disabled by default. To enable speaker diarization, `diarization`
 When diarization is enabled, each `word` and `punctuation` object in the transcript includes a `speaker` property that identifies who spoke it. There are two types of labels:
 
 - `S#` – S stands for speaker, and `#` is a sequential number identifying each speaker. S1 appears first in the results, followed by S2, S3, and so on.
-- `UU` – Used when the speaker cannot be identified or diarization is not applied (i.e. running batch mode on CPU operating points), for example, if background noise is transcribed as speech but no speaker can be determined.
+- `UU` – Used when the speaker cannot be identified or diarization is not applied, for example, if background noise is transcribed as speech but no speaker can be determined.
 
 ```json
   "results": [
