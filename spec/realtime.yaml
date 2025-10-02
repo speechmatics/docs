@@ -34,6 +34,8 @@ channels:
         $ref: "#/components/messages/EndOfStream"
       EndOfChannel:
         $ref: "#/components/messages/EndOfChannel"
+      ForceEndOfUtterance:
+        $ref: "#/components/messages/ForceEndOfUtterance"
       SetRecognitionConfig:
         $ref: "#/components/messages/SetRecognitionConfig"
       GetSpeakers:
@@ -82,6 +84,7 @@ operations:
       - $ref: "#/channels/publish/messages/AddChannelAudio"
       - $ref: "#/channels/publish/messages/EndOfStream"
       - $ref: "#/channels/publish/messages/EndOfChannel"
+      - $ref: "#/channels/publish/messages/ForceEndOfUtterance"
       - $ref: "#/channels/publish/messages/SetRecognitionConfig"
       - $ref: "#/channels/publish/messages/GetSpeakers"
   subscribe:
@@ -141,18 +144,17 @@ components:
       summary: Declares that the channel has no more audio to send.
       payload:
         $ref: "#/components/schemas/EndOfChannel"
+    ForceEndOfUtterance:
+      summary: Requests a finalized transcript.
+      payload:
+        $ref: "#/components/schemas/ForceEndOfUtterance"
     SetRecognitionConfig:
       summary: |
         Allows the client to re-configure the recognition session.
 
         :::note
 
-        **Only the following fields can be set through a `SetRecognitionConfig` message:**
-        - `max_delay`
-        - `max_delay_mode`
-        - `enable_partials`
-
-        If you wish to alter any other parameters you must terminate the session and restart with the altered configuration. Attempting otherwise will result in an error.
+        Only the specified parameters can be changed through a SetRecognitionConfig message. Attempting to change other transcription config parameters will result in an error.
 
         :::
       payload:
@@ -394,13 +396,26 @@ components:
         - message
         - channel
         - last_seq_no
+    ForceEndOfUtterance:
+      summary: Requests a finalized transcript.
+      payload:
+      type: object
+      properties:
+        message:
+          enum:
+          - ForceEndOfUtterance
+        channel:
+          type: string
+          description: The channel to request finalized transcript from.
+      required:
+      - message
     SetRecognitionConfig:
       type: object
       properties:
         message:
           const: SetRecognitionConfig
         transcription_config:
-          $ref: "#/components/schemas/TranscriptionConfig"
+          $ref: "#/components/schemas/MidSessionTranscriptionConfig"
       required:
         - message
         - transcription_config
@@ -518,6 +533,9 @@ components:
           const: EndOfUtterance
         metadata:
           $ref: "#/components/schemas/EndOfUtteranceMetadata"
+        channel:
+          type: string
+          description: The channel identifier to which the EndOfUtterance message belongs. This field is only seen in multichannel.
       required:
         - message
         - metadata
@@ -768,6 +786,34 @@ components:
           $ref: "#/components/schemas/ConversationConfig"
       required:
         - language
+    MidSessionTranscriptionConfig:
+      type: object
+      description: Contains configuration for this recognition session.
+      properties:
+        language:
+          type: string
+          description: |
+            Language model to process the audio input, normally specified as an ISO language code. The value must be consistent with the language code used in the API endpoint URL.
+          example: "en"
+        max_delay:
+          type: number
+          description: |
+            This is the delay in seconds between the end of a spoken word and returning the Final transcript results. See [Latency](https://docs.speechmatics.com/speech-to-text/realtime/output#latency) for more details
+          minimum: 0.7
+          maximum: 4
+          default: 4
+        max_delay_mode:
+          $ref: "#/components/schemas/MaxDelayModeConfig"
+        audio_filtering_config:
+          $ref: "#/components/schemas/AudioFilteringConfig"
+        enable_partials:
+          type: boolean
+          description: |
+            Whether or not to send Partials (i.e. `AddPartialTranslation` messages) as well as Finals (i.e. `AddTranslation` messages)
+            See [Partial transcripts](https://docs.speechmatics.com/speech-to-text/realtime/output#partial-transcripts).
+          default: false
+        conversation_config:
+          $ref: "#/components/schemas/ConversationConfig"
     OperatingPoint:
       type: string
       description: |
