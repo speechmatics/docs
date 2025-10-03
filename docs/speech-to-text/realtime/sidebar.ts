@@ -24,6 +24,10 @@ export default {
     },
     {
       type: "doc",
+      id: "speech-to-text/realtime/realtime-speaker-identification",
+    },
+    {
+      type: "doc",
       id: "speech-to-text/realtime/end-of-turn",
     },
     {
