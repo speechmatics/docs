@@ -42,7 +42,9 @@ By default, the `standard` operating point is used. You can specify the `enhance
   "type": "transcription",
   "transcription_config": {
     "language": "en",
-    "operating_point": "enhanced"
+    // highlight-start
+    "operating_point": "enhanced"    
+    // highlight-end
   }
 }
 ```
@@ -157,7 +159,9 @@ Bilingual (excluding Spanish and English) example:
 {
   "type": "transcription",
   "transcription_config": {
+    // highlight-start
     "language": "cmn_en"
+    // highlight-end
   }
 }
 ```
@@ -169,16 +173,20 @@ Bilingual Spanish and English example:
   "type": "transcription",
   "transcription_config": {
     "language": "es",
+      // highlight-start
     "domain": "bilingual-en"
+    // highlight-end
   }
 }
 ```
 
 
 ## Healthcare transcription
-Speechmatics offers industry-leading accuracy in the healthcare domain when using the default `enhanced` [operating point](#operating-points). For customers working exclusively in the healthcare domain, we recommend using the medical domain-specific model. 
+Speechmatics offers domain-specific medical transcription models which provide unparallelled accuracy for medical use cases such as ambient scribes and dictation tools.
 
-The model is kept up to date using officially maintained sources. This brings significant improvements in recognition of medical terminology such as names of procedures, medications, conditions, and anatomy.
+These models are kept up to date using officially maintained data sources. This brings significant improvements in recognition of medical terminology such as names of procedures, medications, conditions, and anatomy.
+
+Note that for languages without a medical transcription model, Speechmatics still offers industry-leading accuracy in the healthcare domain when using the general purpose `enhanced` [operating point](#operating-points). 
 
 :::info
 The medical domain-specific model must be used with the `enhanced` operating point.
@@ -190,8 +198,10 @@ Medical domain example:
   "type": "transcription",
   "transcription_config": {
     "language": "en",
+    // highlight-start
     "operating_point": "enhanced",
     "domain": "medical"
+  // highlight-end
   }
 }
 ```
@@ -200,5 +210,5 @@ Medical domain example:
 
 |Language| Real-time | Batch|
 |----------------|--|-|
-|English| [Public preview](../private/preview-mode.mdx) | Available |
+|English| Available | Available |
 |Additional languages| [Contact us for more information](https://www.speechmatics.com/speak-to-sales)|
