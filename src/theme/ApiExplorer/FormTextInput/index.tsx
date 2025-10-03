@@ -3,7 +3,7 @@ import { forwardRef, useCallback, useEffect, useRef } from "react";
 
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import { ErrorMessage } from "@hookform/error-message";
-import { Box, Button, Text, TextArea, TextField } from "@radix-ui/themes";
+import { Box, Button, Flex, Text, TextArea, TextField } from "@radix-ui/themes";
 import { useController, useFormContext } from "react-hook-form";
 
 export interface Props {
@@ -58,24 +58,26 @@ const FormTextInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
 
     if (isJobConfig) {
       return (
-        <>
-          <Button
-            size="1"
-            variant="soft"
-            color="gray"
-            type="button"
-            onClick={() => {
-              controller.field.onChange(DEFAULT_JOB_CONFIG);
-              onChange({
-                // @ts-ignore: This can be refined another time
-                target: {
-                  value: DEFAULT_JOB_CONFIG,
-                },
-              });
-            }}
-          >
-            Set default
-          </Button>
+        <Flex direction="column" py="2" gap="2">
+          <Box>
+            <Button
+              size="1"
+              variant="soft"
+              color="gray"
+              type="button"
+              onClick={() => {
+                controller.field.onChange(DEFAULT_JOB_CONFIG);
+                onChange({
+                  // @ts-ignore: This can be refined another time
+                  target: {
+                    value: DEFAULT_JOB_CONFIG,
+                  },
+                });
+              }}
+            >
+              Set default
+            </Button>
+          </Box>
           <Box asChild my="2" minHeight="12em">
             <TextArea
               // Slightly bad typing here, if there's a better way I'd love to know it
@@ -97,7 +99,7 @@ const FormTextInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
               )}
             />
           )}
-        </>
+        </Flex>
       );
     }
     return (
