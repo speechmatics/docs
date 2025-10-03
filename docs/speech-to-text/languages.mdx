@@ -21,13 +21,36 @@ keywords:
     es-pr,
     es-ar,
     pt-br,
+    operating point,
+    standard,
+    enhanced,
   ]
 ---
 
-# Languages
+# Languages & Models
 
-This page lists the range of languages supported by Speechmatics.
 
+### Operating points
+
+Choose between two accuracy models when configuring your transcription session:
+- **Standard** — optimized for faster turnaround with strong accuracy. Recommended when speed and efficiency are your priorities
+- **Enhanced** — our highest-accuracy model with strong turnaround times. Recommended when precision is critical, and especially for complex audio (e.g. noisy environments, varied accents)
+
+By default, the `standard` operating point is used. You can specify the `enhanced` operating point as a part of the transcription config. For example:
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    // highlight-start
+    "operating_point": "enhanced"    
+    // highlight-end
+  }
+}
+```
+
+
+## Transcription languages
 :::info
 To automatically identify the language in an audio file, use our [Language Identification](/speech-to-text/batch/language-identification) feature.
 
@@ -91,6 +114,7 @@ Speechmatics takes a global-first approach to our languages. In a single languag
 | Spanish & English bilingual  | es (with domain='bilingual-en') | Ideal when transcribing Spanish and English in the same media file or stream. Supports all accents and dialects listed under English and Spanish. [Requires the domain config to be set](/speech-to-text/languages#multilingual-speech-to-text).                                                                             |
 | Swahili                      | sw                              |                                                                                                                                                                                                                                                                                                                                           |
 | Swedish                      | sv                              |                                                                                                                                                                                                                                                                                                                                           |
+| Tagalog (Filipino)           | tl                              | Ideal when transcribing Tagalog (Filipino) or Tagalog (Filipino) and English in the same media file or stream. Supports all accents and dialects listed under English.                                                                                                                                                                                                                                                                                                                                          |
 | Tamil                        | ta                              |                                                                                                                                                                                                                                                                                                                                           |
 | Tamil & English bilingual    | en_ta                           | Ideal when transcribing Tamil and English in the same media file or stream. Supports all accents and dialects listed under Tamil and English.                                                                                                                                                                                             |
 | Thai                         | th                              |                                                                                                                                                                                                                                                                                                                                           |
@@ -103,7 +127,7 @@ Speechmatics takes a global-first approach to our languages. In a single languag
 
 Each language above is uniquely identified by a two-letter code (ISO639-1) or three-letter code (ISO639-3) in API requests and responses.
 
-## Translation Languages
+## Translation languages
 
 Translation is supported for the majority of Speechmatics' languages. The supported translation pairs are listed below.
 For more details, see [Translation](/speech-to-text/features/translation).
@@ -123,10 +147,11 @@ Supported multilingual packs are:
 
 | Language Pack | Transcription config |
 |----------------|----------------------|
-| Mandarin and English |  `{"language": "cmn_en"}` |
 | Malay and English |  `{"language": "en_ms"}` |
-| Tamil and English |  `{"language": "en_ta"}` |
+| Mandarin and English |  `{"language": "cmn_en"}` |
 | Spanish and English |  `{"language": "es", "domain": "bilingual-en"}` |
+| Tamil and English |  `{"language": "en_ta"}` |
+| Tagalog (Filipino) and English |  `{"language": "tl"}` |
 
 Bilingual (excluding Spanish and English) example:
 
@@ -134,7 +159,9 @@ Bilingual (excluding Spanish and English) example:
 {
   "type": "transcription",
   "transcription_config": {
-    "language": "cmn_en",
+    // highlight-start
+    "language": "cmn_en"
+    // highlight-end
   }
 }
 ```
@@ -146,7 +173,42 @@ Bilingual Spanish and English example:
   "type": "transcription",
   "transcription_config": {
     "language": "es",
+      // highlight-start
     "domain": "bilingual-en"
+    // highlight-end
   }
 }
 ```
+
+
+## Healthcare transcription
+Speechmatics offers domain-specific medical transcription models which provide unparallelled accuracy for medical use cases such as ambient scribes and dictation tools.
+
+These models are kept up to date using officially maintained data sources. This brings significant improvements in recognition of medical terminology such as names of procedures, medications, conditions, and anatomy.
+
+Note that for languages without a medical transcription model, Speechmatics still offers industry-leading accuracy in the healthcare domain when using the general purpose `enhanced` [operating point](#operating-points). 
+
+:::info
+The medical domain-specific model must be used with the `enhanced` operating point.
+:::
+ 
+Medical domain example:
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    // highlight-start
+    "operating_point": "enhanced",
+    "domain": "medical"
+  // highlight-end
+  }
+}
+```
+
+
+
+|Language| Real-time | Batch|
+|----------------|--|-|
+|English| Available | Available |
+|Additional languages| [Contact us for more information](https://www.speechmatics.com/speak-to-sales)|

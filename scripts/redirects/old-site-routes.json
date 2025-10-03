@@ -109,5 +109,13 @@
   "/tutorials/accuracy-benchmarking",
   "/tutorials/calculating-wer",
   "/tutorials/using-ffmpeg",
-  "/tutorials/using-mic"
+  "/tutorials/using-mic",
+  "/on-prem/virtual-appliance/",
+  "/markdown-page",
+  "/on-prem/containers/gpu-container/latest-version",
+  "/on-prem/containers/usage/usage-collector",
+  "/on-prem/containers/usage/usage-container",
+  "/on-prem/containers/usage/what-data",
+  "/on-prem/virtual-appliance/administration/custom-dictionary-cache",
+  "/on-prem/virtual-appliance/installation/licensing"
 ]

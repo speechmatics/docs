@@ -40,7 +40,7 @@
   },
   {
     "source": "/features-other/tracking",
-    "destination": "/speech-to-text/batch/tracking"
+    "destination": "/speech-to-text/batch/output#tracking-metadata"
   },
   {
     "source": "/features-other/translation",
@@ -401,5 +401,38 @@
   {
     "source": "/tutorials/using-mic",
     "destination": "/speech-to-text/realtime/guides/python-using-microphone"
+  },
+  {
+    "destination": "/deployments/virtual-appliance/",
+    "source": "/on-prem/virtual-appliance/"
+  },
+  { "destination": "/", "source": "/markdown-page" },
+  {
+    "destination": "https://speechmatics.featurebase.app/changelog?q=gpu",
+    "source": "/on-prem/containers/gpu-container/latest-version"
+  },
+  {
+    "destination": "/deployments/usage-reporting/automatic",
+    "source": "/on-prem/containers/usage/usage-collector"
+  },
+  {
+    "destination": "/deployments/usage-reporting/offline",
+    "source": "/on-prem/containers/usage/usage-container"
+  },
+  {
+    "destination": "/deployments/usage-reporting/#what-data-do-we-record",
+    "source": "/on-prem/containers/usage/what-data"
+  },
+  {
+    "destination": "/speech-to-text/features/custom-dictionary#custom-dictionary-caching",
+    "source": "/on-prem/virtual-appliance/administration/custom-dictionary-cache"
+  },
+  {
+    "destination": "/deployments/virtual-appliance/installation/licensing",
+    "source": "/on-prem/virtual-appliance/installation/licensing"
+  },
+  {
+    "destination": "/batch.yaml",
+    "source": "/api/jobs-spec-final.yaml"
   }
 ]

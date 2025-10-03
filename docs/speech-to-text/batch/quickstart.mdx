@@ -7,7 +7,7 @@ description: 'Learn how to transcribe pre-recorded audio and video files.'
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
 import { Card, Link, Text, Flex, Button, Box, Grid } from '@radix-ui/themes'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, CodeIcon } from 'lucide-react'
 import fileTranscriptionQuickstartPythonSample from "./assets/file-transcription-quickstart.py"
 import fileTranscriptionQuickstartJavascriptSample from "./assets/file-transcription-quickstart.example.js?raw"
 import fileTranscriptionQuickstartCurlSample from "./assets/file-transcription-quickstart.sh"
@@ -25,6 +25,8 @@ import transcriptResponseExample from "./assets/transcript-response-example.json
 
 :::tip
 The quickest way to try transcribing for free is by creating a Speechmatics account and using our [web portal](https://portal.speechmatics.com/jobs/create/batch).
+<br/>
+Set up your transcription job and click the <Button mx="1" size="1" color="gray" variant="soft"><CodeIcon size="8" />View config</Button> button on the output page to get the code and use it in the API.
 :::
 
 ## Using the Batch API
@@ -40,10 +42,10 @@ Enterprise customers may need to speak to [Support](https://support.speechmatics
 
 ### 2. Pick and install a library
 
-Check out our [Javascript client](https://www.npmjs.com/package/@speechmatics/batch-client) or [Python client](https://pypi.org/project/speechmatics-python/) to get started.
+Check out our [JavaScript client](https://www.npmjs.com/package/@speechmatics/batch-client) or [Python client](https://pypi.org/project/speechmatics-python/) to get started.
 
 <Tabs>
-  <TabItem value="javascript" label="Javascript">
+  <TabItem value="javascript" label="JavaScript">
   Install using NPM:
   ```
   npm install @speechmatics/batch-client
@@ -66,7 +68,7 @@ Download and save our [example.wav](https://github.com/speechmatics/speechmatics
 Paste your API key into `YOUR_API_KEY` in the code below.
 
 <Tabs>
-  <TabItem value="javascript" label="Javascript">
+  <TabItem value="javascript" label="JavaScript">
   <CodeBlock language="javascript">
     {jsQuickstart}
   </CodeBlock>

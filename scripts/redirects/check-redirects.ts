@@ -50,5 +50,5 @@ export function checkRedirects([...newSitePaths]: string[]) {
 
 export function normalizePath(path: string) {
   if (path === "/") return path;
-  return path.replace(/\/$/, "").replace(/#.*$/, "");
+  return path.replace(/#.*$/, "").replace(/\/$/, "");
 }

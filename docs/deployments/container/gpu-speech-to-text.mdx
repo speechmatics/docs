@@ -1,7 +1,7 @@
 ---
 toc_max_heading_level: 3
 description: 'Learn about the Speechmatics Transcription GPU container system'
-keywords: [speechmatics, container, gpu, GPU, performance, NVIDIA, CUDA, SaaS, on-prem]
+keywords: [speechmatics, container, gpu, GPU, NVIDIA, CUDA, SaaS, on-prem]
 ---
 
 import Tabs from '@theme/Tabs';
@@ -33,6 +33,10 @@ The system must have:
 
 The raw image size of the GPU Inference Container is around 15GB.
 
+:::tip
+See [Performance and cost](/deployments/container/performance-and-cost) for more information on the performance and cost of the container.
+:::
+
 ### Nvidia drivers
 
 The GPU Inference Container is based on CUDA 12.3.2, which requires NVIDIA Driver release 545 or later.
@@ -40,13 +44,9 @@ If you are running on a data center GPU (e.g, a T4) you can use drivers: 470.57 
 
 Driver installation can be validated by running `nvidia-smi`. This command should return the Nvidia driver version and show additional information about the GPU(s).
 
-#### Azure instances
+#### Cloud instances
 
-The GPU node can be provisioned in the cloud. Our SaaS deployment uses
-
-- Azure [Standard_NC8as_T4_v3](https://learn.microsoft.com/en-us/azure/virtual-machines/nct4-v3-series)
-
-but any `NC` or `ND` series with sufficient memory should work.
+The GPU node can be provisioned in the cloud.
 
 ## Running the image
 
@@ -76,13 +76,11 @@ I1215 11:43:57.300390 1 server.cc:633]
 | am_en_standard       | 1       | READY  |
 | body_enhanced        | 1       | READY  |
 | body_standard        | 1       | READY  |
-| decoder_enhanced     | 1       | READY  |
-| decoder_standard     | 1       | READY  |
 | diar_enhanced        | 1       | READY  |
 | diar_standard        | 1       | READY  |
 | ensemble_en_enhanced | 1       | READY  |
 | ensemble_en_standard | 1       | READY  |
-| lm_enhanced          | 1       | READY  |
+| lm_en_enhanced       | 1       | READY  |
 +----------------------+---------+--------+
 ...
 I1215 11:43:57.375233 1 grpc_server.cc:4819] Started GRPCInferenceService at 0.0.0.0:8001
@@ -136,33 +134,3 @@ This Docker Compose file will create a Speechmatics GPU Inference Server:
 <CodeBlock language="yaml" title="docker-compose.yml">
 {gpuSttDockerCompose.replace('{{ CONTAINER_VERSION }}', smVariables.latestContainerVersion)}
 </CodeBlock>
-
-## GPU Inference Performance
-
-This is a comparison of the performance and estimated running costs of transcription executing on
-standard Azure VMs.
-
-### Benchmark metrics
-
-| Operating Point                            | CPU Standard | CPU Enhanced | GPU Standard | GPU Enhanced |
-|--------------------------------------------|--------------|--------------|--------------|--------------|
-| Lowest Processing Cost (US ¢ per hour)     | 1.7          | 3.8          | 0.71         | 2.21         |
-| Cost vs CPU Standard (%)                   | -            | 224%         | 42%          | 130%         |
-| Cost vs CPU Enhanced (%)                   | 45%          | -            | 19%          | 58%          |
-| Maximum Throughput[^1]                     | 53.2         | 23.7         | 170          | 34           |
-| Representative Real-Time Factor (RTF)[^2]  | 0.085        | 0.2          | 0.035        | 0.08         |
-| Transcriber Count                          | 20           | 20           | 20           | 13           |
-
-The benchmark uses the following configuration:
-
-| Benchmark details |                                     |
-| ----------------- | ----------------------------------- |
-| CPU               | D16ds_v5                            |
-| GPU Standard      | Standard_NC16as_T4_v3               |
-| GPU Enhanced      | Standard_NC8as_T4_v3                |
-| Price Basis       | Azure PAYG East US, Linux, Standard |
-
-For GPU Operating Points, Transcribers and Inference Server were all run on a single VM node.
-
-[^1]: Throughput is measured as hours of audio per hour of runtime. A throughput of 50 would mean that in one hour, the system as a whole can transcribe 50 hours of audio.
-[^2]: An RTF of 1 would mean that a one hour file would take one hour to transcribe. An RTF of 0.1 would mean that a one hour file would take six minutes to transcribe. Benchmark RTFs are representative for processing audio files over 20 minutes in duration using `parallel=4`.

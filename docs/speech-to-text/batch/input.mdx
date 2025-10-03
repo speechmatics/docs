@@ -12,11 +12,11 @@ import batchSchema from "!openapi-schema-loader!@site/spec/batch.yaml";
 
 :::info
 This page documents audio inputs for transcription by **REST API** (a.k.a. Batch SaaS).
-* For Real-time transcription, see the [Real-time Transcription input](/speech-to-text/realtime/input).
+* For Realtime transcription, see the [Realtime Transcription input](/speech-to-text/realtime/input).
 * For Flow Voice AI, see the [Flow Voice AI supported formats and limits](/voice-agents-flow/supported-formats-and-limits).
 :::
 
-## Supported File Types
+## Supported file types
 
 The following file formats types are supported for transcription by REST API:
 
@@ -55,8 +55,7 @@ If you store your digital media in cloud storage (for example AWS S3 or Azure Bl
 {
   "type": "transcription",
   "transcription_config": {
-    "language": "en",
-    "diarization": "speaker"
+    "language": "en"
   },
   "fetch_data": {
     "url": "${URL}/{FILENAME}"

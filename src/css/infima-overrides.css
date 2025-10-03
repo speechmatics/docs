@@ -105,6 +105,7 @@ html[data-theme="dark"] {
   --docusaurus-progress-bar-color: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-secondary-darkest);
   --ifm-menu-color-active: var(--ifm-color-secondary-darkest);
+  --ifm-link-color: var(--cyan-10);
 
   --ifm-color-content: var(--ifm-color-emphasis-900);
   --ifm-color-content-inverse: var(--ifm-color-content);
@@ -150,9 +151,70 @@ html {
   outline-color: var(--accent-a9);
 }
 
+/* Make links theme-aligned by default */
+.radix-themes a:not([class]) {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+
+  color: var(--accent-11);
+}
+
 /* Duplicating the Radix link styles, since Docusaurus imposes them at higher specificity */
 a.rt-Link:hover {
   text-decoration: underline;
   text-decoration-color: var(--accent-a6);
   color: var(--accent-a11);
+}
+
+/* Below we duplicate the exact selectors in Infima, and revert those exact layers
+  Doing it more generally with something like table * does not work
+ */
+
+table {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table thead {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table thead tr {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table tbody tr {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table tr:nth-child(2n) {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table thead tr th {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table th {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
+}
+
+table td {
+  @layer docusaurus.infima {
+    all: revert-layer;
+  }
 }

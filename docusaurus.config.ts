@@ -196,7 +196,6 @@ const config: Config = {
       defer: false,
       id: "Cookiebot",
       "data-cbid": "d687cfe6-4b5a-43ff-8e0e-ae6a3a33aeee",
-      "data-blockingmode": "auto",
     },
   ],
   stylesheets: [

@@ -2,6 +2,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/speech-to-text/batch/tracking",
+      "destination": "/speech-to-text/batch/output#tracking-metadata",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true
@@ -63,7 +68,7 @@
     },
     {
       "source": "/features-other/tracking",
-      "destination": "/speech-to-text/batch/tracking",
+      "destination": "/speech-to-text/batch/output#tracking-metadata",
       "permanent": true
     },
     {
@@ -544,6 +549,51 @@
     {
       "source": "/tutorials/using-mic",
       "destination": "/speech-to-text/realtime/guides/python-using-microphone",
+      "permanent": true
+    },
+    {
+      "destination": "/deployments/virtual-appliance/",
+      "source": "/on-prem/virtual-appliance",
+      "permanent": true
+    },
+    {
+      "destination": "/",
+      "source": "/markdown-page",
+      "permanent": true
+    },
+    {
+      "destination": "https://speechmatics.featurebase.app/changelog?q=gpu",
+      "source": "/on-prem/containers/gpu-container/latest-version",
+      "permanent": true
+    },
+    {
+      "destination": "/deployments/usage-reporting/automatic",
+      "source": "/on-prem/containers/usage/usage-collector",
+      "permanent": true
+    },
+    {
+      "destination": "/deployments/usage-reporting/offline",
+      "source": "/on-prem/containers/usage/usage-container",
+      "permanent": true
+    },
+    {
+      "destination": "/deployments/usage-reporting/#what-data-do-we-record",
+      "source": "/on-prem/containers/usage/what-data",
+      "permanent": true
+    },
+    {
+      "destination": "/speech-to-text/features/custom-dictionary#custom-dictionary-caching",
+      "source": "/on-prem/virtual-appliance/administration/custom-dictionary-cache",
+      "permanent": true
+    },
+    {
+      "destination": "/deployments/virtual-appliance/installation/licensing",
+      "source": "/on-prem/virtual-appliance/installation/licensing",
+      "permanent": true
+    },
+    {
+      "destination": "/batch.yaml",
+      "source": "/api/jobs-spec-final.yaml",
       "permanent": true
     },
     {

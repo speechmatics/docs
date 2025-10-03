@@ -1,7 +1,7 @@
 ---
 description: 'Learn about latency in the Speechmatics Real-Time server'
 keywords: [speechmatics, real-time, rt, latency, low latency, fast, transcription, speech recognition, asr]
-title: 'Output – Real-time'
+title: 'Output – Realtime'
 sidebar_label: 'Output'
 ---
 
@@ -47,16 +47,16 @@ Setting `max_delay` to between 0.7 and 1.5 gives an accuracy degradation of less
 
 At 2 seconds `max_delay`, there is around 1% relative accuracy degradation when compared to the Batch transcription service. This is the recommended setting for most use cases, such as broadcast captioning.
 
-For the best accuracy, we recommend using a `max_delay` of 4 seconds which is equivalent to our Batch transcription service. This can be combined with Partial transcripts, to give users early feedback of the recognised text.
+For the best accuracy, we recommend using a `max_delay` of 4 seconds which is equivalent to our Batch transcription service. This can be combined with Partial transcripts, to give users early feedback of the recognized text.
 
 ## Partial transcripts
 
 Partial transcripts allow you to receive preliminary transcription and update as more context is available until the higher-accuracy [Finals](/api-ref/realtime-transcription-websocket#addtranscript) are returned. Typically Partials are returned in less than 500 milliseconds. [Partial transcripts](/api-ref/realtime-transcription-websocket.mdx#addpartialtranscript) are enabled using the `enable_partials` config option. 
 
-On each Final transcript you will immediately receive a Partial transcript with any remaining words which have not been finalised.
+On each Final transcript you will immediately receive a Partial transcript with any remaining words which have not been finalized.
 
 Note that Partial transcripts have some limitations:
-- Accuracy is usually 10-25% lower than the Final transcript. This includes punctuation and capitalisation of words.
+- Accuracy is usually 10-25% lower than the Final transcript. This includes punctuation and capitalization of words.
 - The `confidence` field for Partial transcripts has no meaning and should not be relied on.
 
 ## Smart formatting

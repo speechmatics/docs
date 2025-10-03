@@ -1,0 +1,229 @@
+---
+description: Learn how to convert text to speech using our API.
+---
+
+import Admonition from '@theme/Admonition';
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+import pythonTtsQuickstart from "./assets/tts-quickstart.py?raw"
+
+# Quickstart
+
+Transform text into natural sounding speech using our low latency text to speech API.
+
+:::info Free Preview
+Text to speech is currently in preview and free to use. Features and pricing may change as we continue to improve the service. We welcome your feedback to help shape the final product.
+:::
+
+## Use cases
+
+Our text to speech API is perfect for:
+
+- **Voice AI**: Voice assistants, chatbots, and IVR systems
+- **Translation**: Realtime translation of live events or media
+- **Accessibility applications**: Screen readers and assistive technologies
+- **Content creation**: Podcasts, dubbing, audiobooks, and voice-overs
+- **Media production**: News broadcasts and automated announcements
+
+## Getting started
+
+### 1. Get your API key
+
+[Create an API key in the portal](https://portal.speechmatics.com/settings/api-keys) to access the text to speech API. Store your key securely as a managed secret.
+
+### 2. Install dependencies
+
+```bash
+pip install requests
+```
+
+### 3. Make your first request
+
+Replace `YOUR_API_KEY` with your actual API key from the portal:
+
+<Tabs>
+  <TabItem value="curl" label="cURL">
+  ```bash
+  curl -X POST "https://preview.tts.speechmatics.com/generate/sarah" \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"text": "Welcome to the future of speech technology!"}' \
+    --output output.wav
+  ```
+  </TabItem>
+  <TabItem value="python" label="Python">
+  <CodeBlock language="python">
+    {pythonTtsQuickstart}
+  </CodeBlock>
+  </TabItem>
+</Tabs>
+
+## Voices
+
+We offer three voices you can choose from:
+
+| Voice ID | Description |
+|----------|-------------|
+| `sarah` | English Female (UK) |
+| `theo` | English Male (UK) |
+| `megan` | English Female (US) |
+
+To use a specific voice, include the voice ID in your API endpoint:
+
+```
+https://preview.tts.speechmatics.com/generate/<voice_id>
+```
+
+We'll soon be adding more voices to our API. We'd love your feedback on what kind of voices you'd like us to add!
+
+## Output formats
+
+The text to speech API supports two output formats that you can specify using the `output_format` query parameter:
+
+### `wav_16000` (default)
+- **Format**: Complete WAV file with headers
+- **Sample Rate**: 16 kHz
+- **Bit Depth**: 16-bit signed integer
+- **Channels**: Mono (single channel)
+- **Usage**: `?output_format=wav_16000` (or omit parameter for default)
+
+### `pcm_16000`
+- **Format**: Raw PCM (Pulse Code Modulation) data
+- **Sample Rate**: 16 kHz
+- **Bit Depth**: 16-bit signed integer
+- **Channels**: Mono (single channel)
+- **Byte Order**: Little-endian
+- **Usage**: `?output_format=pcm_16000`
+
+:::tip
+You can start consuming the generated audio as soon as it's ready. There's no need to wait for the request to complete!
+:::
+
+## Best practices
+
+- **Streaming audio**: You can start playing the audio before the response completes
+- **Use proper punctuation**: Periods, commas, and question marks improve natural speech flow
+- **Spell out abbreviations**: Write "Doctor" instead of "Dr." for clearer pronunciation
+- **Spell out numbers**: Write "Twenty-five dollars" instead of "$25"
+- **Batch requests**: Combine multiple short texts into longer requests when possible
+- **Cache audio**: Store generated audio files to avoid repeated API calls for identical text
+
+## Deployment
+
+Our text to speech API can be consumed via our managed service or deployed in your own environment.
+
+To find out more about deploying our API in your environment, [speak to sales](https://www.speechmatics.com/speak-to-sales).
+
+## FAQ
+
+### Core functionality
+
+<details>
+<summary>What languages do you support?</summary>
+
+We support English. We plan to launch additional languages in 2025. Need a specific language? Raise it as a [request on our GitHub](https://github.com/orgs/speechmatics/discussions).
+</details>
+
+<details>
+<summary>What voices are available?</summary>
+
+We are rapidly expanding the available list of voices, providing speech synthesis in multiple languages, accents and dialects. More voice options will be added during the preview period.
+</details>
+
+<details>
+<summary>Can I control voice speed, pitch, or emphasis?</summary>
+
+Not yet. The API outputs natural speech with prosody driven by the text content. Fine-grained voice control features may be added in future releases.
+</details>
+
+### Technical
+
+<details>
+<summary>How much latency should I expect?</summary>
+
+The initial audio chunk typically returns in less than 200ms, with subsequent audio chunks returning faster than real time.
+</details>
+
+<details>
+<summary>Is there a streaming API for real-time generation?</summary>
+
+The API supports streaming audio output (you can play audio as it arrives), but not full bidirectional streaming. We plan to add support for this in the future.
+</details>
+
+<details>
+<summary>What concurrency is supported and are there rate limits?</summary>
+
+We expect to support high concurrency when released. If you encounter rate limit errors, use retry with exponential backoff.
+</details>
+
+<details>
+<summary>How large can a text input be?</summary>
+
+Our service handles text splitting server-side and can process long paragraphs of text. However, for the lowest latency, sending smaller amounts of text will provide the best performance.
+</details>
+
+<details>
+<summary>Do you support webhooks or callbacks for long-running requests?</summary>
+
+Webhook and callback support is not available. This feature may be added in future releases for handling long-running synthesis requests.
+</details>
+
+<details>
+<summary>Are there official SDKs available?</summary>
+
+Official SDKs for different programming languages are not available yet. The API can be accessed using standard HTTP requests as shown in the [quickstart example](#3-make-your-first-request). We will release official SDKs later.
+</details>
+
+### Commercial
+
+<details>
+<summary>What is the price?</summary>
+
+We will announce pricing in September 2025. The service is currently free during the preview period. Billing will start on the 1st of October. We will announce pricing at least 2 weeks ahead of billing for usage.
+
+There will be a generous free tier.
+</details>
+
+<details>
+<summary>Can I use this for commercial applications?</summary>
+
+Text to speech is currently in preview and free to use. Features and pricing may change as the service evolves. For commercial use and enterprise pricing, [speak to sales](https://www.speechmatics.com/speak-to-sales) to discuss your specific needs.
+</details>
+
+<details>
+<summary>What happens to my data after synthesis?</summary>
+
+During the preview, we will be storing input text and generated audio to help improve our service. In production, Speechmatics will offer both non-retentive and data-retentive options. Customers who allow retention may be eligible for discounted pricing.
+
+Retained data helps improve system quality over time.
+</details>
+
+### Implementation and deployment
+
+<details>
+<summary>Can I deploy this in my own environment?</summary>
+
+Yes! The text to speech API can be consumed via our managed service or deployed in your own environment. To learn more about on-premises deployment options, [speak to sales](https://www.speechmatics.com/speak-to-sales).
+</details>
+
+### Support
+
+<details>
+<summary>Where can I provide feedback or get help?</summary>
+
+You can submit feedback, bug reports, or feature requests through the Speechmatics [GitHub discussions](https://github.com/orgs/speechmatics/discussions).
+</details>
+
+## Next steps
+
+Ready to build something amazing with text to speech? We'd love to hear about your project and help you succeed.
+
+**Get in touch with us:**
+- Share your feedback and feature requests
+- Ask questions about implementation
+- Discuss enterprise pricing and custom voices
+- Report any issues or bugs you encounter
+
+[Contact our team](https://support.speechmatics.com) or join our developer community (https://www.reddit.com/r/Speechmatics) to connect with other builders using text to speech.

@@ -11,14 +11,14 @@ keywords:
     speech recognition,
     asr
   ]
-sidebar_label: 'Language Identification'
+sidebar_label: 'Language identification'
 ---
 
 # Language Identification (SaaS)
 
 Detect the predominant language spoken and transcribe using the appropriate language.
 
-You can also learn about deploying this [On-Prem](/deployments/container/language-id) by following our documentation.
+You can also learn about deploying this [On-prem](/deployments/container/language-id) by following our documentation.
 
 Automatic Language Identification can be set when calling the Speechmatics transcription API. You can also try it for free in the [Speechmatics On-Demand Portal](https://portal.speechmatics.com/signup) with no code.
 
@@ -43,7 +43,7 @@ Enabling this for a transcription job will result in a small increase in the tot
 
 ## Configuration
 
-### Expected Languages
+### Expected languages
 
 If you expect the audio to be one of a restricted set of languages, you can provide this information through the `expected_languages` parameter:
 
@@ -61,9 +61,9 @@ If you expect the audio to be one of a restricted set of languages, you can prov
 
 If the language detected is not in the `expected_languages` list, the job will be [rejected](#language-not-in-expected-languages-list).
 
-A list of possible [Language Codes can be found here](/speech-to-text/languages). The following languages are not supported for Language Identification: Interlingua (ia), Esperanto (eo), Uyghur (ug), Cantonese (yue), Irish (ga), Maltese (mt), Urdu (ur), Bengali (bn), Swahili (sw).
+A list of possible [Language Codes can be found here](/speech-to-text/languages). The following languages are not supported for Language Identification: Bengali (bn), Cantonese (yue), Esperanto (eo), Interlingua (ia), Irish (ga), Maltese (mt), Tagalog (tl), Urdu (ur), Uyghur (ug), Swahili (sw).
 
-### Low Confidence Action
+### Low confidence action
 By default, the job will be rejected if no language is identified with [high enough confidence](#low-confidence).
 
 To prevent the job from being rejected, you can set a `low_confidence_action` with one of two options:
@@ -117,7 +117,7 @@ When getting [Job Details](//api-ref/batch/get-job-details) or [Transcript](/api
 }
 ```
 
-### Default Language
+### Default language
 By default, the job will be rejected if there is [No Speech Detected](#no-speech-detected).
 
 To prevent the job from being rejected, you can set a `default_language`. This could also be used if the [Low Confidence Action](#low-confidence-action) is set to `use_default_language`.
@@ -156,7 +156,7 @@ When getting [Job Details](//api-ref/batch/get-job-details) or [Transcript](/api
 }
 ```
 
-## Transcription Result
+## Transcription result
 
 You can determine the language used to transcribe the file from the first word in the response results.
 
@@ -193,13 +193,13 @@ You can determine the language used to transcribe the file from the first word i
 
 The following considerations are required when using Automatic Language Identification along with other Speechmatics features.
 
-### Custom Dictionary
+### Custom dictionary
 
 [Custom Dictionary](/speech-to-text/features/custom-dictionary) can be used with Automatic Language Identification.
 
 The Custom Dictionary will be used with the identified language. Some language-specific features such as `sounds_like` might not behave as expected.
 
-### Output Locale
+### Output locale
 
 [Output Locale](/speech-to-text/formatting#output-locale) is currently not supported in combination with using Automatic Language Identification. Jobs with this combination of features will be rejected.
 
@@ -213,7 +213,7 @@ To reduce friction when using Automatic Language Identification, the translation
 
 ## Error Responses
 
-### Unsupported Expected Language
+### Unsupported expected language
 
 If one or more of the expected languages are not supported, a HTTP 400 error response is returned.
 
@@ -243,7 +243,7 @@ Response:
 }
 ```
 
-### Language Not in Expected Languages List
+### Language not in expected languages list
 
 If the predicted language is not one of your expected languages, the job will be rejected.
 
@@ -273,7 +273,7 @@ This error is available when checking the [job details](/api-ref/batch/get-job-d
 }
 ```
 
-### No Speech Detected
+### No speech detected
 
 If there is not enough speech detected in the file, and you have not set a [Default Language](#default-language), then the job will be rejected.
 
@@ -298,9 +298,9 @@ This error is available when checking the [job details](//api-ref/batch/get-job-
 ```
 
 
-### Low Confidence
+### Low confidence
 
-If the confidence on the language prediction is too low, and you have not set a [Low Confidence Action](#low-confidence-action), then the job will be rejected.
+If the confidence on the language prediction is too low, and you have not set a [low confidence action](#low-confidence-action), then the job will be rejected.
 
 This can occur when there is not enough speech in the file or if the file contains multiple languages in similar proportions.
 
@@ -323,7 +323,7 @@ This error is available when checking the [job details](//api-ref/batch/get-job-
 }
 ```
 
-### Language Not Supported for Transcription
+### Language not supported for transcription
 
 If the predicted language cannot be transcribed then the job will be rejected.
 
@@ -335,7 +335,7 @@ This error is available when checking the [job details](//api-ref/batch/get-job-
         "status": "rejected",
         "errors": [
             {
-                "message": "The identified language 'sw' is not supported for transcription",
+                "message": "The identified language 'uz' is not supported for transcription",
                 "timestamp": "2023-02-27T12:11:24.321Z"
             }
         ],
@@ -348,7 +348,7 @@ This error is available when checking the [job details](//api-ref/batch/get-job-
 }
 ```
 
-### Language Identification Fails
+### Language identification fails
 
 If in the unlikely event the Language Identification stage fails then the job will be rejected.
 
@@ -373,7 +373,7 @@ This error is available when checking the [job details](//api-ref/batch/get-job-
 }
 ```
 
-### Errors When Used with Translation
+### Errors when used with translation
 
 It is not possible to translate between all language pairs. When `auto` language is used, this can mean some translation target languages will not be available. See the full list of [Supported Language Pairs](/speech-to-text/features/translation#supported-translation-pairs).
 

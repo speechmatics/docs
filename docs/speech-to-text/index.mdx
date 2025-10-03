@@ -21,7 +21,7 @@ import {
 
 
 Use speech to text to transcribe using one of the modes:
-- [Real-time processing](#real-time-processing): Stream audio from an input device or file and receive instant updates of the transcription as it happens
+- [Realtime processing](#realtime-processing): Stream audio from an input device or file and receive instant updates of the transcription as it happens
 - [Batch processing](#batch-processing): Submit an audio file and receive a complete text transcription once the processing is finished
 
 ## Developer quickstart
@@ -31,7 +31,7 @@ Use speech to text to transcribe using one of the modes:
     icon={<ChevronsRightIcon/>}
     direction="column"
     title="Transcribe in real-time"
-    description="Instantly convert streaming audio to text with Real-time processing"
+    description="Instantly convert streaming audio to text with Realtime processing"
     href="/speech-to-text/realtime/quickstart"
   />
 
@@ -55,11 +55,11 @@ Speechmatics provides flexible deployment options tailored to your requirements.
 
 For deploying our API in your environment, [contact sales](https://www.speechmatics.com/speak-to-sales), or see our [on-prem documentation](/deployments).
 
-## Real-time processing
+## Realtime processing
 
 Turn live audio into accurate transcripts — instantly.
 
-The [Speechmatics real-time speech to text API](/api-ref/realtime-transcription-websocket) converts spoken audio into text with low latency and high accuracy.
+The [Speechmatics Realtime speech to text API](/api-ref/realtime-transcription-websocket) converts spoken audio into text with low latency and high accuracy.
 
 :::info
 - Use when speed matters
@@ -69,12 +69,6 @@ The [Speechmatics real-time speech to text API](/api-ref/realtime-transcription-
 - Monitor contact center calls as they happen
 - Build accessibility features like live captions
 :::
-
-### Operating points
-
-Choose between two accuracy models when configuring your real-time session:
-- **Standard** — fast, efficient, and suitable for most use cases
-- **Enhanced** — offers improved accuracy, especially for complex audio (e.g. noisy environments, varied accents), with slightly higher resource usage
 
 ## Batch processing
 
@@ -102,12 +96,6 @@ A job includes:
 - The resulting transcript(s)
 
 You submit a job to the API, monitor its progress, and retrieve results once it's complete. Jobs can be created via direct upload or by referencing a URL.
-
-### Operating points
-
-Choose between two accuracy models to fit the use case for your Batch job:
-- **Standard** — Optimised for faster turnaround with strong accuracy; ideal for compliance workflows and routine file-based transcription
-- **Enhanced** — our highest-accuracy model for when precision is critical; recommended for captioning or content destined for public use
 
 Both modes support the same input/output formats and features — only the underlying model differs.
 

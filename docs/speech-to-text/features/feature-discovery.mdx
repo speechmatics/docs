@@ -3,20 +3,20 @@ description: "Learn how to use Speechmatics' Discovery API."
 sidebar_position: 0
 ---
 
-# Feature Discovery
+# Feature discovery
 
-The Feature Discovery endpoint enables you to dynamically update your system with the latest capabilities offered by Speechmatics. This allows you to deliver new languages and capabilities to your users with less effort and time delay.
+The feature discovery endpoint enables you to dynamically update your system with the latest capabilities offered by Speechmatics. This allows you to deliver new languages and capabilities to your users with less effort and time delay.
 
 ## Quickstart
 
-To use the Feature Discovery endpoint, you simply need to make a GET request on the below endpoint. For example: 
+To use the feature discovery endpoint, you simply need to make a GET request on the below endpoint. For example: 
 ```
 curl "https://asr.api.speechmatics.com/v1/discovery/features"
 ```
 
-## Understanding the Response
+## Understanding the response
 
-The Feature Discovery endpoint will include an object with the following properties:
+The feature discovery endpoint will include an object with the following properties:
 - `metadata`
     - `language_pack_info` - For each of our [supported languages](/speech-to-text/languages), give the full name of the language, as well as any [Domain Language Optimizations](/speech-to-text/languages#multilingual-speech-to-text) or [Output Locales](/speech-to-text/formatting#output-locale)
 - `batch` - Capabilities relating to our Batch API
