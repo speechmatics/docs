@@ -52,7 +52,7 @@ The feature is disabled by default. To enable speaker diarization, `diarization`
 When diarization is enabled, each `word` and `punctuation` object in the transcript includes a `speaker` property that identifies who spoke it. There are two types of labels:
 
 - `S#` – S stands for speaker, and `#` is a sequential number identifying each speaker. S1 appears first in the results, followed by S2, S3, and so on.
-- `UU` – Used when the speaker cannot be identified or diarization is not applied (i.e. running batch mode on CPU operating points), for example, if background noise is transcribed as speech but no speaker can be determined.
+- `UU` – Used when the speaker cannot be identified or diarization is not applied, for example, if background noise is transcribed as speech but no speaker can be determined.
 
 ```json
   "results": [
@@ -183,10 +183,6 @@ For example, if the system initially assigns 9 words in a sentence to S1 and 1 w
 This adjustment only works when punctuation is enabled. Disabling punctuation via the `permitted_marks` setting in `punctuation_overrides` can reduce diarization accuracy.  
 
 Adjusting punctuation sensitivity can also affect how accurately speakers are identified.
-
-### Speaker diarization Timeout
-
-Speaker diarization will time out if it takes too long to run for a particular audio file. Currently, the timeout is set to 5 minutes or 0.5 \* the audio duration, whichever is longer. For example, with a 2 hour audio file, the timeout is 1 hour. If a timeout happens, the transcript will still be returned and all speaker labels in the output will be labelled as UU.
 
 ### Speaker change (legacy)
 
