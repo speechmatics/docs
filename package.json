@@ -7,7 +7,7 @@
     "start": "run-p build:jobs-api-ref && dotenv -e .env -e .env.local node_modules/.bin/docusaurus start",
     "build": "run-p build:jobs-api-ref && dotenv -e .env -e .env.local node_modules/.bin/docusaurus build",
     "build:jobs-spec": "tsx scripts/generate-batch-spec.ts",
-    "build:jobs-api-ref": "rimraf docs/api-ref/jobs && npm run build:jobs-spec && docusaurus gen-api-docs jobs",
+    "build:jobs-api-ref": "rm -rf docs/api-ref/batch && npm run build:jobs-spec && docusaurus gen-api-docs jobs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -23,8 +23,10 @@
   "dependencies": {
     "@docusaurus/core": "^3.8.1",
     "@docusaurus/preset-classic": "^3.8.1",
+    "@docusaurus/theme-live-codeblock": "^3.8.1",
     "@docusaurus/theme-mermaid": "^3.8.1",
     "@mdx-js/react": "^3.0.0",
+    "@radix-ui/react-compose-refs": "^1.1.2",
     "@radix-ui/themes": "^3.2.1",
     "@signalwire/docusaurus-plugin-llms-txt": "^1.2.1",
     "asyncapi-schema-loader": "^0.0.1",
@@ -62,11 +64,7 @@
     "postman-code-generators": "1.10.1"
   },
   "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.5%", "not dead", "not op_mini all"],
     "development": [
       "last 3 chrome version",
       "last 3 firefox version",
