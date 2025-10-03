@@ -55,7 +55,6 @@ paths:
           x-docusaurus-example-value: "{}"
           description: >-
             JSON containing a [`JobConfig`](/speech-to-text/batch/input#jobconfig-schema) model indicating the type and parameters for the recognition job.
-          example: "{}"
           required: true
         - name: data_file
           in: formData
