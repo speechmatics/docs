@@ -25,11 +25,11 @@ To learn more about diarization as a feature, check out the [diarization](../fea
 
 Batch diarization offers the following ways to separate speakers in audio:
 
-- [**Speaker diarization**](#speaker-diarization) — Identifies each speaker by their voice.  
-  Useful when there are multiple speakers in the same audio stream.  
+- [**Speaker diarization**](#speaker-diarization) — Identifies each speaker by their voice.
+  Useful when there are multiple speakers in the same audio stream.
 
-- [**Channel diarization**](#channel-diarization) — Transcribes each audio channel separately.  
-  Useful when each speaker is recorded on their own channel.  
+- [**Channel diarization**](#channel-diarization) — Transcribes each audio channel separately.
+  Useful when each speaker is recorded on their own channel.
 
 ## Speaker diarization
 
@@ -170,23 +170,34 @@ You can reduce the likelihood of incorrectly switching between similar sounding 
   }
 }
 ```
-By default this flag is `false`.  When this flag is set to `true`, the system will stay with the speaker of the previous word, if they closely match the speaker of the new word.
+By default this is `false`.  When this is set to `true`, the system will stay with the speaker of the previous word, if they closely match the speaker of the new word.
 
-This may result in some shorter speaker turn changes between similar speakers being missed.
+This can reduce instances where the system inadvertently alternates between different speaker labels within a single speaker audio segment
+
+However, it may also result in some shorter speaker turn changes between similar speakers being missed.
+
 
 ### Speaker diarization and punctuation
 
-Speaker diarization uses punctuation to improve accuracy. Small corrections are applied to speaker labels based on sentence boundaries.  
+Speaker diarization uses punctuation to improve the accuracy of speaker change points. Small adjustments to speaker labels may be applied based on sentence boundries.
 
-For example, if the system initially assigns 9 words in a sentence to S1 and 1 word to S2, the lone S2 word may be corrected to S1.  
+For example, consider a case where the diarization marks a speaker change one word after a full stop:
 
-This adjustment only works when punctuation is enabled. Disabling punctuation via the `permitted_marks` setting in `punctuation_overrides` can reduce diarization accuracy.  
+> <span style={{ color: "red" }}>Hello my name is John. And</span> <span style={{ color: "blue" }}> my name is Alice.</span>
+
+In this case, the above would be corrected to move the speaker change point to match with the end of sentence:
+
+> <span style={{ color: "red" }}>Hello my name is John.</span> <span style={{ color: "blue" }}> And my name is Alice.</span>
+
+Speaker diarization may also insert punctuation when a speaker change occurs without a corresponding sentence-ending punctuation mark in the transcription result.
+
+These adjustments are only applied when punctuation is enabled. Disabling punctuation via the `permitted_marks` setting in `punctuation_overrides` can reduce diarization accuracy.
 
 Adjusting punctuation sensitivity can also affect how accurately speakers are identified.
 
 ### Speaker change (legacy)
 
-The speaker change detection feature was removed in July 2024. The `speaker_change` and `channel_and_speaker_change` parameters are no longer supported. Use the [speaker diarization](#speaker-diarization) feature for speaker labeling.  
+The speaker change detection feature was removed in July 2024. The `speaker_change` and `channel_and_speaker_change` parameters are no longer supported. Use the [speaker diarization](#speaker-diarization) feature for speaker labeling.
 
 For API-related questions, contact [Support](https://support.speechmatics.com).
 
