@@ -195,11 +195,6 @@ These adjustments are only applied when punctuation is enabled. Disabling punctu
 
 Adjusting punctuation sensitivity can also affect how accurately speakers are identified.
 
-
-### Speaker diarization timeout
-
-Speaker diarization will time out if it takes too long to run for a particular audio file. Currently, the timeout is set to 5 minutes or 0.5 \* the audio duration, whichever is longer. For example, with a 2 hour audio file, the timeout is 1 hour. If a timeout happens, the transcript will still be returned and all speaker labels in the output will be labelled as UU.
-
 ### Speaker change (legacy)
 
 The speaker change detection feature was removed in July 2024. The `speaker_change` and `channel_and_speaker_change` parameters are no longer supported. Use the [speaker diarization](#speaker-diarization) feature for speaker labeling.

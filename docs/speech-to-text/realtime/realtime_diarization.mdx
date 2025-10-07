@@ -92,12 +92,6 @@ When diarization is enabled, each `word` and `punctuation` object in the transcr
 
 ## Channel diarization
 
-:::info SaaS availability
-This feature is coming soon!
-
-Subscribe to our [release notes](https://speechmatics.featurebase.app/en/changelog) to be notified when it's available.
-:::
-
 Channel diarization processes audio with multiple channels and returns a separate transcript for each one. This gives you perfect speaker separation at the channel level and more accurate handling of cross-talk.
 
 To enable channel diarization, `diarization` must be set to `channel` and labels for each channel provided in `channel_diarization_labels` in the transcription config of the `StartRecognition` message:
@@ -327,11 +321,6 @@ Speaker diarization may also insert punctuation when a speaker change occurs wit
 These adjustments are only applied when punctuation is enabled. Disabling punctuation via the `permitted_marks` setting in `punctuation_overrides` can reduce diarization accuracy.
 
 Adjusting punctuation sensitivity can also affect how accurately speakers are identified.
-
-
-### Speaker diarization timeout
-
-Speaker diarization will time out if it takes too long to run for a particular audio file. Currently, the timeout is set to 5 minutes or 0.5 \* the audio duration, whichever is longer. For example, with a 2 hour audio file, the timeout is 1 hour. If a timeout happens, the transcript will still be returned and all speaker labels in the output will be labelled as UU.
 
 ### Speaker change (legacy)
 
