@@ -4,6 +4,10 @@ description: Add languages to a Virtual Appliance deployment
 
 # Adding Languages
 
+:::warning
+As of 08 October 2025 we have moved our public containers from artifactory to Azure Container Registry (ACR), please [reach out to Support](https://support.speechmatics.com) to update your credentials.
+:::
+
 :::note
 Adding languages is currently only supported for `batch` mode, if you need extra realtime languages please [reach out to Support](https://support.speechmatics.com).
 :::
@@ -15,21 +19,27 @@ Log into the appliance using SSH with the username `smadmin`, as described in [R
 You will need to know which version of the images are compatible with your appliance, this will be documented here, but until then [reach out to Support](https://support.speechmatics.com).
 Language codes are the standard two-letter ISO codes used in configuring transcription, for example: "de", "fr".
 
+Appliance versions up to and including `6.2.1` will pull from our artifactory repository by default, as of 08 October 2025 we will deprecate public access to this repository (see above). If running an appliance version `6.2.1` or earlier, you will need to configure your appliance to pull from the ACR repository instead.
+
+```bash
+export SM_DOCKER_PUBLIC=speechmaticspublic.azurecr.io
+```
+
 Access to the Speechmatics repository is needed to download new languages, these credentials can be set in the environment but need to be base64 encoded, alternately if unset the user will be prompted for the username and password after running the configure languages script. If you need access to the Speechmatics container repository please [reach out to Support](https://support.speechmatics.com).
 
 ```bash
-export CRICTL_AUTH=$(echo -n <username>:<password> | base64)
+export CRICTL_AUTH="$(echo -n <username>:<password> | base64)"
 ```
 
 ### Add a language:
 ```bash
-sudo CRICTL_AUTH=$(echo -n <username>:<password> | base64) BUILD_MODE=batch configure_languages.sh <version> <language-code> [<language-code> ...]
+sudo CRICTL_AUTH="$(echo -n <username>:<password> | base64)" SM_DOCKER_PUBLIC=speechmaticspublic.azurecr.io BUILD_MODE=batch configure_languages.sh <version> <language-code> [<language-code> ...]
 ```
 
 ### Remove a language:
 
 ```bash
-sudo CRICTL_AUTH=$(echo -n <username>:<password> | base64) BUILD_MODE=batch configure_languages.sh -r <language-code> [<language-code> ...]
+sudo CRICTL_AUTH="$(echo -n <username>:<password> | base64)" SM_DOCKER_PUBLIC=speechmaticspublic.azurecr.io BUILD_MODE=batch configure_languages.sh -r <language-code> [<language-code> ...]
 ```
 
 :::note
