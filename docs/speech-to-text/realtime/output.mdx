@@ -41,17 +41,33 @@ The following example shows a typical configuration for low latency applications
 
 ## Accuracy/Latency trade-offs
 
-We recommend experimenting with different settings for the `max_delay` to find the right trade-off between accuracy and latency for your application. Based on our own testing and experience, we can offer a few guidelines to get you started.
+We recommend experimenting with different settings for the `max_delay` to find the right trade-off between accuracy and latency for your application. 
 
-Setting `max_delay` to between 0.7 and 1.5 gives an accuracy degradation of less than 5% relative when compared to the Batch transcription service. This tradeoff is worthwhile for use cases that need ultra-fast responses such as real-time conversational AI.
+Based on our own testing and experience, we can offer a few guidelines on `max_delay` settings to get you started:
 
-At 2 seconds `max_delay`, there is around 1% relative accuracy degradation when compared to the Batch transcription service. This is the recommended setting for most use cases, such as broadcast captioning.
-
-For the best accuracy, we recommend using a `max_delay` of 4 seconds which is equivalent to our Batch transcription service. This can be combined with Partial transcripts, to give users early feedback of the recognized text.
+- **0.7 - 1.5 seconds**: For use cases where an ultra-fast response is needed such as voice agents. This gives a minor accuracy degradation of less than 5% relative to the Batch transcription service.
+- **2.0 seconds**: Recommended for most use cases, needing the optimal trade-off between acccuracy and latency, such as captioning or contact centres. This gives a negligible degradation of around 1% relative to the Batch transcription service. 
+- **4.0 seconds**: For use cases where accuracy is more important than latency, such as legal transcription. This gives accuracy equivalent to our Batch transcription service. You can also use Partial transcripts to give users early feedback of the recognized text.
 
 ## Partial transcripts
 
-Partial transcripts allow you to receive preliminary transcription and update as more context is available until the higher-accuracy [Finals](/api-ref/realtime-transcription-websocket#addtranscript) are returned. Typically Partials are returned in less than 500 milliseconds. [Partial transcripts](/api-ref/realtime-transcription-websocket.mdx#addpartialtranscript) are enabled using the `enable_partials` config option. 
+Partial transcripts allow you to receive preliminary transcription and update as more context is available until the higher-accuracy [Finals](/api-ref/realtime-transcription-websocket#addtranscript) are returned. Typically Partials are returned in less than 500 milliseconds. Partials latency is not affected by the `max_delay` setting. 
+
+[Partial transcripts](/api-ref/realtime-transcription-websocket.mdx#addpartialtranscript) are enabled using the `enable_partials` config option. For example:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    // highlight-start
+    "enable_partials": true,
+    // highlight-end
+    "max_delay": 2,
+    "language": "en",
+    "operating_point": "enhanced",
+  }
+}
+```
 
 On each Final transcript you will immediately receive a Partial transcript with any remaining words which have not been finalized.
 
