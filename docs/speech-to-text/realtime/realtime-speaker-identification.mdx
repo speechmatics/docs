@@ -1,0 +1,151 @@
+---
+sidebar_label: 'Speaker identification'
+description: "Learn how to use the Speechmatics API to identify speakers in real-time"
+keywords:
+  [
+    speechmatics,
+    realtime,
+    speaker identification,
+    diarization,
+    speaker diarization,
+    transcription,
+    speech recognition,
+    automatic speech recognition,
+    asr,
+  ]
+---
+
+import DocCardList from '@theme/DocCardList';
+import { Card, DataList, Text } from '@radix-ui/themes';
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import speakerIdEnrollmentPythonExample from "./assets/speaker-id-enrollment-file-example.py"
+import speakerIdIdentificationPythonExample from "./assets/speaker-id-identification-file-example.py"
+
+# Realtime speaker identification
+
+:::tip
+For an overview of the feature, see the [speaker identification](../features/speaker-identification.mdx) page.
+:::
+
+## Enrollment
+
+To generate identifiers for a desired speaker, run a [speaker diarization](../features/diarization.mdx#diarization-modes) enabled transcription on an audio sample where the speaker is ideally speaking alone.
+You can request the identifiers back from the engine by sending a `GetSpeakers` request.
+
+By default, the engine returns identifiers created up to the time of the request, but you can also wait until the end of the stream by setting the optional `final` flag in the `GetSpeakers` request (recommended for enrollment):
+
+```json
+{
+  "message": "GetSpeakers",
+  "final": true
+}
+```
+
+- final: false (default) — returns identifiers generated up to the point of the request. To avoid empty results, wait until the server has issued at least one `AddTranscript` message before sending the request.
+- final: true — waits until the end of the stream and returns identifiers based on all audio.
+
+When the request is processed, the server replies with a `SpeakersResult` message that contains the identifiers for each diarized speaker:
+
+```json
+{
+  "message": "SpeakersResult",
+  "speakers": [
+    {"label": "S1", "speaker_identifiers": ["<id1>"]},
+    {"label": "S2", "speaker_identifiers": ["<id2>"]}
+  ]
+}
+```
+
+## Identification
+
+Once you have generated speaker identifiers, you can provide them in your next transcription job to identify and tag known speakers. This is done through the new `speakers` option in the speaker diarization configuration. All other [speaker diarization options](realtime_diarization.mdx#configuration) remain supported. Among them, the `max_speakers` parameter continues to apply only to generic (non-enrolled) speakers — for example, if it’s set to 10 and 10 speakers are enrolled, the system can still add up to 10 additional generic speakers. The `speakers_sensitivity` parameter can also be used to adjust how strongly the system prefers enrolled speakers over detecting new generic ones, where lower values make it more likely to match existing enrolled speakers.
+
+An example configuration is shown below:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      // highlight-start
+      "speakers": [
+        {"label": "Alice", "speaker_identifiers": ["<alice_id1>", "<alice_id2>"]},
+        {"label": "Bob", "speaker_identifiers": ["<bob_id1>"]}
+      ]
+      // highlight-end
+    }
+  }
+}
+```
+
+With the config above, transcript segments should be tagged with `"Alice"` and `"Bob"` whenever these speakers are detected, whereas any other speakers should be tagged with the internal labels:
+
+```json
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Hello",
+          "language": "en",
+          // highlight-start
+          "speaker": "Alice"
+          // highlight-end
+        }
+      ]
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Hi",
+          "language": "en",
+          // highlight-start
+          "speaker": "S1"
+          // highlight-end
+        }
+      ]
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Nice",
+          "language": "en",
+          // highlight-start
+          "speaker": "Bob"
+          // highlight-end
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Code examples
+
+<Tabs groupId="speaker-id-examples">
+    <TabItem value="enrollment" label="Python - enrollment">
+
+      Real-time speakers enrollment example.
+
+      <CodeBlock language="python" showLineNumbers>
+      {speakerIdEnrollmentPythonExample}
+      </CodeBlock>
+
+    </TabItem>
+    <TabItem value="identification" label="Python - identification">
+
+    Real-time speakers identification example.
+
+    <CodeBlock language="python" showLineNumbers>
+      {speakerIdIdentificationPythonExample}
+    </CodeBlock>
+
+    </TabItem>
+</Tabs>
