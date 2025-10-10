@@ -33,10 +33,18 @@ curl -X GET "https://asr.api.speechmatics.com/v2/jobs/" \
   </TabItem>
   <TabItem value="real-time" label="Real-Time Transcription" default>
    
-Your API key must be provided in the WebSocket connection request header. For example:
+### Server-side using header + API key
+
+For server-side calls, your API key must be provided in the header of the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses).
+
+### Client-side using temporary key
+
+For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. These can be passed as a query param to the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses) URL.
+
+For example:
 
 ```bash
-wss://eu2.rt.speechmatics.com/v2
+wss://eu2.rt.speechmatics.com/v2?jwt=$TEMP_KEY
 ```
 
   </TabItem>
