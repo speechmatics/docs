@@ -117,6 +117,15 @@ curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=batch" \
      -d '{"ttl": 60, "client_ref": "USER123"}'
 ```
 
+The response JSON looks like this:
+
+```json
+{
+  "apikey_id": null,
+  "key_value": "eyJhbG..."
+}
+```
+
 To authorize a request using a temporary key, simply use it in place of the API key in the Authorization header.
 
 For example, if you created a temporary key associated with a given `client_ref` you can retrieve those jobs as follows:
