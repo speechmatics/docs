@@ -62,7 +62,7 @@ Speechmatics Batch SaaS supports the following endpoints for production use:
 | Enterprise    | EU     | EU2         | **eu2.asr.api.speechmatics.com**                                                                      |
 | All    | US     | US1         | **us.asr.api.speechmatics.com**<br/>**us1.asr.api.speechmatics.com**                                  |
 | Enterprise    | US     | US2         | **us2.asr.api.speechmatics.com**                                                                      |
-| Enterprise    | AU     | AU1         | **au1.asr.api.speechmatics.com**                                                                      |
+| All    | AU     | AU1         | **au1.asr.api.speechmatics.com**                                                                      |
 
 Speechmatics Real-Time SaaS supports the following endpoints for production use:
 
@@ -72,13 +72,15 @@ Speechmatics Real-Time SaaS supports the following endpoints for production use:
 | All    | EU     | EU1         | neu.rt.speechmatics.com |
 | All    | US     | US1         | wus.rt.speechmatics.com |
 
-Note that for Enterprise customers with access to the Portal, only jobs created in the EU1 environment will appear in the [Jobs list](https://portal.speechmatics.com/jobs).
-
 All production environments are active and highly available. Multiple environments can be used to balance requests or provide a failover in the event of disruption to one environment.
 
 Note that jobs are created in the environment corresponding to the endpoint used. You must use the same endpoint for all requests relating to a specific job.
 
 If you attempt to use an endpoint for a region you are not contracted to use, that request will be unsuccessful. If you want to use a different region, please contact your Account Manager.
+
+:::warning
+The EU2 and US2 environments are provided for enterprise customer high availability and failover purposes only. Jobs created in these environments will not be visible in the portal.
+:::
 
 ## Temporary keys
 
