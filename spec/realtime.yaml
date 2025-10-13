@@ -1024,11 +1024,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RecognitionAlternative"
-        score:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
         volume:
           type: number
           format: float
