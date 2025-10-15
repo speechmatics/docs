@@ -23,6 +23,10 @@ export default {
       id: "speech-to-text/batch/batch_diarization",
     },
     {
+      type: "doc",
+      id: "speech-to-text/batch/speaker_identification",
+    },
+    {
       type: "category",
       label: "Speech intelligence",
       items: [
