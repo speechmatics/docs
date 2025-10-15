@@ -24,7 +24,7 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/realtime/realtime-speaker-identification",
+      id: "speech-to-text/realtime/speaker-identification",
     },
     {
       type: "doc",
