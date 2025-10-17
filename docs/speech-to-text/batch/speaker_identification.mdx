@@ -1,0 +1,153 @@
+---
+sidebar_label: 'Speaker identification'
+description: "Learn how to use the Speechmatics API to identify speakers in Batch"
+keywords:
+  [
+    speechmatics,
+    batch,
+    diarization,
+    transcription,
+    speech recognition,
+    automatic speech recognition,
+    asr,
+  ]
+sidebar_position: 2
+---
+
+import DocCardList from '@theme/DocCardList';
+import { Card, DataList, Text } from '@radix-ui/themes';
+
+# Batch speaker identification
+
+:::tip
+For an overview of the feature, see the [speaker identification](../features/speaker-identification.mdx) page.
+:::
+
+## Enrollment
+
+To generate identifiers for a desired speaker, run a [speaker diarization](../features/diarization.mdx#diarization-modes) enabled transcription on an audio sample where the speaker is ideally speaking alone.
+You can request the identifiers back from the engine by setting the `get_speakers` flag in the transcription config:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "diarization": "speaker"
+    "speaker_diarization_config": {
+      // highlight-start
+      "get_speakers": True
+      // highlight-end
+    }
+  }
+}
+```
+
+When the transcription is done, the speakers identifiers will be attached to the returned transcript:
+
+```json
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.93,
+          "content": "Hello",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      ...
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Hi",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      ...
+    }],
+  // highlight-start
+  "speakers": [
+    {
+      "label": "S1",
+      "speaker_identifiers": ["<id1>"]
+    },
+    {
+      "label": "S2",
+      "speaker_identifiers": ["<id1>"]
+    }]
+  // highlight-end
+}
+```
+
+## Identification
+
+Once you have generated speaker identifiers, you can provide them in your next transcription job to identify and tag known speakers. This is done through the `speakers` option in the speaker diarization configuration. All other [speaker diarization options](batch_diarization.mdx#configuration) remain supported. Notably, the `speakers_sensitivity` parameter can be used to adjust how strongly the system prefers enrolled speakers over detecting new generic ones, where lower values make it more likely to match existing enrolled speakers.
+
+An example configuration is shown below:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      // highlight-start
+      "speakers": [
+        {"label": "Alice", "speaker_identifiers": ["<alice_id1>", "<alice_id2>"]},
+        {"label": "Bob", "speaker_identifiers": ["<bob_id1>"]}
+      ]
+      // highlight-end
+    }
+  }
+}
+```
+
+With the config above, transcript segments should be tagged with `"Alice"` and `"Bob"` whenever these speakers are detected, whereas any other speakers should be tagged with the internal labels:
+
+```json
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.93,
+          "content": "Morning",
+          "language": "en",
+          // highlight-start
+          "speaker": "Alice"
+          // highlight-end
+        }
+      ],
+      ...
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 0.93,
+          "content": "Hi",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      ...
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Morning",
+          "language": "en",
+          // highlight-start
+          "speaker": "Bob"
+          // highlight-end
+        }
+      ],
+    }]
+}
+```
