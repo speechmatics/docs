@@ -70,12 +70,24 @@ To enable End of Utterance detection, include the following in the [StartRecogni
 }
 ```
 
+## Force End of Turn
+
+Forcing an end of turn allows you to manually trigger an end-of-turn detection at any point in the conversation. This is done by sending a `ForceEndOfTurn` message:
+
+```json
+{
+  "message": "ForceEndOfTurn"
+}
+```
+
+If you have your own end of turn detection model, you can integrate it with our ASR by sending the `ForceEndOfTurn` message when your model detects an end of turn.
+
 ## Semantic End of Turn
 
 While silence-based End of Utterance is enough for many use cases, it is often improved by combining it with the context of the conversation. This is known as 'Semantic End of Turn Detection'. You can try Semantic End of Turn right away with our free [Flow service demo](https://www.speechmatics.com/flow)! 
 
 {/* TODO add anchor here when flow docs are merged */}
-Semantic End of Turn comes [already included](/voice-agents-flow) in Flow to provide the best experience for your users. You can also check out our [Semantic End-of-Turn detection "how to"](https://blog.speechmatics.com/semantic-turn-detection) guide for more details on how to implement this in your own application.
+Semantic end of turn comes [already included](/voice-agents-flow) in Flow to provide the best experience for your users. You can also check out our [semantic end-of-turn detection "how to"](https://blog.speechmatics.com/semantic-turn-detection) guide for more details on how to implement this in your own application.
 
 ## Code Examples
 
