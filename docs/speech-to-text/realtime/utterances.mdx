@@ -17,25 +17,22 @@ import TabItem from '@theme/TabItem';
 import eouStreamingPythonExample from "./assets/end-of-utterance-streaming-example.py"
 import eouFilePythonExample from "./assets/end-of-utterance-file-example.py"
 
-# End of Turn Detection
+# End of utterance detection
 
-To improve user experience in responsive real-time scenarios it important to know when a person has finished speaking. This is especially important for voice AI, translation, and dictation use cases. Detecting an 'End of Turn' can be used to trigger actions such as generating a response in a Voice AI agent.
+To improve user experience in responsive real-time scenarios it important to know when a person has finished speaking. This is especially important for voice AI, translation, and dictation use cases. Detecting an end of utterance (also known as 'end of turn') can be used to trigger actions such as generating a response in a Voice AI agent.
 
-To get started, check out the [Configuration Example](#end-of-utterance-configuration) below.
+## Use cases
 
-## Use Cases
+**Voice AI & conversational systems**: Enable voice assistants and chatbots to detect when the user has finished speaking, allowing the system to respond promptly without awkward delays.
 
-**Voice AI & Conversational Systems**: Enable voice assistants and chatbots to detect when the user has finished speaking, allowing the system to respond promptly without awkward delays.
+**Real-time translation**: Critical for live interpretation services where translations need to be delivered as soon as the speaker completes their thought, maintaining the flow of conversation.
 
-**Real-time Translation**: Critical for live interpretation services where translations need to be delivered as soon as the speaker completes their thought, maintaining the flow of conversation.
-
-**Dictation & Transcription**: Helps dictation software determine when users have completed their input, improving speed of final transcription and user experience.
+**Dictation & transcription**: Helps dictation software determine when users have completed their input, improving speed of final transcription and user experience.
 
 
-## End of Utterance Configuration
-Speechmatics' Speech-To-Text allows you to use a period of silence to determine when a user has finished speaking. This is known as **End of Utterance** detection and is one way to detect End of Turn.
+## End of utterance configuration
 
-To enable End of Utterance detection, include the following in the [StartRecognition](/api-ref/realtime-transcription-websocket#startrecognition) message:
+To enable end of utterance detection, include the following in the [StartRecognition](/api-ref/realtime-transcription-websocket#startrecognition) message:
 
 ```json
 {
@@ -57,7 +54,7 @@ To enable End of Utterance detection, include the following in the [StartRecogni
 - `EndOfUtterance` messages are only sent after some speech is recognised and duplicate `EndOfUtterance` messages will never be sent for the same period of silence. 
 - The `EndOfUtterance` message is not related to any specific individual identified by [Diarization](/speech-to-text/features/diarization) and will not contain speaker information.
 
-### Example End of Utterance Message
+### Example message
 
 ```json
 {
@@ -70,26 +67,27 @@ To enable End of Utterance detection, include the following in the [StartRecogni
 }
 ```
 
-## Force End of Turn
+## Force end of utterance
 
-Forcing an end of turn allows you to manually trigger an end-of-turn detection at any point in the conversation. This is done by sending a `ForceEndOfTurn` message:
+Forcing an end of utterance allows you to manually trigger an end-of-utterance detection at any point in the conversation. This is done by sending a `ForceEndOfUtterance` message:
 
 ```json
 {
-  "message": "ForceEndOfTurn"
+  "message": "ForceEndOfUtterance"
 }
 ```
 
-If you have your own end of turn detection model, you can integrate it with our ASR by sending the `ForceEndOfTurn` message when your model detects an end of turn.
+If you have your own end of turn detection model, you can integrate it with our ASR by sending the `ForceEndOfUtterance` message when your model detects an end of turn.
+This will trigger an end of utterance detection and send a `Final` transcript message, followed by an extra `EndOfUtterance` message.
 
-## Semantic End of Turn
+## Semantic end of turn
 
-While silence-based End of Utterance is enough for many use cases, it is often improved by combining it with the context of the conversation. This is known as 'Semantic End of Turn Detection'. You can try Semantic End of Turn right away with our free [Flow service demo](https://www.speechmatics.com/flow)! 
+While silence-based End of Utterance is enough for many use cases, it is often improved by combining it with the context of the conversation. This is known as 'semantic end of turn detection'. You can try semantic end of turn right away with our free [Flow service demo](https://www.speechmatics.com/flow)! 
 
 {/* TODO add anchor here when flow docs are merged */}
 Semantic end of turn comes [already included](/voice-agents-flow) in Flow to provide the best experience for your users. You can also check out our [semantic end-of-turn detection "how to"](https://blog.speechmatics.com/semantic-turn-detection) guide for more details on how to implement this in your own application.
 
-## Code Examples
+## Code examples
 
 <Tabs groupId="eou-examples">
     <TabItem value="streaming" label="Python - Live Streaming">
