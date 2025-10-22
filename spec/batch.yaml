@@ -1055,6 +1055,17 @@ definitions:
           - fixed
           - flexible
         description: Whether or not to enable flexible endpointing and allow the entity to continue to be spoken.
+      audio_filtering_config:
+        type: object
+        description: Configuration for limiting the transcription of quiet audio.
+        properties:
+          volume_threshold:
+            type: number
+            format: float
+            minimum: 0
+            maximum: 100
+            description: >-
+              Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound.
       transcript_filtering_config:
         description: Configuration for applying filtering to the transcription
         properties:
@@ -1062,9 +1073,29 @@ definitions:
             type: boolean
             description: >-
               If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'.
+          replacements:
+            type: array
+            x-omitempty: true
+            items:
+              additionalProperties: false
+              type: object
+              required:
+                - from
+                - to
+              properties:
+                from:
+                  type: string
+                to:
+                  type: string
+            description: >-
+              A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text.
       speaker_diarization_config:
         description: Configuration for speaker diarization
         properties:
+          prefer_current_speaker:
+            type: boolean
+            description: >-
+              If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."
           speaker_sensitivity:
             type: number
             format: float
