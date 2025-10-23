@@ -124,7 +124,6 @@ components:
       payload:
         $ref: "#/components/schemas/AddAudio"
     AddChannelAudio:
-      x-available-deployments: ["container"]
       summary: Audio belonging to a specific channel.
       payload:
         $ref: "#/components/schemas/AddChannelAudio"
@@ -133,7 +132,6 @@ components:
       payload:
         $ref: "#/components/schemas/EndOfStream"
     EndOfChannel:
-      x-available-deployments: ["container"]
       summary: Declares that the channel has no more audio to send.
       payload:
         $ref: "#/components/schemas/EndOfChannel"
@@ -164,7 +162,6 @@ components:
       payload:
         $ref: "#/components/schemas/AudioAdded"
     ChannelAudioAdded:
-      x-available-deployments: ["container"]
       summary: Server response to AddChannelAudio, indicating that audio has been added successfully.
       payload:
         $ref: "#/components/schemas/ChannelAudioAdded"
@@ -992,7 +989,6 @@ components:
           type: number
           format: float
         channel:
-          x-available-deployments: ["container"]
           type: string
         attaches_to:
           $ref: "#/components/schemas/AttachesToEnum"
