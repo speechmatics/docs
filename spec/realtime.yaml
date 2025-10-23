@@ -124,7 +124,6 @@ components:
       payload:
         $ref: "#/components/schemas/AddAudio"
     AddChannelAudio:
-      x-available-deployments: ["container"]
       summary: Audio belonging to a specific channel.
       payload:
         $ref: "#/components/schemas/AddChannelAudio"
@@ -133,7 +132,6 @@ components:
       payload:
         $ref: "#/components/schemas/EndOfStream"
     EndOfChannel:
-      x-available-deployments: ["container"]
       summary: Declares that the channel has no more audio to send.
       payload:
         $ref: "#/components/schemas/EndOfChannel"
@@ -164,7 +162,6 @@ components:
       payload:
         $ref: "#/components/schemas/AudioAdded"
     ChannelAudioAdded:
-      x-available-deployments: ["container"]
       summary: Server response to AddChannelAudio, indicating that audio has been added successfully.
       payload:
         $ref: "#/components/schemas/ChannelAudioAdded"
@@ -905,13 +902,8 @@ components:
             Use this option to provide speaker labels linked to their speaker identifiers.
             When passed, the transcription system will tag spoken words in the transcript
             with the provided speaker labels whenever any of the specified speakers
-            is detected in the audio.
-
-            :::note
-
-            This feature is currently in [preview mode](https://docs.speechmatics.com/private/preview-mode).
-
-            :::
+            is detected in the audio. A maximum of 50 speakers identifiers across all speakers
+            can be provided.
           items:
             $ref: "#/components/schemas/SpeakersInputItem"
     AudioFilteringConfig:
@@ -997,7 +989,6 @@ components:
           type: number
           format: float
         channel:
-          x-available-deployments: ["container"]
           type: string
         attaches_to:
           $ref: "#/components/schemas/AttachesToEnum"
