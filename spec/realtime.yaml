@@ -905,13 +905,8 @@ components:
             Use this option to provide speaker labels linked to their speaker identifiers.
             When passed, the transcription system will tag spoken words in the transcript
             with the provided speaker labels whenever any of the specified speakers
-            is detected in the audio.
-
-            :::note
-
-            This feature is currently in [preview mode](https://docs.speechmatics.com/private/preview-mode).
-
-            :::
+            is detected in the audio. A maximum of 50 speakers identifiers across all speakers
+            can be provided.
           items:
             $ref: "#/components/schemas/SpeakersInputItem"
     AudioFilteringConfig:
