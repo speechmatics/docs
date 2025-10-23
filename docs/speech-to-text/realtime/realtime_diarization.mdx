@@ -28,18 +28,18 @@ To learn more about diarization as a feature, check out the [diarization](../fea
 
 Real-time diarization offers the following ways to separate speakers in audio:
 
-- [**Speaker diarization**](#speaker-diarization) — Identifies each speaker by their voice.  
-  Useful when there are multiple speakers in the same audio stream.  
+- [**Speaker diarization**](#speaker-diarization) — Identifies each speaker by their voice.
+  Useful when there are multiple speakers in the same audio stream.
 
-- [**Channel diarization**](#channel-diarization) — Transcribes each audio channel separately.  
-  Useful when each speaker is recorded on their own channel.  
+- [**Channel diarization**](#channel-diarization) — Transcribes each audio channel separately.
+  Useful when each speaker is recorded on their own channel.
 
-- [**Channel & speaker diarization**](#channel-and-speaker-diarization) — Combines both methods.  
-  Each channel is transcribed separately, with unique speakers identified within each channel.  
-  Useful when multiple speakers are present across multiple channels.  
+- [**Channel & speaker diarization**](#channel-and-speaker-diarization) — Combines both methods.
+  Each channel is transcribed separately, with unique speakers identified within each channel.
+  Useful when multiple speakers are present across multiple channels.
 
 ## Speaker diarization
- 
+
 
 Speaker diarization picks out different speakers from the audio stream based on acoustic matching.
 
@@ -169,7 +169,7 @@ Transcripts are returned independently for each channel, with the `channel` prop
 ```
 
 :::warning
-The `channel` property will be returned for `AddTranscript` and `AddPartialTranscript` messages only. 
+The `channel` property will be returned for `AddTranscript` and `AddPartialTranscript` messages only.
 Features such as [audio events](/speech-to-text/features/audio-events), [translation](/speech-to-text/features/translation) and [end of turn detection](/speech-to-text/realtime/end-of-turn) do not currently include this property. To request this feature, please contact [support](https://support.speechmatics.com).
 :::
 
@@ -179,7 +179,7 @@ Channel and speaker diarization combines speaker diarization and channel diariza
 
 To enable this mode, follow the steps in [speaker diarization](#speaker-diarization) and set the `diarization` mode to `channel_and_speaker`.
 
-To send audio to a channel, follow the instructions in [send audio to a channel](#send-audio-to-a-channel). 
+To send audio to a channel, follow the instructions in [send audio to a channel](#send-audio-to-a-channel).
 
 Transcripts are returned in the same way as channel diarization, but with individual speakers identified:
 
@@ -221,14 +221,13 @@ For SaaS customers, the maximum number of channels is 2.
 
 For On-prem Container customers, the maximum number of channels depends on your [Multi-session container's](../../deployments/container/cpu-speech-to-text.mdx#multi-session-containers) maximum number of connections.
 
-The Speechmatics Python client CLI is currently limited to transcribing multi-channel audio in via files and not streaming/raw audio. 
+The Speechmatics Python client CLI is currently limited to transcribing multi-channel audio in via files and not streaming/raw audio.
 
 ## Configuration
 
 You can customize diarization to match your use case by adjusting settings for sensitivity, limiting the maximum number of speakers, preferring the current speaker to reduce false switches, and controlling how punctuation influences accuracy.
 
 ### Speaker sensitivity
-
 
 You can configure the sensitivity of speaker detection by using the `speaker_sensitivity` setting in the `speaker_diarization_config` section of the job config object as shown below:
 
@@ -250,7 +249,7 @@ You can configure the sensitivity of speaker detection by using the `speaker_sen
 This takes a value between 0 and 1 (the default is 0.5). A higher sensitivity will
 increase the likelihood of more unique speakers returning.
 
-### Prefer Current Speaker
+### Prefer current speaker
 
 You can reduce the likelihood of incorrectly switching between similar sounding speakers by setting the `prefer_current_speaker` flag in the `speaker_diarization_config`:
 
@@ -270,9 +269,11 @@ You can reduce the likelihood of incorrectly switching between similar sounding 
 ```
 By default this is `false`.  When this is set to `true`, the system will stay with the speaker of the previous word, if they closely match the speaker of the new word.
 
-This may result in some shorter speaker turn changes between similar speakers being missed.
+This can reduce instances where the system inadvertently alternates between different speaker labels within a single speaker audio segment
 
-### Max. Speakers
+However, it may also result in some shorter speaker turn changes between similar speakers being missed.
+
+### Max. speakers
 
 You can prevent too many speakers from being detected by using the `max_speakers` setting in the `StartRecognition` message as shown below:
 
@@ -299,19 +300,31 @@ You can prevent too many speakers from being detected by using the `max_speakers
 
 The default value is 50, but it can take any integer value between 2 and 100 inclusive.
 
-### Punctuation
+This restricts the number of unique speaker labels that may be output by the system.
 
-Speaker diarization uses punctuation to improve accuracy. Small corrections are applied to speaker labels based on sentence boundaries.  
+Note that accuracy may decline once this limit is reached. It is advisable to set the value to at least the expected number of speakers, and preferably slightly higher.
 
-For example, if the system initially assigns 9 words in a sentence to S1 and 1 word to S2, the lone S2 word may be corrected to S1.  
+### Speaker diarization and punctuation
 
-This adjustment only works when punctuation is enabled. Disabling punctuation via the `permitted_marks` setting in `punctuation_overrides` can reduce diarization accuracy.  
+Speaker diarization uses punctuation to improve the accuracy of speaker change points. Small adjustments to speaker labels may be applied based on sentence boundries.
+
+For example, consider a case where the diarization marks a speaker change one word after a full stop:
+
+> <span style={{ color: "red" }}>Hello my name is John. And</span> <span style={{ color: "blue" }}> my name is Alice.</span>
+
+In this case, the above would be corrected to move the speaker change point to match with the end of sentence:
+
+> <span style={{ color: "red" }}>Hello my name is John.</span> <span style={{ color: "blue" }}> And my name is Alice.</span>
+
+Speaker diarization may also insert punctuation when a speaker change occurs without a corresponding sentence-ending punctuation mark in the transcription result.
+
+These adjustments are only applied when punctuation is enabled. Disabling punctuation via the `permitted_marks` setting in `punctuation_overrides` can reduce diarization accuracy.
 
 Adjusting punctuation sensitivity can also affect how accurately speakers are identified.
 
 ### Speaker change (legacy)
 
-The Speaker Change Detection feature was removed in July 2024. The `speaker_change` and `channel_and_speaker_change` parameters are no longer supported. Use the [Speaker diarization](#speaker-diarization) feature for speaker labeling.  
+The Speaker Change Detection feature was removed in July 2024. The `speaker_change` and `channel_and_speaker_change` parameters are no longer supported. Use the [Speaker diarization](#speaker-diarization) feature for speaker labeling.
 
 For API-related questions, contact [support](https://support.speechmatics.com).
 
@@ -319,7 +332,7 @@ For API-related questions, contact [support](https://support.speechmatics.com).
 
 To run `channel` or `channel_and_speaker` diarization with an on-prem deployment, configure your environment as follows:
 
-- Use a [GPU Speech-to-Text container](../../deployments/container/gpu-speech-to-text.mdx). Handling multiple audio streams is computationally intensive and benefits from GPU acceleration.  
-- Set the `SM_MAX_CONCURRENT_CONNECTIONS` environment variable to match the number of channels you want to process.  
+- Use a [GPU Speech-to-Text container](../../deployments/container/gpu-speech-to-text.mdx). Handling multiple audio streams is computationally intensive and benefits from GPU acceleration.
+- Set the `SM_MAX_CONCURRENT_CONNECTIONS` environment variable to match the number of channels you want to process.
 
 For more details on container setup, see the [on-prem deployment docs](../../deployments/index.md).
