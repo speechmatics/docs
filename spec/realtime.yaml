@@ -197,7 +197,7 @@ components:
     EndOfUtterance:
       summary: |
         Indicates the end of an utterance, triggered by a configurable period of non-speech.
-        The message is sent when no speech has been detected for a short period of time, configurable by the `end_of_utterance_silence_trigger` parameter in `conversation_config` (see [End Of Utterance](https://docs.speechmatics.com/speech-to-text/realtime/end-of-turn#end-of-utterance-configuration)).
+        The message is sent when no speech has been detected for a short period of time, configurable by the `end_of_utterance_silence_trigger` parameter in `conversation_config` (see [End Of Utterance](https://docs.speechmatics.com/speech-to-text/realtime/turn-detection#configuration)).
 
         Like punctuation, an `EndOfUtterance` has zero duration.
       payload:
