@@ -34,6 +34,8 @@ channels:
         $ref: "#/components/messages/EndOfStream"
       EndOfChannel:
         $ref: "#/components/messages/EndOfChannel"
+      ForceEndOfUtterance:
+        $ref: "#/components/messages/ForceEndOfUtterance"
       SetRecognitionConfig:
         $ref: "#/components/messages/SetRecognitionConfig"
       GetSpeakers:
@@ -82,6 +84,7 @@ operations:
       - $ref: "#/channels/publish/messages/AddChannelAudio"
       - $ref: "#/channels/publish/messages/EndOfStream"
       - $ref: "#/channels/publish/messages/EndOfChannel"
+      - $ref: "#/channels/publish/messages/ForceEndOfUtterance"
       - $ref: "#/channels/publish/messages/SetRecognitionConfig"
       - $ref: "#/channels/publish/messages/GetSpeakers"
   subscribe:
@@ -108,11 +111,9 @@ components:
   messages:
     GetSpeakers:
       summary: Requests any detected speaker identifiers to be returned.
-      x-preview-mode: true
       payload:
         $ref: "#/components/schemas/GetSpeakers"
     SpeakersResult:
-      x-preview-mode: true
       summary: Server response to GetSpeakers request returning any detected speaker identifiers.
       payload:
         $ref: "#/components/schemas/SpeakersResult"
@@ -127,7 +128,6 @@ components:
         $ref: "#/components/schemas/AddAudio"
     AddChannelAudio:
       x-available-deployments: ["container"]
-      x-preview-mode: true
       summary: Audio belonging to a specific channel.
       payload:
         $ref: "#/components/schemas/AddChannelAudio"
@@ -137,10 +137,13 @@ components:
         $ref: "#/components/schemas/EndOfStream"
     EndOfChannel:
       x-available-deployments: ["container"]
-      x-preview-mode: true
       summary: Declares that the channel has no more audio to send.
       payload:
         $ref: "#/components/schemas/EndOfChannel"
+    ForceEndOfUtterance:
+      summary: Requests a finalized transcript.
+      payload:
+        $ref: "#/components/schemas/ForceEndOfUtterance"
     SetRecognitionConfig:
       summary: |
         Allows the client to re-configure the recognition session.
@@ -169,7 +172,6 @@ components:
         $ref: "#/components/schemas/AudioAdded"
     ChannelAudioAdded:
       x-available-deployments: ["container"]
-      x-preview-mode: true
       summary: Server response to AddChannelAudio, indicating that audio has been added successfully.
       payload:
         $ref: "#/components/schemas/ChannelAudioAdded"
@@ -389,6 +391,18 @@ components:
         - message
         - channel
         - last_seq_no
+    ForceEndOfUtterance:
+      summary: Requests a finalized transcript.
+      payload:
+      type: object
+      properties:
+        message:
+          const: ForceEndOfUtterance
+        channel:
+          type: string
+          description: The channel to request finalized transcript from. This field is only seen in multichannel.
+      required:
+      - message
     SetRecognitionConfig:
       type: object
       properties:
@@ -467,12 +481,6 @@ components:
           type: string
           description: |
             The channel identifier to which the audio belongs. This field is only seen in multichannel.
-
-            :::note
-
-            This field is only available in [preview mode](https://docs.speechmatics.com/private/preview-mode).
-
-            :::
       required:
         - message
         - metadata
@@ -496,12 +504,6 @@ components:
           type: string
           description: |
             The channel identifier to which the audio belongs. This field is only seen in multichannel.
-
-            :::note
-
-            This field is only available in [preview mode](https://docs.speechmatics.com/private/preview-mode).
-
-            :::
       required:
         - message
         - metadata
