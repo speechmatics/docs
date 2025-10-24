@@ -171,6 +171,13 @@ Run the following command to uninstall Speechmatics from the cluster:
 helm uninstall speechmatics-realtime
 ```
 
+Depending on the configuration setup, you may also need to remove PVCs created from the redis deployment:
+
+```bash
+# Delete any left-over PVCs with `kubectl delete pvc`
+kubectl get pvc | grep redis-data
+```
+
 ## FAQ
 
 *Why should I use the sm-realtime Helm chart over a Docker container deployment?*
