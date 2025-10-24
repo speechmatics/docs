@@ -19,7 +19,7 @@ import eouFilePythonExample from "./assets/end-of-utterance-file-example.py"
 
 # Turn detection 
 
-Use Speechmatics' end of utterance features to help with turn detection in real-time conversational scenarios.
+Use the end of utterance feature to help with turn detection in real-time conversational scenarios.
 
 ## Use cases
 
@@ -33,6 +33,10 @@ Use Speechmatics' end of utterance features to help with turn detection in real-
 ## End of utterance
 
 End of utterance detection is a feature that allows you to detect when a person has finished speaking. This is useful for voice AI, translation, and dictation use cases.
+End of utterance uses server-side word timings to detect periods without speech. The moment a word is detected on the server, a countdown begins.
+If a new word is detected, the countdown restarts.
+If the configured interval passes without another word being detected, an end of utterance is triggered.
+When this happens, the server sends a [final transcript](/speech-to-text/realtime/quickstart#final-transcripts) message to the client, followed by an extra `EndOfUtterance` message.
 
 To enable end of utterance detection, include the following in the [StartRecognition](/api-ref/realtime-transcription-websocket#startrecognition) message:
 
@@ -47,7 +51,7 @@ To enable end of utterance detection, include the following in the [StartRecogni
   }
 }
 ```
-* `end_of_utterance_silence_trigger` (Number): Allowed between 0 and 2 seconds. Setting to 0 seconds disables detection. This is the number of seconds of non-speech (silence) to wait before an End of Utterance is identified. When this happens, speechmatics will send a [`Final` transcript](/speech-to-text/realtime/quickstart#final-transcripts) message, followed by an extra `EndOfUtterance` message
+* `end_of_utterance_silence_trigger` (Number): Allowed between 0 and 2 seconds. Setting to 0 seconds disables detection. This is the number of seconds of non-speech (silence) to wait before an end of utterance is identified.
 
 **Notes** 
 
