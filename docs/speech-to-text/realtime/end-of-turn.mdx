@@ -70,6 +70,28 @@ To enable End of Utterance detection, include the following in the [StartRecogni
 }
 ```
 
+## Force End Of Utterance
+If you have your own VAD or end of turn model, you can request a finalised transcript of any unprocessed audio you've sent by sending a `ForceEndOfUtterance` message:
+
+```json
+{
+  "message": "ForceEndOfUtterance",
+}
+```
+
+This can also be requested when using multichannel:
+
+```json
+{
+  "message": "ForceEndOfUtterance",
+  "channel": "New York"
+}
+```
+
+You'll receive an [AddTranscript](../../api-ref/realtime-transcription-websocket#addtranscript) message followed immediately by an [EndOfUtterance](../../api-ref/realtime-transcription-websocket#endofutterance) message.
+
+This is great for when you want to manage your transcript closely and trim it in sync with the input audio.
+
 ## Semantic End of Turn
 
 While silence-based End of Utterance is enough for many use cases, it is often improved by combining it with the context of the conversation. This is known as 'Semantic End of Turn Detection'. You can try Semantic End of Turn right away with our free [Flow service demo](https://www.speechmatics.com/flow)! 
