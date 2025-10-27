@@ -26,3 +26,5 @@ docs/api-ref/batch
 static/*.yaml
 .vercel
 .env*.local
+
+.venv
