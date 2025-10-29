@@ -215,6 +215,23 @@ Transcripts are returned in the same way as channel diarization, but with indivi
 
 When using `channel_and_speaker` diarization, speaker labelling is specific to channels even if the speaker labels are the same. S1 on channel 1 is not necessarily the same as S1 on channel 2.
 
+## Ending Channels
+
+When you're finished with a channel, you can signal that it's no longer in use by sending an [EndOfChannel](../../api-ref/realtime-transcription-websocket#endofchannel) message.
+```json
+{
+  // highlight-start
+  "message": "EndOfChannel",
+  "channel": "New_York",
+  "last_seq_no": 2564
+  // highlight-end
+}
+```
+
+Once this happens, the channel will stop accepting or processing any additional data. When all channels are closed, the session ends - similar to [EndOfStream](../../api-ref/realtime-transcription-websocket#endofstream).
+
+At this time, closing a channel does not affect pricing for On-Prem or SaaS deployments, but we’re actively working to make that possible in the future.
+
 ### Limits
 
 For SaaS customers, the maximum number of channels is 2.
