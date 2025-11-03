@@ -228,7 +228,7 @@ When you're finished with a channel, you can signal that it's no longer in use b
 }
 ```
 
-Once this happens, the channel will stop accepting or processing any additional data. When all channels are closed, the session ends.
+Once this happens, the channel will stop accepting or processing any additional data. When all channels are closed, the session ends. This may be more convenient to use when you don't want to keep track of the number of open channels in a given stream.
 
 You can also use [EndOfStream](../../api-ref/realtime-transcription-websocket#endofstream) to simultaneously close all channels. This may be more convenient to use when you know you want to close all channels at the same time.
 
