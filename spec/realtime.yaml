@@ -141,7 +141,8 @@ components:
 
         :::note
 
-        Only the specified parameters can be changed through a SetRecognitionConfig message. Attempting to change other transcription config parameters will result in an error.
+        The language field can be included in SetRecognitionConfig, but its value must match the language specified in the initial StartRecognition message.
+        Attempting to change the language or any other transcription configuration parameter not listed below will result in an error.
 
         :::
       payload:
