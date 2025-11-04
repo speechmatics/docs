@@ -565,6 +565,9 @@ components:
           const: AudioEventStarted
         event:
           $ref: "#/components/schemas/AudioEventStartData"
+        channel:
+          type: string
+          description: The channel identifier to which the audio belongs. This field is only seen in multichannel.
       required:
         - message
         - event
@@ -575,6 +578,9 @@ components:
           const: AudioEventEnded
         event:
           $ref: "#/components/schemas/AudioEventEndData"
+        channel:
+          type: string
+          description: The channel identifier to which the audio belongs. This field is only seen in multichannel.
       required:
         - message
         - event
