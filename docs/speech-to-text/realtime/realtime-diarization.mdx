@@ -170,7 +170,7 @@ Transcripts are returned independently for each channel, with the `channel` prop
 
 :::warning
 The `channel` property will be returned for `AddTranscript` and `AddPartialTranscript` messages only. 
-Features such as [audio events](/speech-to-text/features/audio-events), [translation](/speech-to-text/features/translation) and [end of turn detection](/speech-to-text/realtime/turn-detection) do not currently include this property. To request this feature, please contact [support](https://support.speechmatics.com).
+The [translation](/speech-to-text/features/translation) feature does not currently include this property. To request this feature, please contact [support](https://support.speechmatics.com).
 :::
 
 ### Channel and speaker diarization
@@ -214,6 +214,27 @@ Transcripts are returned in the same way as channel diarization, but with indivi
 ```
 
 When using `channel_and_speaker` diarization, speaker labelling is specific to channels even if the speaker labels are the same. S1 on channel 1 is not necessarily the same as S1 on channel 2.
+
+## Closing Channels
+
+When you're finished with a channel, you can signal that it's no longer in use by sending an [EndOfChannel](../../api-ref/realtime-transcription-websocket#endofchannel) message.
+```json
+{
+  // highlight-start
+  "message": "EndOfChannel",
+  "channel": "New_York",
+  "last_seq_no": 2564
+  // highlight-end
+}
+```
+
+Once this happens, the channel will stop accepting or processing any additional data. When all channels are closed, the session ends. This may be more convenient to use when you don't want to keep track of the number of open channels in a given stream.
+
+You can also use [EndOfStream](../../api-ref/realtime-transcription-websocket#endofstream) to simultaneously close all channels. This may be more convenient to use when you know you want to close all channels at the same time.
+
+:::info
+At this time, closing an individual channel has no impact on pricing.
+:::
 
 ### Limits
 

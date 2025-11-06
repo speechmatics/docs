@@ -17,6 +17,11 @@
       "permanent": true
     },
     {
+      "source": "/speech-to-text/realtime/end-of-turn",
+      "destination": "/speech-to-text/realtime/end-of-utterance",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true

@@ -60,7 +60,9 @@ When the request is processed, the server replies with a `SpeakersResult` messag
 
 ## Identification
 
-Once you have generated speaker identifiers, you can provide them in your next transcription job to identify and tag known speakers. This is done through the new `speakers` option in the speaker diarization configuration. All other [speaker diarization options](realtime-diarization.mdx#configuration) remain supported. Among them, the `max_speakers` parameter continues to apply only to generic (non-enrolled) speakers — for example, if it’s set to 10 and 10 speakers are enrolled, the system can still add up to 10 additional generic speakers. The `speakers_sensitivity` parameter can also be used to adjust how strongly the system prefers enrolled speakers over detecting new generic ones, where lower values make it more likely to match existing enrolled speakers.
+Once you've generated speaker identifiers, you can provide them in your next transcription job to identify and tag known speakers. This is done through the `speakers` option in the speaker diarization configuration. A maximum of 50 speaker identifiers across all speakers can be configured per session.
+
+All [speaker diarization options](realtime_diarization.mdx#configuration) work with speaker identification. The `max_speakers` parameter only applies to generic (non-enrolled) speakers. For example, if it’s set to 10 and 10 speakers are enrolled, the system can still add up to 10 additional generic speakers. The `speakers_sensitivity` parameter can also be used to adjust how strongly the system prefers enrolled speakers over detecting new generic ones. Lower values make it more likely to match existing enrolled speakers.
 
 An example configuration is shown below:
 

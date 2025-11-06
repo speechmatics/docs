@@ -28,7 +28,7 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/realtime/turn-detection",
+      id: "speech-to-text/realtime/end-of-utterance",
     },
     {
       type: "category",
