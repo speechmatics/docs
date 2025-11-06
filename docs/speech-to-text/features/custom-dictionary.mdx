@@ -55,10 +55,6 @@ On-prem Realtime Containers can also make use of a [Shared Custom Dictionary Cac
 
 ## Custom Dictionary Content Limits (Realtime)
 
-:::info
-From **November 3rd, 2025** onwards, we are introducing limits to the length of Custom Dictionaries entries in our Realtime SaaS service. Please review the documentation below and update your integration if necessary.
-:::
-
 Any individual Custom Dictionary (`additional_vocab`) element longer than 6 words will be automatically dropped from the config before transcription starts. This applies to both the `content` and `sounds_like` fields.
 
 Any elements that exceed this limit will be dropped before transcription starts. The server will send an in-band warning message of type validation_warning to the client prior to the RecognitionStarted message. See the [Realtime API Reference](/api-ref/realtime-transcription-websocket#warning) for more details.
