@@ -20,7 +20,7 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/realtime/realtime_diarization",
+      id: "speech-to-text/realtime/realtime-diarization",
     },
     {
       type: "doc",
@@ -28,7 +28,7 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/realtime/end-of-utterance",
+      id: "speech-to-text/realtime/turn-detection",
     },
     {
       type: "category",

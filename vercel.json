@@ -2,13 +2,18 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/speech-to-text/batch/tracking",
-      "destination": "/speech-to-text/batch/output#tracking-metadata",
+      "source": "/speech-to-text/realtime/realtime_diarization",
+      "destination": "/speech-to-text/realtime/realtime-diarization",
       "permanent": true
     },
     {
-      "source": "/speech-to-text/realtime/end-of-turn",
-      "destination": "/speech-to-text/realtime/end-of-utterance",
+      "source": "/speech-to-text/realtime/batch_diarization",
+      "destination": "/speech-to-text/realtime/batch-diarization",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/batch/tracking",
+      "destination": "/speech-to-text/batch/output#tracking-metadata",
       "permanent": true
     },
     {
@@ -113,7 +118,7 @@
     },
     {
       "source": "/features/end-of-turn",
-      "destination": "/speech-to-text/realtime/end-of-utterance",
+      "destination": "/speech-to-text/realtime/turn-detection",
       "permanent": true
     },
     {

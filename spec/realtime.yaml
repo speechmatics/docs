@@ -34,6 +34,8 @@ channels:
         $ref: "#/components/messages/EndOfStream"
       EndOfChannel:
         $ref: "#/components/messages/EndOfChannel"
+      ForceEndOfUtterance:
+        $ref: "#/components/messages/ForceEndOfUtterance"
       SetRecognitionConfig:
         $ref: "#/components/messages/SetRecognitionConfig"
       GetSpeakers:
@@ -82,6 +84,7 @@ operations:
       - $ref: "#/channels/publish/messages/AddChannelAudio"
       - $ref: "#/channels/publish/messages/EndOfStream"
       - $ref: "#/channels/publish/messages/EndOfChannel"
+      - $ref: "#/channels/publish/messages/ForceEndOfUtterance"
       - $ref: "#/channels/publish/messages/SetRecognitionConfig"
       - $ref: "#/channels/publish/messages/GetSpeakers"
   subscribe:
@@ -135,6 +138,10 @@ components:
       summary: Declares that the channel has no more audio to send.
       payload:
         $ref: "#/components/schemas/EndOfChannel"
+    ForceEndOfUtterance:
+      summary: Requests a finalized transcript.
+      payload:
+        $ref: "#/components/schemas/ForceEndOfUtterance"
     SetRecognitionConfig:
       summary: |
         Allows the client to re-configure the recognition session.
@@ -188,7 +195,7 @@ components:
     EndOfUtterance:
       summary: |
         Indicates the end of an utterance, triggered by a configurable period of non-speech.
-        The message is sent when no speech has been detected for a short period of time, configurable by the `end_of_utterance_silence_trigger` parameter in `conversation_config` (see [End Of Utterance](https://docs.speechmatics.com/speech-to-text/realtime/end-of-utterance#end-of-utterance-configuration)).
+        The message is sent when no speech has been detected for a short period of time, configurable by the `end_of_utterance_silence_trigger` parameter in `conversation_config` (see [End Of Utterance](https://docs.speechmatics.com/speech-to-text/realtime/turn-detection#configuration)).
 
         Like punctuation, an `EndOfUtterance` has zero duration.
       payload:
@@ -382,6 +389,18 @@ components:
         - message
         - channel
         - last_seq_no
+    ForceEndOfUtterance:
+      summary: Requests a finalized transcript.
+      payload:
+      type: object
+      properties:
+        message:
+          const: ForceEndOfUtterance
+        channel:
+          type: string
+          description: The channel to request finalized transcript from. This field is only seen in multichannel.
+      required:
+      - message
     SetRecognitionConfig:
       type: object
       properties:

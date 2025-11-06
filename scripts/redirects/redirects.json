@@ -2,8 +2,9 @@
   {
     "source": "/speech-to-text/batch/tracking",
     "destination": "/speech-to-text/batch/output#tracking-metadata"
-  },{
-    "source":"/speech-to-text/realtime/end-of-turn",
-    "destination":"/speech-to-text/realtime/end-of-utterance"
+  },
+  {
+    "source": "/speech-to-text/realtime/end-of-turn",
+    "destination": "/speech-to-text/realtime/end-of-utterance"
   }
 ]

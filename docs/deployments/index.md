@@ -37,7 +37,7 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Custom Dictionary](/speech-to-text/features/custom-dictionary)                       | Batch, Realtime | SaaS, On-prem |
 | [Diarization](/speech-to-text/features/diarization)                                   | Batch, Realtime | SaaS, On-prem |
 | [Disfluencies and Word Replacement](/speech-to-text/formatting#disfluencies)          | Batch, Realtime | SaaS, On-prem |
-| [End-of-Turn](/speech-to-text/realtime/end-of-utterance)                              | Realtime        | SaaS, On-prem |
+| [End-of-Turn](/speech-to-text/realtime/turn-detection)                                | Realtime        | SaaS, On-prem |
 | [Feature Discovery](/speech-to-text/features/feature-discovery)                       | Batch, Realtime | SaaS          |
 | [Fetch URL](/speech-to-text/batch/input#fetch-url)                                    | Batch           | SaaS, On-Prem |
 | [Language Identification](/speech-to-text/batch/language-identification)              | Batch           | SaaS          |
