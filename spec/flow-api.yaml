@@ -205,17 +205,9 @@ components:
         - rejected
         - failed
 
-    InfoTypeEnum:
-      type: string
-      enum:
-        - status_update
-        - conversation_duration_limit
-        - concurrent_session_usage
-
     WarningTypeEnum:
       type: string
       enum:
-        - conversation_termination
         - high_asr_latency
         - llm_error
         - high_llm_latency
@@ -225,6 +217,7 @@ components:
         - protocol_error
         - idle_timeout
         - session_timeout
+        # conversation_termination has extra fields so it handled separately
 
     ErrorTypeEnum:
       type: string
@@ -558,34 +551,27 @@ components:
 
     Info:
       oneOf:
-        - $ref: "#/components/schemas/DefaultInfo"
         - $ref: "#/components/schemas/StatusUpdateInfo"
         - $ref: "#/components/schemas/ConversationDurationLimitInfo"
         - $ref: "#/components/schemas/ConcurrentSessionUsage"
       discrimator:
         propertyName: type
-        mapping:
-          status_update: "#/components/schemas/StatusUpdateInfo"
-          conversation_duration_limit: "#/components/schemas/ConversationDurationLimitInfo"
-          concurrent_session_usage: "#/components/schemas/ConcurrentSessionUsage"
 
-    DefaultInfo:
+    BaseInfo:
       type: object
       properties:
         message:
           const: Info
-        type:
-          $ref: "#/components/schemas/InfoTypeEnum"
         reason:
           type: string
       required:
         - message
-        - type
         - reason
 
     StatusUpdateInfo:
+      title: StatusUpdate
       allOf:
-        - $ref: '#/components/schemas/DefaultInfo'
+        - $ref: '#/components/schemas/BaseInfo'
         - type: object
           properties:
             type:
@@ -601,11 +587,13 @@ components:
                 status:
                   type: string
           required:
+            - type
             - event
 
     ConversationDurationLimitInfo:
+      title: ConversationDurationLimit
       allOf:
-        - $ref: '#/components/schemas/DefaultInfo'
+        - $ref: '#/components/schemas/BaseInfo'
         - type: object
           properties:
             type:
@@ -613,11 +601,13 @@ components:
             conversation_duration_limit:
               type: integer
           required:
+            - type
             - conversation_duration_limit
 
     ConcurrentSessionUsage:
+      title: ConcurrentSessionUsage
       allOf:
-        - $ref: '#/components/schemas/DefaultInfo'
+        - $ref: '#/components/schemas/BaseInfo'
         - type: object
           properties:
             type:
@@ -630,6 +620,7 @@ components:
               type: string
               format: date-time
           required:
+            - type
             - usage
             - quota
             - last_updated
@@ -640,32 +631,42 @@ components:
         - $ref: "#/components/schemas/ConversationTermination"
       discrimator:
         propertyName: type
-        mapping:
-          conversation_termination: "#/components/schemas/ConversationTermination"
 
-    DefaultWarning:
+    BaseWarning:
       type: object
       properties:
         message:
           const: Warning
-        type:
-          $ref: "#/components/schemas/WarningTypeEnum"
         reason:
           type: string
       required:
         - message
-        - type
         - reason
 
-    ConversationTermination:
+    DefaultWarning:
+      title: DefaultWarning
       allOf:
-        - $ref: "#/components/schemas/DefaultWarning"
+        - $ref: "#/components/schemas/BaseWarning"
         - type: object
           properties:
+            type:
+              $ref: "#/components/schemas/WarningTypeEnum"
+          required:
+            - type
+
+    ConversationTermination:
+      title: ConversationTermination
+      allOf:
+        - $ref: "#/components/schemas/BaseWarning"
+        - type: object
+          properties:
+            type:
+              const: conversation_termination
             conversation_termination:
               type: integer
           required:
-           - conversation_termination
+            - type
+            - conversation_termination
 
     Error:
       type: object
