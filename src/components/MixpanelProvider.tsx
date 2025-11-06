@@ -32,6 +32,7 @@ const MixpanelTracker = React.memo(
         // to ensure consistency between the URL and document.title. Automatic tracking might fire
         // before the document title is updated, especially in client-side rendered apps.
         track_pageview: false,
+        ip: false,
         api_host: "https://api-eu.mixpanel.com",
         opt_out_tracking_by_default: true,
         autocapture: {
