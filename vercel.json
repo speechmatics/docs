@@ -7,8 +7,8 @@
       "permanent": true
     },
     {
-      "source": "/speech-to-text/realtime/batch_diarization",
-      "destination": "/speech-to-text/realtime/batch-diarization",
+      "source": "/speech-to-text/batch/batch_diarization",
+      "destination": "/speech-to-text/batch/batch-diarization",
       "permanent": true
     },
     {
