@@ -41,6 +41,11 @@ export default {
             },
             {
               type: "link",
+              href: "https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/tts",
+              label: "Python (Text to speech)",
+            },
+            {
+              type: "link",
               href: "https://github.com/speechmatics/speechmatics-js-sdk/tree/main/packages/real-time-client",
               label: "JavaScript (Realtime)",
             },
