@@ -1651,7 +1651,7 @@ definitions:
         $ref: "#/definitions/TranscriptionConfig"
       orchestrator_version:
         type: string
-        example: "2024.12.26085+a0a32e61ad.HEAD"
+        example: "2025.11.07+cd4ff775c0+14.7.0"
         description: The engine version used to generate transcription output.
       translation_errors:
         x-omitempty: true

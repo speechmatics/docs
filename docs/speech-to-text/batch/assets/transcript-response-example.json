@@ -15,7 +15,7 @@
       "word_delimiter": " ",
       "writing_direction": "left-to-right"
     },
-    "orchestrator_version": "2025.06.28651+1eb4127132.HEAD",
+    "orchestrator_version": "2025.06.28+1eb4127132+13.4.0",
     "transcription_config": {
       "language": "en",
       "operating_point": "enhanced"
