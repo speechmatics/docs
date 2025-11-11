@@ -21,6 +21,6 @@
   },
   {
     "source": "/speech-to-text/realtime/realtime-speaker-identification",
-    "target": "/speech-to-text/realtime/speaker-identification"
+    "destination": "/speech-to-text/realtime/speaker-identification"
   }
 ]
