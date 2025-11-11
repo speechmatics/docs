@@ -8,6 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 import pythonTtsQuickstart from "./assets/tts-quickstart.py?raw"
+import pythonTtsSdkQuickstart from "./assets/tts-sdk-quickstart.py?raw"
 
 # Quickstart
 
@@ -53,9 +54,14 @@ Replace `YOUR_API_KEY` with your actual API key from the portal:
     --output output.wav
   ```
   </TabItem>
-  <TabItem value="python" label="Python">
+  <TabItem value="python" label="Python (requests)">
   <CodeBlock language="python">
     {pythonTtsQuickstart}
+  </CodeBlock>
+  </TabItem>
+  <TabItem value="python-sdk" label="Python (SDK)">
+  <CodeBlock language="python">
+    {pythonTtsSdkQuickstart}
   </CodeBlock>
   </TabItem>
 </Tabs>

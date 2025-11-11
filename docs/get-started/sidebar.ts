@@ -63,6 +63,19 @@ export default {
         },
         {
           type: "category",
+          label: "Text to speech",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "link",
+              href: "https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/tts",
+              label: "Python",
+            },
+          ],
+        },
+        {
+          type: "category",
           label: "Voice agents – Flow",
           collapsible: true,
           collapsed: true,
