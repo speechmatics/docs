@@ -422,6 +422,10 @@ components:
           type: string
         language_pack_info:
           $ref: "#/components/schemas/LanguagePackInfo"
+        channel_ids:
+          type: array
+          items:
+            type: string
       required:
         - message
       example:
@@ -770,6 +774,10 @@ components:
           $ref: "#/components/schemas/PunctuationOverrides"
         conversation_config:
           $ref: "#/components/schemas/ConversationConfig"
+        channel_diarization_labels:
+          items:
+            type: string
+          type: array
       required:
         - language
     MidSessionTranscriptionConfig:
@@ -900,6 +908,8 @@ components:
       enum:
         - none
         - speaker
+        - channel
+        - channel_and_speaker
       default: "none"
     SpeakerDiarizationConfig:
       type: object
@@ -1014,8 +1024,6 @@ components:
         end_time:
           type: number
           format: float
-        channel:
-          type: string
         attaches_to:
           $ref: "#/components/schemas/AttachesToEnum"
         is_eos:
@@ -1034,6 +1042,19 @@ components:
           format: float
           minimum: 0
           maximum: 100
+        entity_class:
+          description: "For 'entity' results only, the class the entity has been formatted as. Examples: 'date', 'money', 'number'"
+          type": string
+        spoken_form:
+           description: For 'entity' results only, the spoken_form is the transcript of the individual words directly spoken.
+           items:
+              $ref: "#/components/schemas/SpokenFormRecognitionResult"
+           type: array
+        written_form:
+           description: For 'entity' results only, the written_form is a standardized form of the spoken words. It contains the formatted entity split into individual words.
+           items:
+              $ref: "#/components/schemas/WrittenFormRecognitionResult"
+           type: array
       required:
         - type
         - start_time
@@ -1112,6 +1133,7 @@ components:
       enum:
         - word
         - punctuation
+        - entity
     AttachesToEnum:
       type: string
       enum:
@@ -1139,6 +1161,61 @@ components:
       example:
         from: "hello"
         to: "hi"
+    SpokenFormRecognitionResult:
+      description: A SpokenFormRecognitionResult describes a simple object which consists
+        solely of 'word' or 'punctuation' type entries with a start and end time. It
+        can occur only inside the spoken_form property of a full RecognitionResult
+      properties:
+        alternatives:
+          items:
+            $ref: "#/components/schemas/RecognitionAlternative"
+          type: array
+        end_time:
+          format: float
+          type: number
+        start_time:
+          format: float
+          type: number
+        type:
+          description: 'What kind of object this is. See #/Definitions/RecognitionResult
+            for definitions of the enums.'
+          enum:
+          - word
+          - punctuation
+          type: string
+      required:
+      - start_time
+      - end_time
+      - type
+      - alternatives
+      type: object
+    WrittenFormRecognitionResult:
+      description: A WrittenFormRecognitionResult describes a simple object which consists
+        solely of 'word' type entries with a start and end time. It can occur only inside
+        the written_form property of a full RecognitionResult
+      properties:
+        alternatives:
+          items:
+            $ref: "#/components/schemas/RecognitionAlternative"
+          type: array
+        end_time:
+          format: float
+          type: number
+        start_time:
+          format: float
+          type: number
+        type:
+          description: 'What kind of object this is. See #/Definitions/RecognitionResult
+            for definitions of the enums.'
+          enum:
+          - word
+          type: string
+      required:
+      - start_time
+      - end_time
+      - type
+      - alternatives
+      type: object
     InfoTypeEnum:
       type: string
       description: |
