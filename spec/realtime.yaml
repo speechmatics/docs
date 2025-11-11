@@ -431,7 +431,7 @@ components:
       example:
         {
           "message": "RecognitionStarted",
-          "orchestrator_version": "2024.12.26085+a0a32e61ad.HEAD",
+          "orchestrator_version": "2025.11.07+cd4ff775c0+14.7.0",
           "id": "807670e9-14af-4fa2-9e8f-5d525c22156e",
           "language_pack_info": {
             "adapted": false,
