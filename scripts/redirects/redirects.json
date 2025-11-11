@@ -18,5 +18,9 @@
   {
     "source": "/speech-to-text/realtime/end-of-utterance",
     "destination": "/speech-to-text/realtime/turn-detection"
+  },
+  {
+    "source": "/speech-to-text/realtime/realtime-speaker-identification",
+    "target": "/speech-to-text/realtime/speaker-identification"
   }
 ]
