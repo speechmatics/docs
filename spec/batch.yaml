@@ -1103,6 +1103,21 @@ definitions:
             maximum: 1
             description: >-
               Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5.
+          get_speakers:
+            type: boolean
+            description: >-
+              If true, speaker identifiers will be returned at the end of transcript.
+          speakers:
+            type: array
+            x-omitempty: true
+            description: >-
+              Use this option to provide speaker labels linked to their speaker identifiers.
+              When passed, the transcription system will tag spoken words in the transcript
+              with the provided speaker labels whenever any of the specified speakers
+              is detected in the audio. A maximum of 50 speakers identifiers across all speakers
+              can be provided.
+            items:
+              $ref: '#/definitions/SpeakersInputItem'
     example:
       language: en
       output_locale: en-GB
@@ -1871,6 +1886,12 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/RecognitionResult"
+      speakers:
+        type: array
+        x-omitempty: true
+        items:
+          $ref: '#/definitions/SpeakersResultItem'
+        description: List of unique speaker identifiers detected in the transcript.
       translations:
         type: object
         description: >-
@@ -2315,3 +2336,39 @@ definitions:
         type: string
       transcript:
         type: string
+  SpeakersInputItem:
+    type: object
+    properties:
+      label:
+        type: string
+        minLength: 1
+        description: Speaker label, which must not match the format used internally (e.g. S1, S2, etc)
+      speaker_identifiers:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          type: string
+          format: bytes
+          description: Speaker identifiers.
+    required:
+      - label
+      - speaker_identifiers
+  SpeakersResultItem:
+    type: object
+    properties:
+      label:
+        type: string
+        minLength: 1
+        description: Speaker label.
+      speaker_identifiers:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          type: string
+          format: bytes
+          description: Speaker identifiers.
+    required:
+      - label
+      - speaker_identifiers

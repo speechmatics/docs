@@ -932,6 +932,10 @@ components:
           format: float
           minimum: 0
           maximum: 1
+        get_speakers:
+          type: boolean
+          description: >-
+            If true, speaker identifiers will be returned at the end of transcript.
         speakers:
           type: array
           description: >-

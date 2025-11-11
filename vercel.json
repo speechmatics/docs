@@ -27,6 +27,11 @@
       "permanent": true
     },
     {
+      "source": "/speech-to-text/realtime/realtime-speaker-identification",
+      "destination": "/speech-to-text/realtime/speaker-identification",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true
