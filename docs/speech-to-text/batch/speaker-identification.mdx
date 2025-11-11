@@ -20,12 +20,12 @@ import { Card, DataList, Text } from '@radix-ui/themes';
 # Batch speaker identification
 
 :::tip
-For an overview of the feature, see the [speaker identification](../features/speaker-identification.mdx) page.
+For an overview of the feature, see the [speaker identification](/speech-to-text/features/speaker-identification) page.
 :::
 
 ## Enrollment
 
-To generate identifiers for a desired speaker, run a [speaker diarization](../features/diarization.mdx#diarization-modes) enabled transcription on an audio sample where the speaker is ideally speaking alone.
+To generate identifiers for a desired speaker, run a [speaker diarization](/speech-to-text/features/diarization#diarization-modes) enabled transcription on an audio sample where the speaker is ideally speaking alone.
 You can request the identifiers back from the engine by setting the `get_speakers` flag in the transcription config:
 
 ```json
@@ -78,7 +78,7 @@ When the transcription is done, the speakers identifiers will be attached to the
     },
     {
       "label": "S2",
-      "speaker_identifiers": ["<id1>"]
+      "speaker_identifiers": ["<id2>"]
     }]
   // highlight-end
 }
@@ -86,7 +86,7 @@ When the transcription is done, the speakers identifiers will be attached to the
 
 ## Identification
 
-Once you have generated speaker identifiers, you can provide them in your next transcription job to identify and tag known speakers. This is done through the `speakers` option in the speaker diarization configuration. All other [speaker diarization options](batch_diarization.mdx#configuration) remain supported. Notably, the `speakers_sensitivity` parameter can be used to adjust how strongly the system prefers enrolled speakers over detecting new generic ones, where lower values make it more likely to match existing enrolled speakers.
+Once you have generated speaker identifiers, you can provide them in your next transcription job to identify and tag known speakers. This is done through the `speakers` option in the speaker diarization configuration. All other [speaker diarization options](/speech-to-text/batch/batch-diarization#configuration) remain supported. Notably, the `speakers_sensitivity` parameter can be used to adjust how strongly the system prefers enrolled speakers over detecting new generic ones, where lower values make it more likely to match existing enrolled speakers.
 
 An example configuration is shown below:
 

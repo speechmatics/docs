@@ -26,12 +26,12 @@ import speakerIdIdentificationPythonExample from "./assets/speaker-id-identifica
 # Realtime speaker identification
 
 :::tip
-For an overview of the feature, see the [speaker identification](../features/speaker-identification.mdx) page.
+For an overview of the feature, see the [speaker identification](/speech-to-text/features/speaker-identification) page.
 :::
 
 ## Enrollment
 
-To generate identifiers for a desired speaker, run a [speaker diarization](../features/diarization.mdx#diarization-modes) enabled transcription on an audio sample where the speaker is ideally speaking alone.
+To generate identifiers for a desired speaker, run a [speaker diarization](/speech-to-text/features/diarization#diarization-modes) enabled transcription on an audio sample where the speaker is ideally speaking alone.
 You can request the identifiers back from the engine by sending a `GetSpeakers` request.
 
 By default, the engine returns identifiers created up to the time of the request, but you can also wait until the end of the stream by setting the optional `final` flag in the `GetSpeakers` request:
@@ -81,7 +81,7 @@ When the request is processed, the server replies with a `SpeakersResult` messag
 
 Once you've generated speaker identifiers, you can provide them in your next transcription job to identify and tag known speakers. This is done through the `speakers` option in the speaker diarization configuration.
 
-All [speaker diarization options](realtime-diarization.mdx#configuration) work with speaker identification. The `max_speakers` parameter only applies to generic (non-enrolled) speakers. For example, if it’s set to 10 and 10 speakers are enrolled, the system can still add up to 10 additional generic speakers. The `speakers_sensitivity` parameter can also be used to adjust how strongly the system prefers enrolled speakers over detecting new generic ones. Lower values make it more likely to match existing enrolled speakers.
+All [speaker diarization options](/speech-to-text/realtime/realtime-diarization#configuration) work with speaker identification. The `max_speakers` parameter only applies to generic (non-enrolled) speakers. For example, if it’s set to 10 and 10 speakers are enrolled, the system can still add up to 10 additional generic speakers. The `speakers_sensitivity` parameter can also be used to adjust how strongly the system prefers enrolled speakers over detecting new generic ones. Lower values make it more likely to match existing enrolled speakers.
 
 An example configuration is shown below:
 
