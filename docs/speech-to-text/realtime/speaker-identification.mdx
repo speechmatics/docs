@@ -46,7 +46,7 @@ By default, the engine returns identifiers created up to the time of the request
 - final: false (default) — returns identifiers generated up to the point of the request. To avoid empty results, wait until the server has issued at least one `AddTranscript` message before sending the request.
 - final: true — waits until the end of the stream and returns identifiers based on all audio.
 
-Alternatively, you can enable automatic speaker retrieval by setting the `get_speakers` option to true in the diarization configuration (recommended for enrollment). This guarantees that the engine automatically provides speaker identifiers once the transcription is complete, equivalent to manually calling GetSpeakers(final=true). If the `get_speakers` option is not present in the configuration or is set to false, you can still request speakers explicitly by sending the `GetSpeakers(final=true)` message. In this case, the request takes precedence, and the engine will return the speaker identifiers at the end of the transcription.
+Alternatively, you can enable automatic speaker retrieval by setting the `get_speakers` option to true in the diarization configuration (recommended for enrollment). This guarantees that the engine automatically provides speaker identifiers once the transcription is complete, equivalent to manually calling `GetSpeakers(final=true)`. If the `get_speakers` option is not present in the configuration or is set to false, you can still request speakers explicitly by sending the `GetSpeakers(final=true)` message. In this case, the request takes precedence, and the engine will return the speaker identifiers at the end of the transcription.
 
 Example speaker diarization config:
 
