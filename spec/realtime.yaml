@@ -1228,7 +1228,7 @@ components:
         | Info Type | Description |
         | --- | --- |
         | `recognition_quality` | Informs the client what particular quality-based model is used to handle the recognition. Sent to the client immediately after the WebSocket handshake is completed.|
-        | `session_transfer`| Informs that the session has been seamlessly transferred to another backend, with the reason: Session has been transferred to a new backend. This typically occurs due to backend maintenance operations or migration from a faulty backend.
+        | `concurrent_session_usage` | Informs the client of their quota for concurrent sessions and how much of it they are using. Sent to the client immediately after the WebSocket handshake is completed.|
       enum:
         - recognition_quality
         - concurrent_session_usage
@@ -1277,7 +1277,6 @@ components:
         | `timelimit_exceeded` | Usage quota for the contract has been reached |
         | `idle_timeout` | Idle duration limit was reached (no audio data sent within the last hour), a closing handshake with code 1008 follows this in-band error. |
         | `session_timeout` | Max session duration was reached (maximum session duration of 48 hours), a closing handshake with code 1008 follows this in-band error. |
-        | `session_transfer` | An error while transferring session to another backend with the reason: Session transfer failed. This may occur when moving sessions due to backend maintenance operations or migration from a faulty backend. |
         | `unknown_error` | An error that did not fit any of the types above. |
 
         :::info
@@ -1299,7 +1298,6 @@ components:
         - timelimit_exceeded
         - idle_timeout
         - session_timeout
-        - session_transfer
         - unknown_error
     AudioEventStartData:
       type: object
