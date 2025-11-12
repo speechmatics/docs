@@ -919,8 +919,6 @@ components:
           description: |
             Configure the maximum number of speakers to detect. See [Max Speakers](http://docs.speechmatics.com/speech-to-text/features/diarization#max-speakers).
           minimum: 2
-          maximum: 100
-          default: 50
         prefer_current_speaker:
           description: |
             When set to `true`, reduces the likelihood of incorrectly switching between similar sounding speakers.
