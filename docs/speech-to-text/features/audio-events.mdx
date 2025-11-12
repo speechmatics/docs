@@ -230,7 +230,8 @@ Starting message example for a music event:
         "start_time": 4.2, 
         "confidence": 0.8, 
         "type": "music" 
-    } 
+    },
+    "channel": "London"
 } 
 ```
 
@@ -241,9 +242,16 @@ Ending message example for the music event:
     "event": { 
         "end_time": 10.2, 
         "type": "music" 
-    } 
+    },
+    "channel": "London"
 } 
 ``` 
+
+:::info
+The `channel` fields are only returned when [channel](../../speech-to-text/realtime/realtime-diarization#channel-diarization) or [`channel and speaker`](../../speech-to-text/realtime/realtime-diarization#channel-and-speaker-diarization) diarization is enabled.
+These fields indicate which channel the audio event comes from.  
+:::
+
 </TabItem> 
 </Tabs> 
 
