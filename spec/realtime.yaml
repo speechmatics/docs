@@ -1266,6 +1266,7 @@ components:
         | --- | --- |
         | `invalid_message` | The message received was not understood. |
         | `invalid_model` | Unable to use the model for the recognition. This can happen if the language is not supported at all, or is not available for the user. |
+        | `invalid_language` | The requested language is not valid or is not supported. |
         | `invalid_config` | The config received contains some wrong or unsupported fields, or too many translation target languages were requested. |
         | `invalid_audio_type` | Audio type is not supported, is deprecated, or the `audio_type` is malformed. |
         | `invalid_output_format` | Output format is not supported, is deprecated, or the `output_format` is malformed. |
@@ -1287,6 +1288,7 @@ components:
       enum:
         - invalid_message
         - invalid_model
+        - invalid_language
         - invalid_config
         - invalid_audio_type
         - invalid_output_format
