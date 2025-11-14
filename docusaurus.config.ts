@@ -168,6 +168,7 @@ const config: Config = {
         },
       },
     ],
+    "@docusaurus/theme-live-codeblock",
     [
       "@signalwire/docusaurus-plugin-llms-txt",
       {
