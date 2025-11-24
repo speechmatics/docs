@@ -20,7 +20,11 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/batch/batch_diarization",
+      id: "speech-to-text/batch/batch-diarization",
+    },
+    {
+      type: "doc",
+      id: "speech-to-text/batch/speaker-identification",
     },
     {
       type: "category",

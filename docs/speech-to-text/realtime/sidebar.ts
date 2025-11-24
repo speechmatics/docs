@@ -20,15 +20,15 @@ export default {
     },
     {
       type: "doc",
-      id: "speech-to-text/realtime/realtime_diarization",
+      id: "speech-to-text/realtime/realtime-diarization",
     },
     {
       type: "doc",
-      id: "speech-to-text/realtime/realtime-speaker-identification",
+      id: "speech-to-text/realtime/speaker-identification",
     },
     {
       type: "doc",
-      id: "speech-to-text/realtime/end-of-turn",
+      id: "speech-to-text/realtime/turn-detection",
     },
     {
       type: "category",

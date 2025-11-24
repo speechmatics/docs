@@ -72,7 +72,7 @@
   },
   {
     "source": "/features/end-of-turn",
-    "destination": "/speech-to-text/realtime/end-of-turn"
+    "destination": "/speech-to-text/realtime/turn-detection"
   },
   {
     "source": "/features/entities",

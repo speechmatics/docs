@@ -1,0 +1,129 @@
+---
+description: 'Learn how to detect the end of speech'
+keywords:
+  [
+    speechmatics,
+    end of utterance,
+    end of turn,
+    transcription,
+    speech recognition,
+    asr
+  ]
+toc_max_heading_level: 3
+---
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import eouStreamingPythonExample from "./assets/end-of-utterance-streaming-example.py"
+import eouFilePythonExample from "./assets/end-of-utterance-file-example.py"
+import SchemaNode from '@theme/Schema'
+import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml"
+
+# Turn detection 
+
+Use the end of utterance feature to help with turn detection in real-time conversational scenarios.
+
+## Use cases
+
+**Voice AI & conversational systems**: Enable voice assistants and chatbots to detect when the user has finished speaking, allowing the system to respond promptly without awkward delays.
+
+**Real-time translation**: Critical for live interpretation services where translations need to be delivered as soon as the speaker completes their thought, maintaining the flow of conversation.
+
+**Dictation & transcription**: Helps dictation software determine when users have completed their input, improving speed of final transcription and user experience.
+
+
+## End of utterance
+
+End of utterance detection is a feature that allows you to detect when a person has finished speaking. This is useful for voice AI, translation, and dictation use cases.
+
+End of utterance uses server-side word timings to detect periods without speech. The moment a word is detected on the server, a countdown begins.
+If a new word is detected, the countdown restarts.
+If the configured interval passes without another word being detected, an end of utterance is triggered.
+When this happens, the server sends a [final transcript](/speech-to-text/realtime/quickstart#final-transcripts) message to the client, followed by an extra `EndOfUtterance` message.
+
+### Configuration
+
+To enable end of utterance detection, include the following in the [StartRecognition](/api-ref/realtime-transcription-websocket#startrecognition) message:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    // highlight-start
+    "conversation_config": {
+        "end_of_utterance_silence_trigger": 0.5
+    },
+    // highlight-end
+    "language": "en",
+  }
+}
+```
+* `end_of_utterance_silence_trigger` (Number): Allowed between 0 and 2 seconds. Setting to 0 seconds disables detection. This is the number of seconds of non-speech (silence) to wait before an end of utterance is identified.
+
+### `EndOfUtterance`
+
+On detecting an end of utterance, the server sends an  `EndOfUtterance` message, structured as follows:
+
+<SchemaNode schema={realtimeSchema.components.schemas.EndOfUtterance} />
+
+<br/>
+
+:::tip
+- We recommend 0.5-0.8 seconds for most voice AI applications. Longer values (0.8-1.2s) may be better for dictation applications.
+- Keep the `end_of_utterance_silence_trigger` lower than the `max_delay` value.
+- `EndOfUtterance` messages are only sent after some speech is recognised and duplicate `EndOfUtterance` messages will never be sent for the same period of silence. 
+- The `EndOfUtterance` message is not related to any specific individual identified by [diarization](/speech-to-text/features/diarization) and will not contain speaker information.
+:::
+
+### Code examples
+
+<Tabs groupId="eou-examples">
+    <TabItem value="streaming" label="Python - Live Streaming">
+
+      Real-time streaming from microphone - ideal for voice AI applications.
+
+      <CodeBlock language="python" showLineNumbers>
+      {eouStreamingPythonExample}
+      </CodeBlock>
+
+    </TabItem>
+    <TabItem value="file" label="Python - File">
+
+    Copy in your API key and file name to get started.
+
+    <CodeBlock language="python" showLineNumbers>
+      {eouFilePythonExample}
+    </CodeBlock>
+
+    </TabItem>
+</Tabs>
+
+
+## Client side turn detection
+
+You can use our `ForceEndOfUtterance` message to manually trigger an end of utterance detection at any point in the conversation. This allows you to integrate your own end of turn detection model with our ASR.
+
+The `ForceEndOfUtterance` message is sent to the server to trigger an end of utterance detection:
+
+```json
+{
+  "message": "ForceEndOfUtterance"
+}
+```
+
+You can also use `ForceEndOfUtterance` with multi-channel diarization:
+
+```json
+{
+  "message": "ForceEndOfUtterance",
+  "channel": "new_york"
+}
+```
+
+When this message is received, the server will send an [AddTranscript](../../api-ref/realtime-transcription-websocket#addtranscript) message, followed by an [EndOfUtterance](../../api-ref/realtime-transcription-websocket#endofutterance) message.
+
+## Semantic turn detection
+
+While silence-based end of utterance is enough for many use cases, it is often improved by combining it with the context of the conversation. This is known as semantic turn detection. You can try semantic turn detection right away with our free [Flow service demo](https://www.speechmatics.com/flow)! 
+
+You can also check out our semantic turn detection ["how to" guide](https://blog.speechmatics.com/semantic-turn-detection) for more details on how to implement this in your own application.

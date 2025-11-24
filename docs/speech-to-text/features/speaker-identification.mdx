@@ -29,15 +29,15 @@ By tagging known speakers with consistent labels, speaker identification makes t
 
 ## How it works
 
-To use speaker identification you must enable diarization in the [speaker mode](../features/diarization.mdx#diarization-modes) and then follow the two steps below:
+To use speaker identification you must enable diarization in the [speaker mode](/speech-to-text/features/diarization#diarization-modes) and then follow the two steps below:
 
-- **Enrollment** — For each speaker you want to recognize, generate identifiers from short audio clips (5–30s) where they ideally speak alone.
+- **Enrollment** - For each speaker you want to recognize, generate identifiers from short audio clips (5–30s) where they ideally speak alone.
   To improve robustness, you can enroll the same speaker with multiple clips recorded under different acoustic conditions, selected to represent the degree of variety and quality that could be expected in the target audio.
 
-- **Identification** — Use the enrolled identifiers in transcription jobs to label known speakers with meaningful names (for example, `Alice` or `John`).  The system matches voices to identifiers and tags the output with the desired labels.
+- **Identification** - Use the enrolled identifiers in transcription jobs to label known speakers with meaningful names (for example, `Alice` or `John`). The system matches voices to identifiers and tags the output with the desired labels.
 
 :::info
-Labels for identified speakers must not use reserved internal labels (UU, S1, S2, etc.) and must not include leading or trailing spaces.
+It is recommended to minimize the number of speaker IDs to achieve optimal accuracy. A maximum of 50 speaker identifiers across all speakers can be configured per session. Additionally, labels for identified speakers must not use reserved internal labels (e.g., UU, S1, S2) and should not contain leading or trailing spaces.
 :::
 
 ## Known caveats
@@ -55,4 +55,4 @@ In all of the above cases — including model mismatches or attempts to use iden
 
 ## Supported modes
 
-Speaker identification is currently only supported in **[Realtime speaker identification](../realtime/realtime-speaker-identification.mdx)**<br/> mode with the batch support coming soon.
+Speaker identification is supported in both **[Realtime speaker identification](/speech-to-text/realtime/speaker-identification)** and **[Batch speaker identification](/speech-to-text/batch/speaker-identification)** modes.

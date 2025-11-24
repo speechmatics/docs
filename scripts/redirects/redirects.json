@@ -1,6 +1,26 @@
 [
   {
+    "source": "/speech-to-text/realtime/realtime_diarization",
+    "destination": "/speech-to-text/realtime/realtime-diarization"
+  },
+  {
+    "source": "/speech-to-text/batch/batch_diarization",
+    "destination": "/speech-to-text/batch/batch-diarization"
+  },
+  {
     "source": "/speech-to-text/batch/tracking",
     "destination": "/speech-to-text/batch/output#tracking-metadata"
+  },
+  {
+    "source": "/speech-to-text/realtime/end-of-turn",
+    "destination": "/speech-to-text/realtime/turn-detection"
+  },
+  {
+    "source": "/speech-to-text/realtime/end-of-utterance",
+    "destination": "/speech-to-text/realtime/turn-detection"
+  },
+  {
+    "source": "/speech-to-text/realtime/realtime-speaker-identification",
+    "destination": "/speech-to-text/realtime/speaker-identification"
   }
 ]
