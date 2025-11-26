@@ -1,5 +1,5 @@
 ---
-description: "Learn how to utilize Audio Filtering to remove background speech" 
+description: "Learn how to utilize audio filtering to remove background speech"
 keywords: 
   [ 
     speechmatics, 
@@ -15,19 +15,19 @@ keywords:
 import Tabs from "@theme/Tabs"; 
 import TabItem from "@theme/TabItem"; 
 
-# Audio Filtering 
+# Audio filtering
 
-Audio Filtering pre-processes input audio to remove low-volume background speech which might otherwise be detected and transcribed.
+Audio filtering pre-processes input audio to remove low-volume background speech which might otherwise be detected and transcribed.
 
 :::info
-This can be useful, for example, in a call center to avoid transcribing other agents' speech from the background.
+This can be useful, for example, in a call center to avoid transcribing other agents' background speech.
 :::
 
-If you're new to Speechmatics, start by exploring our guides on [Transcribing a File](/speech-to-text/batch/quickstart) or [Transcribing in Real-Time](/speech-to-text/realtime/quickstart). 
+If you're new to Speechmatics, start by exploring our guides on [transcribing a file](/speech-to-text/batch/quickstart) or [transcribing in real-time](/speech-to-text/realtime/quickstart).
 
 ## Example
 
-To activate Audio Filtering, include the following configuration:  
+To activate audio filtering, include the following configuration:
 
 ```json
 {
@@ -41,13 +41,15 @@ To activate Audio Filtering, include the following configuration:
   }
 }
 ```
-This will avoid processing any audio which is below the `3.4` volume threshold. For technical details on how this threshold is used see [here](#technical-details)
+This will avoid processing any audio which is below the `3.4` volume threshold. For technical details on how this threshold is calculated and used, see [here](#technical-details)
 
 `volume_threshold` supports a range of `0 - 100` where `0` does not filter any audio and `100` removes all audio.
 
-## Volume Labelling
+In realtime mode, the threshold can be adjusted dynamically with the  [SetRecognitionConfig](/api-ref/realtime-transcription-websocket#setrecognitionconfig) message.
 
-If Audio Filtering is configured, words will be labelled with their volume like this (range for `volume_threshold` is `0-100`):
+## Volume labelling
+
+If audio filtering is configured, words will be labelled with their volume like this (the range for `volume_threshold` is `0-100`):
 
 ```json
     {
@@ -69,7 +71,7 @@ These values can be used as a guide to setting the volume threshold, but we reco
 
 To obtain volume labelling without filtering any audio, supply an empty config object (`{}`) or set the `volume_threshold` to `0.0`.
 
-## Technical Details
+## Technical details
 
 Once the audio is in a raw format (16kHz 16bit mono), it is split into 0.01s chunks. For each chunk, the root mean square amplitude of the signal is calculated, and scaled to the range `0 - 100`. If the volume is less than the supplied cut-off, the chunk will be replaced with silence.
 
