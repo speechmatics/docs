@@ -6,22 +6,22 @@ export default {
   items: [
     {
       type: "doc",
-      id: "index",
+      id: "integrations/index",
       label: "Introduction",
     },
     {
       type: "doc",
-      id: "livekit",
+      id: "integrations/livekit",
       label: "LiveKit",
     },
     {
       type: "doc",
-      id: "pipecat",
+      id: "integrations/pipecat",
       label: "Pipecat",
     },
     {
       type: "doc",
-      id: "vapi",
+      id: "integrations/vapi",
       label: "Vapi",
     },
   ],
