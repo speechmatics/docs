@@ -2,13 +2,35 @@
 
 We welcome contributions to the docs. Please file an issue, or open a PR if you find something that needs to be fixed or improved.
 
-## For Speechmatics employees
+## Speechmatics org. members
 
 Open a pull request to the `main` branch. The CI pipeline will build and deploy the docs to Vercel.
 
-## For external contributors
+## Other contributors
 
 Fork this repository, and open a PR against the `main` branch. Note that this will *not* create a preview link.
+
+### Forking
+
+1. Navigate to the repository on GitHub
+2. Click the "Fork" button in the top right corner of the repository page
+3. Confirm your fork - this will be your own copy of the repository in your github account
+4. Clone your fork to your local machine
+5. Add the upstream repository as a remote to your local repository, and fetch upstream changes
+6. Create a new branch 
+7. Make your changes and git push to your fork
+8. Open a PR against the `main` branch
+
+### Creating a PR
+
+1. Navigate to the repository on GitHub
+2. Click the "New pull request" button in the top right corner of the repository page
+3. Select the `main` branch as the base branch and your fork as the compare branch
+4. Fill in the PR title and description
+5. Click "Create pull request"
+6. Wait for the CI pipeline to run
+7. If the CI pipeline fails, fix the issues and push to your fork
+8. If the CI pipeline passes, the PR will be reviewed, and merged into the `main` branch if approved.
 
 ## Style guide
 

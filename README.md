@@ -8,15 +8,17 @@ This website is built using [Docusaurus](https://docusaurus.io/), a modern stati
 
 We welcome contributions to the docs! Please see `CONTRIBUTING.md` for information on contributions and style.
 
-## For Speechmatics employees
+## Speechmatics org. members
 
 Open a pull request to the `main` branch. The CI pipeline will build and deploy the docs to Vercel.
 
-## For external contributors
+## Other contributors
 
 Fork this repository, and open a PR against the `main` branch. Note that this will *not* create a preview link.
 
 ## Project overview
+
+For UI development, you will need [Node.js](https://nodejs.org/en/download/) to be installed.
 
 ### Installation
 
