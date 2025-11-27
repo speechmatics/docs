@@ -2,11 +2,11 @@
 
 We welcome contributions to the docs. Please file an issue, or open a PR if you find something that needs to be fixed or improved.
 
-## For Speechmatics employees
+## Speechmatics org. members
 
 Open a pull request to the `main` branch. The CI pipeline will build and deploy the docs to Vercel.
 
-## For external contributors
+## Other contributors
 
 Fork this repository, and open a PR against the `main` branch. Note that this will *not* create a preview link.
 
@@ -17,6 +17,29 @@ Please refer to the [style guide](https://github.com/speechmatics/docs/blob/main
 ## Project structure
 
 This site is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+
+## Setting up the UI dev environment
+
+We develop UI using: 
+- [React](https://reactjs.org/),
+- [Remix](https://remix.run/),
+- [Next.js](https://nextjs.org/),
+
+###Node.js:
+You will need to have Node.js installed. 
+
+On Mac, it is advisable to use nvm (Node Version Manager) to install Node.js, and the best way to approach this is to use brew:
+To install brew, run the following command:
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+To install nvm, run the following command:
+
+brew install nvm
+
+To install Node.js, run the following command:
+
+nvm install node
 
 ## URLs and redirects
 
