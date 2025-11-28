@@ -1,6 +1,6 @@
 ---
 toc_max_heading_level: 3
-description: 'Learn how to prepare and manage Speaker Identification secrets for Speechmatics deployments'
+description: 'Prepare and manage Speaker Identification secrets for Speechmatics deployments'
 keywords: [speechmatics, container, speaker identification, SaaS, security, on-prem]
 ---
 
@@ -11,11 +11,11 @@ import { smVariables } from '/sm-variables';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# Speaker Identification Secrets
+# Speaker identification secrets
 
-[Speaker Identification](/speech-to-text/features/speaker-identification) requires the Batch or Real-Time Transcriber to access one or more cryptographically strong secrets. These secrets are used to generate and validate speaker identifiers. This page explains how to prepare these secret files and mount them into the Transcriber Container in both Batch and Real-Time deployments.
+[Speaker identification](/speech-to-text/features/speaker-identification) requires the Batch or Realtime Transcriber to access one or more cryptographically strong secrets. These secrets are used to generate and validate speaker identifiers. This page explains how to prepare these secret files and mount them into the Transcriber Container in both Batch and Realtime deployments.
 
-## Preparing the Secret Directory
+## Preparing the secret directory
 
 Speaker ID secrets must be stored in a dedicated directory on the host machine. Each secret is contained in a separate file whose name follows the pattern: `<secret_dir>/s.<integer>`. For example:
 
@@ -28,7 +28,7 @@ Secret files may contain either binary data or plain text (for example, Base64-e
 
 Multiple secret files allow operators to rotate secrets without disrupting active workloads. When more than one secret is present, the Transcriber will continue to accept identifiers encrypted with older secrets while using the most recent secret for generating new identifiers. The most recent secret is determined by the highest-numbered secret file. In most on-prem deployments, operators typically only need to maintain a single secret file unless secret rotation is required for their environment.
 
-## Mounting the Secret Directory
+## Mounting the secret directory
 
 The secret directory must be mounted into the Transcriber Container as a read-only volume. The location inside the Container must then be provided to the Transcriber using the `SM_SPEAKER_ID_SECRETS_DIR` environment variable.
 
