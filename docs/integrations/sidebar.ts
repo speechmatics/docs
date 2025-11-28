@@ -7,7 +7,7 @@ export default [
     items: [
       {
         type: "doc",
-        id: "integrations/overview",
+        id: "integrations/index",
         label: "Overview",
       },
       {
@@ -19,7 +19,7 @@ export default [
           {
             type: "doc",
             id: "integrations/livekit",
-            label: "Overview",
+            label: "LiveKit",
           },
           {
             type: "doc",
@@ -37,7 +37,7 @@ export default [
           {
             type: "doc",
             id: "integrations/pipecat",
-            label: "Overview",
+            label: "Pipecat",
           },
           {
             type: "doc",
@@ -55,7 +55,7 @@ export default [
           {
             type: "doc",
             id: "integrations/vapi",
-            label: "Overview",
+            label: "Vapi",
           },
           {
             type: "doc",
