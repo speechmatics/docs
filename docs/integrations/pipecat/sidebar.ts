@@ -4,15 +4,15 @@ export default {
   collapsible: true,
   collapsed: true,
   items: [
-    {
-      type: "doc",
-      id: "integrations-pipecat-pipecat",
-      label: "Overview",
-    },
-    {
-      type: "doc",
-      id: "integrations-pipecat-speechmatics-stt-plugin-guide",
-      label: "Speechmatics STT Plugin Guide",
-    }
+{
+  type: "doc",
+  id: "integrations/pipecat/integrations-pipecat-pipecat",
+  label: "Overview",
+},
+{
+  type: "doc",
+  id: "integrations/pipecat/integrations-pipecat-speechmatics-stt-plugin-guide",
+  label: "Speechmatics STT Plugin Guide",
+}, 
   ],
 } as const;

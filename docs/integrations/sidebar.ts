@@ -10,16 +10,17 @@ export default {
     type: "generated-index",
   },
   items: [
+    // docs/integrations/sidebar.ts
     {
-      type: "doc",
-      label: "Overview",
-      id: "integrations-overview",
-    },
-    {
-      type: "doc",
-      label: "Vapi",
-      id: "integrations-vapi-vapi",
-    },
+  type: "doc",
+  label: "Overview",
+  id: "integrations/integrations-overview",
+},
+{
+  type: "doc",
+  label: "Vapi",
+  id: "integrations/vapi/integrations-vapi-vapi",
+},
     livekitSidebar,
     pipecatSidebar,
   ],
