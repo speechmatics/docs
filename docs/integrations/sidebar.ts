@@ -20,6 +20,11 @@ export default [
             type: "doc",
             id: "integrations/livekit",
             label: "LiveKit",
+          },
+          {
+            type: "doc",
+            id: "integrations/livekit/speechmatics-stt-plugin-guide",
+            label: "Speechmatics STT Plugin Guide",
           }
         ]
       },
