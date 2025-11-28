@@ -11,20 +11,59 @@ export default [
         label: "Overview",
       },
       {
-        type: "doc",
-        id: "integrations/livekit",
+        type: "category",
         label: "LiveKit",
+        collapsible: true,
+        collapsed: true,
+        items: [
+          {
+            type: "doc",
+            id: "integrations/livekit",
+            label: "Overview",
+          },
+          {
+            type: "doc",
+            id: "integrations/livekit/speechmatics-stt-plugin-guide",
+            label: "Speechmatics STT Plugin Guide",
+          }
+        ]
       },
       {
-        type: "doc",
-        id: "integrations/pipecat",
+        type: "category",
         label: "Pipecat",
+        collapsible: true,
+        collapsed: true,
+        items: [
+          {
+            type: "doc",
+            id: "integrations/pipecat",
+            label: "Overview",
+          },
+          {
+            type: "doc",
+            id: "integrations/pipecat/speechmatics-stt-plugin-guide",
+            label: "Speechmatics STT Plugin Guide",
+          }
+        ]
       },
       {
-        type: "doc",
-        id: "integrations/vapi",
+        type: "category",
         label: "Vapi",
-      }
+        collapsible: true,
+        collapsed: true,
+        items: [
+          {
+            type: "doc",
+            id: "integrations/vapi",
+            label: "Overview",
+          },
+          {
+            type: "doc",
+            id: "integrations/vapi/speechmatics-stt-plugin-guide",
+            label: "Speechmatics STT Plugin Guide",
+          }
+        ]
+      },
     ],
   },
 ] as const;
