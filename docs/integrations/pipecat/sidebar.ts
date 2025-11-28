@@ -11,7 +11,7 @@ export default {
     },
     {
       type: "doc",
-      id: "integrations/pipecat/pipecat-speechmatics-stt-plugin-guide",
+      id: "integrations-pipecat-speechmatics-stt-plugin-guide",
       label: "Speechmatics STT Plugin Guide",
     }
   ],

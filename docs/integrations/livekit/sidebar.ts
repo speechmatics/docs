@@ -11,7 +11,7 @@ export default {
     },
     {
       type: "doc",
-      id: "integrations/livekit/livekit-speechmatics-stt-plugin-guide",
+      id: "integrations-livekit-speechmatics-stt-plugin-guide",
       label: "Speechmatics STT Plugin Guide",
     }
   ],
