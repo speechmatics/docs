@@ -11,7 +11,8 @@ import TabItem from '@theme/TabItem';
 # LiveKit
 
 LiveKit Agents is a framework for building real-time, voice-enabled AI applications that connect with LiveKit rooms.
-With Speechmatics STT integration, you can add accurate and reliable, real-time speech transcriptions to your LiveKit applications.
+The Speechmatics STT plugin for LiveKit Agents enables real-time speech transcription using Speechmatics as your STT provider for your voice agent.
+With different configurations, you are able to tailor your application to your specific needs, whilst ensuring accurate, reliable and speedy results. 
 
 ## Use cases
 
@@ -22,45 +23,13 @@ LiveKit is perfect for:
 - **Accessibility applications**: Screen readers and assistive technologies, in-app help widgets
 - **Media production**: News broadcasts, automated announcements
 
-## Quickstart
+## Features 
 
-### Requirements
-
-- Python 3.9 or higher
-- Speechmatics Account 
-
-### Installation
-
-Install SpeechmaticsSTT from PyPl:
-
-```bash
-uv add "livekit-plugins-speechmatics"
-```
-or
-
-```bash
-pip install livekit-plugins-speechmatics
-```
-
-### Authentication
-
-The SpeechmaticsSTT requires an API key. 
-You can generate your API key in the [Speechmatics Portal](https://portal.speechmatics.com/settings/api-keys).
-Set SPEECHMATICS_API_KEY in your .env file.
-
-```bash
-export SPEECHMATICS_API_KEY=your_api_key
-```
-
-### Usage
-
-from livekit.agents import AgentSession
-from livekit.plugins import speechmatics
-from livekit.agents import turn_detector
-
-agent = AgentSession(
-    stt=speechmatics.STT(),
-    turn_detector=turn_detector.EOUModel(),
-    min_endpointing=0.5,
-    max_endpointing=5.0,
-)
+Using Speechmatics STT you can:
+- Obtain partial and final results, 
+- Incorporate speaker diarization, 
+- Turn detection (end of utterance detection)
+- Noise robustness using VAD
+- Global accent & dialect support
+- Low latency for real-time transcription
+- Contextual precision
