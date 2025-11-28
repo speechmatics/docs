@@ -1,7 +1,7 @@
 export const smVariables = {
   jsonOutputVersion: "2.9",
   latestApplianceVersion: "6.2.1",
-  latestContainerVersion: "13.4.0",
+  latestContainerVersion: "14.8.0",
   usageContainerVersion: "0.3.0",
   helmChartVersion: "0.7.0",
 } as const;

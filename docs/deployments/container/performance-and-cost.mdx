@@ -13,17 +13,18 @@ This is a comparison of the performance and estimated running costs of transcrip
 
 | Operating Point                            | [CPU Standard](./cpu-speech-to-text) | [CPU Enhanced](./cpu-speech-to-text) | [GPU Standard](./gpu-speech-to-text) | [GPU Enhanced](./gpu-speech-to-text) |
 |--------------------------------------------|--------------|--------------|--------------|--------------|
-| Lowest Processing Cost (US ¢ per hour)     | 1.7          | 3.8          | 0.71         | 2.21         |
-| Cost vs CPU Standard (%)                   | -            | 224%         | 42%          | 130%         |
-| Cost vs CPU Enhanced (%)                   | 45%          | -            | 19%          | 58%          |
-| Maximum Throughput[^1]                     | 53.2         | 23.7         | 170          | 34           |
-| Representative Real-Time Factor (RTF)[^2]  | 0.085        | 0.2          | 0.035        | 0.08         |
-| Transcriber Count                          | 20           | 20           | 20           | 13           |
+| Lowest Processing Cost (US ¢ per hour)     | 1.7          | 3.8          | 0.46         | 1.88         |
+| Cost vs CPU Standard (%)                   | -            | 224%         | 27%          | 110%         |
+| Cost vs CPU Enhanced (%)                   | 45%          | -            | 12%          | 49%          |
+| Maximum Throughput[^1]                     | 53.2         | 23.7         | 260          | 40           |
+| Representative Real-Time Factor (RTF)[^2]  | 0.085        | 0.2          | 0.029        | 0.127        |
+| Transcriber Count                          | 20           | 20           | 13           | 6            |
 
 The benchmark uses the following configuration:
 
 | Benchmark details |                                     |
 | ----------------- | ----------------------------------- |
+| Version           | 14.8.0                              |
 | CPU               | D16ds_v5                            |
 | GPU Standard      | Standard_NC16as_T4_v3               |
 | GPU Enhanced      | Standard_NC8as_T4_v3                |
@@ -47,6 +48,7 @@ This benchmark uses the following configuration[^4]:
 
 | Benchmark details | Value                               |
 | ------------------| ----------------------------------- |
+| Version           | 13.4.0                              |
 | CPU               | D16ds_v5                            |
 | GPU Standard      | Standard_NC16as_T4_v3               |
 | GPU Enhanced      | Standard_NC8as_T4_v3                |

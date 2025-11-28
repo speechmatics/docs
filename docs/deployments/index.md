@@ -37,7 +37,6 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Custom Dictionary](/speech-to-text/features/custom-dictionary)                       | Batch, Realtime | SaaS, On-prem |
 | [Diarization](/speech-to-text/features/diarization)                                   | Batch, Realtime | SaaS, On-prem |
 | [Disfluencies and Word Replacement](/speech-to-text/formatting#disfluencies)          | Batch, Realtime | SaaS, On-prem |
-| [End-of-Turn](/speech-to-text/realtime/turn-detection)                                | Realtime        | SaaS, On-prem |
 | [Feature Discovery](/speech-to-text/features/feature-discovery)                       | Batch, Realtime | SaaS          |
 | [Fetch URL](/speech-to-text/batch/input#fetch-url)                                    | Batch           | SaaS, On-Prem |
 | [Language Identification](/speech-to-text/batch/language-identification)              | Batch           | SaaS          |
@@ -45,7 +44,9 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Numeral Formatting](/speech-to-text/formatting#smart-formatting)                     | Batch, Realtime | SaaS, On-prem |
 | [Punctuation Settings](/speech-to-text/formatting#punctuation)                        | Batch, Realtime | SaaS, On-prem |
 | [Sentiment Analysis](/speech-to-text/batch/speech-intelligence/sentiment-analysis)    | Batch           | SaaS, On-prem |
+| [Speaker Identification](/speech-to-text/features/speaker-identification)             | Batch, Realtime | SaaS, On-prem |
 | [Summarization](/speech-to-text/batch/speech-intelligence/summarization)              | Batch           | SaaS          |
 | [Topic Detection](/speech-to-text/batch/speech-intelligence/topic-detection)          | Batch           | SaaS          |
 | [Tracking](/speech-to-text/batch/output#tracking-metadata)                            | Batch, Realtime | SaaS, On-prem |
 | [Translation](/speech-to-text/features/translation)                                   | Batch, Realtime | SaaS, On-prem |
+| [Turn Detection](/speech-to-text/realtime/turn-detection)                             | Realtime        | SaaS, On-prem |
