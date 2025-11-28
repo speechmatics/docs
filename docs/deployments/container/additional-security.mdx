@@ -165,7 +165,7 @@ Speaker ID secrets must be stored in a dedicated directory on the host machine. 
 
 Secret files may contain either binary data or plain text (for example, Base64-encoded values). The Transcriber will read all files matching the `s.<integer>` pattern in the directory.
 
-Multiple secret files allow operators to rotate secrets without disrupting active workloads. When more than one secret is present, the Transcriber will continue to accept identifiers encrypted with older secrets while using the most recent secret for generating new identifiers. In most on-prem deployments, operators typically only need to maintain a single secret file unless secret rotation is required for their environment.
+Multiple secret files allow operators to rotate secrets without disrupting active workloads. When more than one secret is present, the Transcriber will continue to accept identifiers encrypted with older secrets while using the most recent secret for generating new identifiers. The most recent secret is determined by the highest-numbered secret file. In most on-prem deployments, operators typically only need to maintain a single secret file unless secret rotation is required for their environment.
 
 ### Mounting the Secret Directory
 
