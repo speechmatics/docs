@@ -1,6 +1,6 @@
 export default {
   type: "category",
-  label: "pipecat",
+  label: "Pipecat",
   collapsible: true,
   collapsed: true,
   items: [
