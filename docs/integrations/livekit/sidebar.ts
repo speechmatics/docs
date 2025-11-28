@@ -19,4 +19,4 @@ export default {
       label: "LiveKit",
     }
   ],
-};
+} as const;
