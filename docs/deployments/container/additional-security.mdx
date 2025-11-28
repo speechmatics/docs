@@ -181,26 +181,3 @@ docker run --rm -i
 ```
 
 The Transcriber will automatically load all secret files in the specified directory when it starts.
-
-### Using Speaker Identification on Kubernetes
-
-When deploying on Kubernetes, the secret directory can be mounted using any suitable volume type, such as hostPath, secret, or emptyDir (if the secret is injected by an initContainer or sidecar). The mounted path must be made available to the Container and referenced via the `SM_SPEAKER_ID_SECRETS_DIR` environment variable. Below is an example fragment:
-
-```yaml
-volumeMounts:
-  - name: speaker-id-secrets
-    mountPath: /speaker_id_secrets
-    readOnly: true
-
-env:
-  - name: SM_SPEAKER_ID_SECRETS_DIR
-    value: /speaker_id_secrets
-
-volumes:
-  - name: speaker-id-secrets
-    hostPath:
-      path: /path/on/node/with/speaker-id-secrets
-      type: Directory
-```
-
-This setup allows the Transcriber to access the speaker identification secrets securely, whether running in a container environment with strict filesystem controls or within a managed Kubernetes deployment.
