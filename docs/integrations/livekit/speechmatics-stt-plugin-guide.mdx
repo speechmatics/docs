@@ -1,0 +1,68 @@
+---
+id: livekit
+description: How to use the Speechmatics STT plugin for LiveKit Agents.
+---
+
+import Admonition from '@theme/Admonition';
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Speechmatics STT plugin for LiveKit Agents
+
+The Speechmatics STT plugin for LiveKit Agents enables real-time speech transcription using Speechmatics as your STT provider for your voice agent.
+With different configurations, you are able to tailor your application to your specific needs, whilst ensuring accurate, reliable and speedy results. 
+
+## Features 
+Using Speechmatics STT you can:
+- Obtain partial and final results, 
+- Incorporate speaker diarization, 
+- Turn detection (end of utterance detection)
+- Noise robustness using VAD
+- Global accent & dialect support
+- Low latency for real-time transcription
+- Contextual precision
+
+## Quickstart
+
+This section includes a basic example and some reference material. 
+For more detailed examples, please see the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy).
+
+### Requirements
+
+- LiveKit >= 1.2
+- Speechmatics Account 
+
+### Installation
+
+Install the plugin from PyPI:
+
+```python
+uv add "livekit-agents[speechmatics]~=1.2"
+```
+
+### Authentication
+
+The SpeechmaticsSTTService requires an API key. 
+You can generate your API key in the [Speechmatics Portal](https://portal.speechmatics.com/settings/api-keys).
+Set the environment variable `SPEECHMATICS_API_KEY` in your .env file.
+
+```bash
+export SPEECHMATICS_API_KEY=your_api_key
+```
+
+### Usage
+
+Use the Speechmatics STT in an AgentSession or as a standalone transcription service. 
+
+```python
+from livekit.plugins import speechmatics
+
+session = AgentSession(
+   stt = speechmatics.STT(),
+   # ... llm, tts, etc.
+)
+
+session.run()
+```
+
