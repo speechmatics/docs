@@ -37,8 +37,8 @@ Below is an example for Docker:
 ```bash
 docker run --rm -i
  -v <path/to/dir/in/host/containing/speaker_id_secrets_dir>:/speaker_id_secrets:ro 
- -e SM_SPEAKER_ID_SECRETS_DIR=/speaker_id_secrets 
- [other arguments]
+ -e SM_SPEAKER_ID_SECRETS_DIR=/speaker_id_secrets -e LICENSE_TOKEN=$TOKEN_VALUE 
+ $IMAGE_NAME
 ```
 
 The Transcriber will automatically load all secret files in the specified directory when it starts.
