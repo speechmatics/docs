@@ -6,7 +6,7 @@ export default {
   items: [
     {
       type: "doc",
-      id: "integrations/livekit/livekit",
+      id: "integrations-livekit-livekit",
       label: "Overview",
     },
     {
