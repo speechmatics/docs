@@ -18,7 +18,7 @@ export default [
         items: [
           {
             type: "doc",
-            id: "integrations/livekit",
+            id: "integrations/livekit/livekit",  // Note the full path
             label: "LiveKit",
           },
           {
