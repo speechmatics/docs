@@ -7,7 +7,7 @@ export default [
     items: [
       {
         type: "doc",
-        id: "integrations/index",
+        id: "integrations/overview",
         label: "Overview",
       },
       {
@@ -20,50 +20,19 @@ export default [
             type: "doc",
             id: "integrations/livekit",
             label: "LiveKit",
-          },
-          {
-            type: "doc",
-            id: "integrations/livekit/speechmatics-stt-plugin-guide",
-            label: "Speechmatics STT Plugin Guide",
           }
         ]
       },
       {
-        type: "category",
+        type: "doc",
+        id: "integrations/pipecat",
         label: "Pipecat",
-        collapsible: true,
-        collapsed: true,
-        items: [
-          {
-            type: "doc",
-            id: "integrations/pipecat",
-            label: "Pipecat",
-          },
-          {
-            type: "doc",
-            id: "integrations/pipecat/speechmatics-stt-plugin-guide",
-            label: "Speechmatics STT Plugin Guide",
-          }
-        ]
       },
       {
-        type: "category",
+        type: "doc",
+        id: "integrations/vapi",
         label: "Vapi",
-        collapsible: true,
-        collapsed: true,
-        items: [
-          {
-            type: "doc",
-            id: "integrations/vapi",
-            label: "Vapi",
-          },
-          {
-            type: "doc",
-            id: "integrations/vapi/speechmatics-stt-plugin-guide",
-            label: "Speechmatics STT Plugin Guide",
-          }
-        ]
-      },
+      }
     ],
   },
 ] as const;
