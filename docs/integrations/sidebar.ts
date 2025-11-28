@@ -13,12 +13,12 @@ export default {
     {
       type: "doc",
       label: "Overview",
-      id: "integrations/overview",
+      id: "integrations-overview",
     },
     {
       type: "doc",
       label: "Vapi",
-      id: "integrations/vapi/vapi",
+      id: "integrations-vapi-vapi",
     },
     livekitSidebar,
     pipecatSidebar,

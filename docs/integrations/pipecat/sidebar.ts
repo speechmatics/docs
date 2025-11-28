@@ -6,7 +6,7 @@ export default {
   items: [
     {
       type: "doc",
-      id: "integrations/pipecat/pipecat",
+      id: "integrations-pipecat-pipecat",
       label: "Overview",
     },
     {
