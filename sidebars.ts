@@ -5,9 +5,6 @@ import speechToTextSidebar from "./docs/speech-to-text/sidebar";
 import textToSpeechSidebar from "./docs/text-to-speech/sidebar";
 import voiceAgentsFlowSidebar from "./docs/voice-agents-flow/sidebar";
 import integrationsSidebar from "./docs/integrations/sidebar";
-import pipecatSidebar from "./docs/integrations/pipecat/sidebar";
-import livekitSidebar from "./docs/integrations/livekit/sidebar";
-
 
 export default {
   docs: [
@@ -17,8 +14,6 @@ export default {
     voiceAgentsFlowSidebar,
     deploymentsSidebar,
     integrationsSidebar,
-    pipecatSidebar,
-    livekitSidebar,
     {
       type: "category",
       label: "Developer Resources",
