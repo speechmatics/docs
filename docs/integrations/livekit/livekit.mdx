@@ -8,15 +8,12 @@ import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# LiveKit
+# LiveKit Agents
 
 LiveKit Agents is a framework for building real-time, voice-enabled AI applications that connect with LiveKit rooms.
-The Speechmatics STT plugin for LiveKit Agents enables real-time speech transcription using Speechmatics as your STT provider for your voice agent.
-With different configurations, you are able to tailor your application to your specific needs, whilst ensuring accurate, reliable and speedy results. 
+With the Speechmatics STT plugin, you enable your voice agent to transcribe live audio in real-time, along with speaker diarization, turn detection and noise robustness. 
 
-## Use cases
-
-LiveKit is perfect for:
+LiveKit Agents is perfect for:
 
 - **Voice AI**: Voice assistants, chatbots, and IVR systems
 - **Translation**: Real-time transcription of live events or recordings
@@ -33,3 +30,64 @@ Using Speechmatics STT you can:
 - Global accent & dialect support
 - Low latency for real-time transcription
 - Contextual precision
+
+## Quickstart
+
+This section includes a basic example and some reference material. 
+For more detailed examples, please see the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy).
+
+### Requirements
+
+- LiveKit >= 1.2
+- Speechmatics Account 
+
+### Installation
+
+Install the plugin from PyPI:
+
+```python
+uv add "livekit-agents[speechmatics]~=1.2"
+```
+
+### Authentication
+
+The SpeechmaticsSTTService requires an API key. 
+You can generate your API key in the [Speechmatics Portal](https://portal.speechmatics.com/settings/api-keys).
+Set the environment variable `SPEECHMATICS_API_KEY` in your .env file.
+
+```bash
+export SPEECHMATICS_API_KEY=your_api_key
+```
+
+### Usage
+
+Use the Speechmatics STT in an AgentSession or as a standalone transcription service. 
+
+```python
+import os
+from dotenv import load_dotenv
+from livekit.agents import AgentSession, cli
+from livekit.plugins import speechmatics
+
+# Load API keys from .env file
+load_dotenv()
+
+# Initialize the agent with Speechmatics STT
+async def run_agent(room):
+    session = AgentSession(
+        stt=speechmatics.STT(
+            enable_diarization=True,
+            end_of_utterance_silence_trigger=0.3
+        )
+    )
+    
+    # Process incoming audio
+    @session.on("transcription_received")
+    async def on_transcription(event):
+        print(f"Speaker {event.speaker}: {event.text}")
+
+    await session.start(room)
+
+if __name__ == "__main__":
+    cli.run_app(run_agent)
+```
