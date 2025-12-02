@@ -1,6 +1,3 @@
-import livekitSidebar from "./livekit/sidebar";
-import pipecatSidebar from "./pipecat/sidebar";
-
 export default {
   type: "category",
   label: "Integrations",
@@ -21,7 +18,5 @@ export default {
   label: "Vapi",
   id: "integrations/vapi/integrations-vapi-vapi",
 },
-    livekitSidebar,
-    pipecatSidebar,
   ],
 } as const;
