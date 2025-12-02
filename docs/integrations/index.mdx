@@ -2,6 +2,11 @@
 id: integrations-overview
 description: Learn how to integrate Speechmatics STT with voice AI applications.    
 ---
+
+import { LinkCard } from "@site/src/theme/LinkCard";
+import { Flex, Grid } from "@radix-ui/themes";
+import { ChevronsRightIcon, FileAudio, BotMessageSquare, BookOpen, Braces } from "lucide-react";
+
 # Speechmatics Integrations
 
 Integrating Speechmatics as your speech-to-text (STT) engine provides a foundational upgrade to any voice application. By ensuring the "ears" of your AI are industry-leading, you solve the most common failure point in voice bots: misunderstanding the user.
@@ -23,31 +28,24 @@ Speechmatics STT delivers transcripts in milliseconds, preventing the "awkward s
 ### Contextual Precision
 Features like Custom Dictionary allow you to teach the AI brand names, acronyms, and domain-specific jargon (e.g., medical or legal terms) to ensure 100% recognition rates on high-value keywords.
 
-## Integration Options
-
-Speechmatics STT can be integrated into voice AI applications on a variety of platforms, including:
-    - LiveKit
-    - Pipecat
-    - Vapi
-
 ## Explore integrations
 
 <Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
   <LinkCard
     title="Vapi"
-    description="Integrate Speechmatics STT with Vapi"
+    description="Add premium transcription to your vapi voice agents"
     icon={<BotMessageSquare/>}
     href="/integrations/vapi/"
   />
   <LinkCard
     title="LiveKit"
-    description="Integrate Speechmatics STT with LiveKit"
+    description="Enhance LiveKit with accurate real-time transcription"
     icon={<ChevronsRightIcon/>}
     href="/integrations/livekit/"
   />
   <LinkCard
     title="Pipecat"
-    description="Integrate Speechmatics STT with Pipecat"
+    description="Add real-time transcription to your Pipecat voice agents"
     icon={<FileAudio/>}
     href="/integrations/pipecat/"
   />
