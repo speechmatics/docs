@@ -22,6 +22,8 @@ parameters:
     name: Authorization
     in: header
     description: Customer API token
+    pattern: "^Bearer .+$"
+    x-docusaurus-example-prefix: "Bearer "
     required: true
     type: string
   EARTag:
@@ -37,12 +39,20 @@ paths:
       - $ref: "#/parameters/EARTag"
     post:
       summary: Create a new job
+      description: |
+        Create and configure a new job.
+
+        :::tip
+        The quickest way to create a transcription job is to use the [Speechmatics Portal](https://portal.speechmatics.com/jobs/create/batch).
+        :::
       consumes:
         - multipart/form-data
       parameters:
         - name: config
           in: formData
           type: string
+          x-docusaurus-example-element: textarea
+          x-docusaurus-example-value: "{}"
           description: >-
             JSON containing a [`JobConfig`](/speech-to-text/batch/input#jobconfig-schema) model indicating the type and parameters for the recognition job.
           required: true
