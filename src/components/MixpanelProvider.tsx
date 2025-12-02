@@ -46,8 +46,7 @@ const MixpanelTracker = React.memo(
           capture_text_content: false,
         },
       });
-    }
-  }, [token]);
+    }, [token, mixpanel]);
 
     // Handle user consent - only runs when consent changes
     useEffect(() => {
