@@ -1267,6 +1267,7 @@ components:
         | `not_allowed` | User is not allowed to use this message (is not allowed to perform the action the message would invoke). |
         | `job_error` | Unable to do any work on this job, the server might have timed out etc. |
         | `protocol_error` | Message received was syntactically correct, but could not be accepted due to protocol limitations. This is usually caused by messages sent in the wrong order. |
+        | `start_recognition_timeout` | The timeout for sending StartRecognition has been exceeded (SaaS only) |
         | `quota_exceeded` | Maximum number of concurrent connections allowed for the contract has been reached |
         | `timelimit_exceeded` | Usage quota for the contract has been reached |
         | `idle_timeout` | Idle duration limit was reached (no audio data sent within the last hour), a closing handshake with code 1008 follows this in-band error. |
@@ -1289,6 +1290,7 @@ components:
         - not_allowed
         - job_error
         - protocol_error
+        - start_recognition_timeout
         - quota_exceeded
         - timelimit_exceeded
         - idle_timeout
