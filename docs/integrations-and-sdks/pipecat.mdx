@@ -1,0 +1,92 @@
+---
+id: integrations-pipecat
+description: Learn how to integrate Speechmatics STT with Pipecat.
+---
+
+import CodeBlock from '@theme/CodeBlock';
+
+# Pipecat
+
+Pipecat is an open-source framework for building vocal AI agents. When Speechmatics STT is integrated with Pipecat, you can build real-time voice and multimodal conversational agent specifically tailored to your needs. 
+
+Pipecat is perfect for:
+
+- **Voice AI**: Voice assistants, chatbots, and IVR systems
+- **Transcription**: Realtime transcription of live events or media
+- **Accessibility applications**: Screen readers and assistive technologies
+- **Content creation**: Podcasts, dubbing, audiobooks, and voice-overs
+- **Media production**: News broadcasts and automated announcements
+
+## Features
+
+- Enhanced Conversational Dynamics - real-time transcription, speaker diarization, turn detection, noise robustness using VAD
+- High accuracy and low latency
+- Global accent & dialect support
+- Contextual precision with custom dictionaries
+- Flexible deployment, modular control
+
+## Quickstart
+
+### Requirements
+- Python 3.10 or later
+- uv package manager installed
+- Pipecat >= 1.2
+- Speechmatics Account (https://portal.speechmatics.com)
+
+### Installation
+
+Install the plugin from PyPI:
+
+```python
+pip install "pipecat-ai[speechmatics]"
+```
+
+### Authentication
+
+Speechmatics requires an API key, which you can generate in the [Speechmatics Portal](https://portal.speechmatics.com/settings/api-keys).
+
+### Required environment variable:
+
+```bash
+export SPEECHMATICS_API_KEY=your_api_key
+```
+
+### Usage
+
+```python
+import os
+import asyncio
+from pipecat.services.speechmatics import SpeechmaticsSTTService
+from pipecat.language_configs.language import Language
+
+async def main():
+    # Initialize Speechmatics STT
+    stt = SpeechmaticsSTTService(
+        api_key=os.getenv("SPEECHMATICS_API_KEY"),
+        params=SpeechmaticsSTTService.InputParams(
+            language=Language.EN,
+            enable_diarization=True
+        )
+    )
+
+    # Example audio processing
+    async def process_audio():
+        # In a real app, this would be your audio stream
+        # For demo, we'll simulate a simple audio source
+        audio_chunks = [b"fake_audio_chunk_1", b"fake_audio_chunk_2"]
+        
+        async for transcript in stt.transcribe(audio_chunks):
+            speaker = f"Speaker {transcript.speaker}" if transcript.speaker else "Unknown"
+            print(f"{speaker}: {transcript.text}")
+
+    await process_audio()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## Further reading
+
+[Speechmatics STT Overview](https://docs.speechmatics.com/speech-to-text/)
+
+[SpeechmaticsSTTService](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket)

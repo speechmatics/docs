@@ -1,0 +1,62 @@
+---
+id: integrations-vapi
+description: Learn how to integrate Speechmatics STT with Vapi.
+---
+
+import CodeBlock from '@theme/CodeBlock';
+
+# Vapi
+
+Vapi offers native integration with Speechmatics for real-time, highly accurate speech-to-text in AI voice agents. This integration is designed to handle real-world conversation complexities like background noise, diverse accents, and multiple speakers. 
+
+Vapi is perfect for:
+
+- **Customer Service & Contact Centers**: Automating customer interactions with AI agents that can accurately understand and respond to diverse accents, background noise, and industry-specific jargon, leading to better customer experiences and call routing.
+- **Healthcare & Medical**: Building agents for tasks like appointment booking, patient triage, and clinical note-taking (ambient AI) where precise transcription of medical terminology is critical for compliance and efficiency.
+- **Multi-Lingual Communication**: Developing global voice agents that can operate in over 55 languages, automatically detecting the language spoken and providing accurate transcription and translation.
+- **Meeting & Interview Platforms**: Creating AI assistants that can accurately transcribe multi-speaker conversations in real-time and identify who said what, providing full context for downstream tools and automated summaries.
+- **Educational Tools**: Implementing interactive study partners that can quiz students, elaborate on topics, and provide immediate feedback through natural voice interactions. 
+
+## Features
+
+- **Native Availability**: Speechmatics is a natively available transcriber option within the Vapi platform, simplifying the setup process for developers.
+- **High Accuracy & Low Latency**: The integration provides an accurate and low-latency input layer, crucial for natural, real-time conversations with AI agents.
+- **Speaker Diarization**: Speechmatics is the only transcriber on Vapi that provides speaker diarization, which identifies and labels who said what in multi-speaker scenarios.
+- **Flexible Deployment**: Speechmatics STT is available in Vapi's managed platform.
+
+## Quickstart
+
+### Requirements
+- Vapi >= 1.2
+- Speechmatics Account (https://portal.speechmatics.com)
+
+### UI Integration
+
+The Vapi UI provides a simple way to integrate Speechmatics STT into your voice AI agent. 
+
+1. Navigate to assistants tab in the Vapi dashboard.
+2. Choose an existing assistant or create a new one.
+3. Access the transcriber tab or scroll down to the transcriber module settings.
+4. Select Speechmatics in the provider dropdown menu.
+
+### Python SDK 
+```python
+from vapi import Vapi
+
+client = Vapi(token="YOUR_VAPI_API_KEY")
+
+assistant = client.assistants.create(
+    name="Support Agent",
+    transcriber={
+        "provider": "speechmatics",
+        "model": "enhanced",
+        "language": "en"
+    },
+)
+```
+
+### Best Practices
+
+- **Operating Point** Select the enhanced model for the best accuracy in real-time voice agents.
+- **Region** Choose the region closest to your users to optimize latency.
+- **Custom Vocabulary** Use this feature to add key terms (e.g., product names) and leverage the sounds-like option for tricky pronunciations.

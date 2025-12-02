@@ -7,16 +7,25 @@ export default {
     type: "generated-index",
   },
   items: [
-    // docs/integrations/sidebar.ts
-    {
+{
   type: "doc",
   label: "Overview",
   id: "integrations/integrations-overview",
 },
 {
   type: "doc",
-  label: "Vapi",
-  id: "integrations/vapi/integrations-vapi-vapi",
+  label: "LiveKit",
+  id: "integrations/integrations-livekit",
 },
+{
+  type: "doc",
+  label: "Pipecat",
+  id: "integrations/integrations-pipecat",
+},
+{
+  type: "doc",
+  label: "Vapi",
+  id: "integrations/integrations-vapi",
+},  
   ],
 } as const;
