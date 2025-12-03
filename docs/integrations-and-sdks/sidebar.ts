@@ -33,12 +33,12 @@ export default {
       {
         type: "doc",
         id: "integrations-and-sdks/sdks/stt-sdk/index",
-        label: "STT SDK",
+        label: "Speech to text SDKs",
       },
       {
         type: "doc",
         id: "integrations-and-sdks/sdks/tts-sdk/tts-sdk",
-        label: "TTS SDK",
+        label: "Text to speech SDKs",
       },
     ],
   },
