@@ -30,6 +30,11 @@ export default {
     collapsible: true,
     collapsed: true,
     items: [
+    {
+        type: "doc",
+        id: "integrations-and-sdks/sdks/index",
+        label: "Overview",
+      },
       {
         type: "doc",
         id: "integrations-and-sdks/sdks/stt-sdk/index",
@@ -38,7 +43,12 @@ export default {
       {
         type: "doc",
         id: "integrations-and-sdks/sdks/tts-sdk/tts-sdk",
-        label: "Text to speech SDKs",
+        label: "Text to speech SDK",
+      },
+       {
+        type: "doc",
+        id: "integrations-and-sdks/sdks/voice-sdk/voice-sdk",
+        label: "Voice SDKs",
       },
     ],
   },
