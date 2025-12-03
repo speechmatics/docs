@@ -12,9 +12,9 @@ export default {
     gettingStartedSidebar,
     speechToTextSidebar,
     textToSpeechSidebar,
+    integrationsAndSDKSidebar,
     voiceAgentsFlowSidebar,
     deploymentsSidebar,
-    integrationsAndSDKSidebar,
     {
       type: "category",
       label: "Developer Resources",
