@@ -1,0 +1,55 @@
+---
+title: SDKs 
+description: Learn how to use the Speechmatics SDKs
+---
+
+Speechmatics SDKs provide a simple and efficient way to integrate an STT or TTS service into applications. 
+It offers a range of features, including speaker diarization, turn detection, noise robustness, and global accent support. 
+
+### Developer Quickstart
+
+import { LinkCard } from "@site/src/theme/LinkCard";
+import { Flex, Grid } from "@radix-ui/themes";
+import {
+  ChevronsRightIcon,
+  FileAudio,
+  Languages,
+  Tags,
+  Globe,
+  BookPlus,
+  Speech,
+  ChartLine,
+} from "lucide-react";
+
+Use speech to text to transcribe using one of the modes:
+- [Realtime processing](#realtime-processing): Stream audio from an input device or file and receive instant updates of the transcription as it happens
+- [Batch processing](#batch-processing): Submit an audio file and receive a complete text transcription once the processing is finished
+- [Text to speech](#text-to-speech): Convert text to speech and stream the audio to an output device or file
+
+## Developer quickstart
+
+<Grid columns={{initial: "1", md: "2"}} gap="3" mb="5">
+  <LinkCard
+    icon={<ChevronsRightIcon/>}
+    direction="column"
+    title="Transcribe in real-time"
+    description="Instantly convert streaming audio to text with Realtime processing"
+    href="/speech-to-text/realtime/quickstart"
+  />
+
+  <LinkCard
+    icon={<FileAudio/>}
+    direction="column"
+    title="Transcribe a file"
+    description="Submit an audio file and receive a complete text transcription once the processing is finished"
+    href="/speech-to-text/batch/quickstart"
+  />
+
+  <LinkCard
+    icon={<FileAudio/>}
+    direction="column"
+    title="Text to speech"
+    description="Submit an audio file and receive a complete text transcription once the processing is finished"
+    href="/integrations-and-sdks/sdks/tts-sdk"
+  />
+</Grid>

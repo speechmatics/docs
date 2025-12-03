@@ -4,7 +4,7 @@ import gettingStartedSidebar from "./docs/get-started/sidebar";
 import speechToTextSidebar from "./docs/speech-to-text/sidebar";
 import textToSpeechSidebar from "./docs/text-to-speech/sidebar";
 import voiceAgentsFlowSidebar from "./docs/voice-agents-flow/sidebar";
-import integrationsSidebar from "./docs/integrations-and-sdks/sidebar";
+import integrationsAndSDKSidebar from "./docs/integrations-and-sdks/sidebar"; 
 
 
 export default {
@@ -14,7 +14,7 @@ export default {
     textToSpeechSidebar,
     voiceAgentsFlowSidebar,
     deploymentsSidebar,
-    integrationsSidebar,
+    integrationsAndSDKSidebar,
     {
       type: "category",
       label: "Developer Resources",
