@@ -56,14 +56,14 @@ export SPEECHMATICS_API_KEY=your_api_key
 ```python
 import os
 import asyncio
-from pipecat.services.speechmatics import SpeechmaticsSTTService
+from pipecat.services.speechmatics import SpeechmaticsttTService
 from pipecat.language_configs.language import Language
 
 async def main():
     # Initialize Speechmatics STT
-    stt = SpeechmaticsSTTService(
+    stt = SpeechmaticsttTService(
         api_key=os.getenv("SPEECHMATICS_API_KEY"),
-        params=SpeechmaticsSTTService.InputParams(
+        params=SpeechmaticsttTService.InputParams(
             language=Language.EN,
             enable_diarization=True
         )

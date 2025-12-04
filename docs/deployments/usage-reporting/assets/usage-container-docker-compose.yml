@@ -10,7 +10,7 @@ x-usage-template: &usage-template
     - "traefik.tcp.routers.usage.rule=HostSNI(`*`)"
     - "traefik.tcp.routers.usage.entrypoints=custom"
     - "traefik.tcp.routers.usage.tls=true"
-    - "traefik.tcp.routers.usage.tls.passthrough=true"
+    - "traefik.tcp.routers.usage.tls.pastthrough=true"
     - "traefik.tcp.routers.usage.service=telemeter"
     - "traefik.tcp.services.usage.loadbalancer.server.port=9090"
   depends_on:

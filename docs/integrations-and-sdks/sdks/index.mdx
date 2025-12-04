@@ -22,10 +22,15 @@ import {
   BotMessageSquare,
 } from "lucide-react";
 
-Use speech to text to transcribe using one of the modes:
-- [Realtime processing](#realtime-processing): Stream audio from an input device or file and receive instant updates of the transcription as it happens
-- [Batch processing](#batch-processing): Submit an audio file and receive a complete text transcription once the processing is finished
-- [Text to speech](#text-to-speech): Convert text to speech and stream the audio to an output device or file
+Use speech to text to transcribe using one of the modes -
+- Real-time stt processing: Stream audio from an input device or file and receive instant updates of the transcription as it happens
+- Batch stt processing: Submit an audio file and receive a complete text transcription once the processing is finished
+
+Or,
+- Convert text to speech and stream the audio to an output device or file
+
+Or, 
+- Build conversational AI voice agents with Flow SDK
 
 ## Developer quickstart
 
@@ -50,7 +55,7 @@ Use speech to text to transcribe using one of the modes:
     icon={<FileAudio/>}
     direction="column"
     title="Text to speech"
-    description="Submit an audio file and receive a complete text transcription once the processing is finished"
+    description="Submit text to convert to speech and stream the audio to an output device or file"
     href="/integrations-and-sdks/sdks/tts-sdk"
   />
    <LinkCard

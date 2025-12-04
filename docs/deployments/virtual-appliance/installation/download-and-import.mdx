@@ -91,7 +91,7 @@ Once the import has finished, ensure the VM is configured to use our recommended
 
 Before booting the VM you may also wish to consult the [System Requirements](/deployments/virtual-appliance/installation/system-requirements#virtual-appliance-system-requirements) page and set your CPU and memory quantities as desired for your expected workload.
 
-Note that VMware Workstation does not currently support PCI passthrough, which is a requirement for running GPU transcription. As such, only CPU transcription is possible.
+Note that VMware Workstation does not currently support PCI pastthrough, which is a requirement for running GPU transcription. As such, only CPU transcription is possible.
 
 :::info **Note**
 When running on a Windows host we've observed that best performance is achieved by launching VMware Workstation using the `Run as administrator` option.
@@ -350,7 +350,7 @@ qm set 123 -cores 6 -memory 24576
 
 If you wish to enable GPU transcription you must carry out these additional steps.
 
-GPU transcription requires PCIe passthrough of a [suitable graphics card](/deployments/container/gpu-speech-to-text#system-requirements) from the host to the virtual appliance. A prerequisite of this is to use a suitable virtual machine type along with a UEFI bios, like so:
+GPU transcription requires PCIe pastthrough of a [suitable graphics card](/deployments/container/gpu-speech-to-text#system-requirements) from the host to the virtual appliance. A prerequisite of this is to use a suitable virtual machine type along with a UEFI bios, like so:
 
 ```bash
 qm set 123 -machine q35 -bios ovmf
@@ -369,9 +369,9 @@ Next, in the web GUI, click on the VMs `Hardware` tab, then click `Add` -> `PCI 
 
 An example is shown below:
 
-![Proxmox PCI passthrough](/img/appliance-images/proxmox-gpu.png)
+![Proxmox PCI pastthrough](/img/appliance-images/proxmox-gpu.png)
 
-Note that you may require different values depending on your hardware. For more details see the [official documentation](https://pve.proxmox.com/pve-docs/chapter-qm.html#qm_pci_passthrough).
+Note that you may require different values depending on your hardware. For more details see the [official documentation](https://pve.proxmox.com/pve-docs/chapter-qm.html#qm_pci_pastthrough).
 
 ### First boot
 

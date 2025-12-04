@@ -1,5 +1,5 @@
 import { useSidebarBreadcrumbs } from "@docusaurus/plugin-content-docs/client";
-import DocBreadcrumbsStructuredData from "@theme/DocBreadcrumbs/StructuredData";
+import DocBreadcrumbsttructuredData from "@theme/DocBreadcrumbs/StructuredData";
 import React, { Fragment, type ReactNode } from "react";
 
 import { Flex, Text } from "@radix-ui/themes";
@@ -19,7 +19,7 @@ export default function DocBreadcrumbs(): ReactNode {
 
   return (
     <>
-      <DocBreadcrumbsStructuredData breadcrumbs={breadcrumbs} />
+      <DocBreadcrumbsttructuredData breadcrumbs={breadcrumbs} />
       <Flex gap="2" align="center">
         {spliced.map((item, idx, { length }) => {
           if (item.type !== "category" && !item.docId?.includes("index")) {
