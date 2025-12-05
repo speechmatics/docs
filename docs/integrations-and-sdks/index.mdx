@@ -1,54 +1,118 @@
 ---
-id: integrations-and-sdks-overview
-description: Learn how to integrate Speechmatics STT with voice AI applications.    
+id: Overview
+description: Discover how to connect to Speechmatics via integrations and SDKs.
 ---
-
 import { LinkCard } from "@site/src/theme/LinkCard";
 import { Flex, Grid } from "@radix-ui/themes";
 import { ChevronsRightIcon, FileAudio, BotMessageSquare, BookOpen, Braces } from "lucide-react";
 
-# Speechmatics integrations
+Discover which integrations and SDKs to use to add Speechmatics speech and voice agents to your stack.
 
-Integrating Speechmatics as your speech-to-text (STT) engine provides a foundational upgrade to any voice application.
+Use this page to quickly choose how you connect to Speechmatics: through popular voice agent platforms, or directly from your code using our SDKs. Start with the option that best matches your current stack, then follow its quickstart.
 
-## Explore integrations
+## Voice agent orchestrator integrations
+
+Choose an integration to build accurate, low-latency voice agents rapidly with the Speechmatics API available in these frameworks.
 
 <Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
   <LinkCard
     title="Vapi"
-    description="Real-time transcription for voice AI in vapi"
+    description="Turnkey voice agent platform. Deploy fast with no code.
+    Best for
+• non-technical builders
+• rapid prototyping"
     icon={<BotMessageSquare/>}
-    href="/integrations-and-sdks/integrations-and-sdks-vapi"
+    href="/integrations-and-sdks/vapi"
   />
   <LinkCard
     title="LiveKit"
-    description="Real-time transcription for voice AI in LiveKit"
+    description="Open-source framework for building agents in code on LiveKit’s WebRTC infra
+    Best for
+• engineers
+• simple setup"
     icon={<ChevronsRightIcon/>}
     href="/integrations-and-sdks/integrations-and-sdks-livekit"
   />
   <LinkCard
     title="Pipecat"
-    description="Real-time transcription for voice AI in Pipecat"
+    description="Open-source framework with full control of the voice pipeline in code
+    Best for
+• power builders
+• complex agents"
     icon={<FileAudio/>}
     href="/integrations-and-sdks/integrations-and-sdks-pipecat"
   />
 </Grid>
 
-## Benefits
-Speechmatics is built for real-world application, handling the nuances of natural human conversation.
+## SDKs
 
-**Unmatched Accuracy**: 
-- The most accurate realtime STT API engine, delivering final transcripts in less than 1s without compromising accuracy. 
-- This balance of speed and precision is critical for voice agents, allowing them to respond naturally to users while keeping the conversation flow intact.
+Use an SDK if you want to call Speechmatics directly from your own services or applications.
 
-**Noise Robustness**: 
-- Our models are trained to understand speech in noisy environments, filter out background noise (cafes, call centers, wind), ensuring accurate and reliable transcriptions.
+### Speech to text
 
-**Global accent & dialect support**: 
-- Speechmatics STT understands diverse accents without needing regional configuration
+<Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
+  <LinkCard
+    title="Python SDK (Realtime)"
+    description=""
+    icon={<BotMessageSquare/>}
+    href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/rt"
+  />
+    <LinkCard
+    title="JavaScript SDK (Realtime)"
+    description=""
+    icon={<BotMessageSquare/>}
+    href="https://github.com/speechmatics/speechmatics-javascript-sdk/tree/main/sdk/rt"
+  />
+  <LinkCard
+    title=".NET SDK (Realtime)"
+    description=""
+    icon={<FileAudio/>}
+    href="https://github.com/speechmatics/speechmatics-dotnet-community-sdk"
+  />
+</Grid>
 
-**Low latency for realtime transcription**: 
-- Speechmatics STT delivers transcripts in milliseconds, preventing the "awkward silence" that breaks immersion in voice bots.
 
-**Contextual precision**: 
-- Features like [custom dictionary](/speech-to-text/features/custom-dictionary) allow you to teach the AI brand names, acronyms, and domain-specific jargon (e.g., medical or legal terms) to ensure 100% recognition rates on high-value keywords.
+
+<Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
+<LinkCard
+    title="Python SDK (Batch)"
+    description=""
+    icon={<ChevronsRightIcon/>}
+    href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/batch"
+  />
+  <LinkCard
+    title="JavaScript SDK (Batch)"
+    description=""
+    icon={<ChevronsRightIcon/>}
+    href="https://github.com/speechmatics/speechmatics-javascript-sdk/tree/main/sdk/batch"
+  />
+  <LinkCard
+    title="Rust SDK (Realtime & batch)"
+    description=""
+    icon={<FileAudio/>}
+    href="https://github.com/speechmatics/speechmatics-rust-sdk"
+  />
+</Grid>
+
+
+### Text to speech
+
+<Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
+<LinkCard
+    title="Python SDK (TTS)"
+    description=""
+    icon={<ChevronsRightIcon/>}
+    href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/tts"
+  />
+
+
+### Voice Agents
+
+<Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
+<LinkCard
+    title="Python SDK (Voice Agents)"
+    description=""
+    icon={<ChevronsRightIcon/>}
+    href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/voice"
+  />
+</Grid>

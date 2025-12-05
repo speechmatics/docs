@@ -6,22 +6,22 @@ export default {
   items: [
     {
       type: "doc",
-      id: "integrations-and-sdks/integrations-and-sdks-overview",
+      id: "integrations-and-sdks/Overview",
       label: "Overview",
     },
     {
       type: "doc",
-      id: "integrations-and-sdks/integrations-and-sdks-vapi",
+      id: "integrations-and-sdks/vapi",
       label: "Vapi",
     },
     {
       type: "doc",
-      id: "integrations-and-sdks/integrations-and-sdks-livekit",
+      id: "integrations-and-sdks/livekit",
       label: "LiveKit",
     },
     {
       type: "doc",
-      id: "integrations-and-sdks/integrations-and-sdks-pipecat",
+      id: "integrations-and-sdks/pipecat",
       label: "Pipecat",
     },
     {

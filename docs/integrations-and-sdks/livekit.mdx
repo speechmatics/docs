@@ -1,87 +1,63 @@
 ---
-id: integrations-and-sdks-livekit
+id: livekit
 description: Learn how to integrate Speechmatics STT with LiveKit Agents.
 ---
 
-# LiveKit Agents
+# LiveKit integration
 
 LiveKit Agents is a framework for building real-time, voice-enabled AI applications that connect with LiveKit rooms.
 With the Speechmatics STT plugin, you enable your voice agent to transcribe live audio in real-time, along with speaker diarization, turn detection and noise robustness. 
 
-LiveKit Agents is perfect for:
+LiveKit integrations are perfect for:
 
-- **Voice AI**: Voice assistants, chatbots, and IVR systems
-- **Translation**: Realtime transcription of live events or recordings
-- **Accessibility applications**: Screen readers and assistive technologies, in-app help widgets
-- **Media production**: News broadcasts, automated announcements
+- **Voice AI**: voice assistants, chatbots, and IVR systems
+- **Transcription**: live events or recordings
+- **Accessibility**: screen readers and assistive technologies, in-app help widgets
+- **Media**: news broadcasts, automated announcements
 
 ## Features 
 
-Using Speechmatics STT you can:
-- Obtain partial and final results, 
-- Incorporate speaker diarization, 
-- Turn detection (end of utterance detection)
-- Noise robustness 
-- Global accent & dialect support
-- Low latency
-- Custom dictionaries
+- **Realtime transcription**: instant, accurate speech-to-text
+- **Speaker diarization**: identify and separate multiple speakers automatically
+- **Turn detection**: detect natural speech boundaries and pauses
+- **Noise robustness**: maintain accuracy in challenging environments
+- **Global language support**: works with diverse accents and dialects
+- **Partial results**: receive interim transcriptions for faster response times
+- **High accuracy**: industry-leading word recognition for natural conversations
 
 ## Quickstart
-
-This section includes a basic example and some reference material. 
-For more detailed examples, please see the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy).
 
 ### Requirements
 
 - LiveKit >= 1.2
-- Speechmatics API key. You can generate one [here](https://portal.speechmatics.com/settings/api-key).
-
+- [Speechmatics account](https://portal.speechmatics.com). 
+- Speechmatics API key. You can generate one in the [Portal](https://portal.speechmatics.com/settings/api-keys).
 
 ### Installation
-
-Install the plugin from PyPI:
 
 ```python
 uv add "livekit-agents[speechmatics]~=1.2"
 ```
-### Authentication
-
-The Speechmatics STT plugin requires an API key. You can generate your API key in the [Speechmatics Portal](https://portal.speechmatics.com/settings/api-keys).
-Set the environment variable `SPEECHMATICS_API_KEY` in your .env file.
-
-```bash
-export SPEECHMATICS_API_KEY=your_api_key
-```
 
 ### Usage
 
-Use the Speechmatics STT in an AgentSession or as a standalone transcription service. 
-
 ```python
 import os
-from dotenv import load_dotenv
+import asyncio
+
 from livekit.agents import AgentSession, cli
 from livekit.plugins import speechmatics
 
-# Load API keys from .env file
-load_dotenv()
-
-# Initialize the agent with Speechmatics STT
 async def run_agent(room):
     session = AgentSession(
         stt=speechmatics.STT(
-            enable_diarization=True,
-            end_of_utterance_silence_trigger=0.3
-        )
+            api_key=os.environ["SPEECHMATICS_API_KEY"],
+        ),
     )
-    
-    # Process incoming audio
-    @session.on("transcription_received")
-    async def on_transcription(event):
-        print(f"Speaker {event.speaker}: {event.text}")
-
-    await session.start(room)
+    await session.join(room)
 
 if __name__ == "__main__":
     cli.run_app(run_agent)
 ```
+
+For detailed examples, please see the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy).

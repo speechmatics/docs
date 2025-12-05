@@ -1,13 +1,13 @@
 ---
-id: integrations-and-sdks-pipecat
+id: pipecat
 description: Learn how to integrate Speechmatics STT with Pipecat.
 ---
 
 import CodeBlock from '@theme/CodeBlock';
 
-# Pipecat
+# Pipecat integration
 
-Pipecat is an open-source framework for building vocal AI agents. When Speechmatics STT is integrated with Pipecat, you can build real-time voice and multimodal conversational agent specifically tailored to your needs. 
+Pipecat is an open-source framework for building voice agents. When Speechmatics STT is integrated with Pipecat, you can build real-time voice and multimodal conversational agent specifically tailored to your needs. 
 
 Pipecat is perfect for:
 
@@ -19,68 +19,54 @@ Pipecat is perfect for:
 
 ## Features
 
-- Enhanced Conversational Dynamics - real-time transcription, speaker diarization, turn detection, noise robustness using VAD
-- High accuracy and low latency
-- Global accent & dialect support
-- Contextual precision with custom dictionaries
-- Flexible deployment, modular control
-
+- **Realtime transcription**: low-latency speech-to-text for responsive agents
+- **Speaker diarization**: track who’s speaking in multi-participant sessions
+- **Turn detection**: capture natural speech boundaries automatically
+- **Noise robustness**: maintain accuracy in challenging environments
+- **Custom vocabularies**: boost recognition for domain-specific terms
+- **Flexible deployment**: use on-device, cloud, or hybrid Pipecat setups
 ## Quickstart
 
 ### Requirements
 - Python 3.10 or later
 - uv package manager installed
 - Pipecat >= 1.2
-- Speechmatics Account (https://portal.speechmatics.com)
+- Speechmatics account. You can create one [here](https://portal.speechmatics.com). 
+- Speechmatics API key. You can generate one in the [Portal](https://portal.speechmatics.com/settings/api-keys).
 
-### Installation
-
-Install the plugin from PyPI:
-
+#### Installation
 ```python
 pip install "pipecat-ai[speechmatics]"
 ```
-
-### Authentication
-
-Speechmatics requires an API key, which you can generate in the [Speechmatics Portal](https://portal.speechmatics.com/settings/api-keys).
-
-### Required environment variable:
-
+### Usage
+Set the environment variable SPEECHMATICS_API_KEY to your Speechmatics API key.
 ```bash
 export SPEECHMATICS_API_KEY=your_api_key
 ```
 
-### Usage
-
 ```python
-import os
 import asyncio
+import os
+
 from pipecat.services.speechmatics import SpeechmaticsSTTService
-from pipecat.language_configs.language import Language
+
 
 async def main():
-    # Initialize Speechmatics STT
     stt = SpeechmaticsSTTService(
-        api_key=os.getenv("SPEECHMATICS_API_KEY"),
-        params=SpeechmaticsSTTService.InputParams(
-            language=Language.EN,
-            enable_diarization=True
-        )
+        api_key=os.environ["SPEECHMATICS_API_KEY"],
     )
 
-    # Example audio processing
-    async def process_audio():
-        # In a real app, this would be your audio stream
-        # For demo, we'll simulate a simple audio source
-        audio_chunks = [b"fake_audio_chunk_1", b"fake_audio_chunk_2"]
-        
-        async for transcript in stt.transcribe(audio_chunks):
-            speaker = f"Speaker {transcript.speaker}" if transcript.speaker else "Unknown"
-            print(f"{speaker}: {transcript.text}")
+    async def audio_stream():
+        # Replace with your real audio source.
+        yield from [b"fake_audio_chunk_1", b"fake_audio_chunk_2"]
 
-    await process_audio()
+    async for result in stt.transcribe(audio_stream()):
+        speaker = f"Speaker {result.speaker}" if result.speaker else "Unknown"
+        print(f"{speaker}: {result.text}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+For detailed examples, please see the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy).

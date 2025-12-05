@@ -1,34 +1,36 @@
 ---
-id: integrations-and-sdks-vapi
+id: vapi
 description: Learn how to integrate Speechmatics STT with Vapi.
 ---
 
 import CodeBlock from '@theme/CodeBlock';
 
-# Vapi
+# Vapi integration
 
-Vapi offers native integration with Speechmatics for real-time, highly accurate speech-to-text in AI voice agents. This integration is designed to handle real-world conversation complexities like background noise, diverse accents, and multiple speakers. 
+Vapi offers native integration with Speechmatics for real-time, highly accurate speech-to-text in AI voice agents. 
+This integration is designed for rapid deployment and handles real-world conversation complexities, such as background noise, diverse accents, and multiple speakers, with no code required. 
 
 Vapi is perfect for:
 
-- **Customer Service & Contact Centers**: Automating customer interactions with AI agents that can accurately understand and respond to diverse accents, background noise, and industry-specific jargon, leading to better customer experiences and call routing.
-- **Healthcare & Medical**: Building agents for tasks like appointment booking, patient triage, and clinical note-taking (ambient AI) where precise transcription of medical terminology is critical for compliance and efficiency.
-- **Multi-Lingual Communication**: Developing global voice agents that can operate in over 55 languages, automatically detecting the language spoken and providing accurate transcription and translation.
-- **Meeting & Interview Platforms**: Creating AI assistants that can accurately transcribe multi-speaker conversations in real-time and identify who said what, providing full context for downstream tools and automated summaries.
-- **Educational Tools**: Implementing interactive study partners that can quiz students, elaborate on topics, and provide immediate feedback through natural voice interactions. 
+- **Customer service & contact centers**: Automating customer interactions with AI agents that can accurately understand and respond to diverse accents, background noise, and industry-specific jargon, leading to better customer experiences and call routing.
+- **Healthcare & medical**: Building agents for tasks like appointment booking, patient triage, and clinical note-taking (ambient AI) where precise transcription of medical terminology is critical for compliance and efficiency.
+- **Multi-lingual communication**: Developing global voice agents that can operate in over 55 languages, automatically detecting the language spoken and providing accurate transcription and translation.
+- **Meeting & interview platforms**: Creating AI assistants that can accurately transcribe multi-speaker conversations in real-time and identify who said what, providing full context for downstream tools and automated summaries.
+- **Educational tools**: Implementing interactive study partners that can quiz students, elaborate on topics, and provide immediate feedback through natural voice interactions. 
 
 ## Features
 
-- **Native Availability**: Speechmatics is a natively available transcriber option within the Vapi platform, simplifying the setup process for developers.
-- **High Accuracy & Low Latency**: The integration provides an accurate and low-latency input layer, crucial for natural, real-time conversations with AI agents.
-- **Speaker Diarization**: Speechmatics is the only transcriber on Vapi that provides speaker diarization, which identifies and labels who said what in multi-speaker scenarios.
-- **Flexible Deployment**: Speechmatics STT is available in Vapi's managed platform.
+- **Native availability and flexible deployment**: Speechmatics is embedded within the Vapi platform, simplifying the setup process.
+- **High accuracy & low latency**: The Speechmatics integration provides an accurate and low-latency input layer, crucial for natural conversations with AI agents.
+- **Speaker diarization**: Speechmatics is the only transcriber on Vapi that provides speaker diarization, which identifies and labels who said what in multi-speaker scenarios.
 
 ## Quickstart
 
 ### Requirements
-- Vapi >= 1.2
-- Speechmatics Account (https://portal.speechmatics.com)
+[VAPI Account](https://vapi.ai)
+[VAPI Private Key](https://dashboard.vapi.ai)
+[Speechmatics Account](https://portal.speechmatics.com) 
+[Speechmatics API Key](https://portal.speechmatics.com/settings/api-keys): Add to VAPI Dashboard under Provider Keys
 
 ### UI Integration
 
@@ -37,26 +39,31 @@ The Vapi UI provides a simple way to integrate Speechmatics STT into your voice 
 1. Navigate to assistants tab in the Vapi dashboard.
 2. Choose an existing assistant or create a new one.
 3. Access the transcriber tab or scroll down to the transcriber module settings.
-4. Select Speechmatics in the provider dropdown menu.
+4. Select Speechmatics in the provider dropdown menu, and add your Speechmatics API key, which can be generated in the [Portal](https://portal.speechmatics.com/settings/api-keys).
 
-### Python SDK 
+### Usage 
 ```python
+import os
 from vapi import Vapi
+from vapi.types import SpeechmaticsTranscriber
 
-client = Vapi(token="YOUR_VAPI_API_KEY")
+client = Vapi(token=os.environ["VAPI_API_KEY"])
 
 assistant = client.assistants.create(
-    name="Support Agent",
-    transcriber={
-        "provider": "speechmatics",
-        "model": "enhanced",
-        "language": "en"
-    },
+    name="Speechmatics Quickstart",
+    transcriber=SpeechmaticsTranscriber(
+        provider="speechmatics",
+        language="en",
+    ),
 )
+
+print(f"Assistant ID: {assistant.id}")
 ```
 
-### Best Practices
+### Best practices
 
-- **Operating point** Select the enhanced model for the best accuracy in real-time voice agents.
-- **Region** Choose the region closest to your users to optimize latency.
-- **Custom vocabulary** Use this feature to add key terms (e.g., product names) and leverage the "sounds like" option for tricky pronunciations.
+- **Operating point**: Select the enhanced model for the best accuracy in real-time voice agents.
+- **Region**: Choose the region closest to optimize latency.
+- **Custom vocabulary**: add key terms (e.g., product names, medical terminology) and leverage the "sounds like" option for tricky pronunciations.
+
+For detailed examples, please see the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy).
