@@ -26,7 +26,7 @@ Enter a name for your API key and then store it somewhere safe when you have gen
 Your API key needs to be included in the header of all requests to the Speechmatics Jobs API. For example:
 
 ```bash
-curl -X GET "https://asr.api.speechmatics.com/v2/jobs/" \
+curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   -H "Authorization: Bearer $API_KEY"
 ```
 
@@ -44,7 +44,7 @@ For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWT
 For example:
 
 ```bash
-wss://eu2.rt.speechmatics.com/v2?jwt=$TEMP_KEY
+wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
 ```
 
   </TabItem>
@@ -53,34 +53,36 @@ wss://eu2.rt.speechmatics.com/v2?jwt=$TEMP_KEY
 
 ## Supported endpoints
 
+All production endpoints are active and highly available. You can use multiple regions to balance requests or provide a failover in the event of disruption to one region.
+
+For Enterprise customers, if you attempt to use an endpoint for a region you are not contracted to use, that request will be unsuccessful. If you want to use a different region, please contact your account manager.
+
+### Batch SaaS endpoints
+
 Speechmatics Batch SaaS supports the following endpoints for production use:
 
-| Customer type | Region | Environment | Endpoints                                                                                             |
-| ------------- | ------ | ----------- | ----------------------------------------------------------------------------------------------------- |
-| All     | N/A    | N/A         | **asr.api.speechmatics.com**                                                                          |
-| All    | EU     | EU1         | **eu.asr.api.speechmatics.com**<br/>**eu1.asr.api.speechmatics.com**<br/>**asr.api.speechmatics.com** |
-| Enterprise    | EU     | EU2         | **eu2.asr.api.speechmatics.com**                                                                      |
-| All    | US     | US1         | **us.asr.api.speechmatics.com**<br/>**us1.asr.api.speechmatics.com**                                  |
-| Enterprise    | US     | US2         | **us2.asr.api.speechmatics.com**                                                                      |
-| All    | AU     | AU1         | **au1.asr.api.speechmatics.com**                                                                      |
+| Customer type | Region          | Endpoint                         |
+| ------------- | --------------- | -------------------------------- |
+| All           | EU1 (Europe)    | **eu1.asr.api.speechmatics.com** |
+| Enterprise    | EU2 (Europe)    | **eu2.asr.api.speechmatics.com** |
+| All           | US1 (USA)       | **us1.asr.api.speechmatics.com** |
+| Enterprise    | US2 (USA)       | **us2.asr.api.speechmatics.com** |
+| All           | AU1 (Australia) | **au1.asr.api.speechmatics.com** |
+
+Jobs are created in the region corresponding to the endpoint used. You must use the same endpoint for all requests relating to a specific job.
+
+:::warning
+The EU2 and US2 Batch SaaS endpoints are provided for enterprise customer high availability and failover purposes only. Jobs created in these environments will not be visible in the portal.
+:::
+
+### Real-time SaaS endpoints
 
 Speechmatics Real-Time SaaS supports the following endpoints for production use:
 
-| Customer type | Region | Environment | Endpoints               |
-| ------------- | ------ | ----------- | ----------------------- |
-| All     | EU     | EU2         | eu2.rt.speechmatics.com |
-| All    | EU     | EU1         | neu.rt.speechmatics.com |
-| All    | US     | US1         | wus.rt.speechmatics.com |
-
-All production environments are active and highly available. You can use multiple environments to balance requests or provide a failover in the event of disruption to one environment.
-
-Jobs are created in the environment corresponding to the endpoint used. You must use the same endpoint for all requests relating to a specific job.
-
-If you attempt to use an endpoint for a region you are not contracted to use, that request will be unsuccessful. If you want to use a different region, please contact your account manager.
-
-:::warning
-The EU2 and US2 environments are provided for enterprise customer high availability and failover purposes only. Jobs created in these environments will not be visible in the portal.
-:::
+| Customer type | Region       | Endpoint               |
+| ------------- | ------------ | ---------------------- |
+| All           | EU1 (Europe) | eu.rt.speechmatics.com |
+| All           | US1 (USA)    | us.rt.speechmatics.com |
 
 ## Temporary keys
 
@@ -141,7 +143,7 @@ To authorize a request using a temporary key, simply use it in place of the API 
 For example, if you created a temporary key associated with a given `client_ref` you can retrieve those jobs as follows:
 
 ```bash
-curl -X GET "https://asr.api.speechmatics.com/v2/jobs/" \
+curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   -H "Authorization: Bearer $TEMP_KEY"
 ```
 

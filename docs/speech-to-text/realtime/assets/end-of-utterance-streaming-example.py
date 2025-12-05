@@ -6,7 +6,7 @@ import asyncio
 
 API_KEY = "YOUR_API_KEY"
 LANGUAGE = "en"
-CONNECTION_URL = f"wss://eu2.rt.speechmatics.com/v2"
+CONNECTION_URL = f"wss://eu.rt.speechmatics.com/v2"
 
 # Audio recording parameters
 SAMPLE_RATE = 16000
