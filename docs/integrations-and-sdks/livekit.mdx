@@ -1,0 +1,63 @@
+---
+id: livekit
+description: Learn how to integrate Speechmatics STT with LiveKit Agents.
+---
+
+# LiveKit integration
+
+LiveKit Agents is a framework for building real-time, voice-enabled AI applications that connect with LiveKit rooms.
+With the Speechmatics STT plugin, you enable your voice agent to transcribe live audio in real-time, along with speaker diarization, turn detection and noise robustness. 
+
+LiveKit integrations are perfect for:
+
+- **Voice AI**: voice assistants, chatbots, and IVR systems
+- **Transcription**: live events or recordings
+- **Accessibility**: screen readers and assistive technologies, in-app help widgets
+- **Media**: news broadcasts, automated announcements
+
+## Features 
+
+- **Realtime transcription**: instant, accurate speech-to-text
+- **Speaker diarization**: identify and separate multiple speakers automatically
+- **Turn detection**: detect natural speech boundaries and pauses
+- **Noise robustness**: maintain accuracy in challenging environments
+- **Global language support**: works with diverse accents and dialects
+- **Partial results**: receive interim transcriptions for faster response times
+- **High accuracy**: industry-leading word recognition for natural conversations
+
+## Quickstart
+
+### Requirements
+
+- LiveKit >= 1.2
+- [Speechmatics account](https://portal.speechmatics.com). 
+- Speechmatics API key. You can generate one in the [Portal](https://portal.speechmatics.com/settings/api-keys).
+
+### Installation
+
+```python
+uv add "livekit-agents[speechmatics]~=1.2"
+```
+
+### Usage
+
+```python
+import os
+import asyncio
+
+from livekit.agents import AgentSession, cli
+from livekit.plugins import speechmatics
+
+async def run_agent(room):
+    session = AgentSession(
+        stt=speechmatics.STT(
+            api_key=os.environ["SPEECHMATICS_API_KEY"],
+        ),
+    )
+    await session.join(room)
+
+if __name__ == "__main__":
+    cli.run_app(run_agent)
+```
+
+For detailed examples, please see the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy).
