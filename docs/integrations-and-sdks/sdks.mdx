@@ -1,0 +1,94 @@
+---
+title: SDKs
+description: Learn how to use the Speechmatics SDKs
+---
+
+import { LinkCard } from "@site/src/theme/LinkCard";
+import { Flex, Grid } from "@radix-ui/themes";
+import {
+  ChevronsRightIcon,
+  FileAudio,
+  BotMessageSquare,
+} from "lucide-react";
+
+Find the right Speechmatics SDK for your language and start building fast.
+
+Each SDK card provides simple installation steps and practical examples to get you moving. Select your language and follow the quickstart to go from setup to working code with minimal friction.
+
+## Speech to text SDKs
+
+<Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
+  <LinkCard
+    title="Python SDK (Voice Agents)"
+    description="Build voice agents in Python"
+    icon={<ChevronsRightIcon/>}
+    quickstart="/voice-sdk"
+    href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/voice"
+  />
+  <LinkCard
+    title="Python SDK (Realtime)"
+    description="Stream audio and receive instant transcripts in Python"
+    icon={<BotMessageSquare/>}
+    quickstart="/rt-stt-sdk"
+    href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/rt"
+  />
+  <LinkCard
+    title="JavaScript SDK (Realtime)"
+    description="Stream audio and receive instant transcripts in JavaScript"
+    icon={<BotMessageSquare/>}
+    quickstart="/js-rt-stt-sdk"
+    href="https://github.com/speechmatics/speechmatics-js-sdk/tree/main/packages/real-time-client"
+  />
+  <LinkCard
+    title=".NET SDK (Realtime)"
+    description="Stream audio and receive instant transcripts in .NET"
+    icon={<FileAudio/>}
+    quickstart="/dotnet-rt-stt-sdk"
+    href="https://github.com/speechmatics/speechmatics-dotnet/blob/main/README.md"
+  />
+  <LinkCard
+    title="Python SDK (Batch)"
+    description="Input audio files and receive transcripts in Python"
+    icon={<ChevronsRightIcon/>}
+    quickstart="/python-batch-stt-sdk"
+    href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/batch"
+  />
+  <LinkCard
+    title="JavaScript SDK (Batch)"
+    description="Input audio files and receive transcripts in JavaScript"
+    icon={<ChevronsRightIcon/>}
+    quickstart="/js-batch-stt-sdk"
+    href="https://github.com/speechmatics/speechmatics-js-sdk/tree/main/packages/batch-client"
+  />
+  <LinkCard
+    title="Rust SDK (Realtime & batch)"
+    description="Input audio files and receive transcripts in Rust"
+    icon={<FileAudio/>}
+    quickstart="/rust-stt-sdk"
+    href="https://github.com/speechmatics/speechmatics-rs/blob/main/README.md"
+  />
+</Grid>
+
+## Text to speech SDKs
+
+<Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
+  <LinkCard
+    title="Python SDK (TTS)"
+    description="Convert text to speech in Python"
+    icon={<ChevronsRightIcon/>}
+    quickstart="/python-tts-sdk"
+    href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/tts"
+  />
+</Grid>
+
+## Voice SDKs
+
+<Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
+  <LinkCard
+    title="Python SDK (Voice)"
+    description="Build voice agents in Python"
+    icon={<ChevronsRightIcon/>}
+    quickstart="/python-voice-sdk"
+    href="https://github.com/speechmatics/speechmatics-python-sdk/blob/main/sdk/voice/README.md"
+  />
+</Grid>

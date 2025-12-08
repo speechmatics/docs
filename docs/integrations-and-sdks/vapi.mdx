@@ -1,0 +1,69 @@
+---
+id: vapi
+description: Learn how to integrate Speechmatics STT with Vapi.
+---
+
+import CodeBlock from '@theme/CodeBlock';
+
+# Vapi integration
+
+Vapi offers native integration with Speechmatics for real-time, highly accurate speech-to-text in AI voice agents. 
+This integration is designed for rapid deployment and handles real-world conversation complexities, such as background noise, diverse accents, and multiple speakers, with no code required. 
+
+Vapi is perfect for:
+
+- **Task automation**: Offload routine voice-based tasks
+- **Live call analysis**: Gain real-time insights from conversations
+- **Hands-free control**: Build voice-driven application interfaces
+- **Global voice support**: Deploy agents that speak any language
+- **Interactive AI**: Create sophisticated conversational bots
+
+## Features
+
+- **Native availability and flexible deployment**: Speechmatics is embedded within the Vapi platform, simplifying the setup process.
+- **High accuracy & low latency**: The Speechmatics integration provides an accurate and low-latency input layer, crucial for natural conversations with AI agents.
+- **Speaker diarization**: Speechmatics is the only transcriber on Vapi that provides speaker diarization, which identifies and labels who said what in multi-speaker scenarios.
+
+## Quickstart
+
+### Requirements
+- [VAPI Account](https://vapi.ai)
+- [VAPI Private Key](https://dashboard.vapi.ai)
+- [Speechmatics Account](https://portal.speechmatics.com) 
+
+### UI Integration
+
+The Vapi UI provides a simple way to integrate Speechmatics STT into your voice AI agent. 
+
+1. Navigate to assistants tab in the Vapi dashboard.
+2. Choose an existing assistant or create a new one.
+3. Access the transcriber tab or scroll down to the transcriber module settings.
+4. Select Speechmatics in the provider dropdown menu
+5. Optionally, you can add your Speechmatics API key, which can be generated in [the portal](https://portal.speechmatics.com/settings/api-keys), within the Vapi dashboard under [Provider Keys](https://dashboard.vapi.ai/settings/integrations/speechmatics)
+
+### Usage 
+```python
+import os
+from vapi import Vapi
+from vapi.types import SpeechmaticsTranscriber
+
+client = Vapi(token=os.environ["VAPI_API_KEY"])
+
+assistant = client.assistants.create(
+    name="Speechmatics Quickstart",
+    transcriber=SpeechmaticsTranscriber(
+        provider="speechmatics",
+        language="en",
+    ),
+)
+
+print(f"Assistant ID: {assistant.id}")
+```
+
+### Best practices
+
+- **Operating point**: Select the enhanced model for the best accuracy in real-time voice agents.
+- **Region**: Choose the region closest to optimize latency.
+- **Custom vocabulary**: add key terms (e.g., product names, medical terminology) and leverage the "sounds like" option for tricky pronunciations.
+
+For detailed examples, please see the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy).
