@@ -29,6 +29,7 @@
     "@signalwire/docusaurus-plugin-llms-txt": "^1.2.1",
     "asyncapi-schema-loader": "^0.0.1",
     "clsx": "^2.0.0",
+    "devicon": "^2.17.0",
     "docusaurus-plugin-openapi-docs": "^4.4.0",
     "docusaurus-theme-openapi-docs": "^4.4.0",
     "lucide-react": "^0.512.0",
