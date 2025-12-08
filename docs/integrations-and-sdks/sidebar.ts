@@ -25,17 +25,9 @@ export default {
       label: "Pipecat",
     },
     {
-    type: "category",
+    type: "doc",
+    id: "integrations-and-sdks/sdks",
     label: "SDKs",
-    collapsible: true,
-    collapsed: true,
-    items: [
-    {
-        type: "doc",
-        id: "integrations-and-sdks/sdks/index",
-        label: "Overview",
-        },
-    ],
-  },
+    },
 ]
 }
