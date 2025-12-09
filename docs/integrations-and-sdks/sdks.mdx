@@ -1,10 +1,17 @@
 ---
-title: SDKs
+id: sdks
 description: Learn how to use the Speechmatics SDKs
 ---
 
 import { LinkCard } from "@site/src/theme/LinkCard";
 import { Flex, Grid } from "@radix-ui/themes";
+import Head from '@docusaurus/Head';
+
+<Head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+</Head>
+
+# SDKs
 
 Find the right Speechmatics SDK for your language and start building fast.
 
@@ -12,64 +19,74 @@ Each SDK card provides simple installation steps and practical examples to get y
 
 ## Speech to text SDKs
 
-<Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
+<Flex direction="column" gap="3">
+<Grid columns="3" gap="3">
   <LinkCard
-    title="Python SDK (Voice Agents)"
-    description="Build voice agents in Python"
+    direction="column"
+    title="Voice (Python)"
+    description="Add voice features to your agentic workflows"
     icon={<i className="devicon-python-plain"></i>}
     quickstart="/voice-sdk"
     href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/voice"
   />
-  <LinkCard
-    title="JavaScript SDK (Realtime)"
-    description="Stream audio and receive instant transcripts in JavaScript"
-    icon={<i className="devicon-javascript-plain"></i>}
-    quickstart="/js-rt-stt-sdk"
-    href="https://github.com/speechmatics/speechmatics-js-sdk/tree/main/packages/real-time-client"
-  />
     <LinkCard
-    title=".NET SDK (Realtime)"
-    description="Stream audio and receive instant transcripts in .NET"
-    icon={<i className="devicon-dot-net-plain"></i>}
-    quickstart="/dotnet-rt-stt-sdk"
-    href="https://github.com/speechmatics/speechmatics-dotnet/blob/main/README.md"
-  />
-  <LinkCard
-    title="Python SDK (Realtime)"
-    description="Stream audio and receive instant transcripts in Python"
+    direction="column"
+    title="Realtime (Python)"
+    description="Stream audio and receive a transcription"
     icon={<i className="devicon-python-plain"></i>}
     quickstart="/rt-stt-sdk"
     href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/rt"
   />
   <LinkCard
-    title="JavaScript SDK (Batch)"
-    description="Input audio files and receive transcripts in JavaScript"
+    direction="column"
+    title="Batch (Python)"
+    description="Input audio files and output transcription"
+    icon={<i className="devicon-python-plain"></i>}
+    quickstart="/python-batch-stt-sdk"
+    href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/batch"
+  />
+  <LinkCard
+    direction="column"
+    title="Realtime (JavaScript)"
+    description="Stream audio and receive instant transcripts"
+    icon={<i className="devicon-javascript-plain"></i>}
+    quickstart="/js-rt-stt-sdk"
+    href="https://github.com/speechmatics/speechmatics-js-sdk/tree/main/packages/real-time-client"
+  />
+    <LinkCard
+    direction="column"
+    title="Batch (JavaScript)"
+    description="Input audio files and output transcription"
     icon={<i className="devicon-javascript-plain"></i>}
     quickstart="/js-batch-stt-sdk"
     href="https://github.com/speechmatics/speechmatics-js-sdk/tree/main/packages/batch-client"
   />
+    <LinkCard
+    direction="column"
+    title="Realtime (.NET)"
+    description="Stream audio and receive a transcription"
+    icon={<i className="devicon-dot-net-plain"></i>}
+    quickstart="/dotnet-rt-stt-sdk"
+    href="https://github.com/speechmatics/speechmatics-dotnet/blob/main/README.md"
+  />
   <LinkCard
-    title="Rust SDK (Realtime & batch)"
-    description="Input audio files and receive transcripts in Rust"
+    direction="column"
+    title="Realtime & Batch (Rust)"
+    description="Input audio streams or files and receive transcription"
     icon={<i className="devicon-rust-plain"></i>}
     quickstart="/rust-stt-sdk"
     href="https://github.com/speechmatics/speechmatics-rs/blob/main/README.md"
   />
 </Grid>
-<LinkCard
-    title="Python SDK (Batch)"
-    description="Input audio files and receive transcripts in Python"
-    icon={<i className="devicon-python-plain"></i>}
-    quickstart="/python-batch-stt-sdk"
-    href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/batch"
-  />
+</Flex>
 
 ## Text to speech SDKs
 
-<Grid columns={{initial: "1", md: "2", lg: "3"}} gap="3">
+<Grid columns="3" gap="3">
   <LinkCard
-    title="Python SDK (TTS)"
-    description="Convert text to speech in Python"
+    direction="column"
+    title="TTS (Python)"
+    description="Convert text to speech"
     icon={<i className="devicon-python-plain"></i>}
     quickstart="/python-tts-sdk"
     href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/tts"
