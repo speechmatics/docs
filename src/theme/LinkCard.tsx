@@ -45,12 +45,10 @@ const LinkCardTitle = forwardRef(
       },
     ref: React.Ref<HTMLHeadingElement>,
   ) => {
-    const isExternal = props.href?.startsWith("http");
     return (
       <Flex asChild gap="2" align="center">
         <Heading as="h4" size="3" ref={ref} {...props}>
           {children}
-          {isExternal ? <ExternalLinkIcon size={16} /> : null}
         </Heading>
       </Flex>
     );
@@ -136,16 +134,22 @@ const LinkCardComposite = forwardRef(
     ref: React.Ref<HTMLDivElement>,
   ) => {
     const href = "href" in props ? props.href : undefined;
+    const isExternal = href?.startsWith("http");
     return (
       <LinkCardRoot ref={ref} {...props}>
-        {!icon ? null : <LinkCardIcon>{icon}</LinkCardIcon>}
-        <LinkCardContent>
-          <LinkCardTitle href={href}>
-            {title}
-            {badgeText ? <LinkCardBadge>{badgeText}</LinkCardBadge> : null}
-          </LinkCardTitle>
-          <LinkCardDescription>{description}</LinkCardDescription>
-        </LinkCardContent>
+        <Flex direction="column" gap="4">
+          <Flex justify="between">
+            {!icon ? <div /> : <LinkCardIcon>{icon}</LinkCardIcon>}
+            {isExternal ? <ExternalLinkIcon size={16} /> : null}
+          </Flex>
+          <LinkCardContent>
+            <LinkCardTitle href={href}>
+              {title}
+              {badgeText ? <LinkCardBadge>{badgeText}</LinkCardBadge> : null}
+            </LinkCardTitle>
+            <LinkCardDescription>{description}</LinkCardDescription>
+          </LinkCardContent>
+        </Flex>
       </LinkCardRoot>
     );
   },
