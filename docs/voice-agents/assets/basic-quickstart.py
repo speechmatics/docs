@@ -6,7 +6,7 @@ from speechmatics.voice import VoiceAgentClient, AgentServerMessageType
 async def main():
     # Create client with preset
     client = VoiceAgentClient(
-        api_key=os.getenv("SPEECHMATICS_API_KEY"),
+        api_key=os.getenv("YOUR_API_KEY"),
         preset="scribe"
     )
 

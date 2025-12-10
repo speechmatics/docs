@@ -7,4 +7,4 @@ config = VoiceAgentConfig(
     end_of_utterance_mode=EndOfUtteranceMode.ADAPTIVE,
 )
 
-client = VoiceAgentClient(api_key=api_key, config=config)
+client = VoiceAgentClient(api_key=os.getenv("YOUR_API_KEY"), config=config)
