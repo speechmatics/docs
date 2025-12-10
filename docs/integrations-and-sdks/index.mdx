@@ -1,8 +1,10 @@
 ---
+id: overview
 description: Discover which integrations and SDKs to add Speechmatics' STT, TTS or voice agents to your applications.
 ---
 
 import { LinkCard } from "@site/src/theme/LinkCard";
+import DevIcon from '@site/src/components/devicon';
 import { Flex, Grid } from "@radix-ui/themes";
 import {  } from "lucide-react";
 import Head from '@docusaurus/Head';
@@ -54,43 +56,43 @@ Use an SDK if you want to call Speechmatics directly from your own services or a
   <LinkCard
     title="Voice SDK (Python)"
     description="Build responsive voice agents"
-    icon={<i className="devicon-python-plain" style={{ fontSize: "24px" }}></i>}
+    icon={<DevIcon name="python" />}
     href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/voice"
   />
    <LinkCard
     title="Realtime (Python)"
     description="Stream audio and receive instant transcripts"
-    icon={<i className="devicon-python-plain" style={{ fontSize: "24px" }}></i>}
+    icon={<DevIcon name="python" />}
     href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/rt"
   />
    <LinkCard
     title="Batch (Python)"
     description="Input audio files and receive transcripts"
-    icon={<i className="devicon-python-plain" style={{ fontSize: "24px" }}></i>}
+    icon={<DevIcon name="python" />}
     href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/batch"
   />
   <LinkCard
     title="Realtime (JavaScript)"
     description="Stream audio and receive instant transcripts"
-    icon={<i className="devicon-javascript-plain" style={{ fontSize: "24px" }}></i>}
+    icon={<DevIcon name="javascript" />}
     href="https://github.com/speechmatics/speechmatics-javascript-sdk/tree/main/sdk/rt"
   />
     <LinkCard
     title="Batch (JavaScript)"
     description="Input audio files and receive transcripts"
-    icon={<i className="devicon-javascript-plain" style={{ fontSize: "24px" }}></i>}
+    icon={<DevIcon name="javascript" />}
     href="https://github.com/speechmatics/speechmatics-javascript-sdk/tree/main/sdk/batch"
   />
   <LinkCard
     title="Realtime (.NET)"
     description="Stream audio and receive instant transcripts"
-    icon={<i className="devicon-dot-net-plain" style={{ fontSize: "24px" }}></i>}
+    icon={<DevIcon name="dot-net" />}
     href="https://github.com/speechmatics/speechmatics-dotnet-community-sdk"
   /> 
   <LinkCard
     title="Realtime and Batch (Rust)"
     description="Input audio files and receive transcripts"
-    icon={<i className="devicon-rust-plain" style={{ fontSize: "24px" }}></i>}
+    icon={<DevIcon name="rust" />}
     href="https://github.com/speechmatics/speechmatics-rust-sdk"
   />
 </Grid>
@@ -102,7 +104,7 @@ Use an SDK if you want to call Speechmatics directly from your own services or a
 <LinkCard
     title="TTS (Python)"
     description="Convert text to speech"
-    icon={<i className="devicon-python-plain" style={{ fontSize: "24px" }}></i>}
+    icon={<DevIcon name="python" />}
     href="https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/tts"
   />
 </Grid>

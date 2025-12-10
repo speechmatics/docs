@@ -4,6 +4,7 @@ pagination_next: null
 description: Take your first steps with the Speechmatics API.
 ---
 import { LinkCard } from "@site/src/theme/LinkCard";
+import DevIcon from '@site/src/components/devicon';
 import { Flex, Grid } from "@radix-ui/themes";
 import { ChevronsRightIcon, FileAudio, BotMessageSquare, BookOpen, Braces, Speech, GraduationCap } from "lucide-react";
 import Head from '@docusaurus/Head';
@@ -65,7 +66,7 @@ The easiest way to try our products is via the [web portal](https://portal.speec
   <LinkCard
     title="Python SDK"
     description="Use our Python SDK to access all of our APIs"
-    icon={<i className="devicon-python-plain" style={{ fontSize: "24px" }}></i>}
+    icon={<DevIcon name="python" />}
     href="https://github.com/speechmatics/speechmatics-python-sdk"
   />
   <LinkCard
