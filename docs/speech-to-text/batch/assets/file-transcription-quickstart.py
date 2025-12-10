@@ -7,7 +7,7 @@ PATH_TO_FILE = "example.wav"
 LANGUAGE = "en"
 
 settings = ConnectionSettings(
-    url="https://asr.api.speechmatics.com/v2",
+    url="https://eu1.asr.api.speechmatics.com/v2",
     auth_token=API_KEY,
 )
 

@@ -4,7 +4,7 @@ from urllib.request import urlopen
 
 API_KEY = "YOUR_API_KEY"
 LANGUAGE = "en"
-CONNECTION_URL = "wss://eu2.rt.speechmatics.com/v2"
+CONNECTION_URL = "wss://eu.rt.speechmatics.com/v2"
 
 # The raw audio stream will be a few seconds ahead of the radio
 AUDIO_STREAM_URL = "https://media-ice.musicradio.com/LBCUKMP3"  # LBC Radio stream

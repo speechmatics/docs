@@ -20,7 +20,7 @@ import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml";
 
 <pre className="openapi__method-endpoint">
   <span className="badge badge--primary">GET</span>
-  <h2 className="openapi__method-endpoint-path">wss://eu2.rt.speechmatics.com/v2/</h2>
+  <h2 className="openapi__method-endpoint-path">wss://eu.rt.speechmatics.com/v2/</h2>
 </pre>
 
 ## Protocol overview
@@ -60,7 +60,7 @@ When starting a Realtime transcription session **in the browser**, [temporary ke
 To do so, you must provide the temporary key as a part of a query parameter. This is due to a browser limitation. For example:
 
 ```url
- wss://eu2.rt.speechmatics.com/v2?jwt=<temporary-key>
+ wss://eu.rt.speechmatics.com/v2?jwt=<temporary-key>
 ```
 :::
 
@@ -75,7 +75,7 @@ Here is an example for a successful WebSocket handshake:
 
 ```
 GET /v2/ HTTP/1.1
-Host: eu2.rt.speechmatics.com
+Host: eu.rt.speechmatics.com
 Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Key: ujRTbIaQsXO/0uCbjjkSZQ==

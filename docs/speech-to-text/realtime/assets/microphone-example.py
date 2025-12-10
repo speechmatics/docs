@@ -5,7 +5,7 @@ import pyaudio
 
 API_KEY = "YOUR_API_KEY"
 LANGUAGE = "en"
-CONNECTION_URL = f"wss://eu2.rt.speechmatics.com/v2/{LANGUAGE}"
+CONNECTION_URL = f"wss://eu.rt.speechmatics.com/v2/{LANGUAGE}"
 DEVICE_INDEX = -1
 CHUNK_SIZE = 1024
 
