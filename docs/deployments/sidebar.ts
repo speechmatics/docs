@@ -8,9 +8,6 @@ export default {
   label: "Deployments",
   collapsible: false,
   collapsed: false,
-  link: {
-    type: "generated-index",
-  },
   items: [
     {
       type: "doc",

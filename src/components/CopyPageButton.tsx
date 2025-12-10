@@ -23,10 +23,11 @@ export function CopyPageButton() {
 
   const textRef = useRef("");
 
-  const location = window.location.href;
+  const permalink = doc.metadata.permalink;
+
   const markdownURL = isIndexPage
-    ? `${location.replace(/\/$/, "")}/index.md`
-    : `${location}.md`;
+    ? `${permalink.replace(/\/$/, "")}/index.md`
+    : `${permalink}.md`;
 
   // Preload markdown content on load
   useEffect(() => {
