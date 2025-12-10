@@ -5,7 +5,12 @@ description: Take your first steps with the Speechmatics API.
 ---
 import { LinkCard } from "@site/src/theme/LinkCard";
 import { Flex, Grid } from "@radix-ui/themes";
-import { ChevronsRightIcon, FileAudio, BotMessageSquare, BookOpen, Braces, Speech } from "lucide-react";
+import { ChevronsRightIcon, FileAudio, BotMessageSquare, BookOpen, Braces, Speech, GraduationCap } from "lucide-react";
+import Head from '@docusaurus/Head';
+
+<Head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+</Head>
 
 # Quickstart
 
@@ -30,7 +35,7 @@ The easiest way to try our products is via the [web portal](https://portal.speec
   />
   <LinkCard
     title="Build a voice agent"
-    description="Build conversational AI agents with ease using the Flow API"
+    description="Build conversational AI agents with ease using the Voice SDK"
     icon={<BotMessageSquare/>}
     href="/voice-agents/overview"
   />
@@ -56,5 +61,17 @@ The easiest way to try our products is via the [web portal](https://portal.speec
     description="Use our JavaScript SDK to access all of our APIs"
     icon={<Braces/>}
     href="https://github.com/speechmatics/speechmatics-js-sdk"
+  />
+  <LinkCard
+    title="Python SDK"
+    description="Use our Python SDK to access all of our APIs"
+    icon={<i className="devicon-python-plain" style={{ fontSize: "24px" }}></i>}
+    href="https://github.com/speechmatics/speechmatics-python-sdk"
+  />
+  <LinkCard
+    title="Speechmatics Academy"
+    description="To learn more or see some examples, visit the Speechmatics Academy"
+    icon={<GraduationCap/>}
+    href="https://github.com/speechmatics/speechmatics-academy"
   />
 </Grid>
