@@ -51,7 +51,7 @@ export function CopyPageButton() {
   }, []);
 
   const llmPropmt = encodeURIComponent(
-    `Analyze this documentation: ${markdownURL}`,
+    `Analyze this documentation: https://docs.speechmatics.com${markdownURL}`,
   );
 
   return (
