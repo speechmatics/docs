@@ -5,7 +5,7 @@ description: Take your first steps with the Speechmatics API.
 ---
 import { LinkCard } from "@site/src/theme/LinkCard";
 import { Flex, Grid } from "@radix-ui/themes";
-import { ChevronsRightIcon, FileAudio, BotMessageSquare, BookOpen, Braces } from "lucide-react";
+import { ChevronsRightIcon, FileAudio, BotMessageSquare, BookOpen, Braces, Speech } from "lucide-react";
 
 # Quickstart
 
@@ -32,7 +32,13 @@ The easiest way to try our products is via the [web portal](https://portal.speec
     title="Build a voice agent"
     description="Build conversational AI agents with ease using the Flow API"
     icon={<BotMessageSquare/>}
-    href="/voice-agents-flow/"
+    href="/voice-agents/overview"
+  />
+  <LinkCard
+    title="Generate speech from text"
+    description="Use the TTS API to convert text to speech"
+    icon={<Speech/>}
+    href="/text-to-speech/quickstart"
   />
 </Flex>
 
