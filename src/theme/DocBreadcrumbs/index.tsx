@@ -2,12 +2,16 @@ import { useSidebarBreadcrumbs } from "@docusaurus/plugin-content-docs/client";
 import DocBreadcrumbsStructuredData from "@theme/DocBreadcrumbs/StructuredData";
 import React, { Fragment, type ReactNode } from "react";
 
+import { useWindowSize } from "@docusaurus/theme-common";
 import { Flex, Text } from "@radix-ui/themes";
+import { CopyPageButton } from "@site/src/components/CopyPageButton";
 import { ChevronRightIcon } from "lucide-react";
 
 // TODO: Investigate a11y implications of this component
 export default function DocBreadcrumbs(): ReactNode {
   const breadcrumbs = useSidebarBreadcrumbs();
+  const windowSize = useWindowSize();
+  const isMobile = windowSize === "mobile";
 
   if (!breadcrumbs) {
     return null;
@@ -18,7 +22,7 @@ export default function DocBreadcrumbs(): ReactNode {
   spliced.splice(-1, 1);
 
   return (
-    <>
+    <Flex justify="between">
       <DocBreadcrumbsStructuredData breadcrumbs={breadcrumbs} />
       <Flex gap="2" align="center">
         {spliced.map((item, idx, { length }) => {
@@ -43,6 +47,7 @@ export default function DocBreadcrumbs(): ReactNode {
           );
         })}
       </Flex>
-    </>
+      <CopyPageButton />
+    </Flex>
   );
 }

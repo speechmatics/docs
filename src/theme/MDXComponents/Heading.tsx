@@ -11,9 +11,16 @@ export default function MDXHeading(props: Props): ReactNode {
 
   return (
     <Flex direction="column" gap="2">
-      <RadixHeading asChild size={size} mt="5" mb={desc ? "0" : "5"}>
-        <Heading {...props} />
-      </RadixHeading>
+      <Flex
+        width="100%"
+        justify="between"
+        align="center"
+        direction={{ initial: "column", sm: "row" }}
+      >
+        <RadixHeading asChild size={size} mt="5" mb={desc ? "0" : "5"}>
+          <Heading {...props} />
+        </RadixHeading>
+      </Flex>
       {desc && (
         <Text size="3" color="gray" mb="5">
           {desc}
