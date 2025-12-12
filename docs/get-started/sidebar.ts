@@ -12,6 +12,7 @@ export default {
     {
       type: "doc",
       id: "get-started/quickstart",
+      label: "Quickstart",
     },
     {
       type: "doc",

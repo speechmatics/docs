@@ -6,8 +6,8 @@ export default {
   items: [
     {
       type: "doc",
-      id: "voice-agents/quickstart",
-      label: "Quickstart",
+      id: "voice-agents/overview",
+      label: "Overview",
     },
     {
       type: "doc",
