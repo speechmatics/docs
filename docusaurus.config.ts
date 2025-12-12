@@ -74,6 +74,7 @@ const config: Config = {
           remarkPlugins: [math],
           rehypePlugins: [katex],
           sidebarItemsGenerator,
+          exclude: ["**/voice-agents-flow/**"],
         },
         theme: {
           customCss: "./src/css/custom.css",
