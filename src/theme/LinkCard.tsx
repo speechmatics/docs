@@ -137,10 +137,14 @@ const LinkCardComposite = forwardRef(
     const isExternal = href?.startsWith("http");
     return (
       <LinkCardRoot ref={ref} {...props}>
-        <Flex direction="column" gap="4">
+        <Flex direction="column" gap="4" position="relative">
           <Flex justify="between">
             {!icon ? <div /> : <LinkCardIcon>{icon}</LinkCardIcon>}
-            {isExternal ? <ExternalLinkIcon size={16} /> : null}
+            {isExternal ? (
+              <Box position="absolute" top="0" right="0">
+                <ExternalLinkIcon size={16} />
+              </Box>
+            ) : null}
           </Flex>
           <LinkCardContent>
             <LinkCardTitle href={href}>
