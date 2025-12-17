@@ -6,7 +6,7 @@ export default {
   items: [
     {
       type: "doc",
-      id: "integrations-and-sdks/Overview",
+      id: "integrations-and-sdks/index",
       label: "Overview",
     },
     {
