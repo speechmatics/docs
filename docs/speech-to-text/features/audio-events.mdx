@@ -21,7 +21,7 @@ keywords:
 import Tabs from "@theme/Tabs"; 
 import TabItem from "@theme/TabItem"; 
 
-# Audio Events 
+# Audio events 
  
 The Audio Events feature, available through our Automatic Speech Recognition (ASR) API, provides the detection and labelling of non-speech sounds within audio and video content, such as music, laughter, and applause. 
 
@@ -130,7 +130,7 @@ with open(PATH_TO_FILE, 'rb') as fd:
   </TabItem> 
 </Tabs> 
 
-## Audio Events Response 
+## Audio events response 
 
 <Tabs groupId="processing-types"> 
   <TabItem value="batch" label="Batch Response" default> 
@@ -255,7 +255,7 @@ These fields indicate which channel the audio event comes from.
 </TabItem> 
 </Tabs> 
 
-## Supported Audio Events 
+## Supported audio events 
 | Event Type            | Availability                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 | ------------------    | ----------------------------- |
 | `laughter`            | Batch & Real-Time             |
@@ -264,7 +264,7 @@ These fields indicate which channel the audio event comes from.
 | `silence`             | Batch Audio Event Summary     |
 | `speech`              | Batch Audio Event Summary     |
 
-## Configuring Specific Types of Audio Events in a Request
+## Configuring specific types of audio events in a request
 The types `applause`, `laughter` and `music` can be requested specifically in a transcription request as a part of the `audio_events_config` payload
 
 An example of a request only for `applause` and `music`

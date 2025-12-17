@@ -6,7 +6,7 @@ keywords: [wer, word error rate, asr, transcription, speech recognition, benchma
 
 import Admonition from '@theme/Admonition';
 
-# Accuracy Benchmarking
+# Accuracy benchmarking
 
 Word Error Rate (WER) is a metric commonly used for benchmarking transcription accuracy.
 
@@ -26,7 +26,7 @@ Today's state of the art ASR systems are able to achieve below 5 % on many test 
 
 Picking an appropriate test set is one of the most important aspects of benchmarking.
 
-### Audio Quality
+### Audio quality
 ASR performance can differ significantly on a host of factors, including:
 
 - background noise
@@ -39,7 +39,7 @@ Test sets should be representative of your use case. For instance, contact centr
 
 We caution against using an open source corpus for benchmarking where possible. Many ASR models are trained on data from these open source corpora, and therefore results may not be representative (because the models can "remember" the training data).
 
-### Speaker Diversity
+### Speaker diversity
 Speaker specific characteristics can also significantly affect ASR performance. For example:
 
 - age
@@ -50,7 +50,7 @@ Some test sets such as the [Casual Conversations Dataset](https://ai.meta.com/da
 
 See [here](https://www.speechmatics.com/company/articles-and-news/achieving-accessibility-through-incredible-accuracy-with-ursa?utm_source=facebook&utm_medium=social&fbclid=IwAR1z7ZU4WowgDBs91MNKFTwPACD9gb7dkrQpkr1HmfsgXPv-Ndt5PeySjIk&restored=1676632411598&restored=1703167450586&restored=1703168349828&restored=1704210914246) for some benchmarking we've done across demographics. You can see that across the industry, women and older people are generally recognized less easily than men and younger people.
 
-### Dataset Size
+### Dataset size
 To ensure statistical significance in benchmarking Word Error Rate (WER) between engines, a sufficiently large dataset is crucial.
 
 As a rule of thumb, we recommend at least 10,000 words (or around 1 hour of continuous speech) for each language being tested.
@@ -103,7 +103,7 @@ Normalization minimizes differences in capitalization, punctuation, and formatti
 
 This must be done before evaluating the WER, since this can make it harder to see differences in word recognition accuracy.
 
-### Formatting Guidelines
+### Formatting guidelines
 
 Normalization is inherently language specific, but here are some key themes:
 
@@ -118,7 +118,7 @@ Normalization is inherently language specific, but here are some key themes:
 
 This is not an exhaustive list, and there will often be edge cases which need to be investigated.
 
-### Example Normalization
+### Example normalization
 
 For example, here are identical transcripts in terms of the spoken form:
 
@@ -133,7 +133,7 @@ After normalizing the transcripts using the [Word Error Rate Toolkit](#word-erro
 
 Note that the normalization isn't perfect. It's always worth spot checking to see where the errors occur.
 
-## Word Error Rate Toolkit
+## Word error rate toolkit
 
 Speechmatics have created a tool which helps with the normalization and WER calculations for a given test set. This is freely available to use can can be found through [PyPI](https://pypi.org/project/speechmatics-python/) or on our [GitHub](https://github.com/speechmatics/speechmatics-python). 
 
@@ -192,7 +192,7 @@ There are some limitations however:
 - WER treats all errors equally, but some significantly alter sentence meaning, while others are mere spelling mistakes. Explore further [here](https://www.speechmatics.com/company/articles-and-news/the-problem-with-word-error-rate-wer?utm_source=facebook&utm_medium=social&fbclid=IwAR1z7ZU4WowgDBs91MNKFTwPACD9gb7dkrQpkr1HmfsgXPv-Ndt5PeySjIk&restored=1676632411598&restored=1703167450586)
 - Punctuation, capitalization and diarization are not measured, but are very important for readability
 
-## Read More
+## Read more
 
 #### Blogs
 - [Speechmatics Ursa Model Benchmarking](https://www.speechmatics.com/company/articles-and-news/introducing-ursa-the-worlds-most-accurate-speech-to-text?utm_source=facebook&utm_medium=social&fbclid=IwAR1z7ZU4WowgDBs91MNKFTwPACD9gb7dkrQpkr1HmfsgXPv-Ndt5PeySjIk&restored=1676632411598&restored=1703167450586&restored=1703168349828&restored=1704210914246)
