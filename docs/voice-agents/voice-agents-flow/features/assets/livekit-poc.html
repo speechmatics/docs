@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minimal LiveKit Flow Client</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .status {
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #f0f0f0;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      #authtoken {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: monospace;
+        box-sizing: border-box;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+  </head>
+  <body>
+    <h1>Minimal LiveKit Flow Client</h1>
+    <button id="toggle-session">Start Session</button>
+    <div class="status">
+      <input
+        id="authtoken"
+        type="text"
+        placeholder="Enter your auth token here"
+      />
+    </div>
+    <div class="status">Status: <span id="status">disconnected</span></div>
+
+    <div id="audio"></div>
+
+    <script>
+      const API_URL = "https://flow.api.speechmatics.com/v1/flow/livekit";
+      const TEMPLATE_ID = "flow-service-assistant-amelia";
+
+      let isSessionRunning = false;
+      let room;
+      let transport;
+
+      const toggleButton = document.getElementById("toggle-session");
+      const statusElement = document.getElementById("status");
+      const sessionIdElement = document.getElementById("session-id");
+
+      toggleButton.addEventListener("click", toggleSession);
+
+      class LiveKitTransport {
+        constructor(room) {
+          this.room = room;
+          this.encoder = new TextEncoder();
+        }
+
+        send(data) {
+          if (this.isOpened()) {
+            if (typeof data === "string") {
+              data = this.encoder.encode(data);
+            }
+            this.room.localParticipant.publishData(data, { reliable: true });
+          } else {
+            console.error("LiveKit room not connected but trying to send data");
+          }
+        }
+
+        isOpened() {
+          return (
+            this.room &&
+            this.room.state === LivekitClient.ConnectionState.Connected
+          );
+        }
+
+        async close() {
+          await disconnectLiveKit();
+        }
+      }
+
+      async function toggleSession() {
+        if (isSessionRunning) {
+          stopSession();
+        } else {
+          startSession();
+        }
+      }
+
+      async function startSession() {
+        try {
+          console.log("Starting session " + API_URL);
+          toggleButton.disabled = true;
+          statusElement.textContent = "connecting";
+          let AUTH_TOKEN = document.getElementById("authtoken").value;
+
+          // Prepare the request to get LiveKit credentials
+          const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${AUTH_TOKEN}`,
+            },
+            body: JSON.stringify({
+              message: "StartConversation",
+              conversation_config: {
+                template_id: TEMPLATE_ID,
+              },
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error(
+              `Request failed: ${response.status} ${response.statusText}`
+            );
+          }
+
+          const data = await response.json();
+          console.log("LiveKit connection info:", data);
+          sessionIdElement.textContent = data.session_id;
+
+          await connectLiveKit(data);
+          statusElement.textContent = "connected";
+          toggleButton.textContent = "Stop Session";
+          isSessionRunning = true;
+        } catch (error) {
+          console.error("Failed to start session:", error);
+          statusElement.textContent = "error";
+          alert("Failed to start session: " + error.message);
+        } finally {
+          toggleButton.disabled = false;
+        }
+      }
+
+      function stopSession() {
+        toggleButton.disabled = true;
+
+        if (transport && transport.isOpened()) {
+          transport.send(
+            JSON.stringify({
+              message: "AudioEnded",
+            })
+          );
+
+          // Allow time for the message to be sent
+          setTimeout(async () => {
+            await transport.close();
+            statusElement.textContent = "disconnected";
+            toggleButton.textContent = "Start Session";
+            isSessionRunning = false;
+            toggleButton.disabled = false;
+          }, 1000);
+        } else {
+          statusElement.textContent = "disconnected";
+          toggleButton.textContent = "Start Session";
+          isSessionRunning = false;
+          toggleButton.disabled = false;
+        }
+      }
+
+      async function connectLiveKit(livekitInfo) {
+        room = new LivekitClient.Room({});
+        transport = new LiveKitTransport(room);
+
+        const decoder = new TextDecoder();
+
+        room.on(
+          LivekitClient.RoomEvent.TrackSubscribed,
+          (track, publication, participant) => {
+            console.log("Track subscribed:", track.kind);
+            const element = track.attach();
+            const audioContainer = document.getElementById("audio");
+            while (audioContainer.firstChild) {
+              audioContainer.removeChild(audioContainer.firstChild);
+            }
+            audioContainer.appendChild(element);
+          }
+        );
+
+        room.on(
+          LivekitClient.RoomEvent.DataReceived,
+          (payload, participant, kind) => {
+            try {
+              const strData = decoder.decode(payload);
+              const data = JSON.parse(strData);
+              console.log("Received data:", data);
+
+              // Handle specific messages if needed
+              if (data.message === "ConversationEnded") {
+                console.log("Conversation ended");
+                stopSession();
+              }
+            } catch (error) {
+              console.error("Error processing received data:", error);
+            }
+          }
+        );
+
+        await room.connect(livekitInfo.url, livekitInfo.token);
+        console.log(`Connected to LiveKit room ${room.name}`);
+
+        await room.localParticipant.setCameraEnabled(false);
+        await room.localParticipant.setMicrophoneEnabled(true, {
+          autoGainControl: false,
+          noiseSuppression: true,
+          voiceIsolation: true,
+          echoCancellation: true,
+        });
+      }
+
+      async function disconnectLiveKit() {
+        if (room) {
+          await room.disconnect();
+          console.log("Disconnected from LiveKit room");
+          room = null;
+
+          const audioContainer = document.getElementById("audio");
+          while (audioContainer.firstChild) {
+            audioContainer.removeChild(audioContainer.firstChild);
+          }
+        }
+      }
+
+      window.addEventListener("beforeunload", () => {
+        if (isSessionRunning) {
+          disconnectLiveKit();
+        }
+      });
+    </script>
+  </body>
+</html>
