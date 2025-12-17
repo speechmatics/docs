@@ -1,4 +1,5 @@
-import voiceAgentsFlowSidebar from "./voice-agents-flow/sidebar";
+import voiceAgentsFlowSidebar from "./flow/sidebar";
+
 export default {
   type: "category",
   label: "Voice agents",

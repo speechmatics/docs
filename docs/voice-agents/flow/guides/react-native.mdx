@@ -1,0 +1,254 @@
+---
+title: Build a conversational AI app with React Native and Flow
+description: 'Learn how to create a mobile application that integrates Speechmatics Flow service using React Native.'
+sidebar_label: React Native
+---
+
+import AppScreenshotUrl from "@site/static/img/flow-react-native.png";
+import CodeBlock from "@theme/CodeBlock";
+import { Kbd } from "@radix-ui/themes";
+import { GithubIcon } from "lucide-react";
+
+import indexStepOne from "?url=https://raw.githubusercontent.com/speechmatics/flow-react-native-guide/refs/heads/step-1/app/index.tsx";
+import indexStepTwo from "?url=https://raw.githubusercontent.com/speechmatics/flow-react-native-guide/refs/heads/step-2/app/index.tsx";
+import indexStepThree from "?url=https://raw.githubusercontent.com/speechmatics/flow-react-native-guide/refs/heads/step-3/app/index.tsx";
+import volumeDisplay from "?url=https://raw.githubusercontent.com/speechmatics/flow-react-native-guide/refs/heads/step-4/app/volume-display.tsx";
+import indexStepFour from "?url=https://raw.githubusercontent.com/speechmatics/flow-react-native-guide/refs/heads/step-4/app/index.tsx";
+
+# Build a conversational AI app with React Native and Flow
+
+This guide demonstrates how to build the app using the Expo framework, implementing real-time audio communication with Flow's servers.
+
+You can find the complete code on [GitHub <GithubIcon size={16} />](https://github.com/speechmatics/flow-react-native-guide).
+
+<img
+  src={AppScreenshotUrl}
+  style={{ width: 350, display: "block", margin: "auto" }}
+/>
+
+## Prerequisites
+
+Before getting started, ensure you have:
+
+- [Node.js (LTS)](https://nodejs.org/en/download) installed on your system
+- Development environment configured for development builds:
+  - [Android Development](https://docs.expo.dev/get-started/set-up-your-environment/?mode=development-build&buildEnv=local&platform=android&device=simulated)
+  - [iOS Development](https://docs.expo.dev/get-started/set-up-your-environment/?mode=development-build&buildEnv=local&platform=ios&device=simulated)
+
+## Project Setup
+
+Start by creating a fresh Expo project:
+
+```sh
+npx create-expo-app@latest
+```
+
+To remove the example code and start with a clean slate:
+
+```sh
+npm run reset-project
+```
+
+This command preserves the example files by moving them to an 'app-example' directory while creating a new clean app directory.
+You can safely remove the 'app-example' directory if you don't need it for reference.
+
+## Essential Dependencies
+
+Install the following packages to enable Flow integration and audio handling:
+
+```sh
+# React version of Flow client
+npm i @speechmatics/flow-client-react
+
+# Polyfill for the EventTarget class
+npm i event-target-polyfill
+
+# Expo native module to handle audio
+npm i @speechmatics/expo-two-way-audio
+
+# Just for the purpose of this example. See comment in the code above `createSpeechmaticsJWT`
+npm i @speechmatics/auth
+```
+
+:::info
+The Flow client uses [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) which is typically available in browsers but not in react native.
+For that reason we've installed the polyfill: [`event-target-polyfill`](https://www.npmjs.com/package/event-target-polyfill).
+:::
+
+## Building the User Interface
+
+Let's create a minimal user interface.
+Start by clearing the `app/` directory and creating a new `index.tsx` file with a basic UI structure:
+
+<CodeBlock language="tsx" title="app/index.tsx" showLineNumbers>
+  {indexStepOne}
+</CodeBlock>
+
+The view above will just render a Connect/Disconnect button that won't do anything yet.
+
+Let's run it on the simulator to see how it looks:
+
+```sh
+# For iOS simulator
+npx expo run ios
+
+# For Android emulator
+npx expo run android
+```
+
+This will launch the Metro Bundler and show up some options.
+
+:::warning
+#### Expo Go is not supported
+If it shows the following: `Using Expo Go`, **we need to switch to a development build by pressing** <Kbd>s</Kbd>. Then press <Kbd>r</Kbd> to reload the app.
+Some features that we are going to include, like the native module for handling audio, don't work properly in Expo Go.
+:::
+
+## Implementing Flow Connection
+
+It's time to add some functionality to this example.
+We'll start by implementing the connect and disconnect logic.
+For that we are going to use the `@speechmatics/flow-client-react` package.
+
+Our `/app/index.tsx` file should now look as follows:
+
+<CodeBlock language="tsx" title="app/index.tsx" showLineNumbers>
+  {indexStepTwo}
+</CodeBlock>
+
+In the code above, we are injecting the API key from an environment variable.
+To make the environment variable available, let's create a `.env` file in the root directory of the project with the following content:
+
+<CodeBlock language="sh" title=".env">
+  {"EXPO_PUBLIC_SPEECHMATICS_API_KEY='YOUR_API_KEY_GOES_HERE"}
+</CodeBlock>
+
+API keys can be obtained from the [Speechmatics Portal](https://portal.speechmatics.com/api-keys)
+
+:::danger
+This is just an example app.
+In a real app you should obtain the JWT from your server.
+`createSpeechmaticsJWT` could be used on a server running JS.
+Otherwise, you will expose your API key to the client.
+:::
+
+## Audio Integration
+
+The final step is implementing two-way audio communication. This involves three crucial tasks:
+
+1. Microphone input capture in PCM format
+2. Speaker output routing for Flow responses
+3. Acoustic Echo Cancellation (AEC) to prevent audio feedback
+
+We'll use the Speechmatics Expo Two Way Audio module to handle these requirements efficiently.
+
+In order to allow microphone access we need to add some configuration to the `app.json` file in the root of our project.
+For iOS we add an `infoPlist` entry and for Android a `permissions` entry.
+
+<CodeBlock language="json" title="app.json">
+{`
+{
+    "expo": {
+      // ...
+      "ios": {
+        "infoPlist": {
+        "NSMicrophoneUsageDescription": "Allow Speechmatics to access your microphone"
+      },
+      // ...
+      },
+      "android": {
+        "permissions": ["RECORD_AUDIO", "MODIFY_AUDIO_SETTINGS"],
+        // ...
+      }
+    }
+    // ...
+}
+`}
+</CodeBlock>
+
+Now we will update the code to handle these microphone adjustments. Our `/app/index.tsx` file should look as follows:
+
+<CodeBlock language="tsx" title="app/index.tsx" showLineNumbers>
+  {indexStepThree}
+</CodeBlock>
+
+Since we've introduced some app configuration changes in app.json, let's build the app from scratch (cleaning the `ios` or `android` folders):
+
+```sh
+# iOS
+npx expo prebuild --clean -p ios
+npx expo run:ios
+
+# Android
+npx expo prebuild --clean -p android
+npx expo run:android
+```
+
+Our app can now unmute the microphone to send audio samples to the Flow server. Audio messages received from the Flow server will be played back through the speaker.
+
+:::info
+While simulators are great for initial testing, features like Acoustic Echo Cancellation require physical devices for proper functionality.
+If you find that the simulator audio support is not working or is not good enough we strongly recommend [testing on physical devices](#testing-on-physical-devices).
+:::
+
+## Volume Indicators
+
+To enhance our UI, we'll add volume indicators for both the microphone and speaker, and organize our buttons into a "bottom bar."
+
+**Design Overview**
+
+- Volume Indicators: These will consist of two concentric circles:
+  - Outer Circle: Represents the speaker volume.
+  - Inner Circle: Represents the microphone volume.
+- Animation: The circles will animate to grow or shrink based on the current volume level.
+
+**Implementation Details**
+
+We'll use the `react-native-reanimated` library to handle the animations.
+This library is often included by default in Expo apps, but if it's not, you can follow the installation instructions [here](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/get-started/#installation).
+
+To keep things organised, let’s create a new file inside the app folder to house our custom volume indicator component.
+
+<CodeBlock language="tsx" title="app/volume-display.tsx" showLineNumbers>
+  {volumeDisplay}
+</CodeBlock>
+
+Next, we'll integrate our volume indicator component into the app.
+
+Our `/app/index.tsx` file should look as follows:
+
+<CodeBlock language="tsx" title="app/index.tsx" showLineNumbers>
+  {indexStepFour}
+</CodeBlock>
+
+We have successfully completed our conversational AI application! You can connect to Flow services and unmute the microphone to start a conversation.
+
+## Testing on Physical Devices
+
+To deploy to real devices, first configure the development environment for using local builds with physical devices:
+
+- [iOS](https://docs.expo.dev/get-started/set-up-your-environment/?mode=development-build&buildEnv=local&platform=ios&device=physical)
+- [Android](https://docs.expo.dev/get-started/set-up-your-environment/?mode=development-build&buildEnv=local)
+
+Then run the following command:
+
+```sh
+# For iOS devices
+npx expo run:ios --device --configuration Release
+
+# For Android devices
+npx expo run:android --device --variant release
+```
+
+## Additional resources
+
+Dive deeper into the tools used in this guide:
+
+### Speechmatics JS SDK
+
+- [Repository](https://github.com/speechmatics/speechmatics-js-sdk)
+
+### Expo Two Way Audio
+
+- [Repository](https://github.com/speechmatics/expo-two-way-audio)
+- [Examples](https://github.com/speechmatics/expo-two-way-audio/tree/main/examples)

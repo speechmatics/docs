@@ -1,0 +1,83 @@
+---
+description: 'Learn about the function calling feature for Flow'
+---
+
+import CodeBlock from '@theme/CodeBlock';
+import pythonFunctionCallingExample from './assets/function-calling.py';
+import SchemaNode from '@theme/Schema';
+import flowSpec from '!openapi-schema-loader!@site/spec/flow-api.yaml';
+import { Callout, Flex, Text } from '@radix-ui/themes';
+import { ConstructionIcon } from 'lucide-react';
+
+# Function Calling
+
+Function Calling allows you to connect Flow to external tools and systems. This unlocks Flow's ability to act in the real-world and better serve the needs of your users.
+
+This could involve needing real-time information such as opening/closing times or validation services for authentication or action APIs that control a fast food system while placing a drive-thru order.
+
+Based on what the user says in the conversation, Flow will recognise the user's intentions and extract out the key information that your system needs to complete the function call.
+
+For example, you may want Flow to add reminders in a user's calendar:
+
+```json
+{
+    "name": "add_reminder",
+    "description": "Use this to schedule reminders. Needs a confirmation.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "date" : {
+                "type" : "string",
+                "description" : "The date for the reminder in dd/mm/yyyy format"
+            },
+            "time" : {
+                "type": "string",
+                "description" : "The time for the reminder in 24 hour hh:mm format"
+            },
+            "title" : {
+                "type": "string",
+                "description" : "The title for the reminder"
+            },
+            "project": {
+                "type": "string",
+                "description": "Which project the reminder is related to. If not provided, leave blank."
+            }
+        },
+        "required": ["project"]
+    }
+}
+```
+
+## Configuring Function Calling
+
+An agent can be configured to use function calling in two ways:
+
+1. **In code**: when starting a session with the [`StartConversation` message](/api-ref/flow-voice-ai-websocket#startconversation)
+2. (_coming soon_) **In the portal**: when configuring an agent
+
+### In the portal
+
+[Create an agent in the portal](https://portal.speechmatics.com/create-agent) and enable function calling in the agent settings.
+
+### In `StartConversation`
+
+Functions must be declared within a list of tools when your client sends the [StartConversation message](/api-ref/flow-voice-ai-websocket#startconversation). Each function must be defined with the following:
+
+<SchemaNode expanded schema={flowSpec.components.schemas.ToolFunctionConfig} />
+
+
+## Example
+
+<CodeBlock language="python">
+{pythonFunctionCallingExample}
+</CodeBlock>
+
+## Considerations
+
+- Function `status` - The client must inform the service of whether the function call succeeded or not. This allows the service to inform the user of the result. There is no automatic timeout on the Flow API.
+- Asynchronous - Function calling is fully asynchronous. Once the client is informed of the function call, the conversation will continue to progress until a function call status update is received from the client. This is to continue providing a natural conversational experience to the customer.
+- Completion Message - Flow can play a message on completion of the function call. The Client can switch this off by passing `<NO_RESPONSE_REQUIRED/>` in the content field of the ToolResult message.
+
+:::note
+Since LLMs are semantically instructed, complete, narrow and unambiguous function calls with simple descriptions can create a reliable customer experience. Complex business logic should be handled within your client.
+:::
