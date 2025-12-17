@@ -2,12 +2,32 @@
 description: 'Learn about the Kubernetes deployment options for Speechmatics'
 ---
 
-import DocCardList from '@theme/DocCardList';
-
 # Kubernetes
 
-:::info
-Speechmatics helm charts are currently a preview offering.
-:::
+Speechmatics applications can be deployed on Kubernetes using Helm charts, providing a flexible and consistent deployment option for cloud-native environments. The Helm charts package all required Kubernetes resources and configuration options, making it easier to install, configure, and manage Speechmatics applications.
 
-<DocCardList/>
+Using Helm, customers can customize deployments through configurable values, manage upgrades and rollbacks, and integrate Speechmatics applications into existing Kubernetes workflows.
+
+## Quickstart
+
+<Grid columns={{initial: "1", md: "2"}} gap="3" mb="5">
+  <LinkCard
+    direction="column"
+    title="Real-time Kubernetes"
+    description="Kubernetes deployment options for Real-time Speechmatics"
+    href="/deployments/kubernetes/realtime"
+  />
+
+  <LinkCard
+    direction="column"
+    title="Flow Kubernetes"
+    description="Kubernetes deployment options for Flow Speechmatics"
+    href="/deployments/kubernetes/flow"
+  />
+</Grid>
+
+## Supported Applications
+
+Speechmatics Kubernetes deployment supports the following applications:
+ - [Real-time](/speech-to-text/realtime/quickstart): Stream audio from an input device or file and receive real-time transcription updates as audio is processed.
+ - [Voice Agent – Flow](/voice-agents-flow): A Voice Agent API that enables responsive, real-time speech-to-speech interactions in your applications.
