@@ -13,10 +13,6 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Quickstart
 
-:::info
-It is important to create and reference resources within the same namespace if you do not have full control of your Kubernetes cluster or if it is a shared cluster
-:::
-
 ### Installation
 
 Providing the [Prerequisites](/deployments/kubernetes/prerequisites) have been met for the Speechmatics Helm chart, use the command below to install:
@@ -29,7 +25,7 @@ helm upgrade --install speechmatics-realtime \\
   --set proxy.ingress.url="speechmatics.example.com"`}
 </CodeBlock>
 
-### Validate the Capacity
+### Validate the capacity
 
 You can confirm whether the transcribers and inference servers are available using:
 
@@ -41,11 +37,11 @@ If the transcribers and inference servers are available, it will show `CAPACITY`
 
 ```bash
 NAME                                REPLICAS   CAPACITY   USAGE   VERSION   SPEC HASH
-inference-server-enhanced-recipe1   1          480        0       1         b5784af49332f9948481195451eab6ca
-speechmatics-realtime-en            1          2          0       1         83929f2b9b2448cdc818d0e46e37600b
+inference-server-enhanced-recipe1   1          360        0       2         b5784af49332f9948481195451eab6ca
+rt-transcriber-en                   1          2          0       4         83929f2b9b2448cdc818d0e46e37600b
 ```
 
-### Run a Session
+### Run a session
 
 ```bash
 speechmatics rt transcribe \
@@ -58,106 +54,555 @@ speechmatics rt transcribe \
 
 ## Configuration
 
-See the examples below on how to configure the Helm chart for different deployment scenarios.
+### Speech-to-text 
 
+All Speech-to-text components are deployed as SessionGroups, which is a CRD managed by this chart. Speech-to-text is made up of the transcriber and the inference server.
 
-<Tabs>
-<TabItem value="all_langs" label="All Languages" default>
+Transcribers have a SessionGroup deployed per language, whereas inference servers support a collection of languages in what is referred to as recipes. If running in `standard` operating point, then all languages are available from the one SessionGroup. If running in `enhanced` operating point, you will need to specify the recipe relevant to the languages being used. There are a total of 4 recipes. For more information on the languages available in each enhanced recipe see [the Speechmatics docs](https://docs.speechmatics.com/on-prem/containers/accessing-images#enhanced-operating-point)
 
 ```yaml
+## Standard operating point deployment
 global:
   transcriber:
-    languages: ["ar", "ba", "be", "bg", "bn", "ca", "cmn", "cmn_en", "cs", "cy", "da", "de", "el", "en", "en_ms", "en_ta", "eo", "es", "es-bilingual-en", "et", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi", "hr", "hu", "ia", "id", "it", "ja", "ko", "lt", "lv", "mn", "mr", "ms", "mt", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "sw", "ta", "th", "tr", "ug", "uk", "ur", "vi", "yue"]
-
-# Enable all enhanced and standard inference server recipes
-inferenceServerEnhancedRecipe1:
-  enabled: true
-
-inferenceServerEnhancedRecipe2:
-  enabled: true
-
-inferenceServerEnhancedRecipe3:
-  enabled: true
-
-inferenceServerEnhancedRecipe4:
-  enabled: true
+    # Inference server supports all languages
+    languages: ["en", "fr"]
 
 inferenceServerStandardAll:
+  # Deploys inference server with standard operating point model
   enabled: true
 ```
-
-</TabItem>
-<TabItem value="en_only" label="English Standard + Enhanced" default>
 
 ```yaml
-# Disable default enhanced inference server recipes
+## Enhanced operating point recipe-1 deployment
+global:
+  transcriber:
+    # Supported languages:   ba,be,cy,en,eo,eu,ga,mn,mr,ta,tr,ug,uk
+    languages: ["en"]
+
 inferenceServerEnhancedRecipe1:
-  enabled: false
-
-# Enable custom inference server deployment with just en models
-inferenceServerCustom:
+  # Deploys inference server with enhanced operating point recipe1 model  
   enabled: true
-  fullnameOverride: inference-server-en
- 
-  tritonServer:
-    image:
-      # Repository for the en-only inference server triton container
-      repository: sm-gpu-inference-server-en
- 
-  inferenceSidecar:
-    enabled: true
-
-    # Configuration for custom model deployments
-    registerFeatures:
-      capacity: 600
-      customModelCosts:
-        "*:diar_standard": 0
-        "*:body_standard": 0
-        "*:diar_enhanced": 0
-        "*:body_enhanced": 0
-        en:am_en_standard: 0
-        en:ensemble_en_standard: 20
-        en:lm_en_enhanced: 10
-        en:am_en_enhanced: 0
-        en:ensemble_en_enhanced: 20
 ```
 
-</TabItem>
-<TabItem value="autoscaling" label="Auto-Scaling" default>
+```yaml
+## Enhanced operating point recipe-2 deployment
+global:
+  transcriber:
+    # Supported languages:   bg,es,et,fa,gl,hr,ia,id,lt,lv,ro,sk,sl,ur
+    languages: ["es"]
+
+inferenceServerEnhancedRecipe2:
+  # Deploys inference server with enhanced operating point recipe2 model  
+  enabled: true
+```
+
+```yaml
+## Enhanced operating point recipe-3 deployment
+global:
+  transcriber:
+    # Supported languages:   ca,cs,da,de,el,fi,he,hi,hu,it,ko,ms,sv,sw
+    languages: ["de"]
+
+inferenceServerEnhancedRecipe3:
+  # Deploys inference server with enhanced operating point recipe3 model  
+  enabled: true
+```
+
+```yaml
+## Enhanced operating point recipe-4 deployment
+global:
+  transcriber:
+    # Supported languages:   ar,bn,cmn,fr,ja,mt,no,nl,pl,pt,ru,th,vi,yue
+    languages: ["fr"]
+
+inferenceServerEnhancedRecipe4:
+  # Deploys inference server with enhanced operating point recipe4 model  
+  enabled: true
+```
+
+### Resource manager
+
+Resource manager components include all non-transcription components as well as sidecars running in the transcription components. The version of these components can be globally configured so all components are updated together:
 
 ```yaml
 global:
-  # Enable scaling for all sessiongroups resources
-  sessionGroups:
-    scaling:
-      enabled: true
+  resourceManager:
+    image:
+      tag: 1.2.3
+```
 
-inferenceServerEnhancedRecipe1:
+The services include:
+
+| Service Name                    | Description                                                                                  |
+| ------------------------------- | -------------------------------------------------------------------------------------------- |
+| resource-manager                | The main API and controller for speech-to-text sessions                                                 |
+| resource-manager-metrics        | Exports Prometheus metrics for session usage/availability                                    |
+| resource-manager-reconciliation | Responsible for reconciling the state of Redis if pods are killed without returning capacity |
+| sessiongroups-controller        | Provisions and manages SessionGroup resources                                                |
+| worker-proxy                    | Sidecar running inside transcribers to request and proxy connections to the inference server |
+| readiness-tracker               | Sidecar running inside transcribers to manage connections/capacity and idle status           |
+| inference-sidecar               | Sidecar running inside inference-server pods to manage connections/capacity                  |
+
+### Proxy service
+
+Proxy service is a proxy between the client and transcriber. This service allows for multi-cluster deployments as well as exporting metrics about sessions, including session count and latency.
+
+### Session groups 
+
+SessionGroups is a custom Speechmatics CRD which is used to allocate idle transcribers/inference servers, manage scaling up and down of transcribers/inference servers, and protection of active sessions. It provides the following benefits:
+
+- Auto-scaling up and down of sensitive websocket connections based on a buffer
+- Bin-packing of sessions to run an efficient number of nodes
+- Prevent sessions from being terminated by node scale down
+- Rolling update of transcribers/inference servers without interrupting existing sessions
+- Control over session capacity and how many connections a transcriber/inference server can accept
+
+You can view deployed session groups and their usage with the command: `kubectl get sessiongroups`
+
+The output will look something like:
+
+```bash
+NAME                                REPLICAS   CAPACITY   USAGE   VERSION   SPEC HASH
+inference-server-enhanced-recipe1   1          360        0       2         0492bb2d21f1fa9dac851e31a48667d9
+rt-transcriber-en                   1          2          0       4         ebf88debb77fe9853455ac7d5a24c6ef
+```
+
+Replicas refers to the number of pods deployed, Capacity refers to the total capacity deployed and Usage is how much of the capacity is currently used.
+
+#### Scaling
+
+The auto-scaling works using a buffer, so as more transcribers/inference servers get allocated connections, more idle transcribers/inference servers will scale up. Auto-scaling buffers can be configured in helm values:
+
+```yaml
+global:
   sessionGroups:
     scaling:
-      # Scale up inference server pods when there are 300 inference tokens remaining
-      scaleOnCapacityLeft: 300
+      # Enable auto-scaling of session groups
+      enabled: true
 
 transcribers:
   sessionGroups:
     scaling:
-      # Scale up transcriber pods when there is only capacity for 1 more session
-      scaleOnCapacityLeft: 1
+      # -- Minimum number of pods to deploy
+      minReplicas: 3
+
+      # -- Max number of pods to scale to
+      maxReplicas: 10
+
+      # -- Wait time before scaling down a transcriber once idle
+      scaleDownDelay: 1m0s
+
+      # -- Session capacity for when to scale up (Supports decimals)
+      scaleOnCapacityLeft: 5
 ```
 
-</TabItem>
-</Tabs>
+`((replicas x maxConcurrentConnections) - scaleOnCapacityLeft) = supported sessions before scaling`
 
-## Hardware Recommendations
+Once there is less than 5 idle connections available, SessionGroups will scale up the transcribers to ensure a capacity of 5. For example, 3 replicas totals 6 total connections. Once there is more than 2 active connections, another pod will added until the available connections totals 5.
 
-Below are the recommended Azure node sizes for running Speechmatics on Kubernetes:
+#### Session protection
 
-Service | Node Size
----|---
-STT (Inference Server)    | Standard_NC4as_T4_v3
-STT (Transcriber)     | Standard_E16s_v5
-All Other Services  | Standard_D*s_v5
+SessionGroups also protects sessions from being terminated during scale down of nodes, and rolling update. SessionGroups will manage the update process of speech-to-text components by identifying idle pods that can be updated and leaving pods with active sessions.
 
+
+### Concurrency
+
+By default, the chart is configured to allow 2 connections to each transcriber. This can be configured with the following values:
+
+```yaml
+transcribers:
+  transcriber:
+    maxConcurrentConnections:
+      value: NUMBER_OF_CONNECTIONS
+```
+
+This value can be overridden for each language with the `transcribers.languages.overrides.maxConcurrentConnections` values:
+
+```yaml
+transcribers:
+  languages:
+    overrides:
+      maxConcurrentConnections:
+        en: NUMBER_OF_EN_CONNECTIONS
+        es: NUMBER_OF_ES_CONNECTIONS
+```
+
+Changing this value could affect the resource requirements of the transcriber.
+
+The recommended resource requests for 2 connections to each transcriber (double session workers) are the current default values:
+
+```yaml
+transcribers:
+  readinessTracker:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 15Mi
+
+  workerProxy:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 15Mi
+```
+
+### Model costs
+
+The cost of a session for a transcriber is `1`. However, depending on the features and languages used in a session (and the configured model cost), the cost of that session to the inference server can be between `18-24` for enhanced and `120-150` for standard.
+
+The capacity of an inference server determines the number of sessions that can be connected to it: `capacity/cost_per_session`.
+
+**Recommended capacities:**
+
+| Component                         | Capacity | Cost per session                                | Respective Session Count                          |
+| --------------------------------- | -------- | ----------------------------------------------- | ------------------------------------------------- |
+| inference-server-enhanced-recipe1 | 480      | 21 for English (en) <br> 20 for other languages | 22 for English only <br> 24 for other languages   |
+| inference-server-enhanced-recipe2 | 480      | 26 for Spanish (es) <br> 20 for other languages | 18 for Spanish only <br> 24 for other languages   |
+| inference-server-enhanced-recipe3 | 480      | 26 for German (de) <br> 20 for other languages  | 18 for German only <br> 24 for other languages    |
+| inference-server-enhanced-recipe4 | 480      | 26 for French (fr) <br> 20 for other languages  | 18 for French only <br> 24 for other languages    |
+| inference-server-standard-all     | 2400     | 16 for English (en) <br> 20 for other languages | 150 for English only <br> 120 for other languages |
+| transcriber                       | 2        | 1                                               | 2                                                 |
+
+By default, the chart has been configured to set the capacity to `480` for enhanced recipes and `2400` for standard-all. Model costs have been configured alongside these capacities to maintain the recommended session counts for each recipe (shown in the table above).
+
+The model cost and capacity of an inference server can be overridden in the helm values:
+
+```yaml
+inferenceServer:
+  inferenceSidecar:
+    registerFeatures:
+      capacity: CAPACITY
+      modelCosts:
+        <model_type>: MODEL_COST # e.g. ensemble: 20
+```
+
+**Note:** The above capacity is derived for a [Standard_NC4as_T4_v3](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncast4v3-series) instance. When using other GPU servers (such as L4 or H100) the number of sessions per inference server instance can be increased by changing capacity while keeping the session cost as same.
+
+### Multi-channel
+
+The maximum number of channels supported in transcriber for each language can be configured different to capacity of a transcriber defined in `transcriber.maxConcurrentConnections.value`. With this we can scale based on capacity but have a different maximum number of channels supported from transcriber.
+
+Configure the maximum number of channels per transcriber as `(NUMBER_OF_CONNECTIONS x required number of channels per session)`.
+
+This can be configured with the following values:
+
+```yaml
+transcribers:
+  transcriber:
+    maxRecognizers:
+      value: MAXIMUM_NUMBER_OF_CHANNELS
+```
+
+This value can be overridden for each language with the `transcribers.languages.overrides.maxRecognizers` values:
+
+```yaml
+transcribers:
+  languages:
+    overrides:
+      maxRecognizers:
+        en: MAXIMUM_NUMBER_OF_EN_CHANNELS
+        es: MAXIMUM_NUMBER_OF_ES_CHANNELS
+```
+
+By default, proxy service accepts only 1 channel per session. This can be updated by configuring following values:
+
+```yaml
+proxy:
+  proxy:
+    config:
+      maxChannelsPerSession: MAX_NUMBER_OF_CHANNELS_PER_SESSION
+```
+
+### Usage reporting
+
+By default, all events will be reported to `usage.speechmatics.com`. If you are running your own usage container, you can update the configuration to point to that endpoint with these values:
+
+```yaml
+transcribers:
+  eats:
+    url: "USAGE_CONTAINER_URL:PORT"
+```
+
+### Production environments
+
+#### Infrastructure setup
+
+By default, no node selectors or taints/tolerations will be in place. Providing GPU drivers have been setup correctly, inference servers should always schedule on a GPU node due to their default resource requirements:
+
+```yaml
+  resources:
+    limits:
+      # -- GPU requirements for Triton server
+      nvidia.com/gpu: "1"
+```
+
+However, this does not stop other services running on these GPU nodes. It is recommended to run the inference servers and transcribers on separate nodes, so adding a taint to the GPU nodes will ensure that the transcribers are not able to run there.
+
+It is possible to configure node selectors and tolerations for both session groups to deploy on separate node types.
+
+```yaml
+inferenceServer:
+  tritonServer:
+    nodeSelector: {}
+      # gpu: "true"
+
+    # -- Tolerations for Triton server deployments
+    tolerations:
+      - key: "node-type"
+        operator: "Equal"
+        value: "gpu"
+        effect: "NoSchedule"
+
+transcribers:
+  transcriber:
+    tolerations:
+      - key: "node-type"
+        operator: "Equal"
+        value: "transcriber-only"
+        effect: "NoSchedule"
+```
+
+##### Hardware recommendations
+
+Below are the Azure VM sizes which we recommend for running our services
+
+| Service            | Node Type            |
+| ------------------ | -------------------- |
+| Inference Server   | Standard_NC4as_T4_v3 |
+| Transcriber        | Standard_E16s_v5     |
+| All other services | Standard_D*s_v5      |
+
+#### Redis
+
+If you are running a multi-cluster solution, there needs to be a Redis deployed for each cluster.
+
+By default, this chart deploys Redis in the same namespace as the Speechmatics services and configures those services to use it automatically.
+
+You can instead use your own Redis instance and configure the Speechmatics services to point to it. If you want to use a Redis instance running in the same Kubernetes cluster, disable the Redis instance managed by this chart and set the Redis URL (service name and port) via values, for example:
+
+```yaml
+resourceManager:
+  redis:
+    enabled: false
+    url: <REDIS_K8S_SERVICE_NAME:REDIS_PORT>
+```
+
+##### External redis
+
+Redis can also be hosted outside the cluster. The chart can be configured to use this external Redis by setting the values below. This configuration will create a secret that stores the Redis connection URL.
+
+```yaml
+resourceManager:
+  externalRedis:
+    enabled: true
+
+  redis:
+    enabled: false
+    url: B64_ENCODED_REDIS_CONN_URL # base64 encoded
+
+  secrets:
+    redis:
+      create: true
+```
+
+Alternatively, you can create the Redis connection URL secret yourself and pass its name to the chart. The secret value must be base64 encoded and use the key `redis_url`.
+
+```yaml
+resourceManager:
+  externalRedis:
+    enabled: true
+
+  redis:
+    enabled: false
+
+  secrets:
+    redis:
+      name: NAME_OF_REDIS_CONNECTION_SECRET
+```
+
+#### Custom dictionary cache redis
+
+The resource manager and transcribers can be configured to use a custom dictionary (CD) cache backed by Redis. Enable this with `resourceManager.cdCache.enabled=true` and `transcribers.transcriber.cdCache.enabled=true`.
+
+Redis for the CD cache can be hosted externally, and the chart can be configured to use it by setting the values below. This configuration will create a secret that stores the CD cache Redis connection URL.
+
+```yaml
+transcribers:
+  transcriber:
+    cdCache:
+      enabled: true
+
+resourceManager:
+  cdCache:
+    enabled: true
+    url: B64_ENCODED_CD_CACHE_REDIS_CONN_URL # base64 encoded
+
+  secrets:
+    cdCache:
+      create: true
+```
+
+Alternatively, you can create the CD cache Redis connection URL secret yourself and pass its name to the chart. The secret value must be base64 encoded and use the key `cd_cache_url`.
+
+```yaml
+transcribers:
+  transcriber:
+    cdCache:
+      enabled: true
+
+resourceManager:
+  cdCache:
+    enabled: true
+
+  secrets:
+    cdCache:
+      name: NAME_OF_REDIS_CONNECTION_SECRET
+```
+
+You can configure the maximum size of a CD cache entry, its expiry time in seconds, and the maximum number of entries (keys) stored in Redis as follows:
+
+```yaml
+resourceManager:
+  cdCache:
+    enabled: true
+    # Maximum size of a CD cache entry
+    maxEntrySizeBytes: 10485760 # calculation is 10MB (1024 * 1024 * 10)
+    # Number of seconds before a CD cache entry expires
+    expirySecond: 86400
+    # Maximum number of CD cache entries
+    maxKeysPerContract: 200
+```
+
+A single custom dictionary cache Redis instance can be shared across multiple clusters, with the resource manager in each cluster pointing to the same Redis.
+
+#### Service upgrades
+
+Real-time speech-to-text sessions leverage websockets which are sensitive to any service disruption. This is why we recommend using SessionGroups to manage transcription components, which allow for in-place transcriber and inference server updates. However, non-sessiongroup components such as proxy-service and an ingress controller will not be protected disruptions.
+
+##### Ingress controller configuration
+
+Any updates to an ingress controller could result in nginx processes restarting which will break a websocket connection. If you are using nginx, it is recommended to set the following configuration in the nginx helm chart:
+
+```yaml
+controller:
+  config:
+    # This prevents nginx worker process from shutting down for 24h in case of active sessions
+    worker-shutdown-timeout: 86400s
+
+  extraArgs:
+    # This prevents nginx from shutting down for 24h in case of active connections
+    shutdown-grace-period: 86400
+
+  terminationGracePeriodSeconds: 86400
+```
+
+This will ensure that nginx will not restart for at least 24h. This can be configured to your preferred max session duration.
+
+##### Proxy service deployments
+
+Any restart of a proxy-service pod will also terminate a websocket connection. The proxy chart allows you to configure multiple deployments and A/B switch between them based on service labels:
+
+```yaml
+proxy:
+  proxy:
+    deployments:
+      a:
+        active: true
+        image:
+          tag: 1.2.3
+      b:
+        active: false
+        image:
+          tag: 1.2.4
+```
+
+The example above will deploy 2 proxy-service deployments (a and b), with active traffic being sent to `a`. Once `b` is up and running, the `active` can be switched to the `b` deployment to avoid any disruption. Traffic will eventually drain away from `a` but the pods will remain scaled up.
+
+#### Language specific configuration
+
+##### Resources
+
+Different transcriber languages can have different requirements to others. The chart allows you to better fine-tune the resource requirements of a language using the `transcribers.transcriber.languages.overrides` block. Each language is already configured at the recommended value when operating with 2 concurrent sessions per transcriber. If the concurrency level is changed, then the resources will need to be updated for each transcriber language.
+
+```yaml
+transcribers:
+  transcriber:
+    languages:
+      # -- Override specific behaviour per language
+      overrides:
+        resources:
+          ar:
+            requests:
+              cpu: 500m
+              memory: 5Gi
+          sv:
+            requests:
+              cpu: 200m
+              memory: 3Gi
+```
+
+##### Autoscaling
+
+Requirements for auto-scaling individual languages is also likely to be different depending on the number of languages supported and traffic demand. The buffer can be configured independently for each language under `transcribers.transcriber.languages.overrides.sessionGroupsScaling`
+
+```yaml
+transcribers:
+  transcriber:
+    languages:
+      # -- Override specific behaviour per language
+      overrides:
+        sessionGroupsScaling:
+          ar:
+            # -- Minimum number of ar pods to run
+            minReplicas: 3
+
+            # -- Buffer to start scaling on once capacity is exceeded
+            scaleOnCapacityLeft: 4
+          bg:
+            minReplicas: 20
+            scaleOnCapacityLeft: 15
+```
+
+#### TLS ingress configuration
+
+The proxy ingress can be configured to add a TLS block with the following values:
+
+```yaml
+proxy:
+  proxy:
+    config:
+      # -- Dont allow insecure websockets connections to proxy
+      useInsecureWebsockets: false
+  ingress:
+    url: $REALTIME_URL
+    tls:
+      # -- Name of the TLS secret
+      secretName: my-certificate
+    
+    # Add any needed annotations (cert-manager example)
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+```
+
+### Observability
+
+See the [observability](observability/) directory for information on setting up observability for your cluster.
+
+Following the steps in the [README](observability/README.md) will deploy an observability stack alongside the `sm-realtime` deployment for log monitoring & metrics scraping of services, providing better visibility into your deployment. This will allow the support team to better assist you, if required.
+
+The stack includes:
+
+**Log Monitoring:**
+- **Request tracing**: Filter and search logs by `requestid` to trace individual transcription requests.
+- **Service-level logs**: View logs for specific services (e.g., `proxy`, `resource-manager`) within a specified namespace.
+- **Log export**: Download logs for offline analysis or for sending to support.
+
+**Metrics Scraping (via Prometheus)**
+- Monitor all metrics via the Metrics dashboard in Grafana, and incorporate them into dashboards.
+
+**Dashboards (via Grafana)**
+- **Pre-built dashboard**: A starter dashboard is included for quick visibility into service errors and model usage patterns
+- **Custom queries**: Build custom dashboards and alerts using LogQL and PromQL
 
 ## Uninstall
 
@@ -174,15 +619,66 @@ Depending on the configuration setup, you may also need to remove PVCs created f
 kubectl get pvc | grep redis-data
 ```
 
-## FAQ
+## FAQs
 
-*Why should I use the sm-realtime Helm chart over a Docker container deployment?*
+*1. I can see SessionGroups in the cluster, but logs are saying there is no available transcriber*
 
-> The sm-realtime chart provides a set of containers which will help protect and auto-scale sensitive websocket connections, and ensure performance with session capacity management. 
-  It also provides cost benefits with custom scheduling to help bin-pack active workers onto busy Kubernetes nodes.
+> You can log into redis and view the registered resources with the command `keys *` - this will show what transcription components have registered their capacity with resource manager. If the pod IPs for a session group is not visible they, try restarting the readiness-tracker container or inference-sidecar container.
 
-*What is SessionGroups?*
+*2. Connection times for transcription sessions are very slow*
 
-> SessionGroups is Speechmatics' custom Kubernetes auto-scaling and session management solution for websocket containers.
-  SessionGroups ensures that cluster nodes can safely scale up and down without impacting live STT and Flow sessions running on it. Additionally, it will bin-pack new sessions onto busy nodes for cost efficiency.
-  It comes as a CustomResourceDefinition (CRD) and controller deployed as part of the Speechmatics Realtime Helm chart.
+> When running standard, the connection times can be slow as the transcribers are configured in Enhanced operating point mode by default. You can modify "pre-warm" on the chart to initiate a standard session on startup so follow up connections are faster.
+>
+> The operating point for pre-warm can be changed to standard using following helm values:
+
+```yaml
+transcribers:
+  transcriber:
+    preWarm:
+      operatingPoint: standard
+```
+
+*3. Sessions are being dropped after an nginx upgrade*
+
+> Many different service updates, including proxy-service and the ingress controller, can impact active sessions. Ensure that pods for these services are not restarted while they are handling sessions.
+>
+> Nginx can be configured to prevent it from being restarted if there is an active session using the following helm values:
+
+```yaml
+# nginx values
+controller:
+  config:
+    # This prevents nginx worker process from shutting down for 24h in case of active sessions
+    worker-shutdown-timeout: 86400s
+
+  extraArgs:
+    # This prevents nginx from shutting down for 24h in case of active connections
+    shutdown-grace-period: 86400
+ 
+  # Used to prevent nginx pods being terminated for 24h while there are active sessions
+  terminationGracePeriodSeconds: 86400
+```
+>
+>For more details, see "Service Upgrades" above
+
+*4. Installation is complaining that SessionGroups kind does not exist*
+
+> The SessionGroup CRDs are added as part of the charts under the `crds/` directory. These will only be installed when installing with `helm install` and if the CRDs do not already exist on the cluster.
+>
+> If installing with `helm template | kubectl apply -f -` then the CRDs will not be included in the outputted template. Instead, the CRDs can be applied with `kubectl apply -f ./crds`.
+
+*5. I see a lot of containers in CrashLoopBackoff*
+
+> Resource manager components require a connection to Redis to start successfully. Ensure that redis is running and validate the `redis_url` is correct with `kubectl get cm resource-manager-config -o yaml` or `kubectl get secret REDIS_SECRET_NAME -o yaml` if you are using an External Redis.
+>
+> If redis is taking a long time to start, the timeout of the RM pods can be increased with the `resourceManager.redis.timeoutConnection` value. It currently defaults to 10m.
+>
+> You can check the logs with `kubectl logs $POD_NAME` or check the latest events with `kubectl describe pod $POD_NAME`
+
+*6. Transcriber Pods are stuck in Init:0/1*
+
+> By default, the chart enables `preWarm` which is used to warm up the transcriber models to allow for faster connection times. The transcriber pod init container will check that there is capacity for the preWarm session on startup, meaning if the inference servers have not yet started, the pod will continue to stay in `Init:0/1`.
+> 
+> If the inference servers have started and it is still stuck in `Init:0/1`, then it could be an issue with the default configuration of preWarm. By default, pre-warm will attempt to warm up with `enhanced`, this can be changed with `transcribers.transcriber.preWarm.operatingPoint=standard`. It could also be related to the inference servers deployed in relation to the languages you are trying to run. If languages are deployed which are not supported by inference servers, then those languages will get stuck trying to get inference server capacity.
+>
+>This behaviour can be disabled by setting `transcribers.workerProxy.checkForCapacityOnStart=false`. Alternatively, pre-warm can be disabled with `transcribers.transcriber.preWarm.enabled=false`.
