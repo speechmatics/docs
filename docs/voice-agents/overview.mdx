@@ -1,17 +1,17 @@
 ---
-description: Learn how to build voice-enabled applications with the Speechmatics Voice SDK
+description: Learn how to build voice-enabled applications with the Speechmatics Voice SDK 
 ---
 import Admonition from '@theme/Admonition';
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-import pythonVoiceQuickstart from "./assets/basic-quickstart.py?raw"
-import pythonVoicePresets from "./assets/presets.py?raw"
 import pythonVoiceCustomConfig from "./assets/custom-config.py?raw"
+import pythonVoiceConfigOverlays from "./assets/config-overlays.py?raw"
+import pythonVoiceConfigSerialization from "./assets/config-serialization.py?raw"
 
-# Voice agents overview
-The Voice SDK builds on our Realtime API to provide features optimized for conversational AI:
+# Voice SDK overview
+The Voice SDK builds on our Realtime API to provide additional features optimized for conversational AI, using Python:
 
 - **Intelligent segmentation**: groups words into meaningful speech segments per speaker.
 - **Turn detection**: automatically detects when speakers finish talking.
@@ -39,7 +39,8 @@ Use the Realtime SDK when:
 
 ### 1. Create an API key
 
-[Create an API key in the portal](https://portal.speechmatics.com/settings/api-keys) to access the Voice SDK. Store your key securely as a managed secret.
+[Create a Speechmatics API key in the portal](https://portal.speechmatics.com/settings/api-keys) to access the Voice SDK. 
+Store your key securely as a managed secret. 
 
 ### 2. Install dependencies
 
@@ -51,37 +52,114 @@ pip install speechmatics-voice
 pip install speechmatics-voice[smart]
 ```
 
-### 3. Configure 
+### 3. Quickstart
 
-Replace `YOUR_API_KEY` with your actual API key from the portal:
+Here's how to stream microphone audio to the Voice Agent and transcribe finalised segments of speech, with speaker ID:
 
+```python
+import asyncio
+import os
+from speechmatics.rt import Microphone
+from speechmatics.voice import VoiceAgentClient, AgentServerMessageType
+
+async def main():
+    """Stream microphone audio to Speechmatics Voice Agent using 'scribe' preset"""
+
+    # Audio configuration
+    SAMPLE_RATE = 16000         # Hz
+    CHUNK_SIZE = 160            # Samples per read
+    PRESET = "scribe"           # Configuration preset
+
+    # Create client with preset
+    client = VoiceAgentClient(
+        api_key=os.getenv("SPEECHMATICS_API_KEY"),
+        preset=PRESET
+    )
+
+    # Print finalised segments of speech with speaker ID
+    @client.on(AgentServerMessageType.ADD_SEGMENT)
+    def on_segment(message):
+        for segment in message["segments"]:
+            speaker = segment["speaker_id"]
+            text = segment["text"]
+            print(f"{speaker}: {text}")
+
+    # Setup microphone
+    mic = Microphone(SAMPLE_RATE, CHUNK_SIZE)
+    if not mic.start():
+        print("Error: Microphone not available")
+        return
+
+    # Connect to the Voice Agent
+    await client.connect()
+
+    # Stream microphone audio (interruptable using keyboard)
+    try:
+        while True:
+            audio_chunk = await mic.read(CHUNK_SIZE)
+            if not audio_chunk:
+                break # Microphone stopped producing data
+            await client.send_audio(audio_chunk)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        await client.disconnect()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+```
+
+#### Presets - the simplest way to get started
+These are optimized configurations for common use cases and require no further settings:
+
+`fast` - low latency, fast responses
+
+`adaptive` - natural dialogue in conversation
+
+`smart_turn` - advanced conversation, with ML turn detection
+
+`external` - external end of turn - endpointing handled by the client
+
+`scribe` - note-taking
+
+`captions` - live captioning
+
+To view all available presets:
+```python
+presets = VoiceAgentConfigPreset.list_presets()
+```
+
+### 4. Custom configurations
+
+For more control, you can also specify custom configurations:
 <Tabs>
-  <TabItem value="python-sdk" label="Python (Voice SDK)">
-  <CodeBlock language="python">
-    {pythonVoiceQuickstart}
-  </CodeBlock>
-</TabItem>
-<TabItem value='voice-presets' label='Voice SDK presets'>
-<CodeBlock language="python">
-    {pythonVoicePresets}
-</CodeBlock>
-</TabItem>
-<TabItem value='voice-custom-config' label='Custom config'>
+<TabItem value='voice-custom-config' label='Custom configurations'>
+Specify configurations in a `VoiceAgentConfig` object:
 <CodeBlock language="python">
     {pythonVoiceCustomConfig}
 </CodeBlock>
 </TabItem>
+<TabItem value='voice-custom-config-overlays' label='Custom configurations with overlays'>
+Use presets as a starting point and customise with overlays:
+<CodeBlock language="python">
+    {pythonVoiceConfigOverlays}
+</CodeBlock>
+</TabItem>
+<TabItem value='voice-custom-config-serialization' label='Configuration serialization'>
+Export or import configurations using JSON:
+<CodeBlock language="python">
+    {pythonVoiceConfigSerialization}
+</CodeBlock>
+</TabItem>
 </Tabs>
 
+Note: If no config or preset is provided, the client will default to the external preset.
+
+
+
+
 ## FAQ
-
-### Implementation and deployment
-
-<details>
-<summary>Can I deploy this in my own environment?</summary>
-
-Yes! The Voice SDK can be consumed via our managed service or deployed in your own environment. To learn more about on-premises deployment options, [speak to sales](https://www.speechmatics.com/speak-to-sales).
-</details>
 
 ### Support
 
