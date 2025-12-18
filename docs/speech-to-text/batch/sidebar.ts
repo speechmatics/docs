@@ -1,6 +1,6 @@
 export default {
   type: "category",
-  label: "Batch Transcription",
+  label: "Batch transcription",
   items: [
     {
       type: "doc",

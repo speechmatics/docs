@@ -29,7 +29,7 @@ import CodeBlock from "@theme/CodeBlock";
   - The Inference Container itself does not need a license, but its client (a transcriber Container) must have a valid license with Translation enabled
 - [Access to our Docker repository](/deployments/container/accessing-images)
 
-## System Requirements
+## System requirements
 
 _Note: System requirements for the Translation inference server are the same as for the [GPU Inference Container](/deployments/container/gpu-speech-to-text) for transcription, except for RAM and CPU requirements which are lower. The two servers cannot use the same GPU. _
 
@@ -46,7 +46,7 @@ The system must have:
 
 The raw Docker image size of the Translation Container is around 10GB.
 
-### Nvidia Drivers
+### Nvidia drivers
 
 - The GPU Inference Container is based on CUDA 12.3.2, which requires NVIDIA Driver release 545 or later.
 - If you are running on a data center GPU (e.g, a T4) you can use drivers: 470.57 (or later R470), 525.85 (or later R525), 535.86 (or later R535), or 545.23 (or later R545).
@@ -57,7 +57,7 @@ Driver installation can be validated by running `nvidia-smi`. This command shoul
 
 The GPU node can be provisioned in the cloud.
 
-## Running the Image
+## Running the image
 
 Currently, each Translation Container can only run on a single GPU.
 If a system has more than one GPU, the device must be specified using `CUDA_VISIBLE_DEVICES`
@@ -80,7 +80,7 @@ Approx. size models: 5GB
 Available GPU memory after models loaded: 35GB
 ```
 
-## Sending Requests
+## Sending requests
 
 Batch and Real-Time (RT) transcribers handle sending requests to the Translation Inference Server. To run a transcription job with Translation, follow the [instructions for running the CPU Container](/deployments/container/cpu-speech-to-text) and additionally:
 
@@ -89,13 +89,13 @@ Batch and Real-Time (RT) transcribers handle sending requests to the Translation
 - Use a transcriber version 10.3.0 or newer
 - Ensure you use a license which allows Translation
 
-### Translation Language Pairs
+### Translation language pairs
 
 The Translation Inference Container is not language specific, meaning that all 69 translation language pairs supported can run on a single Inference Container. The source language is defined by the language of the transcriber sending requests.
 
 By default, a maximum of 5 target languages can be requested at once. This behaviour can be changed by setting the environment variable `SM_TRANSLATION_MAX_TARGET_LANGUAGES` in the transcriber. Setting this to 0 will disable the limit.
 
-### Example of Running Translation
+### Example of running translation
 
 Assuming the following config file:
 
@@ -131,13 +131,13 @@ Or start a Translation enabled Real-Time Container with:
       rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
-### Monitoring the Server
+### Monitoring the server
 
 The Inference Server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such
 can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP APIs. To expose these, configure an external mapping for port
 8002(Prometheus) or 8000(HTTP).
 
-## Docker Compose example
+## Docker compose example
 
 This docker-compose file will create a Speechmatics GPU translation server:
 
@@ -179,9 +179,9 @@ services:
 `}
 </CodeBlock>
 
-## Error Handling
+## Error handling
 
-### Unsupported Target Language - Batch
+### Unsupported target language (Batch)
 
 If one or more of the target languages are not supported for the source language, an error message will be included in the final JSON output. No translations will be returned for that language pair.
 

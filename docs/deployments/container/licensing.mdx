@@ -12,7 +12,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 The license is easy to pass into the container deployment either as a file or a environment variable. Licensing does not require network access and works in offline deployments.
 
-## License Structure
+## License structure
 
 The contents of the file received should look similar to this:
 
@@ -39,7 +39,7 @@ The contents of the file received should look similar to this:
 
 The `validFrom` and `notValidAfter` keys in the license file specify the start and end dates for the validity of your license. The license is valid from 00:00 UTC on the start date to 00:00 UTC on the expiry date. After the expiry date, the Container will continue to run but will not transcribe audio. You should apply for a new license before this happens.
 
-## Volume Mapping in a License File
+## Volume mapping in a license file
 
 The license file should be mapped to the path `/license.json` within the Container.
 
@@ -50,7 +50,7 @@ For example:
 `}
 </CodeBlock>
 
-## Setting the License with an Environment Variable
+## Setting the license with an environment variable
 
 For example, copy the `signedclaimstoken` value from the license file and set the `LICENSE_TOKEN` environment variable:
 

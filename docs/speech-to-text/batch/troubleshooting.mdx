@@ -18,7 +18,7 @@ If you see errors when you submit a job or perform any other actions, we advise 
 2. Language code
 3. API key expiration
 
-## 401 Authorization Required
+## 401 Authorization required
 
 A 401 Authorization Required error will be returned as HTML and means that an API Key has not been provided or the wrong API endpoint has been chosen.
 
@@ -42,7 +42,7 @@ For example:
 </html>
 ```
 
-## 403 Entitlement Check Failed
+## 403 Entitlement check failed
 
 The below error indicates that the API Key being used to submit the job has either expired or does not have a requested feature in the config file that has been submitted:
 
@@ -54,11 +54,11 @@ The below error indicates that the API Key being used to submit the job has eith
 }
 ```
 
-## 429 Rate Limited Requests
+## 429 Rate limited requests
 
 A 429 error means that the request has been rate limited by our API. This situation could be avoided by adding a 1-second delay between requests of the same type, e.g., adding a 1-second delay between `GET /v2/jobs/{job_id}` requests.
 
-## 503 Service Unavailable
+## 503 Service unavailable
 
 In the rare event of a 503 error, the request can be retried immediately. If the issue persists, please [Raise an Incident](#raising-an-incident) with the Support team.
 
@@ -66,7 +66,7 @@ In the rare event of a 503 error, the request can be retried immediately. If the
 If you want to terminate a job that is in progress, you can use the [Delete endpoint](/api-ref/batch/delete-a-job) with the `force` parameter. This could be helpful if job seems stuck, too long running, or the output is no longer needed.
 
 
-## Raising an Incident
+## Raising an incident
 
 If you need to raise a Support ticket, then please reach out to [Support](https://support.speechmatics.com).
 
@@ -129,6 +129,6 @@ Date: Thu, 23 May 2019 09:04:49 GMT
 
 Here, the Request-Id is `00adae505fa8cb7c7f24c6bf52c60048`. Please note the response here is in JSON format and is no longer an HTTP response.
 
-## Status Page
+## Status page
 
 Sometimes an issue you have could be caused by a problem on the server side. You can keep track of our service health status updates on our [Status Page](https://status.speechmatics.com/).

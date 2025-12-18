@@ -92,7 +92,7 @@ docker run ... -e LICENSE_TOKEN=eyJhbGciOiJ... speechmaticspublic.azurecr.io/lan
 There should be no reason to do this, but if both a volume-mapped file and an environment variable are provided
 simultaneously then the volume-mapped file will be ignored.
 
-## Using the Container
+## Using the container
 
 :::info
 To reliably identify the predominant language, the file should contain at least 60 seconds of speech in that language. 
@@ -216,7 +216,7 @@ For example the response for input with no speech looks like:
 ```
 
 
-### Setting Expected Languages
+### Setting expected languages
 
 If you expect the audio to be one of a restricted set of languages, you can provide this information through the `expected_languages` config. 
 You can either specify them as comma-separated string as CLI argument:
