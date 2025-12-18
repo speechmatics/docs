@@ -56,7 +56,7 @@ speechmatics rt transcribe \
 
 ### Speech-to-text 
 
-All Speech-to-text components are deployed as SessionGroups, which is a CRD managed by this chart. Speech-to-text is made up of the transcriber and the inference server.
+All speech-to-text components are deployed as `SessionGroups`, which is a CRD managed by this chart. Speech-to-text is made up of the transcriber and the inference server.
 
 Transcribers have a SessionGroup deployed per language, whereas inference servers support a collection of languages in what is referred to as recipes. If running in `standard` operating point, then all languages are available from the one SessionGroup. If running in `enhanced` operating point, you will need to specify the recipe relevant to the languages being used. There are a total of 4 recipes. For more information on the languages available in each enhanced recipe see [the Speechmatics docs](https://docs.speechmatics.com/on-prem/containers/accessing-images#enhanced-operating-point)
 
