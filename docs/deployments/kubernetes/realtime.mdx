@@ -202,7 +202,7 @@ Once there is less than 5 idle connections available, SessionGroups will scale u
 
 #### Session protection
 
-SessionGroups also protects sessions from being terminated during scale down of nodes, and rolling update. SessionGroups will manage the update process of speech-to-text components by identifying idle pods that can be updated and leaving pods with active sessions.
+`SessionGroups` also protects sessions from being terminated during scale down of nodes, and rolling update. `SessionGroups` will manage the update process of speech-to-text components by identifying idle pods that can be updated and leaving pods with active sessions.
 
 
 ### Concurrency
