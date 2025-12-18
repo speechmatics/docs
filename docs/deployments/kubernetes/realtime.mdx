@@ -276,7 +276,9 @@ inferenceServer:
         <model_type>: MODEL_COST # e.g. ensemble: 20
 ```
 
-**Note:** The above capacity is derived for a [Standard_NC4as_T4_v3](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncast4v3-series) instance. When using other GPU servers (such as L4 or H100) the number of sessions per inference server instance can be increased by changing capacity while keeping the session cost as same.
+:::note
+The above capacity is derived for a [Standard_NC4as_T4_v3](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncast4v3-series) instance. When using other GPU servers (such as L4 or H100) the number of sessions per inference server instance can be increased by changing capacity while keeping the session cost as same.
+:::
 
 ### Multi-channel
 
@@ -322,6 +324,29 @@ transcribers:
   eats:
     url: "USAGE_CONTAINER_URL:PORT"
 ```
+
+### Health check
+
+The resource manager service performs a lightweight health check by verifying that it can establish a TCP connection to a transcriber before assigning a session to it. Aside from this, it does not run periodic health checks on resources.
+
+The resource manager also supports an “ignore resources” mechanism for inference servers that the transcriber reports as problematic. If the transcriber cannot communicate with an inference server (or encounters any error while doing so), it will request a new inference server and include an ignore list. Ignored resources are excluded from selection, even when they have capacity or when they are the only available resources.
+
+
+#### Single server deployments
+
+Resource manager will force client requests to not consider problematic resources (transcribers and inference servers). This is to ensure that requests are not redirected to a resource that is not healthy and drop session while trying to connect to it.
+
+If you run a single-server deployment where blacklisting the only resource would result in lost sessions, you can disable this behavior by setting `resourceManager.config.disableIgnoreResources` to `true`. Below is an example of how to do this:
+
+```yaml
+resourceManager:
+  config:
+    disableIgnoreResources: true
+```
+
+:::note
+This setting is unsafe in production. Use it only for single-server deployments where you do not have high availability for transcribers and inference servers.
+:::
 
 ### Production environments
 
@@ -420,6 +445,14 @@ resourceManager:
       name: NAME_OF_REDIS_CONNECTION_SECRET
 ```
 
+##### Redis Dependency Note
+
+By default, chart includes a Redis dependency from the Bitnami Legacy repository, which has publicly disclosed CVEs.
+
+Customers who require additional security controls or remediation for these CVEs can:
+  * Override the Redis image repository and version to use a maintained Redis image, or
+  * Disable the bundled Redis and connect to a managed Redis service.
+
 #### Custom dictionary cache redis
 
 The resource manager and transcribers can be configured to use a custom dictionary (CD) cache backed by Redis. Enable this with `resourceManager.cdCache.enabled=true` and `transcribers.transcriber.cdCache.enabled=true`.
@@ -474,6 +507,38 @@ resourceManager:
 ```
 
 A single custom dictionary cache Redis instance can be shared across multiple clusters, with the resource manager in each cluster pointing to the same Redis.
+
+#### Load balancing strategies
+
+Configure the load balancing strategy with `resourceManager.config.resourceSelectionStrategy` (default: `0`)
+
+```yaml
+resourceManager:
+  config:
+    resourceSelectionStrategy: 0
+```
+
+The primary load balancing approaches are bin packing and round-robin.
+
+- **Bin packing** options: (2, 0), is best suited to deployments with long-running sessions. The SessionGroups service will not scale down a resource that is currently serving a session, so distributing load evenly across all resources can prevent any of them from being scaled down.
+- **Round-robin** options: (3, 1), is better suited to short sessions, where resources can be scaled down once sessions end.
+
+There is also a “capacity preference” aspect, which applies only when `restartAfterNSessions` is enabled. As a transcriber approaches its Nth session, it reduces its capacity; in that situation, it is preferable to route sessions to lower-capacity resources to consume remaining session slots first.
+
+- `0`: (do not use) Select the most-utilized available resource; on ties, prefer higher-capacity resources. This packs sessions onto resources sequentially to maximize utilization.
+- `1`: (do not use) Select the least-utilized available resource; on ties, prefer higher-capacity resources. This provides even load balancing across all matching resources.
+- `2`: (bin packing) Select the most-utilized available resource; on ties, prefer lower-capacity resources. This packs sessions onto resources with least capacity first to maximize utilization.
+- `3`: (round-robin) Select the least-utilized available resource; on ties, prefer lower-capacity resources. This provides even load balancing, preferring resources with least capacity.
+
+The feature to restart transcribers after N sessions is enabled with `transcribers.readinessTracker.restartAfterNSessions` (default: `0` which disables the feature):
+
+```yaml
+transcribers:
+  readinessTracker:
+    restartAfterNSessions: 100
+```
+
+Use this only if the transcriber needs to be restarted after a set number of sessions.
 
 #### Service upgrades
 
