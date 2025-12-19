@@ -2,11 +2,11 @@
 description: Set up the appliance's network configuration.
 ---
 
-# Network Configuration
+# Network configuration
 
 Before starting the Virtual Appliance for the first time, it is important to consider the network settings that will be used. The section below describes the options.
 
-## Network Interface Mapping
+## Network interface mapping
 
 Whilst the Virtual Appliance is powered off, the virtual network adapter should be mapped to the correct physical adapter on the host. The virtual interface must be mapped to a physical adapter on which the Speechmatics Virtual Appliance will be contacted. Steps are provided below for the supported hypervisors.
 
@@ -14,7 +14,7 @@ Whilst the Virtual Appliance is powered off, the virtual network adapter should 
 
 There is nothing to configure here. The network as specified during the import stage described in the [Download and Import](/deployments/virtual-appliance/installation/download-and-import) section will be used.
 
-### VMware Workstation
+### VMware workstation
 
 Speechmatics recommends using the bridged network mode. To ensure bridged networking is selected:
 
@@ -35,7 +35,7 @@ If you experience poor networking performance in VMware Workstation we recommend
 - In the `VMnet Information` section ensure the `Bridged to:` option is set to a specific interface rather than `Automatic`
 :::
 
-## IP Configuration
+## IP configuration
 
 When the Speechmatics Virtual Appliance is started, the default behavior will be to dynamically acquire an IP address using DHCP.
 

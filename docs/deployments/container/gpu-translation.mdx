@@ -82,7 +82,7 @@ Available GPU memory after models loaded: 35GB
 
 ## Sending requests
 
-Batch and Real-Time (RT) transcribers handle sending requests to the Translation Inference Server. To run a transcription job with Translation, follow the [instructions for running the CPU Container](/deployments/container/cpu-speech-to-text) and additionally:
+Batch and Realtime (RT) transcribers handle sending requests to the Translation Inference Server. To run a transcription job with Translation, follow the [instructions for running the CPU Container](/deployments/container/cpu-speech-to-text) and additionally:
 
 - Set the environment variable `SM_TRANSLATION_ENDPOINT` in the transcriber to the GRPC endpoint of the running Translation Inference Server, in the form `<server_ip_address>:<port>` where the port is the one bound to port 8001 of the Translation Docker Container (see [running the image](#running-the-image))
 - Include a `translation_config` inside of your job config. [More details](/speech-to-text/features/translation)
@@ -122,7 +122,7 @@ You can run Batch Transcription and Translation with:
     batch-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
-Or start a Translation enabled Real-Time Container with:
+Or start a Translation enabled Realtime Container with:
 
 <CodeBlock language="bash">
   {`docker run -p 9000:9000 -e LICENSE_TOKEN=eyJhbGciOiJ... \\

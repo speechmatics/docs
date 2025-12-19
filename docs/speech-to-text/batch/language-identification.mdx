@@ -14,7 +14,7 @@ keywords:
 sidebar_label: 'Language identification'
 ---
 
-# Language Identification (SaaS)
+# Language identification (SaaS)
 
 Detect the predominant language spoken and transcribe using the appropriate language.
 
@@ -189,7 +189,7 @@ You can determine the language used to transcribe the file from the first word i
 }
 ```
 
-## Usage with Other Features
+## Usage with other features
 
 The following considerations are required when using Automatic Language Identification along with other Speechmatics features.
 
@@ -211,7 +211,7 @@ If the identified transcription language and target translation language match, 
 
 To reduce friction when using Automatic Language Identification, the translation target language is not validated when submitting the job. For each translation target language that is not supported for the identified language, there will be an error in the `translation_errors` field of the job metadata. For more information, see [Errors When Used with Translation](#errors-when-used-with-translation). Note that if the language is specified and an unsupported translation target language is selected then the job will be `rejected`.
 
-## Error Responses
+## Error responses
 
 ### Unsupported expected language
 

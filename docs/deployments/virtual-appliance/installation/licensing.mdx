@@ -22,7 +22,7 @@ If the Appliance is online and `usage.speechmatics.com` is accessible, then usag
 
 If the Appliance is offline, you must configure the appliance to run in offline mode. See [Offline usage reporting](/deployments/usage-reporting/offline) for details.
 
-## Checking an Appliance License
+## Checking an appliance license
 
 :::info **Note**
 All requests to the management API require authentication unless it is explicitly turned off. The default username and password are 'admin' and 'admin'.
@@ -65,7 +65,7 @@ If the Appliance has been licensed, then you will see a return like this:
 
 This shows that the Appliance has been licensed with a license with the unique id `bb6df75951b14855ab654a09e6d00d80`. The license is due to expire on the 16th October 2024, and is entitled to use batch (MAPBA) and realtime (MAPRT) modes in any language (LANY). The full list of codes is documented [here](/deployments/virtual-appliance/installation/license-features).
 
-## Removing a License
+## Removing a license
 
 If you wish to prevent an Appliance from transcribing anymore, the license can be removed with an HTTP DELETE:
 
@@ -75,7 +75,7 @@ curl -L -u admin:admin -X 'DELETE' \
     | jq
 ```
 
-## Using a Proxy Server
+## Using a proxy server
 
 As part of the `usagereporting` call, a proxy can be set for reaching `usage.speechmatics.com`:
 
@@ -91,8 +91,8 @@ curl -L -u admin:admin -X 'POST' \
 
 Internally this will set the well-known `http_proxy` and `https_proxy` environment variables when launching the transcription process. When choosing `offline` mode, the proxy setting will have no effect. The proxy url can include credentials in the format `https://USER:PASS@proxy.example.com/`.
 
-## Licensing Troubleshooting
+## Licensing troubleshooting
 
-### Invalid License
+### Invalid license
 
 Only basic license validation is performed when the license is applied. Any runtime errors will be reported from the Transcriber Container running inside the Appliance. If this occurs please [reach out to Support](https://support.speechmatics.com), sending back the full output from the job log and the license as reported by the Appliance.

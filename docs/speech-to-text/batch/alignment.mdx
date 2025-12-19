@@ -17,7 +17,7 @@ If you do not have access to use the alignment feature, and you would like to, p
 
 The input text file must be UTF-8 encoded plain text file. Characters outside this format will mean the job is rejected.
 
-## Text Formatting
+## Text formatting
 
 ### Input
 
@@ -54,7 +54,7 @@ The timing information (termed as _alignment files_) are available in two format
 [00:00:00.1] Hello <markup> world <!-- comment > comment --> how are you?
 ```
 
-## Submitting Alignment Jobs
+## Submitting alignment jobs
 
 Creating an alignment job is similar in process to transcription job.
 An HTTP POST request must be made to `/v2/jobs` endpoint with following form fields:
@@ -76,7 +76,7 @@ The job config must state that the job type is `alignment`, the language of the 
 }
 ```
 
-## Retrieving Alignment Jobs
+## Retrieving alignment jobs
 
 Checking status of Alignment jobs is done in the same way as transcription jobs. This is described on [this page](/speech-to-text/batch/output).
 
@@ -108,7 +108,7 @@ Use the following endpoints to retrieve the inputs files used for an alignment j
 
 Note that Alignment follows Speechmatics' [Data Retention Limits](/speech-to-text/batch/limits#data-retention-limits).
 
-## Fetching Files from an Online Location
+## Fetching files from an online location
 
 Speechmatics supports retrieving files from an online location. If you store your digital media and transcripts in cloud storage (for example AWS S3 or Azure Blob Storage) you can also submit a job by providing the URL of the audio file or transcript.
 
@@ -125,7 +125,7 @@ To retrieve files from an online location, you must specify the location for the
 
 You should not use `fetch_data` or `fetch_text` with locally uploaded files simultaneously, as this will cause the job to fail.
 
-## Callback Notifications
+## Callback notifications
 
 Alignment jobs can also be used with callback notifications by including the `notification_config` section in the job config when submitting the job. Please ensure you have allowlisted Speechmatics' egress IPs to allow notifications.
 

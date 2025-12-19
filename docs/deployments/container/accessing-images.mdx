@@ -53,7 +53,7 @@ docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-en:${smVariables
 # pulling the Batch Spanish (es) model with the ${smVariables.latestContainerVersion} tag:
 docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-es:${smVariables.latestContainerVersion}
 \0
-# pulling Real-Time Global English (en) with the ${smVariables.latestContainerVersion} tag:
+# pulling Realtime Global English (en) with the ${smVariables.latestContainerVersion} tag:
 docker pull speechmaticspublic.azurecr.io/rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
@@ -120,7 +120,7 @@ To access additional language configurations for containers, please [speak to ou
 
 ## Pulling translation GPU image
 
-This GPU image is required to use Translation in Batch or Real-Time.
+This GPU image is required to use Translation in Batch or Realtime.
 
 <CodeBlock language="bash">
   {`# pulling the Translation GPU inference server which supports all translation pairs with the ${smVariables.latestContainerVersion} tag:
@@ -137,12 +137,12 @@ To use Spanish and English bilingual transcription you need to pull the Core Spe
   {`# pulling Batch bilingual Spanish and English with the ${smVariables.latestContainerVersion} tag:
 docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-es-bilingual-en:${smVariables.latestContainerVersion}
 \0
-# pulling Real-time bilingual Spanish and English with the ${smVariables.latestContainerVersion} tag:
+# pulling Realtime bilingual Spanish and English with the ${smVariables.latestContainerVersion} tag:
 docker pull speechmaticspublic.azurecr.io/rt-asr-transcriber-es-bilingual-en:${smVariables.latestContainerVersion}`}
   </CodeBlock>
 
 :::info
-Bilingual is only available for GPU deployments. Batch and Real-Time are supported.
+Bilingual is only available for GPU deployments. Batch and Realtime are supported.
 :::
 
 ## Pulling language ID Image
