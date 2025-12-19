@@ -15,7 +15,7 @@ keywords:
 import Tabs from "@theme/Tabs"; 
 import TabItem from "@theme/TabItem"; 
 
-# Audio Filtering 
+# Audio filtering 
 
 Audio Filtering pre-processes input audio to remove low-volume background speech which might otherwise be detected and transcribed.
 
@@ -45,7 +45,7 @@ This will avoid processing any audio which is below the `3.4` volume threshold. 
 
 `volume_threshold` supports a range of `0 - 100` where `0` does not filter any audio and `100` removes all audio.
 
-## Volume Labelling
+## Volume labelling
 
 If Audio Filtering is configured, words will be labelled with their volume like this (range for `volume_threshold` is `0-100`):
 
@@ -69,7 +69,7 @@ These values can be used as a guide to setting the volume threshold, but we reco
 
 To obtain volume labelling without filtering any audio, supply an empty config object (`{}`) or set the `volume_threshold` to `0.0`.
 
-## Technical Details
+## Technical details
 
 Once the audio is in a raw format (16kHz 16bit mono), it is split into 0.01s chunks. For each chunk, the root mean square amplitude of the signal is calculated, and scaled to the range `0 - 100`. If the volume is less than the supplied cut-off, the chunk will be replaced with silence.
 

@@ -42,7 +42,7 @@ If unsuccessful, please verify your credentials and URL. If problems persist, pl
 Speechmatics require all customers to cache a copy of the Docker image(s) within their own environment. Once the first version of the container is pulled from the Speechmatics Software Repository, please re-host in a private container registry instead and reference your personal registry in your deployments.
 :::
 
-## Pulling Core Speech CPU images
+## Pulling core speech CPU images
 
 Each supported language pack comes as a different Docker image, so the process will need to be repeated for each language pack required using the relevant language code.
 
@@ -60,7 +60,7 @@ docker pull speechmaticspublic.azurecr.io/rt-asr-transcriber-en:${smVariables.la
 See [how to run the Core Speech CPU container here.](/deployments/container/cpu-speech-to-text)
 
 
-## Pulling Transcription GPU images
+## Pulling transcription GPU images
 
 The Transcription GPU images are required to use the most accurate models.
 
@@ -118,7 +118,7 @@ See [how to run the Transcription GPU container here.](/deployments/container/gp
 To access additional language configurations for containers, please [speak to our Support Team](https://support.speechmatics.com).
 :::
 
-## Pulling Translation GPU image
+## Pulling translation GPU image
 
 This GPU image is required to use Translation in Batch or Real-Time.
 
@@ -145,7 +145,7 @@ docker pull speechmaticspublic.azurecr.io/rt-asr-transcriber-es-bilingual-en:${s
 Bilingual is only available for GPU deployments. Batch and Real-Time are supported.
 :::
 
-## Pulling Language ID Image
+## Pulling language ID Image
 
 This image is required to use Language ID.
 

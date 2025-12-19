@@ -4,20 +4,20 @@ keywords: [speechmatics, custom dictionary, sounds like, transcription, speech r
 sidebar_position: 3
 ---
 
-# Custom Dictionary
+# Custom dictionary
 
-The Custom Dictionary feature allows a list of custom words to be added for each transcription job. This helps when a specific word is not recognised during transcription. It could be that it's not in the vocabulary for that language, for example a company or person's name. Adding custom words can improve the likelihood they will be output.
+The Custom dictionary feature allows a list of custom words to be added for each transcription job. This helps when a specific word is not recognised during transcription. It could be that it's not in the vocabulary for that language, for example a company or person's name. Adding custom words can improve the likelihood they will be output.
 
 The `sounds_like` feature is an extension to this to allow alternative pronunciations to be specified to aid recognition when the pronunciation is not obvious.
 
-The Custom Dictionary feature can be accessed through the `additional_vocab` property.
+The Custom dictionary feature can be accessed through the `additional_vocab` property.
 
 Prior to using this feature, consider the following:
 
 - `sounds_like` is an optional setting recommended when the pronunciation is not obvious for the word or, it can be pronounced in multiple ways; it is valid just to provide the `content` value
 - `sounds_like` only works with the main script for that language
   - Japanese (ja) `sounds_like` only supports full width Hiragana or Katakana
-- You can specify up to 1000 words or phrases (per job) in your Custom Dictionary
+- You can specify up to 1000 words or phrases (per job) in your Custom dictionary
 
 ```json
 "transcription_config": {
@@ -46,16 +46,16 @@ Prior to using this feature, consider the following:
 
 In the above example, the words _gnocchi_ and _CEO_ have pronunciations applied to them; the phrase _financial crisis_ does not require a pronunciation. The `content` property represents how you want the word to be output in the transcript.
 
-## Custom Dictionary Caching
-The Speechmatics Realtime SaaS caches Custom Dictionaries to reduce session initialisation times. 
+## Custom dictionary caching
+The Speechmatics Realtime SaaS caches custom dictionaries to reduce session initialisation times. 
 
-You will see improvements when reusing an identical Custom Dictionary from the second time onwards. Cache entries expire when they are not used for 24 hours.
+You will see improvements when reusing an identical custom dictionary from the second time onwards. Cache entries expire when they are not used for 24 hours.
 
-On-prem Realtime Containers can also make use of a [Shared Custom Dictionary Cache](/deployments/container/cpu-speech-to-text#how-to-use-a-shared-custom-dictionary-cache).
+On-prem Realtime Containers can also make use of a [Shared custom dictionary cache](/deployments/container/cpu-speech-to-text#how-to-use-a-shared-custom-dictionary-cache).
 
-## Custom Dictionary Content Limits (Realtime)
+## Custom dictionary content limits (Realtime)
 
-Any individual Custom Dictionary (`additional_vocab`) element longer than 6 words will be automatically dropped from the config before transcription starts. This applies to both the `content` and `sounds_like` fields.
+Any individual custom dictionary (`additional_vocab`) element longer than 6 words will be automatically dropped from the config before transcription starts. This applies to both the `content` and `sounds_like` fields.
 
 Any elements that exceed this limit will be dropped before transcription starts. The server will send an in-band warning message of type validation_warning to the client prior to the RecognitionStarted message. See the [Realtime API Reference](/api-ref/realtime-transcription-websocket#warning) for more details.
 

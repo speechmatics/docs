@@ -10,11 +10,11 @@ import TabItem from '@theme/TabItem';
 import { smVariables } from '/sm-variables';
 import CodeBlock from '@theme/CodeBlock';
 
-# Additional Security Features
+# Additional security features
 
 This section documents additional measures you can take to run the Batch Container where there are restrictive requirements on data storage or user access.
 
-## Custom Mapping Temporary Directories to Run the Batch Container
+## Custom mapping temporary directories to run the batch container
 
 Users may wish to run the Batch Container in an environment where they cannot or do not want to write anything to disk, and instead use temporary storage like `tmpfs` or `ramfs` to ensure regulatory compliance. The Batch Container supports mounting temporary directories for the storage of all intermediate files created during transcription, as well as mounting the directories where input, output and job configuration files are placed. Files can also be locally retrieved by using the `fetch_url` functionality in the configuration object.
 
@@ -60,7 +60,7 @@ Users can also pull files from temporary locations using `fetch_url` functionali
 }
 ```
 
-## Running a Batch Container as a Non-Root User
+## Running a batch container as a non-root user
 
 There are some use cases where you may not be able to run the Batch Container as a root user. This may be because you are working in a hosting environment that mandates the use of a named user rather than root.
 
@@ -70,7 +70,7 @@ You must start the Container with the flag `-–user $USERNUMBER:$GROUPID`. User
 docker run --user 1000:3000 ubuntu echo hello world
 ```
 
-### Getting Transcription Output as a Non-Root User
+### Getting transcription output as a non-root user
 
 If you take transcription via the default STDOUT, then this will not change as a non-root user. Below is an example:
 
@@ -83,7 +83,7 @@ docker run -u 1020:4000 \
 
 If you want to write the output to a specific directory, you must volume map a directory to which the non-root user would have access.
 
-### Running a Batch Container as a Non-Root User on Kubernetes
+### Running a batch container as a non-root user on kubernetes
 
 :::note
 The examples below **do not** constitute an explicit recommendation to run as non-root user, merely a guideline on how to do so with Kubernetes only when this is an unavoidable requirement.
