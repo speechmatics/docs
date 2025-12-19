@@ -13,7 +13,7 @@ The Appliance uses a Kubernetes architecture running on a customized Ubuntu mach
 Data on the Appliance (including audio and video data that is submitted via the Speech API, logs, and output transcripts) are encrypted on disk if the hypervisor is configured to manage at-rest encryption. The OVA you import
 is not encrypted by default if you require at-rest encryption you should follow the instructions specific to your hypervisor.
 
-## Securing the Management API
+## Securing the management API
 
 All requests to the Management API require authentication unless it is explicitly turned off. The default username and password are `'admin'` and `'admin'`.
 
@@ -37,7 +37,7 @@ curl -sSL -u admin:admin -X 'POST' \
 
 or perform these operations from the Management Web UI running on `http(s)://${APPLIANCE_HOST}/`.
 
-## Configuring a Token for transcription
+## Configuring a token for transcription
 
 Versions of the Appliance before 6.0.0 required no authentication to use the ASR API. This version requires no authentication by default, but depending on the appliance mode you can configure a token of your choice to protect either the jobs endpoint or realtime websocket using the Management API.
 
@@ -57,7 +57,7 @@ curl -sSL -u admin:admin -X 'DELETE' \
 
 When a token is in use, requests to the respective transcription services will require an authentication header identical to the kind used in the Speechmatics SaaS.
 
-### Batch Mode
+### Batch mode
 
 In `batch` mode the Jobs API will require an auth token
 
@@ -70,7 +70,7 @@ curl -s -L -X 'POST' "https://${APPLIANCE_HOST}/v2/jobs/" \
       }'
 ```
 
-### Realtime Mode
+### Realtime mode
 
 In `realtime` mode the websocket will require an auth token, for example using the [Speechmatics Python Client](https://github.com/speechmatics/speechmatics-python):
 
@@ -79,7 +79,7 @@ speechmatics config set --auth-token $AUTH_TOKEN
 speechmatics transcribe --lang en ${PATH_TO_AUDIO_FILE} --url "ws://${APPLIANCE_HOST}:9000/v2/en" --ssl-mode none
 ```
 
-## Ports and Protocols
+## Ports and protocols
 
 There are several firewall rules that may need to be enabled to ensure the communication can be made to the Virtual Appliance. If you set up HTTPS as described in the 'SSL Configuration' section of these docs then you only need to expose port 443 for `batch` mode, and port 443 and 9004 for `realtime` mode.
 

@@ -27,7 +27,7 @@ The Audio Events feature, available through our Automatic Speech Recognition (AS
 
 Enable Audio Events in your application for file processing scenarios by leveraging Speechmatics SaaS or On-Prem solutions.
 
-If you're new to Speechmatics, start by exploring our guides on [Processing a File](/speech-to-text/batch/quickstart) or [Analyzing in Real-Time](/speech-to-text/realtime/quickstart). To activate Audio Events, include the following configuration:  
+If you're new to Speechmatics, start by exploring our guides on [Processing a File](/speech-to-text/batch/quickstart) or [Analyzing in Realtime](/speech-to-text/realtime/quickstart). To activate Audio Events, include the following configuration:  
 
 ```json 
 { 
@@ -77,9 +77,9 @@ with BatchClient(settings) as client:
 ``` 
 </TabItem> 
 
-<TabItem value="real-time" label="Real-Time Processing"> 
+<TabItem value="real-time" label="Realtime Processing"> 
 
-Python client example for detecting Audio Events in real-time, see [here](/speech-to-text/realtime/quickstart) for more examples of Real-Time Transcription 
+Python client example for detecting Audio Events in real-time, see [here](/speech-to-text/realtime/quickstart) for more examples of Realtime Transcription 
 
 ```python showLineNumbers 
 import speechmatics.client
@@ -216,7 +216,7 @@ The Audio Event summary will also contain the summary of silence & speech events
 
 ``` 
 </TabItem> 
-<TabItem value="real-time" label="Real-Time Response">  
+<TabItem value="real-time" label="Realtime Response">  
 
 For real-time detection of Audio Events, separate messages will be sent at the beginning and end of each type of event. 
 In real-time scenarios, only one type of event can be actively detected at one time e.g. ongoing "music" event will take precedence over an overlapping "laughter" event which starts later. An audio event detection begins with an AudioEventStarted event. Once an AudioEvent has finished with a terminating AudioEventEnded then other AudioEvents can be detected.
@@ -258,9 +258,9 @@ These fields indicate which channel the audio event comes from.
 ## Supported audio events 
 | Event Type            | Availability                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 | ------------------    | ----------------------------- |
-| `laughter`            | Batch & Real-Time             |
-| `applause`            | Batch & Real-Time             |
-| `music`               | Batch & Real-Time. **Note**: Real-Time Audio Events can be overly sensitive to music. We are investigating the root cause and aim to fix this soon.              |
+| `laughter`            | Batch & Realtime             |
+| `applause`            | Batch & Realtime             |
+| `music`               | Batch & Realtime. **Note**: Realtime Audio Events can be overly sensitive to music. We are investigating the root cause and aim to fix this soon.              |
 | `silence`             | Batch Audio Event Summary     |
 | `speech`              | Batch Audio Event Summary     |
 

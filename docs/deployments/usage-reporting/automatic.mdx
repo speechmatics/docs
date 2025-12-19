@@ -17,7 +17,7 @@ We will **never** send customer audio data over the network. See [What Data Do W
 
 The Batch transcriber will report one `TRANSCRIBER_DONE` event at the event of transcription.
 
-The Real-time transcriber will report one `SESSION_ENDED` event at the end of each session. During a session, the Real-time transcriber also sends `SESSION_STATUS` every few minutes.
+The Realtime transcriber will report one `SESSION_ENDED` event at the end of each session. During a session, the Realtime transcriber also sends `SESSION_STATUS` every few minutes.
 
 The payload size is only several KB, so it won’t have a meaningful impact on the duration of transcription or your bandwidth costs.
 
@@ -30,7 +30,7 @@ If usage reporting is successful then at the end of the session the following me
 
 In verbose debug mode, the contents of the usage report can be seen.
 
-## Network Failure
+## Network failure
 
 In the event of a network failure (for example, if your Internet connection is down or our usage server has a temporary outage) the transcriber will attempt to reconnect to our usage server several times.
 
@@ -42,7 +42,7 @@ If, after this retry period (which takes up to 3 seconds), the transcriber is st
 
 For Batch transcribers, the transcriber will exit immediately after this.
 
-For Real-Time transcribers, usage reporting will be disabled for a fixed time period (currently 60 seconds). This is to minimize the impact on the duration of transcription jobs. This retry mechanism will cause a small hit to the speed of transcription, so in the event of a network outage, you may wish to temporarily disable usage reporting by setting the `SM_ENABLE_USAGE_REPORTING` variable to false when running the container.
+For Realtime transcribers, usage reporting will be disabled for a fixed time period (currently 60 seconds). This is to minimize the impact on the duration of transcription jobs. This retry mechanism will cause a small hit to the speed of transcription, so in the event of a network outage, you may wish to temporarily disable usage reporting by setting the `SM_ENABLE_USAGE_REPORTING` variable to false when running the container.
 
 We ask that you inform our Finance Team about the duration and timing of any such outage.
 
@@ -62,11 +62,11 @@ For container deployments, automatic usage reporting is turned ON by default and
 To enable automatic usage reporting, you must be running one of the following ASR Container versions:
 
 - Batch Container `10.1.0` onwards
-- Real-Time Container `10.1.0` onwards
+- Realtime Container `10.1.0` onwards
 
 Automatic usage reporting is turned ON by default, starting from version `10.6.0`.
 
-### Virtual Appliance
+### Virtual appliance
 
 For virtual appliances, automatic usage reporting is turned ON by default and is currently opt out.
 

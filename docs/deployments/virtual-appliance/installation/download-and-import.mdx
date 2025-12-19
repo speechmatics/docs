@@ -7,9 +7,9 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
-# Download and Import
+# Download and import
 
-# Downloading the Appliance
+# Downloading the appliance
 
 Our appliances are distributed as Open Virtual Appliance (OVA) files. The OVA format is an archive file format containing everything required to distribute virtual machines, such as virtual disk images and a structured description of the virtual machine setup.
 
@@ -28,7 +28,7 @@ After the download, a file with an ".ova" extension will be stored on your compu
 An account is required to access the documents and download link in the Support Portal. If an account is not available or the relevant Virtual Appliance section is not visible in the Support Portal, please reach out to [Support](https://support.speechmatics.com) for help.
 
 
-# Importing the Appliance
+# Importing the appliance
 
 Once the **.ova** file has been downloaded, it is ready to be imported into your hypervisor. Please ensure that the host meets the [System Requirements](system-requirements.mdx), then based on the hypervisor environment follow the instructions below.
 
@@ -49,7 +49,7 @@ This section explains how to import a Speechmatics OVA into VMware vSphere/ESXi.
 
 Although OVA/OVF file importing is supported by the ESXi host web interface, we do not recommended this due to its [file size limitations](https://docs.vmware.com/en/VMware-vSphere/8.0/vsphere-esxi-host-client/GUID-FBEED81C-F9D9-4193-BDCC-CC4A60C20A4E_copy.html#GUID-96CFEA28-DBDB-43C9-8C28-DAC6E6451C1C). The vCenter Server web interface has better support for OVA/OVF importing, especially since version [8.0 U1](https://knowledge.broadcom.com/external/article?legacyId=79986). Despite this, we've had best results using [OVF Tool](https://developer.broadcom.com/tools/open-virtualization-format-ovf-tool/latest).
 
-### OVF Tool
+### OVF tool
 
 Begin by installing the OVF Tool binary suitable for your operating system and vSphere version. Next, launch a terminal window in the directory containing the Speechmatics OVA file that you downloaded earlier.
 
@@ -77,7 +77,7 @@ The exact command will vary depending on your vSphere environment. For full deta
 
 If you wish to enable GPU transcription we recommended following [this guide](https://knowledge.broadcom.com/external/article?legacyId=1010789).
 
-## VMware Workstation
+## VMware workstation
 
 To import a Speechmatics OVA into VMware Workstation follow these steps:
 
@@ -97,7 +97,7 @@ Note that VMware Workstation does not currently support PCI passthrough, which i
 When running on a Windows host we've observed that best performance is achieved by launching VMware Workstation using the `Run as administrator` option.
 :::
 
-## Amazon Web Services
+## Amazon web services
 
 This section explains how to create a Virtual Appliance EC2 instance on the Amazon Web Services (AWS) platform by using the AWS VM Import/Export tool. This tool is designed for importing VM images from the OVA file format provided by Speechmatics. You will import the image as an Amazon Machine Image (AMI), from which you can then launch machine instances.
 
@@ -111,7 +111,7 @@ There are a few prerequisites that you will need to have set up before you can f
 
 Please follow the recommendations on configuration of the AWS CLI by referring to the [Getting Started](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-introduction.html) guide.
 
-### Uploading the OVA File to S3
+### Uploading the OVA file to S3
 
 This section describes the process of uploading the Speechmatics OVA file to an Amazon S3 bucket from where it can be imported as an AMI instance. We recommend using a bucket in the same region where you want the AMI to be created and made available.
 
@@ -130,7 +130,7 @@ Once you've identified or created the S3 bucket on your account where the Speech
 
 For more information about the multipart uploads, see the [AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/dev/mpuoverview.html).
 
-### Importing the OVA as an AMI Instance
+### Importing the OVA as an AMI instance
 
 After the Virtual Appliance OVA file has been successfully uploaded to an S3 bucket, it's time to import the image.
 
@@ -142,7 +142,7 @@ The steps that you will perform in this section include (in order):
 - Assigning a Role Policy to this Service Role
 - Importing the OVA for the Virtual Appliance from the S3 bucket file
 
-#### Creating an Import Service Role
+#### Creating an import service role
 
 First of all, a **service role** needs to be created on your AWS account. This allows certain operations, including downloading images from an S3 bucket.
 
@@ -175,7 +175,7 @@ aws iam create-role --role-name vmimport --assume-role-policy-document file://tr
 
 You need to ensure the that `file://` prefix is prepended to the filename.
 
-#### Creating a Role Policy
+#### Creating a role policy
 
 Create a file named `role-policy.json` with the following policy. Where you see `ova-bucket` it will need to be replaced with the name of the S3 bucket where the OVA file is stored.
 
@@ -249,11 +249,11 @@ When the status is in the `completed` state the AMI is ready to use.
 
 For more background on creating security groups refer to the official [AWS documentation](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html). See the [Ports and Protocols](/deployments/virtual-appliance/administration/security#ports-and-protocols) section for a list of the ports that are used. These ports should be opened so that you can submit jobs and manage and monitor the Speechmatics Virtual Appliance.
 
-#### Batch Virtual Appliance
+#### Batch virtual appliance
 
 If you set up HTTPS as described in [SSL Configuration](/deployments/virtual-appliance/administration/ssl-configuration) then you only need to expose port 443.
 
-### Launching a Virtual Appliance
+### Launching a virtual appliance
 
 Now that the Virtual Appliance has been imported, it will be available as an AMI which can be launched as an instance. To launch a Speechmatics Virtual Appliance, do the following:
 
