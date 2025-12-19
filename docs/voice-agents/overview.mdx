@@ -111,15 +111,15 @@ if __name__ == "__main__":
 ```
 
 #### Presets - the simplest way to get started
-These are optimized configurations for common use cases and require no further settings:
+These are purpose-built, optimized configurations, ready for use without further modification:
 
 `fast` - low latency, fast responses
 
-`adaptive` - natural dialogue in conversation
+`adaptive` - general conversation 
 
-`smart_turn` - advanced conversation, with ML turn detection
+`smart_turn` - complex conversation
 
-`external` - external end of turn - endpointing handled by the client
+`external` - user handles end of turn
 
 `scribe` - note-taking
 
@@ -132,7 +132,7 @@ presets = VoiceAgentConfigPreset.list_presets()
 
 ### 4. Custom configurations
 
-For more control, you can also specify custom configurations:
+For more control, you can also specify custom configurations or use presets as a starting point and customise with overlays:
 <Tabs>
 <TabItem value='voice-custom-config' label='Custom configurations'>
 Specify configurations in a `VoiceAgentConfig` object:
@@ -140,27 +140,20 @@ Specify configurations in a `VoiceAgentConfig` object:
     {pythonVoiceCustomConfig}
 </CodeBlock>
 </TabItem>
-<TabItem value='voice-custom-config-overlays' label='Custom configurations with overlays'>
+<TabItem value='voice-custom-config-overlays' label='Preset with a custom overlay'>
 Use presets as a starting point and customise with overlays:
 <CodeBlock language="python">
     {pythonVoiceConfigOverlays}
 </CodeBlock>
 </TabItem>
-<TabItem value='voice-custom-config-serialization' label='Configuration serialization'>
-Export or import configurations using JSON:
-<CodeBlock language="python">
-    {pythonVoiceConfigSerialization}
-</CodeBlock>
-</TabItem>
 </Tabs>
 
-Note: If no config or preset is provided, the client will default to the external preset.
+Note: If no configuration or preset is provided, the client will default to the `external` preset.
 
 
 
 
 ## FAQ
-
 ### Support
 
 <details>
@@ -171,7 +164,7 @@ You can submit feedback, bug reports, or feature requests through the Speechmati
 
 ## Next steps
 
-For more information, see the [Voice SDK](https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/voice) on github.
+For more information, see the [Voice SDK](https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/voice) on GitHub.
 
 To learn more, check out [the Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy).
 
