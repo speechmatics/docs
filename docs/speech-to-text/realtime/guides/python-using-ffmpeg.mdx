@@ -1,6 +1,6 @@
 ---
 toc_max_heading_level: 3
-description: 'Use ffmpeg to pipe microphone input into the Speechmatics Real-Time API'
+description: 'Use ffmpeg to pipe microphone input into the Speechmatics Realtime API'
 keywords: [real-time, ffmpeg, microphone, transcription, speech recognition, asr, transcription api]
 ---
 
@@ -8,11 +8,11 @@ import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Python - Using FFMPEG
+# Python using FFMPEG
 
 One of the most powerful use cases for ASR is real-time transcription of microphone inputs. However, working with audio devices can be hard. [FFMPEG](https://ffmpeg.org/) is the most popular tool for processing a wide range of media streams, including audio and video. In this tutorial, we'll walk you through installing and running ffmpeg as an input source for the Speechmatics CLI tool.
 
-### Install the Speechmatics CLI
+### Install the speechmatics CLI
 
 Before we move onto using FFMPEG, you'll need to install the speechmatics CLI in your local environment. In order to proceed with this installation, you will need Python version >= 3.7. Run the command:
 
@@ -26,7 +26,7 @@ Once this command is complete, check the installation was a success by running:
 speechmatics -h
 ```
 
-### Install and Run FFMPEG
+### Install and run FFMPEG
 
 Select your OS type from the tabs below and follow the provided guide to run FFMPEG with Speechmatics on your machine.
 
@@ -57,7 +57,7 @@ sudo apt install ffmpeg libasound2 alsa-utils
 ffmpeg -version
 ```
 
-#### Run the CLI Commands
+#### Run the CLI commands
 
 Set up your local CLI environment with the following config command:
 
@@ -110,7 +110,7 @@ brew upgrade
 brew install ffmpeg
 ```
 
-#### Run the CLI Commands
+#### Run the CLI commands
 
 Set up your local CLI environment with the following config command:
 
@@ -154,7 +154,7 @@ ffmpeg -version
 
 You should see some output with the version, copyright and build information.
 
-#### Run the CLI Commands
+#### Run the CLI commands
 
 Set up your local CLI environment with the following config command:
 

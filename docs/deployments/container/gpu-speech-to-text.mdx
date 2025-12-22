@@ -15,7 +15,7 @@ import gpuSttDockerCompose from './assets/gpu-stt-docker-compose.yml?raw';
 ## Prerequisites
 
 - [A license file or a license token](/deployments/container/licensing)
-  - There is no specific license for the GPU Inference Container, it will run using an existing Speechmatics license for the Real-Time or Batch
+  - There is no specific license for the GPU Inference Container, it will run using an existing Speechmatics license for the Realtime or Batch
     Container
 - [Access to our Docker repository](/deployments/container/accessing-images)
 
@@ -88,7 +88,7 @@ I1215 11:43:57.375473 1 http_server.cc:3477] Started HTTPService at 0.0.0.0:8000
 I1215 11:43:57.417749 1 http_server.cc:184] Started Metrics Service at 0.0.0.0:8002
 ```
 
-### Batch and Real-time inference
+### Batch and Realtime inference
 
 The Inference server can run in two modes: _batch_, for processing whole files and returning the transcript at the end, and _real-time_ for
 processing audio streams. The default mode is batch. To configure the GPU server for real-time, set the environment variable
@@ -125,7 +125,7 @@ can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP API
 
 When inference is outsourced to a GPU server, alternative GPU-specific models are used, so you should not expect to see identical results compared to CPU-based inference. For convenience, the GPU models are also designated as 'standard' and 'enhanced'.
 
-## Docker Compose example
+## Docker compose example
 
 This Docker Compose file will create a Speechmatics GPU Inference Server:
 

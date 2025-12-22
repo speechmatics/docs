@@ -30,13 +30,13 @@ A basic Flow session will have the following message exchanges:
 
 <WebsocketMessageArrow direction="down" /> Indicates messages sent by the service
 
-### Session Start
+### Session start
 Once-only at conversation start:
 
 - <Text align="center"><WebsocketMessageArrow direction="up" /> StartConversation</Text>
 - <WebsocketMessageArrow direction="down" /> ConversationStarted
 
-### Audio Input/Output and Transcripts
+### Audio input/output and transcripts
 Repeating during the conversation to cover the audio stream from the client and corresponding transcripts:
 
 - <WebsocketMessageArrow direction="up" /> `AddAudio` (client sending audio)
@@ -45,19 +45,19 @@ Repeating during the conversation to cover the audio stream from the client and 
 - <WebsocketMessageArrow direction="down" /> `AddAudio` (server sending audio)
 - <WebsocketMessageArrow direction="up" /> `AudioReceived` (client received audio)
 
-### TTS Response Management
+### TTS response management
 
 - <WebsocketMessageArrow direction="down" /> `ResponseStarted` (when TTS begins)
 - <WebsocketMessageArrow direction="down" /> `ResponseCompleted` (when TTS finishes normally)
 - <WebsocketMessageArrow direction="down" /> `ResponseInterrupted` (when TTS is interrupted)
 
-### Function Calling
+### Function calling
 Exchanged during function calling over the websocket:
 
 - <WebsocketMessageArrow direction="down" /> `ToolInvoke` (when function call is triggered)
 - <WebsocketMessageArrow direction="up" /> `ToolResult` (client response to function call)
 
-### Session Termination
+### Session termination
 Once-only at conversation end:
 
 - <WebsocketMessageArrow direction="up" /> `AudioEnded` (client ending session)

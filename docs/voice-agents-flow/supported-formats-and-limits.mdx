@@ -4,7 +4,7 @@ toc_max_heading_level: 2
 description: 'Learn about the supported input and output audio formats for the Flow API'
 ---
 
-# Supported Formats and Limits
+# Supported formats and limits
 
 ## Input audio
 
@@ -21,7 +21,7 @@ The Flow API will always return PCM audio in **PCM S16 LE** format, regardless o
 
 The output audio sample rate is always **16kHz**.
 
-## Usage Limits
+## Usage limits
 
 The Flow API limits the number of hours of audio users can process each month to help manage load on our servers. All users are limited to 50 hours per month and three concurrent sessions.
 
@@ -34,6 +34,6 @@ If seamless transition is required, the new session can be connected a few secon
 
 Since unpredictable network issues can cause WebSocket connections to be dropped, we recommend graceful handling of session termination for long-running sessions.
 
-## Data Retention
+## Data retention
 
 Conversation audio and transcriptions by the Flow API are not stored.

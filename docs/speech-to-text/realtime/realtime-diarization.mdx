@@ -26,7 +26,7 @@ To learn more about diarization as a feature, check out the [diarization](../fea
 
 ## Overview
 
-Real-time diarization offers the following ways to separate speakers in audio:
+Realtime diarization offers the following ways to separate speakers in audio:
 
 - [**Speaker diarization**](#speaker-diarization) — Identifies each speaker by their voice.  
   Useful when there are multiple speakers in the same audio stream.  
@@ -215,7 +215,7 @@ Transcripts are returned in the same way as channel diarization, but with indivi
 
 When using `channel_and_speaker` diarization, speaker labelling is specific to channels even if the speaker labels are the same. S1 on channel 1 is not necessarily the same as S1 on channel 2.
 
-## Closing Channels
+## Closing channels
 
 When you're finished with a channel, you can signal that it's no longer in use by sending an [EndOfChannel](../../api-ref/realtime-transcription-websocket#endofchannel) message.
 ```json
@@ -271,7 +271,7 @@ You can configure the sensitivity of speaker detection by using the `speaker_sen
 This takes a value between 0 and 1 (the default is 0.5). A higher sensitivity will
 increase the likelihood of more unique speakers returning.
 
-### Prefer Current Speaker
+### Prefer current speaker
 
 You can reduce the likelihood of incorrectly switching between similar sounding speakers by setting the `prefer_current_speaker` flag in the `speaker_diarization_config`:
 
@@ -293,7 +293,7 @@ By default this is `false`.  When this is set to `true`, the system will stay wi
 
 This may result in some shorter speaker turn changes between similar speakers being missed.
 
-### Max. Speakers
+### Max. speakers
 
 You can prevent too many speakers from being detected by using the `max_speakers` setting in the `StartRecognition` message as shown below:
 

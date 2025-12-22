@@ -85,6 +85,9 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: "img/sm-social-card.png",
+    metadata: [
+      { name: "google-site-verification", content: "390K2pB65NQn403x6szq15pB6YupauKoICoZstsRNzQ" },
+    ],
     navbar: {
       logo: {
         alt: "Speechmatics Logo",

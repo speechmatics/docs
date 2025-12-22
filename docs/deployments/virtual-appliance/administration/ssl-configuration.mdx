@@ -3,14 +3,14 @@ toc_max_heading_level: 3
 description: Configure SSL settings for the appliance.
 ---
 
-# SSL Configuration
+# SSL configuration
 
 When the Appliance is imported, it contains a default self-signed certificate,
 so you can use HTTPS to access the Appliance via the Management, Monitoring and Speech APIs.
 However, we recommend replacing this default SSL certificate with your own certificate,
 signed by your Organisation or a trusted third-party Certificate Authority (CA).
 
-## Default Behaviour
+## Default behaviour
 
 By default, our Appliances allow connections over HTTP. The services on the Appliance expose several ports for HTTP access, such as 80 for the Management API and 9001 for the Monitoring API.
 
@@ -20,7 +20,7 @@ used for API calls from `'http'` to `'https'`, and remove the port from the URL.
 If you are copying the examples from this document you can set the `$APPLIANCE_HOST` environment variable like this:
 `export APPLIANCE_HOST=localhost`.
 
-### Management API Examples
+### Management API examples
 
 ```bash
 curl -sSL -u admin:admin -X 'GET' \
@@ -46,7 +46,7 @@ curl: (60) SSL certificate problem: self signed certificate
 
 **Important**: We have added `--insecure` to some of the cURL examples in this document so that the command trusts the self-signed certificate. You won't need this option once you've uploaded your own certificate and configured your own system to trust it.
 
-### Speech API Example
+### Speech API example
 
 Access to the REST Speech API, is also possible via HTTPS:
 
@@ -54,7 +54,7 @@ Access to the REST Speech API, is also possible via HTTPS:
 curl --insecure -L -X 'GET' "https://${APPLIANCE_HOST}/v2/jobs/"
 ```
 
-### Websocket Example
+### Websocket example
 
 Access to the Websocket, is also possible via a secure websocket:
 
@@ -67,7 +67,7 @@ The above example requires the Speechmatics python client to be installed see [S
 :::
 
 
-## Using your Own SSL certificate and Private Key
+## Using your own SSL certificate and private key
 
 To use your own SSL certificate, you'll need to upload your _certificate_ file as well as the associated _private key_ file.
 
@@ -103,7 +103,7 @@ Both files should be in [PKCS8](https://en.wikipedia.org/wiki/PKCS_8) format. If
 then the file you upload should contain the individual certificates concatenated,
 with your organization's certificate first.
 
-### Uploading the Certificate and Key to the Appliance
+### Uploading the certificate and key to the appliance
 
 To upload your own certificate to the Appliance, you will need to make a POST request to the `/v2/security/sslcertificate` endpoint.
 This can be done using an HTTP client on the commandline or with the Management Interface in a browser.
@@ -129,7 +129,7 @@ You can check the certificate on the Appliance by using the `openssl` tool:
 openssl s_client -connect ${APPLIANCE_HOST}:443
 ```
 
-### Disabling HTTP Access
+### Disabling HTTP access
 
 If desired, HTTP access may be disabled, which will cause any requests to the Appliance using HTTP to redirect to HTTPS. To do this, make a POST request to the `/v2/security/insecureports` endpoint, with a JSON body containing `{"enable_insecure_ports": false}`:
 
@@ -148,7 +148,7 @@ curl -X 'GET' "http://${APPLIANCE_HOST}/v2/management/host/about"
 < Location: https://${APPLIANCE_HOST}/v2/management/host/about
 ```
 
-### Configure Basic Authentication for Admin
+### Configure basic authentication for admin
 
 By default the username and password for [HTTP basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) are both set to `admin`.
 
@@ -176,7 +176,7 @@ curl -L --user "admin:$PWD" -X GET "http://${APPLIANCE_HOST}/v2/management/host/
 
 ## FAQs
 
-### How do I Reset the SSL settings?
+### How do I reset the SSL settings?
 
 If you have made a mistake in your SSL configuration, it is possible to reset the Appliance to its default settings. This will return it to using the self-signed certificate from Speechmatics, and will delete any configured admin password. If you have disabled HTTP access, then you need to know the existing admin password to do this.
 
@@ -186,7 +186,7 @@ To do this, make a DELETE request to the `/v2/security/reset` endpoint:
 $ curl -L -u "admin:$PWD" -X 'DELETE' "http://${APPLIANCE_HOST}/v2/security/reset"
 ```
 
-### What if I Forget the Admin Password?
+### What if I forget the admin password?
 
 If you have forgotten the admin password you set, and have disabled HTTP access to the Appliance then it will not be possible to interact with the Appliance over HTTP/HTTPS. Fortunately, there is a way to reset the password if you have direct access to the Appliance's console (through the hypervisor that you use) or via SSH.
 
@@ -206,11 +206,11 @@ kubectl rollout restart deployment/management-api
 
 This specific value will reset the password to `admin`.
 
-### What Versions of SSL/TLS do you Support?
+### What versions of SSL/TLS do you support?
 
 We support TLS 1.2 and TLS 1.3. We do not support earlier versions of TLS/SSL as these are considered weak. In general, we would recommend you keep your client frameworks up to date with the latest security patches and try to use the strictest TLS configuration that you can.
 
-#### What Cipher Suites do you Support?
+#### What cipher suites do you support?
 
 For TLS 1.3 we support the following cipher suites that are considered strong (in server preferred order):
 

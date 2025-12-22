@@ -6,7 +6,7 @@ description: Enable GPU processing for the appliance
 
 ## Enabling GPU inference
 
-### Batch Mode
+### Batch mode
 
 If the host machine has the capability to pass-through a GPU to a VM, then the Appliance can use it to speed up transcription. By default, GPU mode is disabled; to enable it run the following command from the Management API:
 
@@ -42,7 +42,7 @@ The response will be a JSON object.
 }
 ```
 
-### Realtime Mode
+### Realtime mode
 
 ```bash
 curl -sSL -u admin:admin -X 'POST' \
@@ -70,17 +70,17 @@ This will return a json object.
 }
 ```
 
-## Hardware Requirements for GPU
+## Hardware requirements for GPU
 
 These are the same as the requirements for the [GPU Inference Container](/deployments/container/gpu-speech-to-text#system-requirements), please see that section for details.
 
 Because the OVA is self-contained, you only need to consider the GPU memory, driver version on the host, and CUDA capability level.
 
-## GPU Configuration
+## GPU configuration
 
 To help protect the performance of the GPU, configuration options for the GPU have been provided. This configuration can be fetched/updated via the Appliance Management API.
 
-### Batch Mode
+### Batch mode
 
 #### Get the current configuration
 
@@ -153,12 +153,12 @@ OR
 2x adaptive jobs with file lengths of > 15 min AND 4x simple jobs
 
 
-### Realtime Mode
+### Realtime mode
 
 For realtime mode, we limit the total number of realtime streams running concurrently - this helps to protect running sessions from poor performance and/or crashes.
 
 :::info **Note**
-In the Real-Time Virtual Appliance there is no setting to limit sessions based on operating point. To avoid poor performance, we advise not to mix operating points.
+In the Realtime Virtual Appliance there is no setting to limit sessions based on operating point. To avoid poor performance, we advise not to mix operating points.
 :::
 
 #### Get the current configuration
@@ -190,7 +190,7 @@ curl -X 'POST' \
 }'
 ```
 
-#### Recommended Configuration
+#### Recommended configuration
 
 For real-time, we recommend the following as a starting point. Based on your audio data and/or hardware, these values may need to be optimised. When optimising these values, typically the Final Lag would be used as a measure of performance and the `max_streams` would be increased until the Final Lag becomes unacceptable; see [Monitoring](/deployments/virtual-appliance/administration/monitoring#useful-loki-queries) for more info.
 

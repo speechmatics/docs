@@ -1,6 +1,6 @@
 export default {
   type: "category",
-  label: "Realtime Transcription",
+  label: "Realtime transcription",
   items: [
     {
       type: "doc",

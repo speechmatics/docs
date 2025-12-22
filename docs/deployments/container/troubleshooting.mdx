@@ -10,7 +10,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Batch troubleshooting
 
-### Enabling Logging
+### Enabling logging
 
 If you are seeing problems then we recommend that you enable logging and [reach out to Support](https://support.speechmatics.com).
 
@@ -47,7 +47,7 @@ then
     tail logs/124/sigurd.log`}
 </CodeBlock>
 
-### Common Problems
+### Common problems
 
 There are occasions where the transcription container will fail to transcribe the media file provided and will exit without error code 0 (success). Speechmatics heavily advise enabling logging (see instruction above). The logs will show the reasons for the failed job especially when multiple errors can cause the same error code. Below are some errors with suggestions and how they can be revolved.
 
@@ -64,9 +64,9 @@ There are occasions where the transcription container will fail to transcribe th
 
 If you still continue to face issues, please [reach out to Support](https://support.speechmatics.com).
 
-## Real-Time Troubleshooting
+## Realtime troubleshooting
 
-### Enabling Logging
+### Enabling logging
 
 If you are seeing problems then we recommend that you [reach out to Support](https://support.speechmatics.com). Please include the logging output from the Container if you do open a ticket, and ideally enable verbose logging.
 
@@ -157,6 +157,6 @@ Please ensure that you are using the license file which has been provided to you
 
 The license file should be a valid JSON file and should contain a key named `signedclaimstoken` which is your license token.
 
-### Common Problems
+### Common problems
 
 You should ensure, when using the config object in the `StartRecognition` message, that the JSON is correctly formatted.

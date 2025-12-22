@@ -70,7 +70,7 @@ This will respond with a summary of the different components of the appliance an
 }
 ```
 
-## Access Logs
+## Access logs
 
 If you want to download logs (to provide information for a support ticket for instance) as a ZIP file, then it is possible to do this using the following command:
 
@@ -88,7 +88,7 @@ It is also possible to do this directly from the Management Interface by going t
 
 To dig deeper into the logs to help Support diagnose problems, you can log on to the Appliance and use `kubectl` and `journald` commands directly.
 
-## System Restart and Shutdown
+## System restart and shutdown
 
 If the Virtual Appliance becomes unresponsive, there might be a need to restart it. If this is the case, it's recommended that the system is restarted through a remote SSH session or via the hypervisor console, however, the legacy restart and shutdown commands are still available in the Management API.
 
@@ -101,7 +101,7 @@ curl -sSL -u admin:admin -X 'DELETE' "http://${APPLIANCE_HOST}/v2/management/shu
 
 There will be a one minute delay between requesting a shutdown or reboot via the Management API and the action occurring.
 
-## Job Artefacts Cleanup
+## Job artefacts cleanup
 
 During job execution various artefacts are saved to disk, such as the job config and or audio file, these artefacts are automatically cleared every 24 hours. This cleanup interval can be configured via the Appliance Management API.
 
@@ -133,7 +133,7 @@ If this is the case, the following should be performed/checked:
 - Restart the Virtual Appliance
 - [Collect logs](#access-logs) and reach out to [Support](https://support.speechmatics.com).
 
-### Transcription Job Failure
+### Transcription job failure
 
 If your transcription job fails with an `error` job status,
 more information can be found by looking at the logs from the _api_ container
@@ -147,7 +147,7 @@ or you may need to increase the RAM available to the VM such that memory caches 
 Please consult the section on [System Requirements](/deployments/virtual-appliance/installation/system-requirements#virtual-appliance-system-requirements),
 and the optimization advice specific to your hypervisor to ensure that you are not over-committing your compute resources.
 
-### Illegal Instruction Errors
+### Illegal instruction errors
 
 If jobs fail repeatedly, and you see `Illegal instruction` errors in the log information for these jobs then it is likely that the host hardware you are running on does not support AVX. This is important because these chipsets (and later ones) support Advanced Vector Extensions (AVX). The machine learning algorithms used by Speechmatics ASR require the performance optimizations that AVX provides.
 
@@ -162,7 +162,7 @@ curl -sSL -u admin:admin -X 'GET' \
 
 Check the `flags` field in the response. If `avx` isn't present, then your host's CPU does not support AVX, or that your hypervisor does not have AVX support.
 
-### AVX2 Warning
+### AVX2 warning
 
 Speechmatics Appliance is optimized for running on hardware that supports the AVX2 flag. If you see the below message, your hardware is not optimised, and you may see slower performance of jobs
 
@@ -172,11 +172,11 @@ WARNING ([5.5.675~1-0c22]:SetupMathLibrary():asrengine/asrengine.cc:356) Unable 
 
 Please consult the section on [System Requirements](/deployments/virtual-appliance/installation/system-requirements#virtual-appliance-system-requirements), and the optimization advice specific to your hypervisor.
 
-### Pending Jobs
+### Pending jobs
 
 If jobs enter a pending state within Kubernetes, it may be that the machine doesn't currently have enough resources to schedule the job. Check the current number of running jobs, the job should begin to run once the running jobs complete and sufficient resources have been made available.
 
-### Jobs Storage Full
+### Jobs storage full
 
 By default, job artifacts are stored for 24hrs after job completion, in cases where a high volume of jobs are being ran it is possible that the local storage for job artefacts will become full and jobs will begin to fail, to avoid this it is best to monitor the status of the job storage via Prometheus and reduce the cleanup interval if job storage is filling up too quickly (see [Monitoring](/deployments/virtual-appliance/administration/monitoring#useful-prometheus-queries)).
 

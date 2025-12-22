@@ -42,7 +42,7 @@ If unsuccessful, please verify your credentials and URL. If problems persist, pl
 Speechmatics require all customers to cache a copy of the Docker image(s) within their own environment. Once the first version of the container is pulled from the Speechmatics Software Repository, please re-host in a private container registry instead and reference your personal registry in your deployments.
 :::
 
-## Pulling Core Speech CPU images
+## Pulling core speech CPU images
 
 Each supported language pack comes as a different Docker image, so the process will need to be repeated for each language pack required using the relevant language code.
 
@@ -53,14 +53,14 @@ docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-en:${smVariables
 # pulling the Batch Spanish (es) model with the ${smVariables.latestContainerVersion} tag:
 docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-es:${smVariables.latestContainerVersion}
 \0
-# pulling Real-Time Global English (en) with the ${smVariables.latestContainerVersion} tag:
+# pulling Realtime Global English (en) with the ${smVariables.latestContainerVersion} tag:
 docker pull speechmaticspublic.azurecr.io/rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
 See [how to run the Core Speech CPU container here.](/deployments/container/cpu-speech-to-text)
 
 
-## Pulling Transcription GPU images
+## Pulling transcription GPU images
 
 The Transcription GPU images are required to use the most accurate models.
 
@@ -118,9 +118,9 @@ See [how to run the Transcription GPU container here.](/deployments/container/gp
 To access additional language configurations for containers, please [speak to our Support Team](https://support.speechmatics.com).
 :::
 
-## Pulling Translation GPU image
+## Pulling translation GPU image
 
-This GPU image is required to use Translation in Batch or Real-Time.
+This GPU image is required to use Translation in Batch or Realtime.
 
 <CodeBlock language="bash">
   {`# pulling the Translation GPU inference server which supports all translation pairs with the ${smVariables.latestContainerVersion} tag:
@@ -137,15 +137,15 @@ To use Spanish and English bilingual transcription you need to pull the Core Spe
   {`# pulling Batch bilingual Spanish and English with the ${smVariables.latestContainerVersion} tag:
 docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-es-bilingual-en:${smVariables.latestContainerVersion}
 \0
-# pulling Real-time bilingual Spanish and English with the ${smVariables.latestContainerVersion} tag:
+# pulling Realtime bilingual Spanish and English with the ${smVariables.latestContainerVersion} tag:
 docker pull speechmaticspublic.azurecr.io/rt-asr-transcriber-es-bilingual-en:${smVariables.latestContainerVersion}`}
   </CodeBlock>
 
 :::info
-Bilingual is only available for GPU deployments. Batch and Real-Time are supported.
+Bilingual is only available for GPU deployments. Batch and Realtime are supported.
 :::
 
-## Pulling Language ID Image
+## Pulling language ID Image
 
 This image is required to use Language ID.
 
