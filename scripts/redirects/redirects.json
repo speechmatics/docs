@@ -22,5 +22,45 @@
   {
     "source": "/speech-to-text/realtime/realtime-speaker-identification",
     "destination": "/speech-to-text/realtime/speaker-identification"
+  },
+  {
+    "source": "/voice-agents-flow/features/application-inputs",
+    "destination": "/voice-agents/flow/features/application-inputs"
+  },
+  {
+    "source": "/voice-agents-flow/setup",
+    "destination": "/voice-agents/flow/setup"
+  },
+  {
+    "source": "/voice-agents-flow/features/function-calling",
+    "destination": "/voice-agents/flow/features/function-calling"
+  },
+  {
+    "source": "/voice-agents-flow",
+    "destination": "/voice-agents/flow"
+  },
+  {
+    "source": "/voice-agents-flow/supported-languages",
+    "destination": "/voice-agents/flow/supported-languages"
+  },
+  {
+    "source": "/voice-agents-flow/features/webrtc-livekit",
+    "destination": "/voice-agents/flow/features/webrtc-livekit"
+  },
+  {
+    "source": "/voice-agents-flow/guides/nextjs-guide",
+    "destination": "/voice-agents/flow/guides/nextjs-guide"
+  },
+  {
+    "source": "/voice-agents-flow/guides/react-native",
+    "destination": "/voice-agents/flow/guides/react-native"
+  },
+  {
+    "source": "/voice-agents-flow",
+    "destination": "/voice-agents/flow"
+  },
+  {
+    "source": "/voice-agents-flow",
+    "destination": "/voice-agents/flow"
   }
 ]

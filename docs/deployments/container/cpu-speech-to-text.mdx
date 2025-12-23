@@ -266,7 +266,7 @@ The parameters are:
 
 - `processor` - One of `cpu` or `gpu`. Note that selecting `gpu` requires a [GPU Inference Container](/deployments/container/gpu-speech-to-text)
 
-- `operating_point` - One of `standard` or `enhanced`. The [operating point](/speech-to-text/#operating-points) you want to prewarm
+- `operating_point` - One of `standard` or `enhanced`. The [operating point](/speech-to-text/languages#operating-points) you want to prewarm
 
 - `prewarm_connections` - Integer. The number of engine instances of the specific mode you want to pre-warm. The total number of `prewarm_connections` cannot be greater than `SM_MAX_CONCURRENT_CONNECTIONS`. After the pre-warming is complete, this parameter does not limit the types of connections the engine can start.
 
