@@ -2,11 +2,11 @@
 description: Increase appliance performance by scaling the number of threads.
 ---
 
-# Virtual Appliance Scaling
+# Virtual appliance scaling
 
-## Multi Threaded Workers
+## Multi threaded workers
 
-### Batch Mode
+### Batch mode
 
 The number of concurrent threads available to a job worker depends on the length of the file being transcribed. Workers can be assigned a single thread or multiple, depending on the setting of `scaling_mode` in the API. `scaling_mode` can take two values: `simple`, meaning each transcription job runs in a single thread, or `adaptive`, where the number of threads depends on the length of the audio.
 Depending on the scaling mode and transcription features requested by the job, workers will reserve a specific amount of CPU and Memory resources. On job creation, if enough resources are available, Kubernetes will schedule the job, if not enough resources are available, jobs will be marked as pending until resources are freed.
@@ -31,7 +31,7 @@ In adaptive mode, jobs run in parallel depending on their length, up to a maximu
 Since adaptive jobs use multiple threads, they also apply a greater load to the GPU Inference Server (if enabled).
 As a result the `max_jobs` configuration setting has been introduced to protect the Inference Server from being overwhelmed see [GPU Configuration](/deployments/virtual-appliance/administration/using-a-gpu#gpu-configuration)
 
-### Realtime Mode
+### Realtime mode
 
 Realtime mode supports multi-threaded workers by default, the worker has a configurable number of streams (threads) it can process at a given time, see [Realtime GPU configuration](/deployments/virtual-appliance/administration/using-a-gpu#realtime-mode-1) for more details. If the max number of threads is exceeded then the appliance will reject any new sessions.
 

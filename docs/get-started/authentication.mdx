@@ -31,7 +31,7 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
 ```
 
   </TabItem>
-  <TabItem value="real-time" label="Real-Time Transcription" default>
+  <TabItem value="real-time" label="Realtime Transcription" default>
    
 ### Server-side using header + API key
 
@@ -92,11 +92,11 @@ Speechmatics allows you to generate temporary keys to authenticate your requests
 If you are an enterprise customer and would like to use temporary keys, reach out to [support](https://support.speechmatics.com) or speak to your account manager.
 :::
 
-### Real-time transcription
+### Realtime transcription
 
-For Real-Time transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription as well as development effort. 
+For Realtime transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription as well as development effort. 
 
-The example request below will create a temporary key which can be used to start any number of Real-Time transcription settings for 60 seconds:
+The example request below will create a temporary key which can be used to start any number of Realtime transcription settings for 60 seconds:
 
 ```bash
 curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
@@ -105,7 +105,7 @@ curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
      -d '{"ttl": 60 }'
 ```
 
-Note that when starting a Real-Time transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
+Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
 
 
 ### Batch transcription

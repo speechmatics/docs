@@ -68,4 +68,4 @@ Each first session, transcriber requires 0.25 cores for both OPs, with 1.2 GB me
 
 ## Translation (GPU)
 
-[Translation](./gpu-translation) running on a 4-core T4 has an RTF of roughly 0.008. It can handle up to 125 hours of batch audio per hour, or 125 Real-Time Transcription streams. However, each translation target language is counted as a stream, meaning that a single Real-Time Transcription stream which requests 5 target languages adds the same load on the Translation Inference Server as 5 transcription streams each requesting a single target language.
+[Translation](./gpu-translation) running on a 4-core T4 has an RTF of roughly 0.008. It can handle up to 125 hours of batch audio per hour, or 125 Realtime Transcription streams. However, each translation target language is counted as a stream, meaning that a single Realtime Transcription stream which requests 5 target languages adds the same load on the Translation Inference Server as 5 transcription streams each requesting a single target language.

@@ -32,7 +32,7 @@ Here is an example response:
 }
 ```
 
-## Prometheus Metrics
+## Prometheus metrics
 
 For advanced monitoring, Prometheus is available on port 9001 in a browser. The default credentials are the same as for the Management API, `admin:admin` unless changed by the user.
 
@@ -46,35 +46,35 @@ The Prometheus endpoint for clients like Grafana is `https://${APPLIANCE_HOST}:9
 
 ![Prometheus UI](/img/appliance-images/prometheus.png)
 
-## Useful Prometheus Queries
+## Useful Prometheus queries
 
-### Disk Space Left on the Transcription Jobs Partition
+### Disk space left on the transcription jobs partition
 
 ```
 # Other useful values are / for the root partition, and /opt/speechmatics/monitoring for the logs partition
 node_filesystem_free_bytes{mountpoint=~"/opt/speechmatics/jobs"}
 ```
 
-### Memory Used by Individual Container Images
+### Memory used by individual container images
 
 ```
 # Autocomplete will offer container names
 container_memory_rss{image=~"docker-master.artifacts.speechmatics.io/k8s/batch-jobs-api-v2.*"}
 ```
 
-### Memory Used by the Host in Total
+### Memory used by the host in total
 
 ```
 node_memory_MemFree_bytes
 ```
 
-### Amount of Successfully POSTed Data Over HTTPS
+### Amount of successfully POSTed data over HTTPS
 
 ```
 traefik_entrypoint_requests_bytes_total{code="201", method="POST", entrypoint="websecure"}
 ```
 
-# Collecting Logs
+# Collecting logs
 
 Logs can be downloaded in a zip file from the Management API via the logs/zip endpoint:
 
@@ -90,7 +90,7 @@ The zip file will contain logs for all currently running Kubernetes deployments,
 
 Requesting too large a time interval may timeout the request, in which case you may need to log onto the box and use `kubectl` commands directly, or use one of the techniques in the next section.
 
-## Advanced Log Collection
+## Advanced log collection
 
 In addition to the logs endpoint in the Management API, which downloads a zip file of recent logs, more fine grained access to logs is available using `logcli`, the command-line client for Loki log aggregation (part of the Grafana ecosystem)
 
@@ -100,7 +100,7 @@ The Appliance exposes the Loki logs endpoint on port 3100, using an org-id of "f
 
 [Help for logcli](/deployments/virtual-appliance/administration/logcli-help)
 
-## Query Logs for a Particular k8s Deployment
+## Query logs for a particular Kubernetes deployment
 
 ```bash
 export LOKI_ADDR=https://${APPLIANCE_HOST}:3100/
@@ -114,11 +114,11 @@ export LOKI_ADDR=https://${APPLIANCE_HOST}:3100/
 
 We use the `-o raw` switch because logs are already in JSON format.
 
-## Query Limits
+## Query limits
 
 Query results are limited to 1000 entries by default, and `series` and `labels` commands return results within the default period (1 hour). To extend the default period, use the `--from` switch (as shown in an example below).
 
-## Getting the Logs for a Specific Job
+## Getting the logs for a specific job
 
 For a job with id `1o9islfv29`, first find which series this corresponds to:
 
@@ -160,7 +160,7 @@ The transcriber log can also be requested more simply via the jobs API itself.
 
 If you have issues with HTTP notifications being sent, examine the log of the `blobuploader` which is the final stage of the transcription process. If there are problems with audio format or pulling audio from a remote source, examine the `preprocessor` logs.
 
-## Useful Loki Queries
+## Useful Loki queries
 
 ### Batch
 

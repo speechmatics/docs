@@ -47,7 +47,7 @@ Python client example to detect topics in a file for Batch with the default para
   {topicsPythonSample}
 </CodeBlock>
 
-## Example Response
+## Example response
 
 The topics detected are only present in the JSON output.
 
@@ -97,7 +97,7 @@ The topics detected are only present in the JSON output.
 }
 ```
 
-## Setting List of Topics
+## Setting list of topics
 
 If you have a specific list of topics you wish to detect, you can provide this information through the `topics` parameter:
 
@@ -130,9 +130,9 @@ If you don't have a specific list of topics, the Topics feature will attempt to 
  A maximum of 10 topics can be provided. If more than 10 topics are provided in the `topics` list, the transcription will complete. However, no Topics will be returned, and an [error message](#too-many-topics) will be included in the final JSON output.
 :::
 
-## Example Topics Outputs
+## Example topics outputs
 
-### News Segment
+### News segment
 
 Topics detected in a BBC News segment
 
@@ -161,9 +161,9 @@ Topics detected in a BBC News segment
 - Topics supports a custom list of up to 10 topics
 - Topics utilizes a large language model (LLM). This occasionally may lead to inaccuracies in the topics detected and the corresponding segments of audio and you may receive different segments when running the same file multiple times
 
-## Error Responses
+## Error responses
 
-### Unsupported Language
+### Unsupported language
 
 Topics is currently only supported for English. In the event that Topics is requested for an unsupported language, the transcription process will complete. However, the Topics will not be performed, and an error message will be included in the final JSON output.
 
@@ -186,7 +186,7 @@ Topics is currently only supported for English. In the event that Topics is requ
 }
 ```
 
-### Too Many Topics
+### Too many topics
 
 In the event that more than 10 topics are requested for Topics, the transcription process will complete. However, the Topics will not be returned, and an error message will be included in the final JSON output.
 
@@ -211,7 +211,7 @@ In the event that more than 10 topics are requested for Topics, the transcriptio
 }
 ```
 
-### Topics Failed
+### Topics failed
 
 In the event that Topics fails, the transcription process will complete but the Topics will not be returned, and an error message will be included in the final JSON output.
 
