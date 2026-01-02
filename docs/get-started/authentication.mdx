@@ -21,7 +21,7 @@ Enter a name for your API key and then store it somewhere safe when you have gen
 
 ## Authenticating
 
-<Tabs groupId="transcription-types">
+<Tabs groupId="auth-by-transcription-type">
   <TabItem value="batch" label="Batch Transcription" default>
 
 Your API key needs to be included in the header of all requests to the Speechmatics Jobs API. For example:
@@ -57,9 +57,12 @@ wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
 
 All production endpoints are active and highly available. You can use multiple regions to balance requests or provide a failover in the event of disruption to one region.
 
-For Enterprise customers, if you attempt to use an endpoint for a region you are not contracted to use, that request will be unsuccessful. If you want to use a different region, please contact your account manager.
+:::info
+If you are an enterprise customer and would like to use a different region than the one specified in your contract, please contact your account manager or [support](https://support.speechmatics.com).
+:::
 
-### Batch SaaS endpoints
+<Tabs groupId="Supported-endpoints">
+  <TabItem value="batch" label="Batch SaaS">
 
 Speechmatics Batch SaaS supports the following endpoints for production use:
 
@@ -76,8 +79,9 @@ Jobs are created in the region corresponding to the endpoint used. You must use 
 :::warning
 The EU2 and US2 Batch SaaS endpoints are provided for enterprise customer high availability and failover purposes only. Jobs created in these environments will not be visible in the portal.
 :::
+  </TabItem>
+  <TabItem value="realtime" label="Realtime SaaS">
 
-### Realtime SaaS endpoints
 
 Speechmatics Realtime SaaS supports the following endpoints for production use:
 
@@ -85,6 +89,8 @@ Speechmatics Realtime SaaS supports the following endpoints for production use:
 | ------------- | ------------ | ---------------------- |
 | All           | EU1 (Europe) | eu.rt.speechmatics.com |
 | All           | US1 (USA)    | us.rt.speechmatics.com |
+  </TabItem>
+</Tabs>
 
 ## Temporary keys
 
@@ -93,8 +99,8 @@ Speechmatics allows you to generate temporary keys to authenticate your requests
 :::info
 If you are an enterprise customer and would like to use temporary keys, reach out to [support](https://support.speechmatics.com) or speak to your account manager.
 :::
-
-### Realtime transcription
+<Tabs groupId="temp-key-by-transcription-types">
+  <TabItem value="realtime" label="Realtime transcription">
 
 For Realtime transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription as well as development effort. 
 
@@ -108,15 +114,18 @@ curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
 ```
 
 Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
+</TabItem>
+<TabItem value="batch" label="Batch transcription">
 
+For batch jobs, using temporary keys allows your end-users to upload their audio to Speechmatics directly, without exposing your long-lived API key. 
+This approach can reduce development effort, storage and bandwidth costs.
 
-### Batch transcription
+When you generate a temporary key with a `client_ref`, that temporary key will only be able to create and retrieve jobs associated with that `client_ref`. 
 
-For batch jobs, temporary keys allow your end-users to upload their audio to Speechmatics directly, without exposing your long-lived API key. In situations where you don't need to store the original audio on your server, this can reduce development effort and the costs associated with storing and transferring media files. 
-
-When you generate a temporary key with a `client_ref`, that temporary key will only be able to create and retrieve jobs associated with that `client_ref`. `client_ref` should be a `string` that uniquely identifies an end-user.
-
+`client_ref` should be a `string` that uniquely identifies an end-user.
+:::info
 Note that temporary keys generated with a `client_ref` can't access the [Usage Batch API endpoint](/api-ref/batch/get-usage-statistics) and will receive a `HTTP 403 - Forbidden`.
+:::
 
 :::warning
 If your batch temporary key will be exposed to end-users, for example in the browser, then you must use the `client_ref` parameter. This will prevent one user from viewing or deleting the jobs of another user.
@@ -148,6 +157,8 @@ For example, if you created a temporary key associated with a given `client_ref`
 curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   -H "Authorization: Bearer $TEMP_KEY"
 ```
+  </TabItem>
+</Tabs>
 
 ### Temporary key configuration
 
