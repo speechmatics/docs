@@ -12,9 +12,10 @@ Your API key must be used with any interaction with the Speechmatics API to auth
 
 It is recommended that you store and provide access to the API key on the principle of least privilege. If you believe that your key has been compromised, please reach out to [Support](https://support.speechmatics.com).
 
-## Get your API key
+## Create an API key
 
-Navigate to [Settings > API Keys](https://portal.speechmatics.com/settings/api-keys/) page of the Speechmatics Portal to create an API key. You may need to register and sign in if you haven't already.
+To create an API key, first navigate to the [Portal](https://portal.speechmatics.com) and sign in or create an account if you don't have one already.
+Then, navigate to [Settings > API Keys](https://portal.speechmatics.com/settings/api-keys/) page to create an API key.
 
 Enter a name for your API key and then store it somewhere safe when you have generated it.
 
@@ -32,16 +33,17 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
 
   </TabItem>
   <TabItem value="real-time" label="Realtime Transcription" default>
-   
-### Server-side using header + API key
 
-For server-side calls, your API key must be provided in the header of the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses).
-
-### Client-side using temporary key
-
-For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. These can be passed as a query param to the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses) URL.
-
-For example:
+For server-side calls, your API key must be provided in the header of the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses). For example:
+```bash
+GET /v2/ HTTP/1.1
+Host: eu.rt.speechmatics.com
+Upgrade: websocket
+Connection: Upgrade
+Authorization: Bearer YOUR_API_KEY
+User-Agent: Python/3.8 websockets/8.1
+```
+For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. These can be passed as a query param to the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses) URL. For example:
 
 ```bash
 wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
@@ -165,5 +167,5 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
 
 ## Next steps
 
-Try the API with this "Hello World" example in the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/basics/01-hello-world).
+Make your first API call with the "Hello World" example in the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/basics/01-hello-world).
 
