@@ -161,3 +161,9 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
 | `ttl`        | Yes            | Integer: 60-86400. The temporary key's time to live in seconds. **Note** that for security reasons, we suggest using the shortest TTL possible.
 | `client_ref` | No                                                       | String. When provided, `batch` tokens will only be able to create and retrieve jobs with that reference. If it is not provided, `batch` temporary keys will be able to retrieve any job. This parameter **must** be used if the temporary keys are exposed to the end-user's client to prevent a user from accessing the data of a different user. When requesting an `rt` temporary token, `client_ref` is ignored.
 | `region`     | No    | String: `eu` (default), `usa`, or `au` (Batch Transcription only). Enterprise customers can use this to specify which region the temporary key should be enabled in.
+
+
+## Next steps
+
+Try the API with this "Hello World" example in the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/basics/01-hello-world).
+

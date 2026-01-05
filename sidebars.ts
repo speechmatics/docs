@@ -27,6 +27,12 @@ export default {
           href: "https://github.com/speechmatics",
           label: "GitHub",
         },
+        
+        {
+          type: "link",
+          href: "https://github.com/speechmatics/speechmatics-academy",
+          label: "Academy",
+        },
         {
           type: "link",
           href: "https://status.speechmatics.com",
