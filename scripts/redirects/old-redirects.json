@@ -96,29 +96,29 @@
   },
   {
     "source": "/flow/application-inputs",
-    "destination": "/voice-agents-flow/features/application-inputs"
+    "destination": "/voice-agents/flow/features/application-inputs"
   },
-  { "source": "/flow/config", "destination": "/voice-agents-flow/setup" },
+  { "source": "/flow/config", "destination": "/voice-agents/flow/setup" },
   {
     "source": "/flow/function-calling",
-    "destination": "/voice-agents-flow/features/function-calling"
+    "destination": "/voice-agents/flow/features/function-calling"
   },
-  { "source": "/flow/introduction", "destination": "/voice-agents-flow" },
+  { "source": "/flow/introduction", "destination": "/voice-agents/flow" },
   {
     "source": "/flow/languages-supported",
-    "destination": "/voice-agents-flow/supported-languages"
+    "destination": "/voice-agents/flow/supported-languages"
   },
   {
     "source": "/flow/livekit-webrtc",
-    "destination": "/voice-agents-flow/features/webrtc-livekit"
+    "destination": "/voice-agents/flow/features/webrtc-livekit"
   },
   {
     "source": "/flow/nextjs-guide",
-    "destination": "/voice-agents-flow/guides/nextjs-guide"
+    "destination": "/voice-agents/flow/guides/nextjs-guide"
   },
   {
     "source": "/flow/react-native-guide",
-    "destination": "/voice-agents-flow/guides/react-native"
+    "destination": "/voice-agents/flow/guides/react-native"
   },
   { "source": "/introduction", "destination": "/" },
   {
