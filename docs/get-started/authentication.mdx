@@ -22,7 +22,7 @@ Enter a name for your API key and then store it somewhere safe when you have gen
 ## Authenticating
 
 <Tabs groupId="auth-by-transcription-type">
-  <TabItem value="batch" label="Batch Transcription" default>
+  <TabItem value="batch" label="Batch transcription" default>
 
 Your API key needs to be included in the header of all requests to the Speechmatics Jobs API. For example:
 
@@ -32,7 +32,7 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
 ```
 
   </TabItem>
-  <TabItem value="real-time" label="Realtime Transcription" default>
+  <TabItem value="real-time" label="Realtime transcription" default>
 
 For server-side calls, your API key must be provided in the header of the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses). For example:
 ```bash
@@ -100,21 +100,6 @@ Speechmatics allows you to generate temporary keys to authenticate your requests
 If you are an enterprise customer and would like to use temporary keys, reach out to [support](https://support.speechmatics.com) or speak to your account manager.
 :::
 <Tabs groupId="temp-key-by-transcription-types">
-  <TabItem value="realtime" label="Realtime transcription">
-
-For Realtime transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription as well as development effort. 
-
-The example request below will create a temporary key which can be used to start any number of Realtime transcription settings for 60 seconds:
-
-```bash
-curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer $API_KEY" \
-     -d '{"ttl": 60 }'
-```
-
-Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
-</TabItem>
 <TabItem value="batch" label="Batch transcription">
 
 For batch jobs, using temporary keys allows your end-users to upload their audio to Speechmatics directly, without exposing your long-lived API key. 
@@ -158,6 +143,21 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   -H "Authorization: Bearer $TEMP_KEY"
 ```
   </TabItem>
+  <TabItem value="realtime" label="Realtime transcription">
+
+For Realtime transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription as well as development effort. 
+
+The example request below will create a temporary key which can be used to start any number of Realtime transcription settings for 60 seconds:
+
+```bash
+curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $API_KEY" \
+     -d '{"ttl": 60 }'
+```
+
+Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
+</TabItem>
 </Tabs>
 
 ### Temporary key configuration
