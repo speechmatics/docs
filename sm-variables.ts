@@ -3,7 +3,7 @@ export const smVariables = {
   latestApplianceVersion: "6.2.1",
   latestContainerVersion: "14.8.0",
   usageContainerVersion: "0.3.0",
-  helmChartVersion: "1.0.0",
+  helmChartVersion: "1.0.1",
 } as const;
 
 // TODO investigate if there is a better way to handle these version numbers
