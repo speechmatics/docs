@@ -42,14 +42,14 @@ If the transcribers and inference servers are available, it will show `CAPACITY`
 ```bash
 NAME                                REPLICAS   CAPACITY   USAGE   VERSION   SPEC HASH
 inference-server-enhanced-recipe1   1          480        0       1         b5784af49332f9948481195451eab6ca
-speechmatics-realtime-en            1          2          0       1         83929f2b9b2448cdc818d0e46e37600b
+rt-transcriber-en                   1          2          0       1         83929f2b9b2448cdc818d0e46e37600b
 ```
 
 ### Run a Session
 
 ```bash
 speechmatics rt transcribe \
-  --url wss://speechmatics.example.com/v1 \
+  --url wss://speechmatics.example.com/v2 \
   --lang en \
   --operating-point enhanced \
   --ssl-mode insecure \
@@ -57,6 +57,10 @@ speechmatics rt transcribe \
 ```
 
 ## Configuration
+
+:::info
+For detailed configuration options, refer to sm-realtime Helm chart README.md
+:::
 
 See the examples below on how to configure the Helm chart for different deployment scenarios.
 
@@ -67,7 +71,7 @@ See the examples below on how to configure the Helm chart for different deployme
 ```yaml
 global:
   transcriber:
-    languages: ["ar", "ba", "be", "bg", "bn", "ca", "cmn", "cmn_en", "cs", "cy", "da", "de", "el", "en", "en_ms", "en_ta", "eo", "es", "es-bilingual-en", "et", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi", "hr", "hu", "ia", "id", "it", "ja", "ko", "lt", "lv", "mn", "mr", "ms", "mt", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "sw", "ta", "th", "tr", "ug", "uk", "ur", "vi", "yue"]
+    languages: ["ar", "ba", "be", "bg", "bn", "ca", "cmn", "cmn_en", "cmn_en_ms_ta", "cs", "cy", "da", "de", "el", "en", "en_ms", "en_ta", "eo", "es", "es-bilingual-en", "et", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi", "hr", "hu", "ia", "id", "it", "ja", "ko", "lt", "lv", "mn", "mr", "ms", "mt", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "sw", "ta", "th", "tl", "tr", "ug", "uk", "ur", "vi", "yue"]
 
 # Enable all enhanced and standard inference server recipes
 inferenceServerEnhancedRecipe1:
