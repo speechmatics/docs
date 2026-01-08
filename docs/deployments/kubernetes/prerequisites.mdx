@@ -12,13 +12,13 @@ import TabItem from '@theme/TabItem';
 
 # Prerequisites
 
-## Access to the Docker and Helm Registry
+## Access to Docker and Helm registry
 
 :::info
 It is important to create and reference resources within the same namespace if you do not have full control of your Kubernetes cluster or if it is a shared cluster
 :::
 
-The Speechmatics Docker images and Helm chart are obtained from the `speechmaticspublic.azurecr.io` registry. If you do not have credentials for the registry account or have lost your details, please reach out to [Support](https://support.speechmatics.com).
+The Speechmatics Docker images and Helm chart are obtained from the `speechmaticspublic.azurecr.io` registry. If you do not have credentials for the registry account or have lost your details, please reach out to [Support](https://support.speechmatics.com) for help.
 
 Add a `docker-registry` secret to the cluster so it can successfully pull Speechmatics docker images.
 
@@ -39,7 +39,7 @@ helm registry login speechmaticspublic.azurecr.io \
   --password <password>
 ```
 
-## Speechmatics License
+## Speechmatics license
 
 Please speak to `support@speechmatics.com` if you do not already have a valid Speechmatics license.
 
@@ -61,7 +61,7 @@ global:
     license: $B64_ENCODED_LICENSE
 ```
 
-## GPU Drivers
+## GPU drivers
 
 The Speechmatics inference server runs Nvidia Triton Server, which requires an Nvidia GPU. When running GPU nodes in Kubernetes, you will require the Nvidia device plugin which allows containers on the cluster to access the GPUs.
 
@@ -79,7 +79,7 @@ You can validate a node has allocatable GPU resources with:
 kubectl get nodes -o yaml | yq .[].[].status.allocatable | grep nvidia
 ```
 
-## Nginx Ingress Controller
+## Nginx ingress controller
 
 When setting up Speechmatics via an ingress controller, it is recommended to use the `ingress-nginx` ingress controller with snippet annotations enabled. You can confirm if your cluster supports Nginx with snippet annotations enabled using the following command:
 
@@ -127,7 +127,7 @@ helm repo add nginx https://kubernetes.github.io/ingress-nginx
 helm install nginx nginx/ingress-nginx --version 4.11.4 -f nginx.values.yaml
 ```
 
-### Using Another Ingress Controller
+### Using another ingress controller
 
 If you are running another ingress controller, when enabling ingress on the chart, you need to ensure that a `Request-Id` header is passed through. This is used to manage session usage.
 
