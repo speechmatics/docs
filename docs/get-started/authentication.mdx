@@ -14,7 +14,7 @@ It is recommended that you store and provide access to the API key on the princi
 
 ## Create an API key
 
-To create an API key, first navigate to the [Portal](https://portal.speechmatics.com) and sign in or create an account if you don't have one already.
+To create an API key, first navigate to the [Portal](https://portal.speechmatics.com) and sign in or create an account, if you don't have one already.
 Then, navigate to [Settings > API Keys](https://portal.speechmatics.com/settings/api-keys/) page to create an API key.
 
 Enter a name for your API key and then store it somewhere safe when you have generated it.
@@ -77,7 +77,7 @@ Speechmatics Batch SaaS supports the following endpoints for production use:
 Jobs are created in the region corresponding to the endpoint used. You must use the same endpoint for all requests relating to a specific job.
 
 :::warning
-The EU2 and US2 Batch SaaS endpoints are provided for enterprise customer high availability and failover purposes only. Jobs created in these environments will not be visible in the portal.
+The EU2 and US2 Batch SaaS endpoints are provided for enterprise customer high availability and failover purposes only. Jobs created in these environments will not be visible in the Portal.
 :::
   </TabItem>
   <TabItem value="realtime" label="Realtime SaaS">
@@ -102,7 +102,7 @@ If you are an enterprise customer and would like to use temporary keys, reach ou
 <Tabs groupId="temp-key-by-transcription-types">
 <TabItem value="batch" label="Batch transcription">
 
-For batch jobs, using temporary keys allows your end-users to upload their audio to Speechmatics directly, without exposing your long-lived API key. 
+For Batch jobs, using temporary keys allows your end-users to upload their audio to Speechmatics directly, without exposing your long-lived API key. 
 This approach can reduce development effort, storage and bandwidth costs.
 
 When you generate a temporary key with a `client_ref`, that temporary key will only be able to create and retrieve jobs associated with that `client_ref`. 
@@ -113,10 +113,10 @@ Note that temporary keys generated with a `client_ref` can't access the [Usage B
 :::
 
 :::warning
-If your batch temporary key will be exposed to end-users, for example in the browser, then you must use the `client_ref` parameter. This will prevent one user from viewing or deleting the jobs of another user.
+If your Batch temporary key will be exposed to end-users, for example in the browser, then you must use the `client_ref` parameter. This will prevent one user from viewing or deleting the jobs of another user.
 :::
 
-The example request below creates a temporary key which can be used to create and retrieve batch jobs for 60 seconds. These jobs will be associated with the reference 'USER123':
+The example request below creates a temporary key which can be used to create and retrieve Batch jobs for 60 seconds. These jobs will be associated with the reference 'USER123':
 
 ```bash
 curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=batch" \
@@ -134,7 +134,7 @@ The response JSON looks like this:
 }
 ```
 
-To authorize a request using a temporary key, simply use it in place of the API key in the Authorization header.
+To authorize a request using a temporary key, simply use it in place of the API key in the authorization header.
 
 For example, if you created a temporary key associated with a given `client_ref` you can retrieve those jobs as follows:
 
@@ -145,7 +145,7 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   </TabItem>
   <TabItem value="realtime" label="Realtime transcription">
 
-For Realtime transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription as well as development effort. 
+For Realtime transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription, as well as development effort. 
 
 The example request below will create a temporary key which can be used to start any number of Realtime transcription settings for 60 seconds:
 
@@ -156,7 +156,9 @@ curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
      -d '{"ttl": 60 }'
 ```
 
+:::info
 Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
+::: 
 </TabItem>
 </Tabs>
 
@@ -165,7 +167,7 @@ Note that when starting a Realtime transcription session in the browser, you mus
 
 | URL query parameter    | Required | Description                                                                                                                                                                                                                                                                                                                                                      |
 |------------------------|----------|-----------------------------------------------------------
-| `type`                 | No       | String: `batch` (default), `rt`. Whether the token should be able to use the batch or RT API.                                                                                                                                                                                                                                                                                                     |
+| `type`                 | No       | String: `batch` (default), `rt`. Whether the token should be able to use the Batch or Realtime API.                                                                                                                                                                                                                                                                                                     |
 
 
 
@@ -173,7 +175,7 @@ Note that when starting a Realtime transcription session in the browser, you mus
 |--------------|-----------|-----------------------------------------------------------
 | `ttl`        | Yes            | Integer: 60-86400. The temporary key's time to live in seconds. **Note** that for security reasons, we suggest using the shortest TTL possible.
 | `client_ref` | No                                                       | String. When provided, `batch` tokens will only be able to create and retrieve jobs with that reference. If it is not provided, `batch` temporary keys will be able to retrieve any job. This parameter **must** be used if the temporary keys are exposed to the end-user's client to prevent a user from accessing the data of a different user. When requesting an `rt` temporary token, `client_ref` is ignored.
-| `region`     | No    | String: `eu` (default), `usa`, or `au` (Batch Transcription only). Enterprise customers can use this to specify which region the temporary key should be enabled in.
+| `region`     | No    | String: `eu` (default), `usa`, or `au` (Batch transcription only). Enterprise customers can use this to specify which region the temporary key should be enabled in.
 
 
 ## Next steps
