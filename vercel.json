@@ -32,6 +32,56 @@
       "permanent": true
     },
     {
+      "source": "/voice-agents-flow/features/application-inputs",
+      "destination": "/voice-agents/flow/features/application-inputs",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents-flow/setup",
+      "destination": "/voice-agents/flow/setup",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents-flow/features/function-calling",
+      "destination": "/voice-agents/flow/features/function-calling",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents-flow",
+      "destination": "/voice-agents/flow",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents-flow/supported-languages",
+      "destination": "/voice-agents/flow/supported-languages",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents-flow/features/webrtc-livekit",
+      "destination": "/voice-agents/flow/features/webrtc-livekit",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents-flow/guides/nextjs-guide",
+      "destination": "/voice-agents/flow/guides/nextjs-guide",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents-flow/guides/react-native",
+      "destination": "/voice-agents/flow/guides/react-native",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents-flow",
+      "destination": "/voice-agents/flow",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents-flow",
+      "destination": "/voice-agents/flow",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true
@@ -163,42 +213,42 @@
     },
     {
       "source": "/flow/application-inputs",
-      "destination": "/voice-agents-flow/features/application-inputs",
+      "destination": "/voice-agents/flow/features/application-inputs",
       "permanent": true
     },
     {
       "source": "/flow/config",
-      "destination": "/voice-agents-flow/setup",
+      "destination": "/voice-agents/flow/setup",
       "permanent": true
     },
     {
       "source": "/flow/function-calling",
-      "destination": "/voice-agents-flow/features/function-calling",
+      "destination": "/voice-agents/flow/features/function-calling",
       "permanent": true
     },
     {
       "source": "/flow/introduction",
-      "destination": "/voice-agents-flow",
+      "destination": "/voice-agents/flow",
       "permanent": true
     },
     {
       "source": "/flow/languages-supported",
-      "destination": "/voice-agents-flow/supported-languages",
+      "destination": "/voice-agents/flow/supported-languages",
       "permanent": true
     },
     {
       "source": "/flow/livekit-webrtc",
-      "destination": "/voice-agents-flow/features/webrtc-livekit",
+      "destination": "/voice-agents/flow/features/webrtc-livekit",
       "permanent": true
     },
     {
       "source": "/flow/nextjs-guide",
-      "destination": "/voice-agents-flow/guides/nextjs-guide",
+      "destination": "/voice-agents/flow/guides/nextjs-guide",
       "permanent": true
     },
     {
       "source": "/flow/react-native-guide",
-      "destination": "/voice-agents-flow/guides/react-native",
+      "destination": "/voice-agents/flow/guides/react-native",
       "permanent": true
     },
     {
@@ -863,12 +913,12 @@
     },
     {
       "source": "/flow",
-      "destination": "/voice-agents-flow",
+      "destination": "/voice-agents/flow",
       "permanent": true
     },
     {
       "source": "/flow/getting-started",
-      "destination": "/voice-agents-flow",
+      "destination": "/voice-agents/flow",
       "permanent": true
     },
     {
