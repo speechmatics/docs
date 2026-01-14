@@ -53,11 +53,14 @@ You will see improvements when reusing an identical custom dictionary from the s
 
 On-prem Realtime Containers can also make use of a [Shared custom dictionary cache](/deployments/container/cpu-speech-to-text#how-to-use-a-shared-custom-dictionary-cache).
 
-## Custom dictionary content limits (Realtime)
+## Custom dictionary content limits
 
 Any individual custom dictionary (`additional_vocab`) element longer than 6 words or contains a word exceeding 4000 characters will be automatically dropped from the config before transcription starts. This applies to both the `content` and `sounds_like` fields.
 
-Any elements that exceed this limit will be dropped before transcription starts. The server will send an in-band warning message of type validation_warning to the client prior to the RecognitionStarted message. See the [Realtime API Reference](/api-ref/realtime-transcription-websocket#warning) for more details.
+**Realtime API**<br/>
+  The server will send an in-band warning message of type `validation_warning` to the client prior to the `RecognitionStarted` message. See the [Realtime API Reference](/api-ref/realtime-transcription-websocket#warning) for more details.
+
+### Example
 
 For example, consider the following custom dictionary:
 ```
