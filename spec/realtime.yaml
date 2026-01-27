@@ -483,6 +483,10 @@ components:
           type: string
           description: |
             The channel identifier to which the audio belongs. This field is only seen in multichannel.
+        force_end_of_utterance:
+          type: boolean
+          description: |
+            Indicates whether this message was triggered as a result of a ForceEndOfUtterance request.     
       required:
         - message
         - metadata
@@ -506,6 +510,10 @@ components:
           type: string
           description: |
             The channel identifier to which the audio belongs. This field is only seen in multichannel.
+        force_end_of_utterance:
+          type: boolean
+          description: |
+            Indicates whether this message was triggered as a result of a ForceEndOfUtterance request.      
       required:
         - message
         - metadata
