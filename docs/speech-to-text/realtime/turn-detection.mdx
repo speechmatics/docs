@@ -120,7 +120,7 @@ You can also use `ForceEndOfUtterance` with multi-channel diarization:
 }
 ```
 
-When this message is received, the server will send an [AddTranscript](../../api-ref/realtime-transcription-websocket#addtranscript) message, followed by an [EndOfUtterance](../../api-ref/realtime-transcription-websocket#endofutterance) message.
+When this message is received, the server will send an [AddTranscript](../../api-ref/realtime-transcription-websocket#addtranscript) message, with a `forced` field to indicate it came from a ForceEndOfUtterance request, followed by an [EndOfUtterance](../../api-ref/realtime-transcription-websocket#endofutterance) message..
 
 ## Semantic turn detection
 
