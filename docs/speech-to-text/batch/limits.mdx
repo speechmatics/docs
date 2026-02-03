@@ -16,8 +16,15 @@ If you make a large number of requests in a short period of time, some of these 
 - 10 new jobs per second (<HTTPMethodBadge method="POST"/> API calls)
 - 50 job status requests per second (<HTTPMethodBadge method="GET"/> API calls). Note that Speechmatics recommends using [Notifications](/speech-to-text/batch/notifications) for job status updates in production
 
-Aside from rate limiting, there is no limit to the number of jobs that you can submit. However, Speechmatics Batch SaaS applies a fair queueing policy which means that if you have a large number of jobs in progress at one time, the most recently submitted jobs may take longer to complete.
+### Fair Queueing and Backstops
 
+Speechmatics Batch SaaS applies a fair queueing policy; if you have a large number of jobs in progress at one time, the most recently submitted jobs may take longer to complete.
+
+While there is generally no limit to the number of jobs you can submit, the following backstop applies to prevent system congestion:
+
+- Unprocessed Job Limit: If your queue length of unprocessed jobs reaches 20,000, you will receive an HTTP 429 error when attempting to submit a new job.
+
+This limit is intended as a safety mechanism and is unlikely to be reached during normal operation. However, it may occur if very slow audio fetching from your servers results in a large build-up of jobs waiting to be processed.
 
 ## Hourly usage limits
 
