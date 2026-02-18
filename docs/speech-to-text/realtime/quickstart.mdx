@@ -27,7 +27,44 @@ Store the key as a managed secret.
 Enterprise customers may need to speak to [Support](https://support.speechmatics.com) to get your API keys.
 :::
 
-### 2. Pick and install a library
+### 2. Understand authentication
+
+Realtime transcription uses WebSocket connections, and how you authenticate depends on where your code runs:
+
+- **Server-side (Node.js, Python, etc.):** You can use your API key directly in the `Authorization` header of the WebSocket upgrade request. No extra steps needed.
+- **Client-side (browser):** You must generate a short-lived temporary key (JWT) and pass it as a query parameter on the WebSocket URL. This is because browsers cannot set custom headers on WebSocket connections, and it avoids exposing your long-lived API key to end users.
+
+**How the SDKs handle this:**
+- The **Python SDK** sends your API key directly by default. You can also set `generate_temp_token=True` in `ConnectionSettings` to have the SDK automatically generate a temporary key before connecting.
+- The **JavaScript SDK** always uses a temporary key. Use the `@speechmatics/auth` package to generate one from your API key before connecting.
+
+If you are building a custom WebSocket client (without an SDK) and need a temporary key, generate one with this `curl` command:
+
+```bash
+curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $API_KEY" \
+     -d '{"ttl": 60}'
+```
+
+The response will contain a `key_value` field with the temporary key:
+
+```json
+{
+  "apikey_id": null,
+  "key_value": "eyJhbG..."
+}
+```
+
+Use this temporary key either as a bearer token in the `Authorization` header, or as a query parameter on the WebSocket URL:
+
+```
+wss://eu2.rt.speechmatics.com/v2?jwt=<temporary-key>
+```
+
+For full details on authentication options, see the [Authentication](/get-started/authentication) page.
+
+### 3. Pick and install a library
 
 Check out our [JavaScript client](https://www.npmjs.com/package/@speechmatics/real-time-client) or [Python client](https://pypi.org/project/speechmatics-python/) to get started.
 
@@ -45,9 +82,13 @@ Check out our [JavaScript client](https://www.npmjs.com/package/@speechmatics/re
 </Tabs>
 
 
-### 3. Insert your API key
+### 4. Insert your API key and run
 
 Paste your API key into `YOUR_API_KEY` in the code.
+
+Note how each SDK handles authentication differently:
+- The **Python** example passes the API key directly via `auth_token` in `ConnectionSettings` (server-side approach).
+- The **JavaScript** example generates a temporary key first using `createSpeechmaticsJWT` from `@speechmatics/auth`, then passes it to `client.start()`.
 
 <Tabs groupId="language">
   <TabItem value="javascript" label="JavaScript">
