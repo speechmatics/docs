@@ -7,7 +7,7 @@ keywords: [websocket, protocol, realtime, raw, go, rust, java, transcription, sp
 
 import { LinkCard } from "@site/src/theme/LinkCard";
 import { Grid } from "@radix-ui/themes";
-import { BookOpen, ChevronsRight } from "lucide-react";
+import { BookOpen, ChevronsRight, Gauge } from "lucide-react";
 
 # WebSocket protocol guide
 
@@ -307,6 +307,33 @@ When using raw PCM, set `audio_format` to:
 { "type": "raw", "encoding": "pcm_s16le", "sample_rate": 16000 }
 ```
 
+## Session limits
+
+The server will automatically end a session if any of these limits are reached:
+
+| Limit | Threshold | Warning type |
+|-------|-----------|-------------|
+| Maximum session duration | 48 hours | `session_timeout` |
+| No audio data sent | 1 hour | `idle_timeout` |
+| No audio or ping/pongs | 3 minutes | — |
+
+Before auto-termination, the server sends `Warning` messages to give your client time to react. For example:
+
+```json
+{
+  "message": "Warning",
+  "type": "idle_timeout",
+  "reason": "Idle timeout approaching. No audio received for 45 minutes."
+}
+```
+
+- **`idle_timeout` warnings** are sent at 15, 10, and 5 minutes before the 1-hour limit.
+- **`session_timeout` warnings** are sent at 45, 30, and 15 minutes before the 48-hour limit.
+
+When a session is auto-terminated, the server sends an in-band `Error` message followed by a WebSocket close with code `1008`. For long-running sessions, handle these warnings gracefully — you can disconnect and immediately reconnect a new session with minimal disruption.
+
+See [Limits](/speech-to-text/realtime/limits) for monthly usage quotas and concurrency limits.
+
 ## Error handling
 
 If an error occurs, the server sends an `Error` JSON message followed by a WebSocket close. Common close codes:
@@ -314,6 +341,7 @@ If an error occurs, the server sends an `Error` JSON message followed by a WebSo
 | Close code | Payload | Description |
 |-----------|---------|-------------|
 | 1003 | `protocol_error` | Malformed or unexpected message |
+| 1008 | `policy_violation` | Session limit exceeded (idle or duration timeout) |
 | 1011 | `internal_error` | Server error |
 | 4001 | `not_authorised` | Invalid API key |
 | 4005 | `quota_exceeded` | Maximum concurrent connections reached |
@@ -339,5 +367,11 @@ See the [API reference: WebSocket errors](/api-ref/realtime-transcription-websoc
     description="Get started faster with the Python or JavaScript SDK"
     href="/speech-to-text/realtime/quickstart"
     icon={<ChevronsRight/>}
+  />
+  <LinkCard
+    title="Limits"
+    description="Session timeouts, monthly quotas, and concurrency limits"
+    href="/speech-to-text/realtime/limits"
+    icon={<Gauge/>}
   />
 </Grid>
