@@ -204,8 +204,14 @@ The server acknowledges each audio chunk with an `AudioAdded` JSON message:
 
 The `seq_no` increments with each chunk received. Keep track of the latest `seq_no` — you'll need it when ending the session.
 
-:::info
-**Backpressure:** If you send audio faster than real-time, monitor the `AudioAdded` acknowledgements. Avoid having more than a few hundred unacknowledged chunks in flight. If the server's buffer fills, the connection may close.
+#### Backpressure
+
+If you send audio faster than real-time, unacknowledged chunks can pile up. The server buffers incoming audio internally, but if that buffer fills, TCP-level buffers will also fill, eventually causing write failures and connection closure.
+
+To avoid this, track how many chunks you've sent versus how many `AudioAdded` acknowledgements you've received. If the gap grows too large, pause sending until the server catches up. The Python SDK caps this at 512 outstanding unacknowledged chunks, with a 120-second timeout waiting for an acknowledgement before giving up. These are reasonable starting points for your own implementation, but the exact values are an implementation choice.
+
+:::tip
+A simple approach: maintain a counter that increments when you send a chunk and decrements when you receive an `AudioAdded`. If the counter exceeds your chosen limit, wait before sending the next chunk.
 :::
 
 ### 4. Receive transcripts
