@@ -1,7 +1,7 @@
 ---
-toc_max_heading_level: 3
+toc_max_heading_level: 4
 description: 'Learn about how the Speechmatics API handles authentication'
-keywords: [batch, file, transcription, speech recognition, asr, api, jwt]
+keywords: [batch, file, transcription, speech recognition, asr, api, jwt, realtime, websocket, temporary key, generate_temp_token]
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -34,7 +34,12 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   </TabItem>
   <TabItem value="real-time" label="Realtime transcription" default>
 
-For server-side calls, your API key must be provided in the header of the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses). For example:
+Realtime transcription connects via WebSocket. There are two ways to authenticate, depending on where your code runs:
+
+#### Server-side: API key in the Authorization header
+
+For server-side applications, you can use your API key directly. Include it in the `Authorization` header of the WebSocket upgrade request:
+
 ```bash
 GET /v2/ HTTP/1.1
 Host: eu.rt.speechmatics.com
@@ -43,11 +48,65 @@ Connection: Upgrade
 Authorization: Bearer YOUR_API_KEY
 User-Agent: Python/3.8 websockets/8.1
 ```
-For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. These can be passed as a query param to the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses) URL. For example:
+
+This is the simplest approach when your API key is not exposed to end users. The Python SDK uses this method by default:
+
+```python
+ws = speechmatics.client.WebsocketClient(
+    speechmatics.models.ConnectionSettings(
+        url="wss://eu2.rt.speechmatics.com/v2",
+        auth_token="YOUR_API_KEY",
+    )
+)
+```
+
+#### Client-side (browser): temporary key as a query parameter
+
+For client-side applications running in the browser, you must use a [temporary key](#temporary-keys) (JWT). Browsers cannot set custom headers on WebSocket connections, and temporary keys avoid exposing your long-lived API key to end users.
+
+Pass the temporary key as a query parameter on the WebSocket URL:
 
 ```bash
 wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
 ```
+
+See the [temporary keys](#temporary-keys) section below for how to generate one.
+
+The JavaScript SDK requires a temporary key. Use the [`@speechmatics/auth`](https://www.npmjs.com/package/@speechmatics/auth) package to generate one:
+
+```javascript
+import { createSpeechmaticsJWT } from "@speechmatics/auth";
+
+const jwt = await createSpeechmaticsJWT({
+  type: "rt",
+  apiKey: "YOUR_API_KEY",
+  ttl: 60, // seconds
+});
+```
+
+:::info
+The `@speechmatics/auth` package calls the temporary key endpoint on your behalf. In production, generate temporary keys on your backend server to avoid exposing your API key in client-side code.
+:::
+
+#### Python SDK: automatic temporary key generation
+
+The Python SDK can also automatically generate a temporary key before connecting. Set `generate_temp_token=True` in `ConnectionSettings`:
+
+```python
+ws = speechmatics.client.WebsocketClient(
+    speechmatics.models.ConnectionSettings(
+        url="wss://eu2.rt.speechmatics.com/v2",
+        auth_token="YOUR_API_KEY",
+        generate_temp_token=True,
+    )
+)
+```
+
+When enabled, the SDK exchanges your API key for a short-lived temporary key (60-second TTL) via the management platform API before opening the WebSocket connection. This is useful if you want to avoid sending your long-lived API key over the WebSocket connection.
+
+:::info
+Enterprise customers should set `generate_temp_token` to `False` and use their API key directly.
+:::
 
   </TabItem>
 </Tabs>
@@ -145,20 +204,45 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   </TabItem>
   <TabItem value="realtime" label="Realtime transcription">
 
-For Realtime transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription, as well as development effort. 
+For Realtime transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription, as well as development effort.
 
-The example request below will create a temporary key which can be used to start any number of Realtime transcription settings for 60 seconds:
+The example request below will create a temporary key which can be used to start any number of Realtime transcription sessions for 60 seconds:
 
 ```bash
 curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $API_KEY" \
-     -d '{"ttl": 60 }'
+     -d '{"ttl": 60}'
+```
+
+The response JSON looks like this:
+
+```json
+{
+  "apikey_id": null,
+  "key_value": "eyJhbG..."
+}
+```
+
+To use this temporary key, either include it in the `Authorization` header (server-side):
+
+```bash
+Authorization: Bearer $TEMP_KEY
+```
+
+Or pass it as a query parameter on the WebSocket URL (required for browser-based clients):
+
+```bash
+wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
 ```
 
 :::info
-Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
-::: 
+When starting a Realtime transcription session in the browser, you must provide the temporary key as a query parameter because browsers cannot set custom headers on WebSocket connections. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
+:::
+
+:::tip
+The SDKs can handle temporary key generation for you automatically. See the [Authenticating](#authenticating) section above for SDK-specific examples.
+:::
 </TabItem>
 </Tabs>
 
