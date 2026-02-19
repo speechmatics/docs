@@ -173,9 +173,9 @@ Note that when starting a Realtime transcription session in the browser, you mus
 
 | Request Body Parameters    | Required | Description                                                                                                                                                                                                                                                                                                                                                      |
 |--------------|-----------|-----------------------------------------------------------
-| `ttl`        | Yes            | Integer: 60-86400. The temporary key's time to live in seconds. **Note** that for security reasons, we suggest using the shortest TTL possible.
-| `client_ref` | No                                                       | String. When provided, `batch` tokens will only be able to create and retrieve jobs with that reference. If it is not provided, `batch` temporary keys will be able to retrieve any job. This parameter **must** be used if the temporary keys are exposed to the end-user's client to prevent a user from accessing the data of a different user. When requesting an `rt` temporary token, `client_ref` is ignored.
-| `region`     | No    | String: `eu` (default), `usa`, or `au` (Batch transcription only). Enterprise customers can use this to specify which region the temporary key should be enabled in.
+| `ttl`        | Yes            | Integer: 60-86400. The temporary key's time to live in seconds. **Note** We suggest using the shortest TTL possible to minimise security risks.
+| `client_ref` | No             | String. When provided, `batch` tokens can only create and retrieve jobs with that reference; without it, they can access any job. **Must** be set when temporary keys are exposed to end-users to prevent accessing another user's data. `client_ref` is ignored when requesting `rt` tokens.
+| `region`     | No             | String: `eu` (default), `usa`, or `au` (Batch transcription only). Defines the region where the temporary key is valid.
 
 
 ## Next steps
