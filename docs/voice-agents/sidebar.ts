@@ -1,5 +1,3 @@
-import voiceAgentsFlowSidebar from "./flow/sidebar";
-
 export default {
   type: "category",
   label: "Voice agents",
@@ -13,9 +11,8 @@ export default {
     },
     {
       type: "doc",
-      id: "voice-agents/features",
-      label: "Features",
+      id: "voice-agents/voice-sdk",
+      label: "Voice SDK",
     },
-    voiceAgentsFlowSidebar,
   ],
 } as const;
