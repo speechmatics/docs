@@ -1,6 +1,7 @@
 ---
 description: Learn how to use the Voice SDK.
 ---
+
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -8,10 +9,19 @@ import TabItem from '@theme/TabItem';
 import pythonVoiceCustomConfig from "./assets/custom-config.py?raw"
 import pythonVoiceConfigOverlays from "./assets/config-overlays.py?raw"
 import pythonVoiceConfigSerialization from "./assets/config-serialization.py?raw"
-
-
+import pythonQuickstart from "./assets/quickstart.py?raw"
+import pythonEventSubscription from "./assets/event-subscription.py?raw"
+import pythonAdditionalVocab from "./assets/additional-vocab.py?raw"
+import pythonBasicConfig from "./assets/basic-config.py?raw"
+import pythonSmartTurn from "./assets/smart-turn.py?raw"
+import pythonSpeakerFocus from "./assets/speaker-focus.py?raw"
+import pythonSpeakerFocusHandler from "./assets/speaker-focus-handler.py?raw"
+import pythonKnownSpeakers from "./assets/known-speakers.py?raw"
+import pythonAdvancedConfig from "./assets/advanced-config.py?raw"
 
 # Voice SDK
+
+## Overview
 
 The Voice SDK is a Python library that provides additional features optimized for conversational AI, built on top of our Realtime API.
 
@@ -23,30 +33,53 @@ We use it to build our integrations, and it is also available for you to use.
 - **Preset configurations**: offers ready-to-use settings for conversations, note-taking, and captions.
 - **Simplified event handling**: delivers clean, structured segments instead of raw word-level events.
 
+### Segmentation
+
+Segmentation groups words into readable chunks of text.
+In practice, this means you can work with finalized segments rather than stitching together word-by-word updates.
+
+### Turn detection and finalization
+
+Turn detection determines when a speaker has finished a turn.
+When a turn is detected, speech is finalized into segments that you can use in your application.
+
+Turn detection (and subsequent finalization) is important for speed: the sooner a turn is finalized, the sooner you can send a final transcript to an LLM.
+
+We take the complexity out of this through presets.
+If you prefer manual control, use the `external` preset and call `client.finalize()` to end a turn.
+This sends a signal to the Speechmatics servers to finalize the current speech immediately.
+
+### Diarization and speaker management
+
+When diarization is enabled, the Voice SDK assigns speaker IDs (for example `S1`, `S2`) and produces segments per speaker.
+
+You can also:
+
+- Focus on specific speakers
+- Ignore specific speakers
+- Provide known speakers for speaker identification
+
 ### Voice SDK vs Realtime SDK
 
-Use the Voice SDK when:
+- Use the Voice SDK when:
+  - Building conversational AI or voice agents
+  - You need automatic turn detection
+  - You want speaker-focused transcription
+  - You need ready-to-use presets for common scenarios
+- Use the Realtime SDK when:
+  - You need the raw stream of word-by-word transcription data
+  - Building custom segmentation logic
+  - You want fine-grained control over every event
+  - Processing audio files or custom workflows
 
-- Building conversational AI or voice agents
-- You need automatic turn detection
-- You want speaker-focused transcription
-- You need ready-to-use presets for common scenarios
+## Get started
 
-Use the Realtime SDK when:
-
-- You need the raw stream of word-by-word transcription data
-- Building custom segmentation logic
-- You want fine-grained control over every event
-- Processing audio files or custom workflows
-
-## Getting started
-
-### 1. Create an API key
+### Create an API key
 
 [Create a Speechmatics API key in the portal](https://portal.speechmatics.com/settings/api-keys) to access the Voice SDK. 
 Store your key securely as a managed secret. 
 
-### 2. Install dependencies
+### Install
 
 ```bash
 # Standard installation
@@ -56,79 +89,107 @@ pip install speechmatics-voice
 pip install speechmatics-voice[smart]
 ```
 
-### 3. Quickstart
+### Quickstart
 
 Here's how to stream microphone audio to the Voice Agent and transcribe finalised segments of speech, with speaker ID:
 
-```python
-import asyncio
-import os
-from speechmatics.rt import Microphone
-from speechmatics.voice import VoiceAgentClient, AgentServerMessageType
+<CodeBlock language="python">
+    {pythonQuickstart}
+</CodeBlock>
 
-async def main():
-    """Stream microphone audio to Speechmatics Voice Agent using 'scribe' preset"""
+Note: `Microphone` is imported from the Realtime SDK (`speechmatics.rt`). Install with `pip install speechmatics`.
 
-    # Audio configuration
-    SAMPLE_RATE = 16000         # Hz
-    CHUNK_SIZE = 160            # Samples per read
-    PRESET = "scribe"           # Configuration preset
+## Events and segments
 
-    # Create client with preset
-    client = VoiceAgentClient(
-        api_key=os.getenv("SPEECHMATICS_API_KEY"),
-        preset=PRESET
-    )
+The Voice SDK emits events as transcription progresses. The two main segment events are:
 
-    # Print finalised segments of speech with speaker ID
-    @client.on(AgentServerMessageType.ADD_SEGMENT)
-    def on_segment(message):
-        for segment in message["segments"]:
-            speaker = segment["speaker_id"]
-            text = segment["text"]
-            print(f"{speaker}: {text}")
+- `ADD_PARTIAL_SEGMENT` - Interim results that stream in real-time as speech is recognized
+- `ADD_SEGMENT` - Final results emitted when a turn ends
 
-    # Setup microphone
-    mic = Microphone(SAMPLE_RATE, CHUNK_SIZE)
-    if not mic.start():
-        print("Error: Microphone not available")
-        return
+### How segments work
 
-    # Connect to the Voice Agent
-    await client.connect()
+As someone speaks, you receive `ADD_PARTIAL_SEGMENT` events with the current transcription. These update continuously—each new partial replaces the previous one.
 
-    # Stream microphone audio (interruptable using keyboard)
-    try:
-        while True:
-            audio_chunk = await mic.read(CHUNK_SIZE)
-            if not audio_chunk:
-                break # Microphone stopped producing data
-            await client.send_audio(audio_chunk)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        await client.disconnect()
-
-if __name__ == "__main__":
-    asyncio.run(main())
+When a turn is detected (or you call `client.finalize()`), the SDK emits an `ADD_SEGMENT` event with the finalized transcript. This is the stable result you should use for downstream processing like sending to an LLM.
 
 ```
+Speaking: "Hello, how are you?"
 
-#### Presets - the simplest way to get started
+Timeline:
+  ADD_PARTIAL_SEGMENT: "Hello"
+  ADD_PARTIAL_SEGMENT: "Hello, how"
+  ADD_PARTIAL_SEGMENT: "Hello, how are"
+  ADD_PARTIAL_SEGMENT: "Hello, how are you"
+  (turn detected or finalize() called)
+  ADD_SEGMENT: "Hello, how are you?"  ← Use this
+```
+
+### Segment payload
+
+Example `ADD_SEGMENT` payload:
+
+```json
+{
+  "message": "AddSegment",
+  "segments": [
+    {
+      "speaker_id": "S1",
+      "is_active": true,
+      "timestamp": "2025-11-11T23:18:37.189+00:00",
+      "language": "en",
+      "text": "Welcome to Speechmatics.",
+      "metadata": {
+        "start_time": 1.28,
+        "end_time": 8.04
+      }
+    }
+  ],
+  "metadata": {
+    "start_time": 1.28,
+    "end_time": 8.04,
+    "processing_time": 0.187
+  }
+}
+```
+
+**Field explanations:**
+- `speaker_id`: Speaker label (e.g., `S1`, `S2`, or custom label if using known speakers)
+- `is_active`: Whether this speaker is in your focus list (see Speaker focus)
+- `timestamp`: Absolute wall-clock time (ISO 8601 format)
+- `start_time` / `end_time`: Time in seconds relative to the start of the session
+- `processing_time`: Transcription latency in seconds
+
+### Subscribing to events
+
+<CodeBlock language="python">
+    {pythonEventSubscription}
+</CodeBlock>
+
+### When finals are emitted
+
+Final segments (`ADD_SEGMENT`) are emitted when:
+1. **Turn detection** triggers automatically (based on your preset/config)
+2. **You call `client.finalize()`** manually (when using `external` preset)
+
+See Turn detection for more on automatic finalization.
+
+## Presets
 
 These are purpose-built, optimized configurations, ready for use without further modification:
 
-`fast` - low latency, fast responses
+`FAST` - low latency, fast responses
 
-`adaptive` - general conversation 
+`FIXED` - general conversation with fixed timing
 
-`smart_turn` - complex conversation
+`ADAPTIVE` - general conversation with adaptive timing
 
-`external` - user handles end of turn
+`SMART_TURN` - complex conversation with ML-enhanced turn detection
 
-`scribe` - note-taking
+`EXTERNAL` - user handles end of turn
 
-`captions` - live captioning
+`SCRIBE` - note-taking
+
+`CAPTIONS` - live captioning
 
 To view all available presets:
 
@@ -136,7 +197,10 @@ To view all available presets:
 presets = VoiceAgentConfigPreset.list_presets()
 ```
 
-### 4. Custom configurations
+Presets include defaults for all settings (language defaults to English).
+To change the language (or any other preset setting), use a custom configuration or use a preset as a starting point and customize with overlays.
+
+### Custom configuration
 
 For more control, you can also specify custom configurations or use presets as a starting point and customise with overlays:
 
@@ -157,52 +221,141 @@ Use presets as a starting point and customise with overlays:
 
 Note: If no configuration or preset is provided, the client will default to the `external` preset.
 
-## Configuration
+## Basic configuration
 
-### Basic parameters
+### Language and locale
+
 `language` (str, default: "en")  
 Language code for transcription (e.g., "en", "es", "fr").  
 See [supported languages](/speech-to-text/languages).
 
+`output_locale` (str, default: None)  
+Output locale for formatting (e.g., "en-GB", "en-US"). 
+See [supported languages and locales](/speech-to-text/languages).
+
+### Model selection
+
 `operating_point` (OperatingPoint, default: ENHANCED)  
-Balance accuracy vs latency. 
+Select an accuracy level.
 Options: STANDARD or ENHANCED.
 
 `domain` (str, default: None)   
 Domain-specific model (e.g., "finance", "medical"). 
 See [supported languages and domains](/speech-to-text/languages).
 
-`output_locale` (str, default: None)  
-Output locale for formatting (e.g., "en-GB", "en-US"). 
-See [supported languages and locales](/speech-to-text/languages).
+### Vocabulary
+
+`additional_vocab` (list[AdditionalVocabEntry], default: []) 
+
+Custom vocabulary for domain-specific terms.
+
+<CodeBlock language="python">
+    {pythonAdditionalVocab}
+</CodeBlock>
+
+`punctuation_overrides` (dict, default: None)
+Custom punctuation rules. Keys are punctuation marks, values are replacement strings.
+
+### Audio
+
+`sample_rate` (int, default: 16000)  
+Audio sample rate in Hz.
+
+`audio_encoding` (AudioEncoding, default: PCM_S16LE)  
+Audio encoding format.
+
+### Latency and quality
+
+`max_delay` (float, default: 1.0)
+Maximum transcription delay in seconds for word emission.
+Turn detection ensures finalisation latency is not affected.
+
+### Basic diarization
 
 `enable_diarization` (bool, default: False)  
 Enable speaker diarization to identify and label different speakers.
+When enabled, segments include a `speaker_id` field (for example `S1`, `S2`).
+
+### Basic configuration example
+
+<CodeBlock language="python">
+    {pythonBasicConfig}
+</CodeBlock>
+
+## Advanced configuration
 
 ### Turn detection
-`end_of_utterance_mode` (EndOfUtteranceMode, default: FIXED)  
-Controls how turn endings are detected:
 
-- `FIXED`: Uses fixed silence threshold.  
-Fast but may split slow speech.
-- `ADAPTIVE`: Adjusts delay based on speech rate, pauses, and disfluencies.  
-Best for natural conversation.
-- `SMART_TURN`: Uses ML model to detect acoustic turn-taking cues.  
-Requires [smart] extras.
-- `EXTERNAL`: Manual control via client.finalize().  
-For custom turn logic.
+Presets configure turn detection under the hood.
+When a turn is detected (or you call `client.finalize()` using the `external` preset), we send a signal to our servers so you can get the final transcript back as quickly as possible.
 
-`end_of_utterance_silence_trigger` (float, default: 0.2)  
+This works in multi-speaker scenarios, including when diarization is enabled.
+
+`end_of_utterance_mode` (EndOfUtteranceMode, default: FIXED)
+Controls the base strategy for detecting turn endings:
+
+- `FIXED`: Uses a fixed silence threshold. Fast but may split slow speech.
+- `ADAPTIVE`: Adjusts delay based on speech rate, pauses, and disfluencies. Best for natural conversation.
+- `EXTERNAL`: Manual control via `client.finalize()`. For custom turn logic.
+
+`end_of_utterance_silence_trigger` (float, default: 0.5)
 Silence duration in seconds to trigger turn end.
 
-`end_of_utterance_max_delay` (float, default: 10.0)  
+`end_of_utterance_max_delay` (float, default: 10.0)
 Maximum delay before forcing turn end.
 
-`max_delay` (float, default: 0.7)  
-Maximum transcription delay for word emission. 
-Defaults to 0.7 seconds, but when using turn detection we recommend 1.0s for better accuracy. Turn detection will ensure finalisation latency is not affected.
+#### Voice activity detection
 
-### Speaker configuration
+`vad_config` (VoiceActivityConfig, default: None)
+Configure voice activity detection:
+
+- `enabled` (bool, default: False) - Enable VAD.
+- `silence_duration` (float, default: 0.18) - Seconds of silence before considering speech ended.
+- `threshold` (float, default: 0.35) - Sensitivity threshold for detecting speech.
+
+#### Smart turn (ML-enhanced detection)
+
+`smart_turn_config` (SmartTurnConfig, default: None)
+Enables an ML model that detects acoustic turn-taking cues (intonation, rhythm patterns) on top of the base mode.
+
+Smart turn can be combined with `FIXED` or `ADAPTIVE` modes, but **not** with `EXTERNAL` mode.
+
+<CodeBlock language="python">
+    {pythonSmartTurn}
+</CodeBlock>
+
+Requires the `[smart]` extras: `pip install speechmatics-voice[smart]`
+
+### Segment output options
+
+`include_partials` (bool, default: True)  
+Emit partial segments via `ADD_PARTIAL_SEGMENT`.
+Set to `False` for final-only output.
+
+`include_results` (bool, default: False)  
+Include word-level timing data in segments.
+
+`transcription_update_preset` (TranscriptionUpdatePreset, default: COMPLETE)  
+Controls when partial segment updates are emitted.
+Options: `COMPLETE`, `COMPLETE_PLUS_TIMING`, `WORDS`, `WORDS_PLUS_TIMING`, `TIMING`.
+
+### Segment generation options
+
+`speech_segment_config` (SpeechSegmentConfig, default: SpeechSegmentConfig())
+Fine-tune segment generation and post-processing:
+
+- `add_trailing_eos` (bool, default: False) - Append end-of-sentence markers to segments that are missing them.
+- `emit_sentences` (bool, default: True) - Emit a finalized segment as soon as a sentence ends. If a speaker continues during a turn, multiple segments may be emitted.
+- `pause_mark` (Optional[str], default: None) - Insert a custom string when pauses are detected (e.g., `"..."` produces `"Hello ... how are you?"`).
+
+### Advanced diarization
+
+#### Sensitivity and speaker limits
+
+`enable_diarization` (bool, default: False)  
+Enable speaker diarization to identify and label different speakers.
+You must set this to `True` to use any of the diarization options below.
+
 `speaker_sensitivity` (float, default: 0.5)  
 Diarization sensitivity between 0.0 and 1.0. 
 Higher values detect more speakers.
@@ -210,141 +363,66 @@ Higher values detect more speakers.
 `max_speakers` (int, default: None)  
 Limit maximum number of speakers to detect.
 
+#### Speaker grouping
+
 `prefer_current_speaker` (bool, default: False)  
 Give extra weight to current speaker for word grouping.
 
-`speaker_config` (SpeakerFocusConfig, default: SpeakerFocusConfig())    
+#### Speaker focus
+
+`speaker_config` (SpeakerFocusConfig, default: SpeakerFocusConfig())
 Configure speaker focus/ignore rules.
 
+When diarization is enabled, you can control which speakers appear in your output and how they are treated.
+
+When no `focus_speakers` are configured, all detected speakers are treated as active (`is_active: true`).
+
+**Active speakers** are speakers in your `focus_speakers` list.
+Their segments have `is_active: true`.
+
+**Passive speakers** are speakers not in `focus_speakers` but still included in output when using `SpeakerFocusMode.RETAIN`.
+Their segments have `is_active: false`.
+
+**Ignored speakers** are completely excluded from output.
+Their speech does not appear in segments and does not trigger turn detection.
+
+**SpeakerFocusMode options:**
+
+- `RETAIN`: Non-focused speakers are kept in output as passive speakers (`is_active: false`). Use this when you want to prioritize certain speakers but still see what others say.
+- `IGNORE`: Non-focused speakers are excluded entirely from output. Use this when you only care about specific speakers and want to filter out everyone else.
+
 <CodeBlock language="python">
-{
-`from speechmatics.voice import SpeakerFocusConfig, SpeakerFocusMode
-
-# Focus only on specific speakers
-config = VoiceAgentConfig(
-    enable_diarization=True,
-    speaker_config=SpeakerFocusConfig(
-        focus_speakers=["S1", "S2"],
-        focus_mode=SpeakerFocusMode.RETAIN
-    )
-)
-
-# Ignore specific speakers
-config = VoiceAgentConfig(
-    enable_diarization=True,
-    speaker_config=SpeakerFocusConfig(
-        ignore_speakers=["S3"],
-        focus_mode=SpeakerFocusMode.IGNORE
-    )
-)`
-}
+    {pythonSpeakerFocus}
 </CodeBlock>
+
+In your event handler, you can use `is_active` to decide how to route segments:
+
+<CodeBlock language="python">
+    {pythonSpeakerFocusHandler}
+</CodeBlock>
+
+#### Known speakers (speaker identification)
+
 `known_speakers` (list[SpeakerIdentifier], default: [])   
 Pre-enrolled speaker identifiers for speaker identification.
 
 <CodeBlock language="python">
-{
-`from speechmatics.voice import SpeakerIdentifier
-
-config = VoiceAgentConfig(
-    enable_diarization=True,
-    known_speakers=[
-        SpeakerIdentifier(label="Alice", speaker_identifiers=["XX...XX"]),
-        SpeakerIdentifier(label="Bob", speaker_identifiers=["YY...YY"])
-    ]
-)`
-}
+    {pythonKnownSpeakers}
 </CodeBlock>
-### Language and vocabulary
-`additional_vocab` (list[AdditionalVocabEntry], default: []) 
 
-Custom vocabulary for domain-specific terms.
+### Advanced configuration example
 
 <CodeBlock language="python">
-{
-`from speechmatics.voice import AdditionalVocabEntry
-
-config = VoiceAgentConfig(
-    language="en",
-    additional_vocab=[
-        AdditionalVocabEntry(
-            content="Speechmatics",
-            sounds_like=["speech matters", "speech matics"]
-        ),
-        AdditionalVocabEntry(content="API"),
-    ]
-)`
-}
-</CodeBlock>
-`punctuation_overrides` (dict, default: None) 
-Custom punctuation rules.
-
-### Audio parameters
-`sample_rate` (int, default: 16000)  
-Audio sample rate in Hz.
-
-`audio_encoding` (AudioEncoding, default: PCM_S16LE)  
-Audio encoding format.
-
-### Advanced parameters
-`transcription_update_preset` (TranscriptionUpdatePreset, default: COMPLETE)  
-Controls when to emit updates: COMPLETE, COMPLETE_PLUS_TIMING, WORDS, WORDS_PLUS_TIMING, or TIMING.
-
-`speech_segment_config` (SpeechSegmentConfig, default: SpeechSegmentConfig())  
-Fine-tune segment generation and post-processing.
-
-`smart_turn_config` (SmartTurnConfig, default: None)   
-Configure SMART_TURN behavior (buffer length, threshold).
-
-`include_results` (bool, default: False)  
-Include word-level timing data in segments.
-
-`include_partials` (bool, default: True)   
-Emit partial segments. Set to False for final-only output.
-
-### Configuration with overlays.
-Use presets as a starting point and customize with overlays:
-
-<CodeBlock language="python">
-{
-`from speechmatics.voice import VoiceAgentConfigPreset, VoiceAgentConfig
-
-# Use preset with custom overrides
-config = VoiceAgentConfigPreset.SCRIBE(
-    VoiceAgentConfig(
-        language="es",
-        max_delay=0.8
-    )
-)`
-}
+    {pythonAdvancedConfig}
 </CodeBlock>
 
-### Available presets
-<CodeBlock language="python">
-{
-`presets = VoiceAgentConfigPreset.list_presets()
-# Output: ['low_latency', 'conversation_adaptive', 'conversation_smart_turn', 'scribe', 'captions']`
-}
-</CodeBlock>
-
-### Configuration serialization
+## Import and export configurations
 Export and import configurations as JSON:
 
 <CodeBlock language="python">
-{
-`from speechmatics.voice import VoiceAgentConfigPreset, VoiceAgentConfig
-
-# Export preset to JSON
-config_json = VoiceAgentConfigPreset.SCRIBE().to_json()
-
-# Load from JSON
-config = VoiceAgentConfig.from_json(config_json)
-
-# Or create from JSON string
-config = VoiceAgentConfig.from_json('{"language": "en", "enable_diarization": true}')`
-}
+    {pythonVoiceConfigSerialization}
 </CodeBlock>
 
+## More information
 
-For more information, see the [Voice SDK](https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/voice) on github.
-`
+- Voice SDK on GitHub: https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/voice
