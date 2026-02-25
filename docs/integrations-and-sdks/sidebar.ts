@@ -1,3 +1,6 @@
+import livekitSidebar from "./livekit/sidebar";
+import pipecatSidebar from "./pipecat/sidebar";
+
 export default {
   type: "category",
   label: "Integrations and SDKs",
@@ -14,20 +17,12 @@ export default {
       id: "integrations-and-sdks/vapi",
       label: "Vapi",
     },
+    livekitSidebar,
+    pipecatSidebar,
     {
       type: "doc",
-      id: "integrations-and-sdks/livekit",
-      label: "LiveKit",
+      id: "integrations-and-sdks/sdks",
+      label: "SDKs",
     },
-    {
-      type: "doc",
-      id: "integrations-and-sdks/pipecat",
-      label: "Pipecat",
-    },
-    {
-    type: "doc",
-    id: "integrations-and-sdks/sdks",
-    label: "SDKs",
-    },
-]
-}
+  ],
+} as const;

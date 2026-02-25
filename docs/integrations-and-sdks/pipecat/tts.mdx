@@ -1,0 +1,41 @@
+---
+description: Use Speechmatics text-to-speech voices in your LiveKit voice agents.
+---
+
+# LiveKit text to speech
+
+Give your LiveKit voice agent natural, expressive speech with Speechmatics TTS.
+
+## Installation
+
+```bash
+uv add "livekit-agents[speechmatics]~=1.4"
+```
+
+## Usage
+
+```python
+from livekit.agents import AgentSession
+from livekit.plugins import speechmatics
+
+session = AgentSession(
+    tts=speechmatics.TTS(),
+    # ... stt, llm, etc.
+)
+```
+
+## Configuration
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `voice` | string | `"sarah"` | Voice model to use |
+| `api_key` | string | env var | Speechmatics API key (defaults to `SPEECHMATICS_API_KEY`) |
+
+For available voices and detailed TTS options, see the [Text to speech quickstart](/text-to-speech/quickstart).
+
+
+
+## Next steps
+
+- [Quickstart](/integrations-and-sdks/livekit) — Build a complete voice agent
+- [Speech to text](/integrations-and-sdks/livekit/stt) — Configure STT options
