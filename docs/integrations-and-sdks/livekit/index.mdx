@@ -1,0 +1,122 @@
+---
+description: Build a voice AI agent with Speechmatics STT and TTS using LiveKit Agents.
+---
+
+import CodeBlock from '@theme/CodeBlock'
+import livekitQuickstartMainPy from "./assets/main.py?raw"
+
+# LiveKit quickstart
+
+Build a real-time voice AI agent with Speechmatics and LiveKit in minutes.
+
+[LiveKit Agents](https://docs.livekit.io/agents/) is a framework for building voice AI applications using WebRTC. With the Speechmatics plugin, you get accurate speech recognition and natural text-to-speech for your voice agents.
+
+## Features
+
+- **Real-time transcription** — Low-latency speech-to-text as users speak
+- **Speaker diarization** — Identify and track multiple speakers
+- **Smart turn detection** — Know when the user has finished speaking
+- **Natural TTS voices** — Choose from multiple voice options
+- **Noise robustness** — Accurate recognition in challenging audio environments
+- **Global language support** — Works with diverse accents and dialects
+
+## Prerequisites
+
+- Python 3.10+
+- [Speechmatics API key](https://portal.speechmatics.com)
+- [LiveKit Cloud account](https://cloud.livekit.io) (free tier available)
+- [OpenAI API key](https://platform.openai.com) (for the LLM)
+
+## Setup
+
+This guide assumes LiveKit Cloud. If you want to self-host LiveKit instead, follow LiveKit's self-hosting guide and configure `LIVEKIT_URL`, `LIVEKIT_API_KEY`, and `LIVEKIT_API_SECRET` for your deployment: https://docs.livekit.io/transport/self-hosting/
+
+### 1. Create project
+
+```bash
+mkdir voice-agent && cd voice-agent
+```
+
+### 2. Install dependencies
+
+```bash
+uv init
+uv add "livekit-agents[speechmatics,openai,silero]==1.4.2" python-dotenv
+```
+
+### 3. Install and authenticate the LiveKit CLI
+
+Install the LiveKit CLI. For additional installation options, see the LiveKit CLI setup guide: https://docs.livekit.io/home/cli/cli-setup/
+
+**macOS**:
+
+```text
+brew install livekit-cli
+```
+
+**Linux**:
+
+```text
+curl -sSL https://get.livekit.io/cli | bash
+```
+
+**Windows**:
+
+```text
+winget install LiveKit.LiveKitCLI
+```
+
+Authenticate and link your LiveKit Cloud project:
+
+```bash
+lk cloud auth
+```
+
+### 4. Configure environment
+
+Run the LiveKit CLI to write your LiveKit Cloud credentials to a `.env.local` file:
+
+```bash
+lk app env -w
+```
+
+This creates a `.env.local` file with your LiveKit credentials. Add your Speechmatics and OpenAI keys:
+
+```bash title=".env.local"
+LIVEKIT_URL=wss://your-project.livekit.cloud
+LIVEKIT_API_KEY=...
+LIVEKIT_API_SECRET=...
+SPEECHMATICS_API_KEY=your_speechmatics_key
+OPENAI_API_KEY=your_openai_key
+```
+
+### 5. Create your agent
+
+Create a `main.py` file:
+
+<CodeBlock language="python" title="main.py">
+  {livekitQuickstartMainPy}
+</CodeBlock>
+
+### 6. Run your agent
+
+Run your agent in `dev` mode to connect it to LiveKit and make it available from anywhere on the internet:
+
+```bash
+python main.py dev
+```
+
+Open the [LiveKit Agents Playground](https://agents-playground.livekit.io) to test your agent.
+
+Run your agent in `console` mode to speak to it locally in your terminal:
+
+```bash
+python main.py console
+```
+
+## Next steps
+
+- [Speech to text](/integrations-and-sdks/livekit/stt) — Configure diarization, turn detection, and more
+- [Text to speech](/integrations-and-sdks/livekit/tts) — Choose voices and adjust settings
+- [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/integrations/livekit) — Full working examples
+- [LiveKit deployment](https://docs.livekit.io/agents/deployment/) — Deploy to production
