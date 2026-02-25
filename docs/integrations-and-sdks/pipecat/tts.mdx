@@ -1,35 +1,40 @@
 ---
-description: Use Speechmatics text-to-speech voices in your LiveKit voice agents.
+ description: Use Speechmatics text to speech voices in your Pipecat voice bots.
 ---
 
-# LiveKit text to speech
+# Pipecat text to speech
 
-Give your LiveKit voice agent natural, expressive speech with Speechmatics TTS.
+Use Speechmatics TTS to give your Pipecat voice bot a clear, natural voice.
 
 ## Installation
 
 ```bash
-uv add "livekit-agents[speechmatics]~=1.4"
+pip install "pipecat-ai[speechmatics]"
 ```
 
 ## Usage
 
 ```python
-from livekit.agents import AgentSession
-from livekit.plugins import speechmatics
+import aiohttp
 
-session = AgentSession(
-    tts=speechmatics.TTS(),
-    # ... stt, llm, etc.
-)
+from pipecat.services.speechmatics.tts import SpeechmaticsTTSService
+
+async with aiohttp.ClientSession() as session:
+    tts = SpeechmaticsTTSService(
+        api_key="YOUR_API_KEY",
+        voice_id="sarah",
+        aiohttp_session=session,
+    )
 ```
 
 ## Configuration
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `voice` | string | `"sarah"` | Voice model to use |
 | `api_key` | string | env var | Speechmatics API key (defaults to `SPEECHMATICS_API_KEY`) |
+| `voice_id` | string | `"sarah"` | Voice to use |
+| `base_url` | string | service default | Base URL for the Speechmatics TTS endpoint |
+| `aiohttp_session` | `aiohttp.ClientSession` | none | Reuse a session for connection pooling and lower latency |
 
 For available voices and detailed TTS options, see the [Text to speech quickstart](/text-to-speech/quickstart).
 
@@ -37,5 +42,6 @@ For available voices and detailed TTS options, see the [Text to speech quickstar
 
 ## Next steps
 
-- [Quickstart](/integrations-and-sdks/livekit) — Build a complete voice agent
-- [Speech to text](/integrations-and-sdks/livekit/stt) — Configure STT options
+- [Quickstart](/integrations-and-sdks/pipecat) — Build a complete voice bot
+- [Speech to text](/integrations-and-sdks/pipecat/stt) — Configure STT options
+- [Pipecat documentation](https://docs.pipecat.ai/server/services/tts/speechmatics) — Full Speechmatics TTS reference

@@ -1,48 +1,35 @@
-from livekit.agents import AgentSession
-from livekit.plugins import speechmatics
-from livekit.plugins.speechmatics import (
-    AdditionalVocabEntry,
-    AudioEncoding,
-    OperatingPoint,
-    SpeakerFocusMode,
-    SpeakerIdentifier,
-    TurnDetectionMode,
-)
+from pipecat.services.speechmatics.stt import SpeechmaticsSTTService
 
-stt = speechmatics.STT(
-    # Service options
-    language="en",
-    output_locale="en-US",
-    operating_point=OperatingPoint.ENHANCED,
+stt = SpeechmaticsSTTService(
+    params=SpeechmaticsSTTService.InputParams(
+        # Service options
+        language="en",
+        operating_point=SpeechmaticsSTTService.OperatingPoint.ENHANCED,
 
-    # Turn detection
-    turn_detection_mode=TurnDetectionMode.ADAPTIVE,
-    max_delay=1.5,
-    include_partials=True,
+        # Turn detection
+        turn_detection_mode=SpeechmaticsSTTService.TurnDetectionMode.EXTERNAL,
+        max_delay=1.5,
+        include_partials=True,
 
-    # Diarization
-    enable_diarization=True,
-    speaker_sensitivity=0.6,
-    max_speakers=4,
-    prefer_current_speaker=True,
+        # Diarization
+        enable_diarization=True,
+        speaker_sensitivity=0.6,
+        max_speakers=4,
+        prefer_current_speaker=True,
 
-    # Speaker focus
-    focus_speakers=["S1", "S2"],
-    focus_mode=SpeakerFocusMode.RETAIN,
-    ignore_speakers=["__ASSISTANT__"],
+        # Speaker focus
+        focus_speakers=["S1", "S2"],
+        focus_mode=SpeechmaticsSTTService.SpeakerFocusMode.RETAIN,
+        ignore_speakers=[],
 
-    # Output formatting
-    speaker_active_format="[{speaker_id}]: {text}",
-    speaker_passive_format="[{speaker_id} (background)]: {text}",
+        # Output formatting
+        speaker_active_format="[{speaker_id}]: {text}",
+        speaker_passive_format="[{speaker_id} (background)]: {text}",
 
-    # Custom vocabulary
-    additional_vocab=[
-        AdditionalVocabEntry(content="Speechmatics"),
-        AdditionalVocabEntry(content="LiveKit", sounds_like=["live kit", "livekit"]),
-    ],
-)
-
-session = AgentSession(
-    stt=stt,
-    # ... llm, tts, vad, etc.
+        # Custom vocabulary
+        additional_vocab=[
+            SpeechmaticsSTTService.AdditionalVocabEntry(content="Speechmatics"),
+            SpeechmaticsSTTService.AdditionalVocabEntry(content="Pipecat", sounds_like=["pipe cat"]),
+        ],
+    ),
 )
