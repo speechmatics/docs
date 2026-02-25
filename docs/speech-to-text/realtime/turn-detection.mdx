@@ -111,6 +111,15 @@ The `ForceEndOfUtterance` message is sent to the server to trigger an end of utt
 }
 ```
 
+For higher accuracy you can add an (optional) timestamp parameter to the message. It is the timestamp of the audio data that corresponds to the force end of utterance request. 
+It's the number of seconds since the beginning of the audio. 
+
+```json
+{
+  "message": "ForceEndOfUtterance",
+  "timestamp": 63.5
+}
+
 You can also use `ForceEndOfUtterance` with multi-channel diarization:
 
 ```json
