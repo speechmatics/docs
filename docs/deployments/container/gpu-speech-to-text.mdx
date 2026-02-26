@@ -39,13 +39,8 @@ See [Performance and cost](/deployments/container/performance-and-cost) for more
 
 ### Nvidia drivers
 
-#### 15.0.0 container version or higher
-
-The GPU Inference Container is based on CUDA 13.0.1, which requires NVIDIA Driver release 580 or later.
-
-#### 14.13.0 container version or lower
-
-The GPU Inference Container is based on CUDA 12.4.1, which requires NVIDIA Driver release 525 or later.
+- 15.0.0 container version or higher: The GPU Inference Container is based on CUDA 13.0.1, which requires NVIDIA Driver release 580 or later.
+- 14.13.0 container version or lower: The GPU Inference Container is based on CUDA 12.4.1, which requires NVIDIA Driver release 525 or later.
 
 Driver installation can be validated by running `nvidia-smi`. This command should return the Nvidia driver version and show additional information about the GPU(s).
 
