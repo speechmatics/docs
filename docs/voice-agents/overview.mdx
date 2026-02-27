@@ -1,170 +1,57 @@
 ---
-description: Learn how to build voice-enabled applications with the Speechmatics Voice SDK 
+description: Learn how to build voice agents with Speechmatics integrations and the Voice SDK.
 ---
-import Admonition from '@theme/Admonition';
-import CodeBlock from '@theme/CodeBlock';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import { LinkCard } from "@site/src/theme/LinkCard";
+import { Grid } from "@radix-ui/themes";
 
-import pythonVoiceCustomConfig from "./assets/custom-config.py?raw"
-import pythonVoiceConfigOverlays from "./assets/config-overlays.py?raw"
-import pythonVoiceConfigSerialization from "./assets/config-serialization.py?raw"
+# Voice agents overview
 
-# Voice SDK overview
-The Voice SDK builds on our Realtime API to provide additional features optimized for conversational AI, using Python:
+Our Voice SDK provides features optimized for conversational AI, which we use to build our integrations.
+Our integration partners are the quickest way to get a production voice agent up and running, 
 
-- **Intelligent segmentation**: groups words into meaningful speech segments per speaker.
-- **Turn detection**: automatically detects when speakers finish talking.
-- **Speaker management**: focus on or ignore specific speakers in multi-speaker scenarios.
-- **Preset configurations**: offers ready-to-use settings for conversations, note-taking, and captions.
-- **Simplified event handling**: delivers clean, structured segments instead of raw word-level events.
+## Features
 
-### Voice SDK vs Realtime SDK
+Speechmatics provides building blocks you can use through integrations and the Voice SDK.
 
-Use the Voice SDK when:
+It includes:
 
-- Building conversational AI or voice agents
-- You need automatic turn detection
-- You want speaker-focused transcription
-- You need ready-to-use presets for common scenarios
+- **Turn detection**: detect when a speaker has finished talking.
+- **Intelligent segmentation**: group partial transcripts into clean, speaker-attributed segments.
+- **Diarization**: identify and label different speakers.
+- **Speaker focus**: focus on or ignore specific speakers in multi-speaker scenarios.
+- **Preset configurations**: start quickly with ready-to-use settings.
+- **Structured events**: work with clean segments instead of raw word-level events.
 
-Use the Realtime SDK when:
+## Integrations
 
-- You need the raw stream of word-by-word transcription data
-- Building custom segmentation logic
-- You want fine-grained control over every event
-- Processing audio files or custom workflows
+Use an integration to handle audio transport and wiring, so you can focus on your agent logic:
 
-## Getting started
+<Grid columns="3" gap="3">
+  <LinkCard
+    title="Vapi"
+    description="Turnkey voice agent platform. Deploy fast with no code."
+    icon={<img src="/img/integration-logos/vapi.png" alt="Vapi logo" width="28px" height="28px" />}
+    href="/integrations-and-sdks/vapi"
+  />
+  <LinkCard
+    title="LiveKit"
+    description="Open-source framework for building agents with WebRTC infrastructure."
+    icon={<img src="/img/integration-logos/livekit.png" alt="LiveKit logo" width="28px" height="28px" />}
+    href="/integrations-and-sdks/livekit"
+  />
+  <LinkCard
+    title="Pipecat"
+    description="Open-source framework with full control of the voice pipeline in code."
+    icon={<img src="/img/integration-logos/pipecat.png" alt="Pipecat logo" width="28px" height="28px" />}
+    href="/integrations-and-sdks/pipecat"
+  />
+</Grid>
 
-### 1. Create an API key
+## Voice SDK
 
-[Create a Speechmatics API key in the portal](https://portal.speechmatics.com/settings/api-keys) to access the Voice SDK. 
-Store your key securely as a managed secret. 
+Use the Voice SDK to handle turn detection, group transcripts into clean segments, and apply diarization for LLM workflows.
 
-### 2. Install dependencies
+See [Voice SDK](/voice-agents/voice-sdk) for getting started, presets, and configuration.
 
-```bash
-# Standard installation
-pip install speechmatics-voice
-
-# With SMART_TURN (ML-based turn detection)
-pip install speechmatics-voice[smart]
-```
-
-### 3. Quickstart
-
-Here's how to stream microphone audio to the Voice Agent and transcribe finalised segments of speech, with speaker ID:
-
-```python
-import asyncio
-import os
-from speechmatics.rt import Microphone
-from speechmatics.voice import VoiceAgentClient, AgentServerMessageType
-
-async def main():
-    """Stream microphone audio to Speechmatics Voice Agent using 'scribe' preset"""
-
-    # Audio configuration
-    SAMPLE_RATE = 16000         # Hz
-    CHUNK_SIZE = 160            # Samples per read
-    PRESET = "scribe"           # Configuration preset
-
-    # Create client with preset
-    client = VoiceAgentClient(
-        api_key=os.getenv("SPEECHMATICS_API_KEY"),
-        preset=PRESET
-    )
-
-    # Print finalised segments of speech with speaker ID
-    @client.on(AgentServerMessageType.ADD_SEGMENT)
-    def on_segment(message):
-        for segment in message["segments"]:
-            speaker = segment["speaker_id"]
-            text = segment["text"]
-            print(f"{speaker}: {text}")
-
-    # Setup microphone
-    mic = Microphone(SAMPLE_RATE, CHUNK_SIZE)
-    if not mic.start():
-        print("Error: Microphone not available")
-        return
-
-    # Connect to the Voice Agent
-    await client.connect()
-
-    # Stream microphone audio (interruptable using keyboard)
-    try:
-        while True:
-            audio_chunk = await mic.read(CHUNK_SIZE)
-            if not audio_chunk:
-                break # Microphone stopped producing data
-            await client.send_audio(audio_chunk)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        await client.disconnect()
-
-if __name__ == "__main__":
-    asyncio.run(main())
-
-```
-
-#### Presets - the simplest way to get started
-These are purpose-built, optimized configurations, ready for use without further modification:
-
-`fast` - low latency, fast responses
-
-`adaptive` - general conversation 
-
-`smart_turn` - complex conversation
-
-`external` - user handles end of turn
-
-`scribe` - note-taking
-
-`captions` - live captioning
-
-To view all available presets:
-```python
-presets = VoiceAgentConfigPreset.list_presets()
-```
-
-### 4. Custom configurations
-
-For more control, you can also specify custom configurations or use presets as a starting point and customise with overlays:
-<Tabs>
-<TabItem value='voice-custom-config' label='Custom configurations'>
-Specify configurations in a `VoiceAgentConfig` object:
-<CodeBlock language="python">
-    {pythonVoiceCustomConfig}
-</CodeBlock>
-</TabItem>
-<TabItem value='voice-custom-config-overlays' label='Preset with a custom overlay'>
-Use presets as a starting point and customise with overlays:
-<CodeBlock language="python">
-    {pythonVoiceConfigOverlays}
-</CodeBlock>
-</TabItem>
-</Tabs>
-
-Note: If no configuration or preset is provided, the client will default to the `external` preset.
-
-
-
-
-## FAQ
-### Support
-
-<details>
-<summary>Where can I provide feedback or get help?</summary>
-
-You can submit feedback, bug reports, or feature requests through the Speechmatics [GitHub discussions](https://github.com/orgs/speechmatics/discussions).
-</details>
-
-## Next steps
-
-- For more information, see the [Voice SDK](https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/voice) on GitHub.
-- For working examples, integrations and templates, check out the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy).
-- Share and discuss your project with [our team](https://support.speechmatics.com) or join our [developer community on Reddit](https://www.reddit.com/r/Speechmatics) to connect with other builders in voice AI.
+If you’re building an integration and want to work with us, [contact support](https://support.speechmatics.com).
 

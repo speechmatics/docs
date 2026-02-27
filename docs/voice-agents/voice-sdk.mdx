@@ -1,9 +1,163 @@
 ---
-description: Learn about configuration parameters for the Voice SDK
+description: Learn how to use the Voice SDK.
 ---
 import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-# Features
+import pythonVoiceCustomConfig from "./assets/custom-config.py?raw"
+import pythonVoiceConfigOverlays from "./assets/config-overlays.py?raw"
+import pythonVoiceConfigSerialization from "./assets/config-serialization.py?raw"
+
+
+
+# Voice SDK
+
+The Voice SDK is a Python library that provides additional features optimized for conversational AI, built on top of our Realtime API.
+
+We use it to build our integrations, and it is also available for you to use.
+
+- **Intelligent segmentation**: groups words into meaningful speech segments per speaker.
+- **Turn detection**: automatically detects when speakers finish talking.
+- **Speaker management**: focus on or ignore specific speakers in multi-speaker scenarios.
+- **Preset configurations**: offers ready-to-use settings for conversations, note-taking, and captions.
+- **Simplified event handling**: delivers clean, structured segments instead of raw word-level events.
+
+### Voice SDK vs Realtime SDK
+
+Use the Voice SDK when:
+
+- Building conversational AI or voice agents
+- You need automatic turn detection
+- You want speaker-focused transcription
+- You need ready-to-use presets for common scenarios
+
+Use the Realtime SDK when:
+
+- You need the raw stream of word-by-word transcription data
+- Building custom segmentation logic
+- You want fine-grained control over every event
+- Processing audio files or custom workflows
+
+## Getting started
+
+### 1. Create an API key
+
+[Create a Speechmatics API key in the portal](https://portal.speechmatics.com/settings/api-keys) to access the Voice SDK. 
+Store your key securely as a managed secret. 
+
+### 2. Install dependencies
+
+```bash
+# Standard installation
+pip install speechmatics-voice
+
+# With SMART_TURN (ML-based turn detection)
+pip install speechmatics-voice[smart]
+```
+
+### 3. Quickstart
+
+Here's how to stream microphone audio to the Voice Agent and transcribe finalised segments of speech, with speaker ID:
+
+```python
+import asyncio
+import os
+from speechmatics.rt import Microphone
+from speechmatics.voice import VoiceAgentClient, AgentServerMessageType
+
+async def main():
+    """Stream microphone audio to Speechmatics Voice Agent using 'scribe' preset"""
+
+    # Audio configuration
+    SAMPLE_RATE = 16000         # Hz
+    CHUNK_SIZE = 160            # Samples per read
+    PRESET = "scribe"           # Configuration preset
+
+    # Create client with preset
+    client = VoiceAgentClient(
+        api_key=os.getenv("SPEECHMATICS_API_KEY"),
+        preset=PRESET
+    )
+
+    # Print finalised segments of speech with speaker ID
+    @client.on(AgentServerMessageType.ADD_SEGMENT)
+    def on_segment(message):
+        for segment in message["segments"]:
+            speaker = segment["speaker_id"]
+            text = segment["text"]
+            print(f"{speaker}: {text}")
+
+    # Setup microphone
+    mic = Microphone(SAMPLE_RATE, CHUNK_SIZE)
+    if not mic.start():
+        print("Error: Microphone not available")
+        return
+
+    # Connect to the Voice Agent
+    await client.connect()
+
+    # Stream microphone audio (interruptable using keyboard)
+    try:
+        while True:
+            audio_chunk = await mic.read(CHUNK_SIZE)
+            if not audio_chunk:
+                break # Microphone stopped producing data
+            await client.send_audio(audio_chunk)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        await client.disconnect()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+```
+
+#### Presets - the simplest way to get started
+
+These are purpose-built, optimized configurations, ready for use without further modification:
+
+`fast` - low latency, fast responses
+
+`adaptive` - general conversation 
+
+`smart_turn` - complex conversation
+
+`external` - user handles end of turn
+
+`scribe` - note-taking
+
+`captions` - live captioning
+
+To view all available presets:
+
+```python
+presets = VoiceAgentConfigPreset.list_presets()
+```
+
+### 4. Custom configurations
+
+For more control, you can also specify custom configurations or use presets as a starting point and customise with overlays:
+
+<Tabs>
+<TabItem value='voice-custom-config' label='Custom configurations'>
+Specify configurations in a `VoiceAgentConfig` object:
+<CodeBlock language="python">
+    {pythonVoiceCustomConfig}
+</CodeBlock>
+</TabItem>
+<TabItem value='voice-custom-config-overlays' label='Preset with a custom overlay'>
+Use presets as a starting point and customise with overlays:
+<CodeBlock language="python">
+    {pythonVoiceConfigOverlays}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Note: If no configuration or preset is provided, the client will default to the `external` preset.
+
+## Configuration
 
 ### Basic parameters
 `language` (str, default: "en")  
@@ -45,7 +199,8 @@ Silence duration in seconds to trigger turn end.
 Maximum delay before forcing turn end.
 
 `max_delay` (float, default: 0.7)  
-Maximum transcription delay for word emission.
+Maximum transcription delay for word emission. 
+Defaults to 0.7 seconds, but when using turn detection we recommend 1.0s for better accuracy. Turn detection will ensure finalisation latency is not affected.
 
 ### Speaker configuration
 `speaker_sensitivity` (float, default: 0.5)  

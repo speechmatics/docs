@@ -10,8 +10,8 @@ export default {
   docs: [
     gettingStartedSidebar,
     speechToTextSidebar,
-    voiceAgentsSidebar,
     textToSpeechSidebar,
+    voiceAgentsSidebar,
     integrationsAndSDKSidebar,
     deploymentsSidebar,
     {
