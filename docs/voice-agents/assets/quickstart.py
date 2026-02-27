@@ -34,7 +34,7 @@ async def main():
     # Connect to the Voice Agent
     await client.connect()
 
-    # Stream microphone audio (interruptable using keyboard)
+    # Stream microphone audio (interruptible using keyboard)
     try:
         while True:
             audio_chunk = await mic.read(CHUNK_SIZE)
