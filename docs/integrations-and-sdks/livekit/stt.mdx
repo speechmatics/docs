@@ -1,0 +1,269 @@
+---
+description: Transcribe live audio in your LiveKit voice agents with Speechmatics STT.
+---
+
+import CodeBlock from '@theme/CodeBlock'
+import sttFullExample from "./assets/stt-full-example.py?raw"
+
+# LiveKit speech to text
+
+Use the Speechmatics STT plugin to transcribe live audio in your LiveKit voice agents.
+
+## Features
+
+- **Real-time transcription** — Low-latency streaming with partial (interim) results
+- **Turn detection** — Adaptive, fixed, ML-based, or external control modes
+- **Speaker diarization** — Identify and attribute speech to different speakers
+- **Speaker filtering** — Focus on specific speakers or ignore others (like the assistant)
+- **Custom vocabulary** — Boost recognition for domain-specific terms and proper nouns
+- **Output formatting** — Configurable templates for multi-speaker transcripts
+
+## Installation
+
+```bash
+uv add "livekit-agents[speechmatics]~=1.4"
+```
+
+## Basic configuration
+
+### Authentication
+
+By default, the plugin reads your API key from `SPEECHMATICS_API_KEY`.
+
+### Service options
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `language` | string | `"en"` | Language code for transcription |
+| `output_locale` | string \| null | `null` | Output locale (for example `"en-GB"`) |
+| `domain` | string \| null | `null` | Domain-specific model (for example `"finance"`) |
+| `operating_point` | OperatingPoint \| null | `null` | Transcription accuracy. Use `OperatingPoint.ENHANCED` (higher accuracy) or `OperatingPoint.STANDARD` (lower latency) |
+| `base_url` | string | env var | Realtime base URL (defaults to `SPEECHMATICS_RT_URL`, or `wss://eu2.rt.speechmatics.com/v2`) |
+| `api_key` | string | env var | Speechmatics API key (defaults to `SPEECHMATICS_API_KEY`) |
+| `sample_rate` | number | `16000` | Audio sample rate in Hz. Valid values: `8000` or `16000` |
+| `audio_encoding` | AudioEncoding | `PCM_S16LE` | Audio encoding format: `AudioEncoding.PCM_S16LE`, `AudioEncoding.PCM_F32LE`, or `AudioEncoding.MULAW` |
+| `punctuation_overrides` | object \| null | `null` | Custom punctuation rules |
+
+#### Example
+
+```python
+from livekit.agents import AgentSession
+from livekit.plugins import speechmatics
+
+session = AgentSession(
+    stt=speechmatics.STT(
+        language="en",
+        output_locale="en-GB",
+    ),
+    # ... llm, tts, vad, etc.
+)
+```
+
+## Advanced configuration
+
+### Turn detection
+
+The Speechmatics STT plugin uses the Speechmatics Voice SDK for endpointing and turn detection.
+Turn detection determines when a user has finished their complete thought, while the Realtime API's `EndOfUtterance` message indicates a pause in speech. The plugin handles this distinction automatically.
+
+#### Modes
+
+Set `turn_detection_mode` to control how end of speech is detected:
+
+| Mode | When to use |
+|------|-------------|
+| `TurnDetectionMode.ADAPTIVE` | Default. Adjusts silence threshold based on speech rate, pauses, and disfluencies. Requires `speechmatics-voice[smart]` |
+| `TurnDetectionMode.FIXED` | Fixed silence threshold using `end_of_utterance_silence_trigger` |
+| `TurnDetectionMode.SMART_TURN` | ML-based endpointing using acoustic cues for more natural turn-taking. Requires `speechmatics-voice[smart]` |
+| `TurnDetectionMode.EXTERNAL` | You control turn boundaries manually (for example using your own VAD and calling `finalize()`) |
+
+```python
+from livekit.plugins import speechmatics
+from livekit.plugins.speechmatics import TurnDetectionMode
+
+# Adaptive mode (default) - adjusts to speech patterns
+# Requires: pip install speechmatics-voice[smart]
+stt = speechmatics.STT(
+    turn_detection_mode=TurnDetectionMode.ADAPTIVE,
+)
+
+# Fixed mode - consistent silence threshold
+stt = speechmatics.STT(
+    turn_detection_mode=TurnDetectionMode.FIXED,
+    end_of_utterance_silence_trigger=0.8,  # 800ms of silence
+    end_of_utterance_max_delay=5.0,        # Force end after 5s
+)
+
+# Smart turn mode - ML-based natural turn-taking
+# Requires: pip install speechmatics-voice[smart]
+stt = speechmatics.STT(
+    turn_detection_mode=TurnDetectionMode.SMART_TURN,
+)
+
+# External mode - manual control via finalize()
+stt = speechmatics.STT(
+    turn_detection_mode=TurnDetectionMode.EXTERNAL,
+)
+```
+
+#### Manual turn finalization
+
+When using `TurnDetectionMode.EXTERNAL`, you control when a turn ends by calling `finalize()` on the STT instance. This is useful when you have your own VAD or want to integrate with external signals.
+
+```python
+from livekit.plugins import speechmatics
+from livekit.plugins.speechmatics import TurnDetectionMode
+
+stt = speechmatics.STT(
+    turn_detection_mode=TurnDetectionMode.EXTERNAL,
+)
+
+# Later, when you detect the user has finished speaking:
+stt.finalize()
+```
+
+#### Configuration
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `end_of_utterance_silence_trigger` | number \| null | `null` | Silence duration (seconds) that triggers end of utterance. Used primarily in `FIXED` mode. Valid range: &gt;0 to &lt;2 seconds (exclusive) |
+| `end_of_utterance_max_delay` | number \| null | `null` | Maximum delay (seconds) before forcing an end of utterance. Must be greater than `end_of_utterance_silence_trigger` |
+| `max_delay` | number \| null | `null` | Maximum transcription delay (seconds). Lower values reduce latency at the cost of accuracy. Valid range: 0.7–4.0 seconds |
+| `include_partials` | boolean \| null | `null` | Enable partial (interim) transcription results. When `null`, defaults to `true` |
+
+### Advanced diarization
+
+The plugin can attribute words to speakers and lets you decide which speakers are treated as **active** (foreground) vs **passive** (background).
+
+#### Configuration
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `enable_diarization` | boolean \| null | `null` | Enable speaker diarization |
+| `speaker_sensitivity` | number \| null | `null` | Speaker detection sensitivity. Valid range: &gt;0.0 to &lt;1.0 (exclusive) |
+| `max_speakers` | number \| null | `null` | Maximum number of speakers to detect. Valid range: 2–100 |
+| `prefer_current_speaker` | boolean \| null | `null` | Reduce speaker switching for similar voices |
+| `known_speakers` | array \| null | `null` | Pre-define speaker identifiers with labels (`SpeakerIdentifier` objects) |
+| `additional_vocab` | array \| null | `null` | Custom vocabulary entries (`AdditionalVocabEntry` objects) for improved recognition |
+
+```python
+from livekit.plugins import speechmatics
+from livekit.plugins.speechmatics import AdditionalVocabEntry
+
+stt = speechmatics.STT(
+    enable_diarization=True,
+    speaker_sensitivity=0.7,
+    max_speakers=3,
+    prefer_current_speaker=True,
+    additional_vocab=[
+        AdditionalVocabEntry(content="Speechmatics"),
+        AdditionalVocabEntry(content="API", sounds_like=["A P I"]),
+    ],
+)
+```
+
+#### Known speakers
+
+Use `known_speakers` to attribute words to specific speakers across sessions. This is useful when you want consistent speaker identification for known participants.
+
+```python
+from livekit.plugins import speechmatics
+from livekit.plugins.speechmatics import SpeakerIdentifier
+
+stt = speechmatics.STT(
+    enable_diarization=True,
+    known_speakers=[
+        SpeakerIdentifier(label="Alice", speaker_identifiers=["speaker_abc123"]),
+        SpeakerIdentifier(label="Bob", speaker_identifiers=["speaker_def456"]),
+    ],
+)
+```
+
+Speaker identifiers are unique to each Speechmatics account and can be obtained from a previous transcription session.
+
+#### Speaker focus
+
+Control which speakers are treated as **active** (foreground) vs **passive** (background):
+
+- **Active speakers** are the speakers you care about in your application. They generate `FINAL_TRANSCRIPT` events.
+- **Passive speakers** are still transcribed, but their words are buffered and only included in the output alongside new words from active speakers.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `focus_speakers` | array | `[]` | Speaker IDs to treat as active |
+| `ignore_speakers` | array | `[]` | Speaker IDs to exclude entirely |
+| `focus_mode` | SpeakerFocusMode | `RETAIN` | How to handle non-focused speakers |
+
+##### Focus modes
+
+- `SpeakerFocusMode.RETAIN` keeps non-focused speakers as passive.
+- `SpeakerFocusMode.IGNORE` discards non-focused speaker words entirely.
+
+`ignore_speakers` always excludes those speakers from transcription and their speech will not trigger VAD or end of utterance detection.
+
+:::tip
+By default, any speaker label wrapped in double underscores (for example `__ASSISTANT__`) is automatically excluded. This convention lets you filter out assistant audio without explicitly adding it to `ignore_speakers`.
+:::
+
+```python
+from livekit.plugins import speechmatics
+from livekit.plugins.speechmatics import SpeakerFocusMode
+
+stt = speechmatics.STT(
+    focus_speakers=["S1"],
+    focus_mode=SpeakerFocusMode.RETAIN,
+    ignore_speakers=["S3"],
+)
+```
+
+#### Speaker formatting
+
+Use `speaker_active_format` and `speaker_passive_format` to format transcripts for your LLM.
+The templates support `{speaker_id}` and `{text}`.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `speaker_active_format` | string \| null | `null` | Format template for active speaker output |
+| `speaker_passive_format` | string \| null | `null` | Format template for passive speaker output |
+
+```python
+from livekit.plugins import speechmatics
+
+stt = speechmatics.STT(
+    speaker_active_format="<{speaker_id}>{text}</{speaker_id}>",
+    speaker_passive_format="<{speaker_id} background>{text}</{speaker_id}>",
+)
+```
+
+When you use a custom format, include it in your agent instructions so the LLM can interpret speaker tags consistently.
+
+#### Updating speakers during transcription
+
+You can dynamically change which speakers to focus on or ignore during an active transcription session using the `update_speakers()` method.
+
+```python
+from livekit.plugins import speechmatics
+from livekit.plugins.speechmatics import SpeakerFocusMode
+
+stt = speechmatics.STT(enable_diarization=True)
+
+# Later, during transcription:
+stt.update_speakers(
+    focus_speakers=["S1", "S2"],
+    ignore_speakers=["S3"],
+    focus_mode=SpeakerFocusMode.RETAIN,
+)
+```
+
+This is useful when you need to adjust speaker filtering based on runtime conditions, such as when a new participant joins or leaves a conversation.
+
+#### Example
+
+<CodeBlock language="python">
+  {sttFullExample}
+</CodeBlock>
+
+## Next steps
+
+- [Quickstart](/integrations-and-sdks/livekit) — Build a complete voice agent
+- [Text to speech](/integrations-and-sdks/livekit/tts) — Use Speechmatics voices in your agent

@@ -1,3 +1,4 @@
+import os
 from speechmatics.voice import VoiceAgentClient, VoiceAgentConfig, EndOfUtteranceMode
 
 config = VoiceAgentConfig(
