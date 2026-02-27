@@ -1,0 +1,88 @@
+---
+ description: Build a local voice bot with Speechmatics STT and TTS using Pipecat.
+---
+
+import CodeBlock from '@theme/CodeBlock'
+import pipecatQuickstartMainPy from "./assets/main.py?raw"
+
+# Pipecat quickstart
+
+Build a local voice bot with Speechmatics and Pipecat in minutes.
+
+[Pipecat](https://docs.pipecat.ai/) is a framework for building real-time voice bots using a pipeline architecture. In this quickstart, you’ll run a local WebRTC server and connect to your bot from your browser.
+
+## Features
+
+- **Real-time transcription** — Low-latency speech-to-text as users speak
+- **Natural text to speech** — Give your bot a clear, natural voice
+- **Local web client** — Test your bot in a browser at `http://localhost:7860/client`
+- **No infrastructure** — No cloud deployment or room setup required
+
+## Prerequisites
+
+- Python 3.10+
+- [Speechmatics API key](https://portal.speechmatics.com)
+- [OpenAI API key](https://platform.openai.com) (for the LLM)
+
+## Setup
+
+### 1. Create project
+
+```bash
+mkdir voice-agent && cd voice-agent
+```
+
+### 2. Install dependencies
+
+Create a `requirements.txt` file:
+
+```text title="requirements.txt"
+pipecat-ai[local-smart-turn-v3,silero,speechmatics,webrtc,openai,runner]
+pipecat-ai-small-webrtc-prebuilt
+python-dotenv
+loguru
+```
+
+Install with [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+```
+
+### 3. Configure environment
+
+Create a `.env` file:
+
+```text title=".env"
+SPEECHMATICS_API_KEY=your_speechmatics_key
+OPENAI_API_KEY=your_openai_key
+```
+
+### 4. Create your bot
+
+Create a `main.py` file:
+
+<CodeBlock language="python" title="main.py">
+  {pipecatQuickstartMainPy}
+</CodeBlock>
+
+### 5. Run your bot
+
+```bash
+python main.py
+```
+
+Open `http://localhost:7860/client` in your browser and allow microphone access.
+
+:::note
+The first run can take a little longer while dependencies and models load.
+:::
+
+## Next steps
+
+- [Speech to text](/integrations-and-sdks/pipecat/stt) — Configure diarization, turn detection, and more
+- [Text to speech](/integrations-and-sdks/pipecat/tts) — Choose voices and adjust settings
+- [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/integrations/pipecat) — Full working examples
+- [Pipecat quickstart](https://docs.pipecat.ai/getting-started/quickstart) — Learn more patterns and deployment options

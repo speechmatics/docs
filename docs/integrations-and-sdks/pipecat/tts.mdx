@@ -1,0 +1,47 @@
+---
+ description: Use Speechmatics text to speech voices in your Pipecat voice bots.
+---
+
+# Pipecat text to speech
+
+Use Speechmatics TTS to give your Pipecat voice bot a clear, natural voice.
+
+## Installation
+
+```bash
+pip install "pipecat-ai[speechmatics]"
+```
+
+## Usage
+
+```python
+import aiohttp
+
+from pipecat.services.speechmatics.tts import SpeechmaticsTTSService
+
+async with aiohttp.ClientSession() as session:
+    tts = SpeechmaticsTTSService(
+        api_key="YOUR_API_KEY",
+        voice_id="sarah",
+        aiohttp_session=session,
+    )
+```
+
+## Configuration
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `api_key` | string | env var | Speechmatics API key (defaults to `SPEECHMATICS_API_KEY`) |
+| `voice_id` | string | `"sarah"` | Voice to use |
+| `base_url` | string | service default | Base URL for the Speechmatics TTS endpoint |
+| `aiohttp_session` | `aiohttp.ClientSession` | none | Reuse a session for connection pooling and lower latency |
+
+For available voices and detailed TTS options, see the [Text to speech quickstart](/text-to-speech/quickstart).
+
+
+
+## Next steps
+
+- [Quickstart](/integrations-and-sdks/pipecat) — Build a complete voice bot
+- [Speech to text](/integrations-and-sdks/pipecat/stt) — Configure STT options
+- [Pipecat documentation](https://docs.pipecat.ai/server/services/tts/speechmatics) — Full Speechmatics TTS reference

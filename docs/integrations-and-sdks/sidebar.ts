@@ -1,3 +1,4 @@
+import pipecatSidebar from "./pipecat/sidebar";
 import livekitSidebar from "./livekit/sidebar";
 
 export default {
@@ -11,21 +12,17 @@ export default {
       id: "integrations-and-sdks/index",
       label: "Overview",
     },
+    livekitSidebar,
+    pipecatSidebar,
     {
       type: "doc",
       id: "integrations-and-sdks/vapi",
       label: "Vapi",
-    },
-    livekitSidebar,
-    {
-      type: "doc",
-      id: "integrations-and-sdks/pipecat",
-      label: "Pipecat",
     },
     {
       type: "doc",
       id: "integrations-and-sdks/sdks",
       label: "SDKs",
     },
-  ]
-};
+  ],
+} as const;
