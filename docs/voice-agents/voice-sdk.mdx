@@ -31,11 +31,11 @@ We use it to build our integrations, and it is also available for you to use.
 - **Turn detection**: automatically detects when speakers finish talking.
 - **Speaker management**: focus on or ignore specific speakers in multi-speaker scenarios.
 - **Preset configurations**: offers ready-to-use settings for conversations, note-taking, and captions.
-- **Simplified event handling**: delivers clean, structured segments instead of raw word-level events.
+- **Intelligent segmentation**: delivers clean, per-speaker, structured segments instead of raw word-level events.
 
 ### Segmentation
 
-Segmentation groups words into readable chunks of text.
+Segmentation groups words into, per-speaker, readable chunks of text.
 In practice, this means you can work with finalized segments rather than stitching together word-by-word updates.
 
 ### Turn detection and finalization
@@ -97,7 +97,7 @@ Here's how to stream microphone audio to the Voice Agent and transcribe finalize
     {pythonQuickstart}
 </CodeBlock>
 
-Note: `Microphone` is imported from the Realtime SDK (`speechmatics.rt`). Install with `pip install speechmatics`.
+Note: `Microphone` is imported from the Realtime SDK (`speechmatics.rt`). Install with `pip install speechmatics-rt`.
 
 ## Events and segments
 
@@ -179,7 +179,7 @@ These are purpose-built, optimized configurations, ready for use without further
 
 `FAST` - low latency, fast responses
 
-`FIXED` - general conversation with fixed timing
+`FIXED` - general conversation with fixed, silence-based turn detection
 
 `ADAPTIVE` - general conversation with adaptive timing
 
