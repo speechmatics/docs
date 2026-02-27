@@ -6,21 +6,23 @@ import { Grid } from "@radix-ui/themes";
 
 # Voice agents overview
 
-Our Voice SDK provides features optimized for conversational AI, which we use to build our integrations.
-Our integration partners are the quickest way to get a production voice agent up and running, 
+There are two ways to build voice agents using Speechmatics:
+
+- Integration partners (LiveKit, Pipecat and VAPI): the fastest path to a production voice agent.
+- Voice SDK: direct access for custom pipelines or working outside of supported integration platforms.
+
 
 ## Features
 
 Speechmatics provides building blocks you can use through integrations and the Voice SDK.
 
-It includes:
+Key features include:
 
 - **Turn detection**: detect when a speaker has finished talking.
 - **Intelligent segmentation**: group partial transcripts into clean, speaker-attributed segments.
 - **Diarization**: identify and label different speakers.
 - **Speaker focus**: focus on or ignore specific speakers in multi-speaker scenarios.
 - **Preset configurations**: start quickly with ready-to-use settings.
-- **Structured events**: work with clean segments instead of raw word-level events.
 
 ## Integrations
 
@@ -51,7 +53,4 @@ Use an integration to handle audio transport and wiring, so you can focus on you
 
 Use the Voice SDK to handle turn detection, group transcripts into clean segments, and apply diarization for LLM workflows.
 
-See [Voice SDK](/voice-agents/voice-sdk) for getting started, presets, and configuration.
-
-If you’re building an integration and want to work with us, [contact support](https://support.speechmatics.com).
-
+See [Voice SDK](/voice-agents/voice-sdk) for information on getting started, presets, and configuration.
