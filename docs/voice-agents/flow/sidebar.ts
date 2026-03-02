@@ -43,6 +43,10 @@ export default {
           type: "doc",
           id: "voice-agents/flow/guides/react-native",
         },
+        {
+          type: "doc",
+          id: "voice-agents/flow/guides/kubernetes",
+        },
       ],
     },
     {
