@@ -61,5 +61,9 @@ export default {
       type: "doc",
       id: "voice-agents/flow/supported-languages",
     },
+    {
+      type: "doc",
+      id: "voice-agents/flow/flow-voice-ai-websocket",
+    },
     ],
 } as const;
