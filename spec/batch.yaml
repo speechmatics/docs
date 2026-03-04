@@ -962,6 +962,7 @@ definitions:
         description: >-
           Human readable error message
   TranscriptionConfig:
+    type: object
     required:
       - language
     properties:
@@ -1067,12 +1068,15 @@ definitions:
             description: >-
               Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound.
       transcript_filtering_config:
-        description: Configuration for applying filtering to the transcription
+        type: object
+        required:
+          - remove_disfluencies
+        description: Configuration for applying filtering to the transcription.
         properties:
           remove_disfluencies:
             type: boolean
             description: >-
-              If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'.
+              If true, words identified as disfluencies (e.g., 'um', 'uh') will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'.
           replacements:
             type: array
             x-omitempty: true
@@ -1080,15 +1084,19 @@ definitions:
               additionalProperties: false
               type: object
               required:
-                - from
+                - from 
                 - to
               properties:
                 from:
                   type: string
+                  description: >-
+                    The text or pattern identified to be replaced.
                 to:
                   type: string
+                  description: >-
+                    The corrected or formatted string to appear in the transcript.
             description: >-
-              A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text.
+              An array of objects defining custom replacements. Each replacement contains a pair of strings: the text to find ("from:") and the text to replace it with ("to:").
       speaker_diarization_config:
         description: Configuration for speaker diarization
         properties:
