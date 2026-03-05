@@ -1068,9 +1068,6 @@ definitions:
             description: >-
               Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound.
       transcript_filtering_config:
-        type: object
-        required:
-          - remove_disfluencies
         description: Configuration for applying filtering to the transcription.
         properties:
           remove_disfluencies:
