@@ -122,16 +122,8 @@ inferenceServerCustom:
     # Configuration for custom model deployments
     registerFeatures:
       capacity: 600
-      customModelCosts:
-        "*:diar_standard": 0
-        "*:body_standard": 0
-        "*:diar_enhanced": 0
-        "*:body_enhanced": 0
-        en:am_en_standard: 0
-        en:ensemble_en_standard: 20
-        en:lm_en_enhanced: 10
-        en:am_en_enhanced: 0
-        en:ensemble_en_enhanced: 20
+      languages: ["en"]
+      operatingPoint: ["standard", "enhanced"]
 ```
 
 </TabItem>
