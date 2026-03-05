@@ -65,6 +65,8 @@ global:
 
 The Speechmatics inference server runs Nvidia Triton Server, which requires an Nvidia GPU. When running GPU nodes in Kubernetes, you will require the Nvidia device plugin which allows containers on the cluster to access the GPUs.
 
+Refer to the [Nvidia driver requirements](/deployments/container/gpu-speech-to-text#nvidia-drivers) for the supported driver releases corresponding to different Speechmatics container versions.
+
 Below is a list of the common cloud providers and their recommended way of deploying the Nvidia device plugin on a cluster:
 
 * AWS - [Amazon EKS Setup](https://docs.aws.amazon.com/deep-learning-containers/latest/devguide/deep-learning-containers-eks-setup.html#deep-learning-containers-eks-setup-gpu-clusters)
