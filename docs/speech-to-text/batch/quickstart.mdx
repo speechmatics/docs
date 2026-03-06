@@ -18,7 +18,7 @@ import transcriptResponseSchema from "!openapi-schema-loader!@site/spec/batch.ya
 import { HelpCircle, BookOpen, FileAudio } from "lucide-react"
 
 import jsQuickstart from "./assets/file-transcription-quickstart.example.js?raw"
-import pythonQuickstart from "./assets/file-transcription-quickstart.py"
+import pythonQuickstart from "./assets/speechmatics-batch-quickstart.py"
 import transcriptResponseExample from "./assets/transcript-response-example.json?raw"
 
 # Quickstart
@@ -42,19 +42,19 @@ Enterprise customers may need to speak to [Support](https://support.speechmatics
 
 ### 2. Pick and install a library
 
-Check out our [JavaScript client](https://www.npmjs.com/package/@speechmatics/batch-client) or [Python client](https://pypi.org/project/speechmatics-python/) to get started.
+Check out our [Batch Python client](https://github.com/speechmatics/speechmatics-python-sdk) or [JavaScript client](https://www.npmjs.com/package/@speechmatics/batch-client) to get started.
 
 <Tabs>
+  <TabItem value="python" label="Python">
+  Install using pip:
+  ```
+  pip install speechmatics-batch
+  ```
+  </TabItem>
   <TabItem value="javascript" label="JavaScript">
   Install using NPM:
   ```
   npm install @speechmatics/batch-client
-  ```
-  </TabItem>
-  <TabItem value="python" label="Python">
-  Install using pip:
-  ```
-  pip3 install speechmatics-python
   ```
   </TabItem>
 </Tabs>
@@ -68,6 +68,15 @@ Download and save our [example.wav](https://github.com/speechmatics/speechmatics
 Paste your API key into `YOUR_API_KEY` in the code below.
 
 <Tabs>
+  <TabItem value="python" label="Python">
+  <CodeBlock language="python">
+    {pythonQuickstart}
+  </CodeBlock>
+  You should see the following output:
+  ```
+  SPEAKER S1: Welcome to Speechmatics. We're delighted that you've decided to try our speech to text software to get going. Just create an API key and submit a transcription request to our API. We hope you'll be very impressed by the results. Thank you.
+  ```
+  </TabItem>
   <TabItem value="javascript" label="JavaScript">
   <CodeBlock language="javascript">
     {jsQuickstart}
@@ -78,11 +87,6 @@ Paste your API key into `YOUR_API_KEY` in the code below.
   Transcription finished!
   Welcome to Speechmatics . We're delighted that you've decided to try our speech to text software to get going . Just create an API key and submit a transcription request to our API . We hope you'll be very impressed by the results . Thank you .
   ```
-  </TabItem>
-  <TabItem value="python" label="Python">
-  <CodeBlock language="python">
-    {pythonQuickstart}
-  </CodeBlock>
   </TabItem>
 </Tabs>
 
