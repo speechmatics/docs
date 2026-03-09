@@ -43,6 +43,10 @@ export default {
           type: "doc",
           id: "voice-agents/flow/guides/react-native",
         },
+        {
+          type: "doc",
+          id: "voice-agents/flow/guides/kubernetes",
+        },
       ],
     },
     {
@@ -56,6 +60,10 @@ export default {
     {
       type: "doc",
       id: "voice-agents/flow/supported-languages",
+    },
+    {
+      type: "doc",
+      id: "voice-agents/flow/flow-voice-ai-websocket",
     },
     ],
 } as const;

@@ -16,20 +16,6 @@ export default [
     type: "category",
     collapsible: false,
     collapsed: false,
-    label: "Flow – Voice AI",
-    items: [
-      {
-        type: "doc",
-        id: "api-ref/flow-voice-ai-websocket",
-        className: "wss api-method",
-        label: "Start conversation with an agent",
-      },
-    ],
-  },
-  {
-    type: "category",
-    collapsible: false,
-    collapsed: false,
     label: "Transcription API",
     items: [
       {
