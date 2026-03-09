@@ -40,7 +40,7 @@ sudo chmod -R a+rwx logs/
 then
 
 <CodeBlock>
-  {`docker run --rm -v \${PWD}/logs:/logs -e SM_JOB_ID=124 -e SM_JOB_ID=/logs \\
+  {`docker run --rm -v \${PWD}/logs:/logs -e SM_JOB_ID=124 -e SM_LOG_DIR=/logs \\
     -v ~/sm_audio.wav:/input.audio \\
     -e LICENSE_TOKEN=f787b0051e2768b1f619d75faab97f23ee9b7931890c05f97e9f550702 \\
     batch-asr-transcriber-en:${smVariables.latestContainerVersion}
