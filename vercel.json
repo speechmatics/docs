@@ -67,6 +67,11 @@
       "permanent": true
     },
     {
+      "source": "/voice-agents-flow/guides/react-native",
+      "destination": "/voice-agents/flow/guides/react-native",
+      "permanent": true
+    },
+    {
       "source": "/deployments/container",
       "destination": "/deployements/container/accessing-images",
       "permanent": true
