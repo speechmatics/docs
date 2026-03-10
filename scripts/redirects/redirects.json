@@ -52,8 +52,8 @@
     "destination": "/voice-agents/flow/guides/nextjs-guide"
   },
   {
-    "source": "/voice-agents-flow/guides/react-native",
-    "destination": "/voice-agents/flow/guides/react-native"
+    "source": "/deployments/container",
+    "destination": "/deployements/container/accessing-images"
   },
   {
     "source": "/voice-agents-flow",

@@ -67,8 +67,8 @@
       "permanent": true
     },
     {
-      "source": "/voice-agents-flow/guides/react-native",
-      "destination": "/voice-agents/flow/guides/react-native",
+      "source": "/deployments/container",
+      "destination": "/deployements/container/accessing-images",
       "permanent": true
     },
     {
@@ -298,7 +298,7 @@
     },
     {
       "source": "/on-prem/containers",
-      "destination": "/deployments/container",
+      "destination": "/deployements/container/accessing-images",
       "permanent": true
     },
     {
