@@ -1,0 +1,20 @@
+extends: default
+rules:
+  brackets:
+    max-spaces-inside: 1
+  comments:
+    min-spaces-from-content: 1
+  document-start:
+    present: false
+  indentation:
+    spaces: 2
+    indent-sequences-with-newline: true
+  key-duplicates:
+    present: true
+  line-length:
+    max: 120
+    level: warning
+  quoted-quotes:
+    required-duplicate-quotations: false
+  trailing-spaces:
+    level: error
