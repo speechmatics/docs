@@ -72,6 +72,11 @@
       "permanent": true
     },
     {
+      "source": "/deployments/container",
+      "destination": "/deployements/container/accessing-images",
+      "permanent": true
+    },
+    {
       "source": "/voice-agents-flow",
       "destination": "/voice-agents/flow",
       "permanent": true
@@ -298,7 +303,7 @@
     },
     {
       "source": "/on-prem/containers",
-      "destination": "/deployments/container",
+      "destination": "/deployements/container/accessing-images",
       "permanent": true
     },
     {

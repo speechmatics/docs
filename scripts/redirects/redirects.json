@@ -56,6 +56,10 @@
     "destination": "/voice-agents/flow/guides/react-native"
   },
   {
+    "source": "/deployments/container",
+    "destination": "/deployements/container/accessing-images"
+  },
+  {
     "source": "/voice-agents-flow",
     "destination": "/voice-agents/flow"
   },
