@@ -3,10 +3,10 @@ import {
   Badge,
   Box,
   Button,
+  Callout,
   Card,
   Dialog,
   Flex,
-  Callout,
   Text,
 } from "@radix-ui/themes";
 import CodeBlock from "@theme/CodeBlock";
@@ -15,8 +15,8 @@ import Heading from "@theme/Heading";
 import Markdown from "@theme/Markdown";
 import SchemaNode from "@theme/Schema";
 import { BracesIcon, InfoIcon } from "lucide-react";
-import WebsocketMessageArrow from "./WebsocketMessageArrow";
 import { useMemo } from "react";
+import WebsocketMessageArrow from "./WebsocketMessageArrow";
 
 export function AsyncAPIMessage({
   messageName,
