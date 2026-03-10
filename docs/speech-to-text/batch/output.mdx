@@ -11,6 +11,10 @@ import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
 import checkJobStatusUnixSample from './assets/check-job-status.sh'
 import checkMultipleJobsStatusUnixSample from './assets/check-multiple-jobs-status.sh'
 import batchSchema from "!openapi-schema-loader!@site/spec/batch.yaml"
+import transcriptResponseExample from "./assets/transcript-response-example.json?raw"
+import { HelpCircle, BookOpen, FileAudio } from "lucide-react"
+import { Card, Link, Text, Flex, Button, Box, Grid } from '@radix-ui/themes'
+import { LinkCard } from "@site/src/theme/LinkCard";
 
 # Output
 
@@ -117,6 +121,43 @@ Below is the schema for the transcript response when using the default JSON form
 Please refer to our [API Reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#responses) for further details.
 
 <SchemaNode schema={batchSchema.paths["/jobs/{jobid}/transcript"].get.responses["200"].schema} />
+
+### Example response
+
+The following is an example of a transcript response, which you should see as an output of the provided [example.wav](https://github.com/speechmatics/speechmatics-js-sdk/raw/7d219bfee9166736e6aa21598535a194387b84be/examples/nodejs/example.wav) file used in the [code samples in the quickstart](/speech-to-text/batch/quickstart).
+
+<CodeBlock language="json">
+  {JSON.stringify(transcriptResponseExample, null, 2)}
+</CodeBlock>
+
+## Quicklinks
+
+<Grid columns={{initial: "1", md: "2"}} gap="3">
+  <LinkCard
+    title="Troubleshooting"
+    description="Resolve common issues with the Batch API"
+    href="/speech-to-text/batch/troubleshooting"
+    icon={<HelpCircle/>}
+  />
+  <LinkCard
+    title="API Reference"
+    description="Full details about the Batch API"
+    href="/api-ref/batch/create-a-new-job"
+    icon={<BookOpen/>}
+  />
+  <LinkCard
+    title="Inputs"
+    description="See which file types are supported"
+    href="/speech-to-text/batch/input"
+    icon={<FileAudio/>}
+  />
+  <LinkCard
+    title="Limits"
+    description="See the limits for the Batch API"
+    href="/speech-to-text/batch/limits"
+    icon={<FileAudio/>}
+  />
+</Grid>
 
 ## Tracking metadata
 
