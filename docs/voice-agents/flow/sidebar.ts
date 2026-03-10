@@ -11,7 +11,7 @@ export default {
     },
     {
       type: "category",
-      label:"Features",
+      label: "Features",
       collapsible: true,
       collapsed: true,
       items: [
@@ -31,7 +31,7 @@ export default {
     },
     {
       type: "category",
-      label:"Guides",
+      label: "Guides",
       collapsible: true,
       collapsed: true,
       items: [
@@ -57,5 +57,5 @@ export default {
       type: "doc",
       id: "voice-agents/flow/supported-languages",
     },
-    ],
+  ],
 } as const;

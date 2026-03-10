@@ -1,9 +1,9 @@
 import apiRefSidebar from "./docs/api-ref/sidebar";
 import deploymentsSidebar from "./docs/deployments/sidebar";
 import gettingStartedSidebar from "./docs/get-started/sidebar";
+import integrationsAndSDKSidebar from "./docs/integrations-and-sdks/sidebar";
 import speechToTextSidebar from "./docs/speech-to-text/sidebar";
 import textToSpeechSidebar from "./docs/text-to-speech/sidebar";
-import integrationsAndSDKSidebar from "./docs/integrations-and-sdks/sidebar"; 
 import voiceAgentsSidebar from "./docs/voice-agents/sidebar";
 
 export default {

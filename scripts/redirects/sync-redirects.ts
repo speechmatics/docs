@@ -3,8 +3,8 @@ import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import vercelJSON from "../../vercel.json" with { type: "json" };
 import { normalizePath } from "./check-redirects";
-import redirects from "./redirects.json" with { type: "json" };
 import oldRedirects from "./old-redirects.json" with { type: "json" };
+import redirects from "./redirects.json" with { type: "json" };
 import superOldRedirects from "./super-old-redirects.json" with {
   type: "json",
 };
