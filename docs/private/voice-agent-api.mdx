@@ -1,0 +1,420 @@
+---
+description: Early access to the Voice Agent API — a turn-based API built for voice agents
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+# Voice Agent API
+
+:::warning
+- The Voice Agent API is a preview offering and should **not be used for live production traffic**. The system will be less stable than our production endpoints and features may change.
+- There are no uptime or performance SLAs.
+- There are no data residency guarantees. Data processing may occur in both US and EU regions.
+- Preview features may be cancelled at any time or never be released publicly.
+:::
+
+## Introduction
+
+The Voice Agent API is a turn-based API built for voice agents. It is designed for developers building low-latency integrations between speech and LLMs — with turn detection, speaker awareness, and segment-based output built in so you can focus on your agent logic.
+
+---
+
+## What it does
+
+The Voice Agent API is a turn-based API. Rather than a stream of word-level events, speech is grouped into segments — and turn detection determines when a speaker has finished, triggering fast finalisation of those segments.
+
+You receive:
+
+- `StartOfTurn` — when a speaker begins talking
+- `AddPartialSegment` — interim transcript updates as they speak
+- `AddSegment` — the final, complete transcript for that turn
+- `EndOfTurn` — when the turn is complete
+
+When a turn ends, you receive a single `AddSegment` containing the complete, finalised utterance:
+
+```json
+{
+  "message": "AddSegment",
+  "segments": [
+    {
+      "speaker_id": "S1",
+      "is_active": true,
+      "timestamp": "2025-01-01T12:00:00.000+00:00",
+      "language": "en",
+      "text": "I'd like to make a claim on my home insurance policy.",
+      "is_eou": true,
+      "metadata": {
+        "start_time": 1.20,
+        "end_time": 4.80
+      }
+    }
+  ],
+  "metadata": {
+    "start_time": 1.20,
+    "end_time": 4.80,
+    "processing_time": 0.21
+  }
+}
+```
+
+The `text` field is the complete utterance — clean, punctuated, and ready to pass directly to your LLM. No accumulating partials, no stitching words together, no guessing when the speaker has finished. The turn detection handles all of that, so your agent can respond as fast as possible.
+
+---
+
+## Profiles
+
+Profiles are pre-tuned configurations for voice agents. Each profile sets the right defaults for turn detection, latency, and endpointing — no need to configure the API settings yourself.
+
+Choose the profile that best fits your use case:
+
+### `agile`
+
+**Endpoint:** `/v2/agent/agile`
+
+Lowest end-of-speech to final latency. Uses voice activity detection to finalise turns as quickly as possible.
+
+**Best for:** Use cases where response speed is the top priority.
+
+**Trade-off:** May produce more finalised segments mid-speaker, which can result in additional downstream LLM calls.
+
+---
+
+### `adaptive`
+
+**Endpoint:** `/v2/agent/adaptive`
+
+Adapts to each speaker over the course of a conversation. Waits longer for slow speakers or those who hesitate frequently. Works with all languages.
+
+**Best for:** General conversational voice agents.
+
+**Trade-off:** Latency is not consistently the fastest. Disfluency/hesitation detection is English-only — other languages use speech-rate adaptation only.
+
+---
+
+### `smart`
+
+**Endpoint:** `/v2/agent/smart`
+
+Builds on `adaptive` and adds the [Pipecat open-source Smart Turn](https://github.com/pipecat-ai/smart-turn) acoustic model, which analyses vocal tone to predict turn completion. The most conservative profile.
+
+**Best for:** High-stakes conversations where interrupting the user is costly (finance, healthcare, legal).
+
+**Trade-off:** Higher latency than `adaptive`. Supported languages: Arabic, Bengali, Chinese, Danish, Dutch, English, Finnish, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Marathi, Norwegian, Polish, Portuguese, Russian, Spanish, Turkish, Ukrainian, Vietnamese.
+
+---
+
+### `external`
+
+**Endpoint:** `/v2/agent/external`
+
+You control when a turn ends. Send a `ForceEndOfUtterance` message to trigger finalisation — the server will return a combined segment of everything spoken up to that point.
+
+**Best for:** Push-to-talk, custom VAD, or LLM-driven turn detection.
+
+**Trade-off:** Most complex to implement — you are responsible for turn detection logic.
+
+---
+
+## Getting started
+
+### Authentication
+
+Authenticate every connection using your Speechmatics API key:
+
+- Header: `Authorization: Bearer <SPEECHMATICS_API_KEY>`
+- Or as a query parameter using a JWT temporary key: `?jwt=<JWT_TEMPORARY_KEY>`
+
+See [Authentication](/get-started/authentication) for details including temporary keys.
+
+### Endpoint
+
+The Voice Agent API is available at the preview endpoint. Choose a [profile](#profiles) based on your use case:
+
+```
+wss://preview.rt.speechmatics.com/v2/agent/<profile>
+```
+
+For example, to use the `adaptive` profile:
+
+```
+wss://preview.rt.speechmatics.com/v2/agent/adaptive
+```
+
+
+### Session flow
+
+1. Open the WebSocket connection.
+2. Send `StartRecognition` as the first JSON message.
+3. Stream raw PCM audio as binary frames.
+4. Send `EndOfStream` when audio is finished.
+5. Read server messages until `EndOfTranscript`.
+6. Close the connection.
+
+### StartRecognition
+
+Send this as the first message after connecting:
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    "language": "en",
+    "enable_diarization": true
+  }
+}
+```
+
+### Code examples
+
+<Tabs>
+<TabItem value="python" label="Python">
+
+```python
+# TODO: Add Python quickstart example using the SDK branch
+# Should demonstrate:
+# - Opening a WebSocket connection to wss://preview.rt.speechmatics.com/v2/agent/adaptive
+# - Sending StartRecognition
+# - Streaming audio
+# - Handling StartOfTurn, AddPartialSegment, AddSegment, EndOfTurn events
+# - Sending EndOfStream and closing cleanly
+```
+
+</TabItem>
+<TabItem value="js" label="JavaScript">
+
+```javascript
+// TODO: Add JavaScript quickstart example using the SDK branch
+// Should demonstrate:
+// - Opening a WebSocket connection to wss://preview.rt.speechmatics.com/v2/agent/adaptive
+// - Sending StartRecognition
+// - Streaming audio
+// - Handling StartOfTurn, AddPartialSegment, AddSegment, EndOfTurn events
+// - Sending EndOfStream and closing cleanly
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Server messages
+
+### Standard messages
+
+Standard RT messages are emitted alongside Voice Agent API messages. See the [API reference](/api-ref) for full details.
+
+- `RecognitionStarted`
+- `AddPartialTranscript`
+- `AddTranscript`
+- `EndOfUtterance`
+- `EndOfTranscript`
+- `Info`
+- `Warning`
+- `Error`
+
+### Voice Agent API messages
+
+These messages are only emitted when using a voice profile (`/v2/agent/<profile>`).
+
+#### `StartOfTurn`
+
+Emitted when a speaker begins a new turn.
+
+```json
+{
+  "message": "StartOfTurn",
+  "turn_id": 42
+}
+```
+
+#### `EndOfTurn`
+
+Emitted when a turn is complete.
+
+```json
+{
+  "message": "EndOfTurn",
+  "turn_id": 42,
+  "metadata": {
+    "start_time": 0.84,
+    "end_time": 3.24
+  }
+}
+```
+
+#### `AddPartialSegment`
+
+Interim transcript updates emitted as the speaker talks. Each new partial replaces the previous one.
+
+```json
+{
+  "message": "AddPartialSegment",
+  "segments": [
+    {
+      "speaker_id": "S1",
+      "is_active": true,
+      "timestamp": "2025-01-01T12:00:00.000+00:00",
+      "language": "en",
+      "text": "Good evening",
+      "is_eou": false,
+      "metadata": {
+        "start_time": 0.84,
+        "end_time": 1.24
+      }
+    }
+  ],
+  "metadata": {
+    "start_time": 0.84,
+    "end_time": 1.24,
+    "processing_time": 0.23
+  }
+}
+```
+
+#### `AddSegment`
+
+The final, complete transcript for a turn. Emitted at `EndOfTurn`. This is the stable output to send to your LLM.
+
+```json
+{
+  "message": "AddSegment",
+  "segments": [
+    {
+      "speaker_id": "S1",
+      "is_active": true,
+      "timestamp": "2025-01-01T12:00:00.000+00:00",
+      "language": "en",
+      "text": "Good evening.",
+      "is_eou": true,
+      "metadata": {
+        "start_time": 0.84,
+        "end_time": 1.56
+      }
+    }
+  ],
+  "metadata": {
+    "start_time": 0.84,
+    "end_time": 1.56,
+    "processing_time": 0.25
+  }
+}
+```
+
+**Key fields:**
+- `speaker_id` — speaker label (e.g. `S1`, `S2`)
+- `is_active` — whether this speaker is in your focus list (see [Speaker focus](#speaker-focus))
+- `is_eou` — `true` on final segments
+- `start_time` / `end_time` — time in seconds relative to session start
+- `processing_time` (message-level `metadata`) — transcription latency in seconds
+- `time` (`SpeakerStarted` / `SpeakerEnded`) — timestamp in seconds when the speaker activity event occurred
+- `metadata.start_time` (`SpeakerStarted` / `SpeakerEnded`) — when that speaker started their current speaking interval
+- `metadata.end_time` (`SpeakerEnded`) — when that speaker stopped speaking
+
+#### `SpeakerStarted` / `SpeakerEnded`
+
+Emitted when a specific speaker starts or stops speaking. Useful for multi-party conversations.
+
+```json
+{
+  "message": "SpeakerStarted",
+  "speaker_id": "S1",
+  "time": 0.84,
+  "metadata": { "start_time": 0.84, "end_time": 0.84 }
+}
+```
+
+```json
+{
+  "message": "SpeakerEnded",
+  "speaker_id": "S1",
+  "time": 3.24,
+  "metadata": { "start_time": 0.84, "end_time": 3.24 }
+}
+```
+
+#### `SessionMetrics` / `SpeakerMetrics`
+
+Emitted at the end of a session.
+
+```json
+{
+  "message": "SessionMetrics",
+  "total_time": 4.6,
+  "total_time_str": "00:00:04",
+  "total_bytes": 148480,
+  "processing_time": 0.295
+}
+```
+
+```json
+{
+  "message": "SpeakerMetrics",
+  "speakers": [
+    {
+      "speaker_id": "S1",
+      "word_count": 6,
+      "last_heard": 2.36,
+      "volume": 5.2
+    }
+  ]
+}
+```
+
+---
+
+## Speaker focus
+
+You can update speaker focus mid-session using `UpdateSpeakerFocus`. This is a Voice Agent API feature — sending it in standard RT mode has no effect.
+
+Requires `enable_diarization: true` in your initial `StartRecognition` config.
+
+```json
+{
+  "message": "UpdateSpeakerFocus",
+  "speaker_focus": {
+    "focus_speakers": ["S1"],
+    "ignore_speakers": [],
+    "focus_mode": "retain"
+  }
+}
+```
+
+**`focus_mode` options:**
+
+- `retain` — non-focused speakers remain in output as passive speakers (`is_active: false`)
+- `ignore` — non-focused speakers are excluded from output entirely
+
+The new config replaces the existing config immediately.
+
+---
+
+## SDK support
+
+<Tabs>
+<TabItem value="python" label="Python">
+
+```python
+# TODO: Document Python SDK branch support
+# Include: installation from branch, any Voice Agent API-specific methods or helpers
+```
+
+</TabItem>
+<TabItem value="js" label="JavaScript">
+
+```javascript
+// TODO: Document JavaScript SDK branch support
+// Include: installation from branch, any Voice Agent API-specific methods or helpers
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Feedback
+
+This is a preview and your feedback shapes what goes to GA. We'd love to hear from you — whether that's something that didn't work as expected, a profile that behaved differently than you anticipated, or a feature you'd want before we ship this more broadly.
+
+Please share your feedback with your Speechmatics contact or via the channel shared in your preview welcome email.
