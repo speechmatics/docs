@@ -192,29 +192,45 @@ Send this as the first message after connecting:
 
 ### Configuration reference
 
+**Configurable settings (`transcription_config`)**
+
+| Setting | Default | Notes |
+|---------|---------|-------|
+| `language` | `en` | All supported languages |
+| `output_locale` | - | Client can specify an output locale (e.g. `en-US`) |
+| `additional_vocab` | - | Custom vocabulary entries |
+| `punctuation_overrides` | - | Punctuation overrides |
+| `domain` | - | Client can specify a domain (e.g. `medical`) |
+| `enable_entities` | `false` | Enable entity detection |
+| `enable_partials` | `true` | Enable partials in output |
+| `diarization` | `speaker` | Supports `none` or `speaker` only |
+| `speaker_diarization_config.max_speakers` | - | Limit speaker count |
+| `speaker_diarization_config.speaker_sensitivity` | - | Diarization sensitivity |
+| `speaker_diarization_config.prefer_current_speaker` | - | Hold on to current speaker |
+| `speaker_diarization_config.speakers` | - | Known speakers |
+| `volume_threshold` | - | Audio filtering |
+
+**Not configurable (`transcription_config`)**
+
+| Setting | Notes |
+|---------|-------|
+| `operating_point` | Managed per profile |
+| `max_delay` | Managed per profile |
+| `max_delay_mode` | Managed per profile |
+| `streaming_mode` | Always enabled |
+| `conversation_config` | Managed by profile / Voice SDK |
+| `audio_filtering_config` | Managed by profile |
+| `transcript_filtering_config` | Managed by profile |
+| `channel_diarization_labels` | Not available |
+
+**Payload-level settings**
+
 | Setting | Configurable? | Notes |
 |---------|--------------|-------|
-| `language` | Yes | All supported languages |
-| `domain` | Yes | Client can specify a domain (e.g. `medical`) to pass through to the transcription engine |
 | `audio_format` | Yes | Client declares encoding and sample rate |
-| `enable_partials` | Yes | Suppresses partials in output but still used internally |
-| `enable_diarization` | Yes | Enabled by default in all profiles |
-| `speaker_sensitivity` | Yes | Diarization sensitivity |
-| `max_speakers` | Yes | Limit speaker count |
-| `additional_vocab` | Yes | Custom vocabulary entries |
-| `volume_threshold` | Yes | Audio filtering |
-| `message_control` | Yes | Adjust which messages are forwarded |
-| `operating_point` | No | Fixed per profile |
-| `max_delay` | No | Fixed per profile |
-| `end_of_utterance_mode` | No | Fixed per profile |
-| `end_of_utterance_silence_trigger` | No | Fixed per profile |
-| `streaming_mode` | No | Always enabled |
-| `conversation_config` | No | Managed by profile/Voice SDK |
-| `audio_filtering_config` | No | Managed by profile |
-| `transcript_filtering_config` | No | Managed by profile |
-| `speaker_diarization_config` | No | Managed by Voice SDK |
 | `translation_config` | No* | Not supported — rejected if present in the payload |
 | `audio_events_config` | No* | Not supported — rejected if present in the payload |
+| `message_control` | No | Adjust which messages are forwarded (hidden) |
 
 ### Code examples
 
