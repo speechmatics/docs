@@ -2,9 +2,6 @@
 description: Early access to the Voice Agent API — a turn-based API built for voice agents
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 
 # Voice Agent API
 
@@ -32,7 +29,7 @@ You receive:
 - `AddSegment` — the final, complete transcript for that turn
 - `EndOfTurn` — when the turn is complete
 
-When a turn ends, you receive a single `AddSegment` containing the complete, finalised utterance:
+When a turn ends, you receive an `AddSegment` containing the finalised utterance. In multi-speaker scenarios, a single message may contain segments from multiple speakers, returned in time order:
 
 ```json
 {
@@ -43,23 +40,47 @@ When a turn ends, you receive a single `AddSegment` containing the complete, fin
       "is_active": true,
       "timestamp": "2025-01-01T12:00:00.000+00:00",
       "language": "en",
-      "text": "I'd like to make a claim on my home insurance policy.",
+      "text": "Welcome to Speechmatics.",
       "is_eou": true,
       "metadata": {
-        "start_time": 1.20,
-        "end_time": 4.80
+        "start_time": 0.84,
+        "end_time": 1.56
+      }
+    },
+    {
+      "speaker_id": "S2",
+      "is_active": true,
+      "timestamp": "2025-01-01T12:00:02.000+00:00",
+      "language": "en",
+      "text": "Thank you for testing the Voice Agent API.",
+      "is_eou": true,
+      "metadata": {
+        "start_time": 2.10,
+        "end_time": 3.80
       }
     }
   ],
   "metadata": {
-    "start_time": 1.20,
-    "end_time": 4.80,
-    "processing_time": 0.21
+    "start_time": 0.84,
+    "end_time": 3.80,
+    "processing_time": 0.25
   }
 }
 ```
 
-The `text` field is the complete utterance — clean, punctuated, and ready to pass directly to your LLM. No accumulating partials, no stitching words together, no guessing when the speaker has finished. The turn detection handles all of that, so your agent can respond as fast as possible.
+Each segment's `text` field is clean, punctuated, and ready to use. When a message contains multiple segments, you'll need to concatenate them. The SDK reconstructs the exchange using `speaker_id` and `is_active` — non-active speakers (outside your focus list) are marked as `[background]`:
+
+```python
+' '.join([f"@{s.speaker_id}{'' if s.is_active else ' [background]'}: {s.text}" for s in segments])
+```
+
+Which produces:
+
+```
+@S1: Hello there. @S2 [background]: It was yesterday. @S1: How are you getting on?
+```
+
+No accumulating partials, no stitching words together, no guessing when the speaker has finished. The turn detection handles all of that, so your agent can respond as fast as possible.
 
 ---
 
@@ -97,7 +118,7 @@ Adapts to each speaker over the course of a conversation. Waits longer for slow 
 
 **Endpoint:** `/v2/agent/smart`
 
-Builds on `adaptive` and additionally analyses vocal tone to improve turn completion completion. The most conservative profile.
+Builds on `adaptive` and additionally analyses vocal tone to improve turn completion. The most conservative profile.
 
 **Best for:** High-stakes conversations where interrupting the user is costly (finance, healthcare, legal).
 
@@ -121,10 +142,14 @@ You control when a turn ends. Send a `ForceEndOfUtterance` message to trigger fi
 
 ### Authentication
 
-Authenticate every connection using your Speechmatics API key:
+Authenticate every connection using one of the following:
 
-- Header: `Authorization: Bearer <SPEECHMATICS_API_KEY>`
-- Or as a query parameter using a JWT temporary key: `?jwt=<JWT_TEMPORARY_KEY>`
+| Method | Format |
+|--------|--------|
+| Header (API key) | `Authorization: Bearer <SPEECHMATICS_API_KEY>` |
+| Header (JWT) | `Authorization: Bearer <JWT_TEMPORARY_KEY>` |
+| Query parameter (API key) | `?api_key=<SPEECHMATICS_API_KEY>` |
+| Query parameter (JWT) | `?jwt=<JWT_TEMPORARY_KEY>` |
 
 See [Authentication](/get-started/authentication) for details including temporary keys.
 
@@ -160,41 +185,40 @@ Send this as the first message after connecting:
 {
   "message": "StartRecognition",
   "transcription_config": {
-    "language": "en",
+    "language": "en"
   }
 }
 ```
 
+### Configuration reference
+
+| Setting | Configurable? | Notes |
+|---------|--------------|-------|
+| `language` | Yes | All supported languages |
+| `domain` | Yes | Client can specify a domain (e.g. `medical`) to pass through to the transcription engine |
+| `audio_format` | Yes | Client declares encoding and sample rate |
+| `enable_partials` | Yes | Suppresses partials in output but still used internally |
+| `enable_diarization` | Yes | Enabled by default in all profiles |
+| `speaker_sensitivity` | Yes | Diarization sensitivity |
+| `max_speakers` | Yes | Limit speaker count |
+| `additional_vocab` | Yes | Custom vocabulary entries |
+| `volume_threshold` | Yes | Audio filtering |
+| `message_control` | Yes | Adjust which messages are forwarded |
+| `operating_point` | No | Fixed per profile |
+| `max_delay` | No | Fixed per profile |
+| `end_of_utterance_mode` | No | Fixed per profile |
+| `end_of_utterance_silence_trigger` | No | Fixed per profile |
+| `streaming_mode` | No | Always enabled |
+| `conversation_config` | No | Managed by profile/Voice SDK |
+| `audio_filtering_config` | No | Managed by profile |
+| `transcript_filtering_config` | No | Managed by profile |
+| `speaker_diarization_config` | No | Managed by Voice SDK |
+| `translation_config` | No* | Not supported — rejected if present in the payload |
+| `audio_events_config` | No* | Not supported — rejected if present in the payload |
+
 ### Code examples
 
-<Tabs>
-<TabItem value="python" label="Python">
-
-```python
-# TODO: Add Python quickstart example using the SDK branch
-# Should demonstrate:
-# - Opening a WebSocket connection to wss://preview.rt.speechmatics.com/v2/agent/adaptive
-# - Sending StartRecognition
-# - Streaming audio
-# - Handling StartOfTurn, AddPartialSegment, AddSegment, EndOfTurn events
-# - Sending EndOfStream and closing cleanly
-```
-
-</TabItem>
-<TabItem value="js" label="JavaScript">
-
-```javascript
-// TODO: Add JavaScript quickstart example using the SDK branch
-// Should demonstrate:
-// - Opening a WebSocket connection to wss://preview.rt.speechmatics.com/v2/agent/adaptive
-// - Sending StartRecognition
-// - Streaming audio
-// - Handling StartOfTurn, AddPartialSegment, AddSegment, EndOfTurn events
-// - Sending EndOfStream and closing cleanly
-```
-
-</TabItem>
-</Tabs>
+Full working examples in Python and JavaScript are available in the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/basics/11-voice-api-explorer).
 
 ---
 
@@ -307,9 +331,6 @@ The final, complete transcript for a turn. Emitted at `EndOfTurn`. This is the s
 - `is_eou` — `true` on final segments
 - `start_time` / `end_time` — time in seconds relative to session start
 - `processing_time` (message-level `metadata`) — transcription latency in seconds
-- `time` (`SpeakerStarted` / `SpeakerEnded`) — timestamp in seconds when the speaker activity event occurred
-- `metadata.start_time` (`SpeakerStarted` / `SpeakerEnded`) — when that speaker started their current speaking interval
-- `metadata.end_time` (`SpeakerEnded`) — when that speaker stopped speaking
 
 #### `SpeakerStarted` / `SpeakerEnded`
 
@@ -318,6 +339,7 @@ Emitted when a specific speaker starts or stops speaking. Useful for multi-party
 ```json
 {
   "message": "SpeakerStarted",
+  "is_active": true,
   "speaker_id": "S1",
   "time": 0.84,
   "metadata": { "start_time": 0.84, "end_time": 0.84 }
@@ -327,15 +349,21 @@ Emitted when a specific speaker starts or stops speaking. Useful for multi-party
 ```json
 {
   "message": "SpeakerEnded",
+  "is_active": false,
   "speaker_id": "S1",
   "time": 3.24,
   "metadata": { "start_time": 0.84, "end_time": 3.24 }
 }
 ```
 
+**Key fields:**
+- `time` — seconds of audio from session start when the speaker activity occurred
+- `metadata.start_time` — when that speaker started their current speaking interval
+- `metadata.end_time` (`SpeakerEnded` only) — when that speaker stopped speaking
+
 #### `SessionMetrics` / `SpeakerMetrics`
 
-Emitted at the end of a session.
+`SessionMetrics` is emitted every 5 seconds and at the end of the session. `SpeakerMetrics` is emitted each time a speaker speaks a word.
 
 ```json
 {
@@ -367,7 +395,7 @@ Emitted at the end of a session.
 
 You can update speaker focus mid-session using `UpdateSpeakerFocus`. This is a Voice Agent API feature — sending it in standard RT mode has no effect.
 
-Requires `enable_diarization: true` in your initial `StartRecognition` config.
+Diarization is enabled by default when using the Voice Agent API. Speaker IDs (`S1`, `S2`, etc.) are assigned automatically and persist across the session.
 
 ```json
 {
@@ -389,26 +417,52 @@ The new config replaces the existing config immediately.
 
 ---
 
-## SDK support
+## Speaker ID
 
-<Tabs>
-<TabItem value="python" label="Python">
+Speaker identifiers let you recognise known speakers across sessions. Once you have identifiers for a speaker, you can pass them into future sessions so the system tags them with a consistent label rather than a generic `S1`, `S2`.
 
-```python
-# TODO: Document Python SDK branch support
-# Include: installation from branch, any Voice Agent API-specific methods or helpers
+### Getting identifiers — `GetSpeakers`
+
+Send `GetSpeakers` during a session to request identifiers for all diarized speakers so far:
+
+```json
+{
+  "message": "GetSpeakers"
+}
 ```
 
-</TabItem>
-<TabItem value="js" label="JavaScript">
+The server responds with a `SpeakersResult` message:
 
-```javascript
-// TODO: Document JavaScript SDK branch support
-// Include: installation from branch, any Voice Agent API-specific methods or helpers
+```json
+{
+  "message": "SpeakersResult",
+  "speakers": [
+    { "label": "S1", "speaker_identifiers": ["<id1>"] },
+    { "label": "S2", "speaker_identifiers": ["<id2>"] }
+  ]
+}
 ```
 
-</TabItem>
-</Tabs>
+Store the `speaker_identifiers` values — these are opaque tokens that represent the speaker's voice profile.
+
+### Using identifiers in future sessions
+
+Pass stored identifiers into `StartRecognition` via `known_speakers`. You can assign any label you like:
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    "language": "en",
+    "known_speakers": [
+      { "label": "Alice", "speaker_identifiers": ["<alice_id>"] },
+      { "label": "Bob", "speaker_identifiers": ["<bob_id>"] }
+    ]
+  }
+}
+```
+
+When those speakers are detected, segments will be tagged with `"Alice"` or `"Bob"` instead of generic labels. Any unrecognised speakers are still assigned generic labels (`S1`, `S2`, etc.).
 
 ---
 
@@ -424,5 +478,4 @@ Specific areas of interest:
 - Any missing capabilities which would make your product better
 - What would stop you using this in production
 
-We'd request you either provide feedback in this form, or we'd love to get on a call with you to discuss your feedback in person if you'd prefer that to writing.
-Please share your feedback with your Speechmatics contact or via the channel shared in your preview welcome email.
+We'd love to get on a call with you to discuss your feedback in person, or you can [fill in this form](https://docs.google.com/forms/d/e/1FAIpQLSc-6GQXYx_0M-X0Uu_uB_4XyDL009jMv3hBJAFw7kD98AILJg/viewform). You can also reach us via your Speechmatics contact or the channel shared in your preview welcome email.
