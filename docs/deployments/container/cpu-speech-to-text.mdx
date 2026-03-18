@@ -295,7 +295,7 @@ limit: maximum number of jobs to return, can be between 1 and 100
 
 returns: list of jobs
 
-/v2/jobs/{job_id}/transcript
+`/v2/jobs/{job_id}/transcript`
 
 args: job_id and format of the transcript. Options for the transcript currently are : "json", "txt", "srt" (we might need to add an ALL option). Maybe we can return all due to the nature of the http requests, but all formats are probably saved already locally?(todo find out)
 
@@ -308,12 +308,12 @@ if the job hasn’t finished, returns a 404, and includes the status and request
 if the format is not in our included list we return a 404 with error = unsupported format
 
 
-/v2/jobs/{job_id}
+`/v2/jobs/{job_id}`
 
 returns job status, including job_id and request_id
 
 
-/v2/jobs/{job_id}/log
+`/v2/jobs/{job_id}/log`
 
 returns the logs for the specific job
 
@@ -332,7 +332,9 @@ The Health Service offers four endpoints:
 #### `/sessions`
 
 
-                    f"{js.request_id},{js.requested_parallel}" for js in self._jobs_status.values() if js.is_decoding
+```python (TODO GH REMOVE)
+f"{js.request_id},{js.requested_parallel}" for js in self._jobs_status.values() if js.is_decoding
+```
 
 Possible responses:
 
