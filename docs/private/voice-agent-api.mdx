@@ -14,133 +14,140 @@ description: Early access to the Voice Agent API — a turn-based API built for 
 
 ## Introduction
 
-The Voice Agent API is a turn-based API built for voice agents. It is designed for developers building low-latency integrations between speech and LLMs — with turn detection, speaker awareness, and segment-based output built in so you can focus on your agent logic.
+The Voice Agent API is a WebSocket API for building voice agents. Stream audio in and receive speaker-labelled, turn-based transcription back — clean, punctuated, and ready to pass directly to an LLM.
 
----
+Turn detection runs server-side. Choose a [profile](#profiles) based on your use case and the API handles when to finalise each speaker's turn.
 
-## What it does
-
-The Voice Agent API is a turn-based API. Rather than a stream of word-level events, speech is grouped into segments — and turn detection determines when a speaker has finished, triggering fast finalisation of those segments.
-
-You receive:
-
-- `StartOfTurn` — when a speaker begins talking
-- `AddPartialSegment` — interim transcript updates as they speak
-- `AddSegment` — the final, complete transcript for that turn
-- `EndOfTurn` — when the turn is complete
-
-When a turn ends, you receive an `AddSegment` containing the finalised utterance. In multi-speaker scenarios, a single message may contain segments from multiple speakers, returned in time order:
-
-```json
-{
-  "message": "AddSegment",
-  "segments": [
-    {
-      "speaker_id": "S1",
-      "is_active": true,
-      "timestamp": "2025-01-01T12:00:00.000+00:00",
-      "language": "en",
-      "text": "Welcome to Speechmatics.",
-      "is_eou": true,
-      "metadata": {
-        "start_time": 0.84,
-        "end_time": 1.56
-      }
-    },
-    {
-      "speaker_id": "S2",
-      "is_active": true,
-      "timestamp": "2025-01-01T12:00:02.000+00:00",
-      "language": "en",
-      "text": "Thank you for testing the Voice Agent API.",
-      "is_eou": true,
-      "metadata": {
-        "start_time": 2.10,
-        "end_time": 3.80
-      }
-    }
-  ],
-  "metadata": {
-    "start_time": 0.84,
-    "end_time": 3.80,
-    "processing_time": 0.25
-  }
-}
-```
-
-Each segment's `text` field is clean, punctuated, and ready to use. When a message contains multiple segments, you'll need to concatenate them. The SDK reconstructs the exchange using `speaker_id` and `is_active` — non-active speakers (outside your focus list) are marked as `[background]`:
-
-```python
-' '.join([f"@{s.speaker_id}{'' if s.is_active else ' [background]'}: {s.text}" for s in segments])
-```
-
-Which produces:
-
-```
-@S1: Hello there. @S2 [background]: It was yesterday. @S1: How are you getting on?
-```
-
-No accumulating partials, no stitching words together, no guessing when the speaker has finished. The turn detection handles all of that, so your agent can respond as fast as possible.
+To jump straight into code, see working examples in [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/basics/11-voice-api-explorer) for both Python and JavaScript.
 
 ---
 
 ## Profiles
 
-Profiles are pre-tuned configurations for voice agents. Each profile sets the right defaults for turn detection, latency, and endpointing — no need to configure the API settings yourself.
+Profiles are pre-configured turn detection modes. Each profile sets the right defaults for your use case — you choose one when connecting, and the server handles the rest.
 
-Choose the profile that best fits your use case:
+| Profile | Turn detection | Best for |
+|---------|---------------|----------|
+| `agile` | VAD-based silence detection | Speed-first use cases |
+| `adaptive` | Adapts to speaker pace and hesitation | General conversational agents |
+| `smart` | `adaptive` + ML acoustic turn prediction | High-stakes conversations |
+| `external` | Manual — you trigger turn end | Push-to-talk, custom VAD, LLM-driven |
 
 ### `agile`
 
 **Endpoint:** `/v2/agent/agile`
 
-Lowest end-of-speech to final latency. Uses voice activity detection to finalise turns as quickly as possible.
+Uses voice activity detection (VAD) to detect silence and finalise turns as quickly as possible. The lowest latency profile.
 
-**Best for:** Use cases where response speed is the top priority.
+**Best for:** Use cases where response speed is the top priority and occasional mid-speech finalisations are acceptable.
 
-**Trade-off:** May produce more finalised segments mid-speaker, which can result in additional downstream LLM calls.
-
----
+**Trade-off:** Because it relies on silence, it may finalise a turn while the speaker is still mid-sentence — for example, during a natural pause. This can result in additional downstream LLM calls.
 
 ### `adaptive`
 
 **Endpoint:** `/v2/agent/adaptive`
 
-Adapts to each speaker over the course of a conversation. Waits longer for slow speakers or those who hesitate frequently. Works with all languages.
+Adapts to each speaker's pace over the course of a conversation. It adjusts the turn-end threshold based on speech rate and disfluencies (e.g. hesitations, filler words), waiting longer for speakers who tend to pause mid-thought.
 
 **Best for:** General conversational voice agents.
 
-**Trade-off:** Latency is not consistently the fastest. Disfluency/hesitation detection is English-only — other languages use speech-rate adaptation only.
-
----
+**Trade-off:** Latency varies by speaker. Disfluency detection is English-only — other languages fall back to speech-rate adaptation.
 
 ### `smart`
 
 **Endpoint:** `/v2/agent/smart`
 
-Builds on `adaptive` and additionally analyses vocal tone to improve turn completion. The most conservative profile.
+Builds on `adaptive` with an additional ML model that analyses acoustic cues to predict whether a speaker has genuinely finished their turn. The most conservative profile — least likely to interrupt.
 
-**Best for:** High-stakes conversations where interrupting the user is costly (finance, healthcare, legal).
+**Best for:** High-stakes conversations where cutting off the user is costly — finance, healthcare, legal.
 
 **Trade-off:** Higher latency than `adaptive`. Supported languages: Arabic, Bengali, Chinese, Danish, Dutch, English, Finnish, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Marathi, Norwegian, Polish, Portuguese, Russian, Spanish, Turkish, Ukrainian, Vietnamese.
-
----
 
 ### `external`
 
 **Endpoint:** `/v2/agent/external`
 
-You control when a turn ends. Send a `ForceEndOfUtterance` message to trigger finalisation — the server will return a combined segment of everything spoken up to that point.
+Turn detection is fully manual. The server accumulates audio and transcript until you send a `ForceEndOfUtterance` message, at which point it finalises everything spoken up to that point and emits an `AddSegment`.
 
-**Best for:** Push-to-talk, custom VAD, or LLM-driven turn detection.
+**Best for:** Push-to-talk interfaces, custom VAD pipelines, or setups where an LLM decides when to respond.
 
-**Trade-off:** Most complex to implement — you are responsible for turn detection logic.
+**Trade-off:** You are responsible for all turn detection logic.
 
 ---
 
-## Getting started
+## Session Flow
 
-### Authentication
+Every session follows the same structure: connect, start recognition, stream audio, receive turn events, close.
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    C->>S: Connect to endpoint with profile via WebSocket
+    C->>S: StartRecognition
+    S-->>C: RecognitionStarted
+
+    loop Audio Stream
+        C->>S: Audio frames (binary)
+        S-->>C: AudioAdded
+        S-->>C: StartOfTurn
+        S-->>C: AddPartialSegment
+        S-->>C: AddSegment
+        S-->>C: EndOfTurn
+
+        opt Optional — speaker events
+            S-->>C: SpeakerStarted / SpeakerEnded
+            S-->>C: SessionMetrics / SpeakerMetrics
+        end
+
+        opt Optional — mid-session controls
+            C->>S: ForceEndOfUtterance (external profile only)
+            C->>S: UpdateSpeakerFocus
+            C->>S: GetSpeakers
+            S-->>C: SpeakersResult
+        end
+    end
+
+    C->>S: EndOfStream
+    S-->>C: EndOfTranscript
+```
+
+**Client → Server**
+
+| Message | When to send |
+|---------|-------------|
+| [`StartRecognition`](#startrecognition) | First message after connecting. Starts the session and passes configuration. |
+| Audio frames | Binary WebSocket frames containing raw PCM audio, sent continuously while audio is available. |
+| [`ForceEndOfUtterance`](#forceendofutterance) | `external` profile only. Signals that the current turn is complete. |
+| [`UpdateSpeakerFocus`](#updatespeakerfocus) | Any time during the session. Changes which speakers are in focus. |
+| [`GetSpeakers`](#getspeakers) | Any time during the session. Requests voice identifiers for enrolled speakers. |
+| [`EndOfStream`](#endofstream) | When there is no more audio to send. |
+
+**Server → Client**
+
+| Message | When it's emitted |
+|---------|------------------|
+| [`RecognitionStarted`](#standard-messages) | Session is ready. |
+| [`StartOfTurn`](#startofturn) | A speaker begins a new turn. |
+| [`AddPartialSegment`](#addpartialsegment) | Interim transcript update. Replaces the previous partial. |
+| [`AddSegment`](#addsegment) | Final transcript for the turn. Send this to your LLM. |
+| [`EndOfTurn`](#endofturn) | Turn is complete. Your agent can now respond. |
+| [`EndOfTranscript`](#standard-messages) | All audio processed. Emitted after `EndOfStream`. |
+
+---
+
+## Getting Started
+
+### 1. Connect
+
+Open a WebSocket connection to the preview endpoint. To do this, you must specify the [profile](#profiles) to use:
+
+```
+wss://preview.rt.speechmatics.com/v2/agent/<profile>
+```
+
+### 2. Authenticate
 
 Authenticate every connection using one of the following:
 
@@ -153,33 +160,9 @@ Authenticate every connection using one of the following:
 
 See [Authentication](/get-started/authentication) for details including temporary keys.
 
-### Endpoint
+### 3. Start the session
 
-The Voice Agent API is available at the preview endpoint. Choose a [profile](#profiles) based on your use case:
-
-```
-wss://preview.rt.speechmatics.com/v2/agent/<profile>
-```
-
-For example, to use the `adaptive` profile:
-
-```
-wss://preview.rt.speechmatics.com/v2/agent/adaptive
-```
-
-
-### Session flow
-
-1. Open the WebSocket connection.
-2. Send `StartRecognition` as the first JSON message.
-3. Stream raw PCM audio as binary frames.
-4. Send `EndOfStream` when audio is finished.
-5. Read server messages until `EndOfTranscript`.
-6. Close the connection.
-
-### StartRecognition
-
-Send this as the first message after connecting:
+Send [`StartRecognition`](#startrecognition) as your first message:
 
 ```json
 {
@@ -189,77 +172,159 @@ Send this as the first message after connecting:
   }
 }
 ```
+For all configuration options, see [Configuration](#configuration).
+The server responds with `RecognitionStarted` when the session is ready. You should wait for this message before sending audio.
 
-### Configuration reference
 
-**Configurable settings (`transcription_config`)**
+### 4. Stream audio and handle responses
 
-| Setting | Default | Notes |
-|---------|---------|-------|
-| `language` | `en` | All supported languages |
-| `output_locale` | - | Client can specify an output locale (e.g. `en-US`) |
-| `additional_vocab` | - | Custom vocabulary entries |
-| `punctuation_overrides` | - | Punctuation overrides |
-| `domain` | - | Client can specify a domain (e.g. `medical`) |
-| `enable_entities` | `false` | Enable entity detection |
-| `enable_partials` | `true` | Enable partials in output |
-| `diarization` | `speaker` | Supports `none` or `speaker` only |
-| `speaker_diarization_config.max_speakers` | - | Limit speaker count |
-| `speaker_diarization_config.speaker_sensitivity` | - | Diarization sensitivity |
-| `speaker_diarization_config.prefer_current_speaker` | - | Hold on to current speaker |
-| `speaker_diarization_config.speakers` | - | Known speakers |
-| `volume_threshold` | - | Audio filtering |
-
-**Not configurable (`transcription_config`)**
-
-| Setting | Notes |
-|---------|-------|
-| `operating_point` | Managed per profile |
-| `max_delay` | Managed per profile |
-| `max_delay_mode` | Managed per profile |
-| `streaming_mode` | Always enabled |
-| `conversation_config` | Managed by profile / Voice SDK |
-| `audio_filtering_config` | Managed by profile |
-| `transcript_filtering_config` | Managed by profile |
-| `channel_diarization_labels` | Not available |
-
-**Payload-level settings**
-
-| Setting | Configurable? | Notes |
-|---------|--------------|-------|
-| `audio_format` | Yes | Client declares encoding and sample rate |
-| `translation_config` | No* | Not supported — rejected if present in the payload |
-| `audio_events_config` | No* | Not supported — rejected if present in the payload |
-| `message_control` | No | Adjust which messages are forwarded (hidden) |
-
-### Code examples
-
-Full working examples in Python and JavaScript are available in the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/basics/11-voice-api-explorer).
+Send audio as binary WebSocket frames. Turn events will arrive in real time as the API processes speech — see [Session Flow](#session-flow) for the full message sequence.
 
 ---
 
-## Server messages
+## Configuration
+
+Configuration is passed in [`StartRecognition`](#startrecognition) and is split across two levels of the payload: `audio_format` (top-level) and `transcription_config`.
+
+**`audio_format`**
+
+| Field | Notes |
+|-------|-------|
+| `type` | Must be `raw` |
+| `encoding` | Must be `pcm_s16le` (16-bit signed little-endian PCM) |
+| `sample_rate` | Must be `8000` or `16000` |
+
+**`transcription_config`**
+
+| Field | Default | Notes |
+|-------|---------|-------|
+| `language` | `en` | All supported languages |
+| `output_locale` | — | Output locale (e.g. `en-US`) |
+| `additional_vocab` | — | Custom vocabulary entries |
+| `punctuation_overrides` | — | Custom punctuation rules |
+| `domain` | — | Domain-specific model (e.g. `medical`) |
+| `enable_entities` | `false` | Entity detection |
+| `enable_partials` | `true` | Emit partial segments during speech |
+| `diarization` | `speaker` | Speaker diarization; `none` to disable |
+| `volume_threshold` | — | Minimum audio volume to process |
+
+**`transcription_config.speaker_diarization_config`**
+
+Note: The following require `diarization: speaker` to be set.
+| Field | Default | Notes |
+|-------|---------|-------|
+| `max_speakers` | — | Maximum number of speakers to track |
+| `speaker_sensitivity` | — | Sensitivity of speaker separation |
+| `prefer_current_speaker` | — | Bias toward the most recently active speaker |
+| `known_speakers` | — | Pre-enrolled speaker identifiers for cross-session recognition (see [Speaker ID](#speaker-id)) |
+
+**Not supported — will be rejected if present**
+
+| Field | Notes |
+|-------|-------|
+| `translation_config` | Not supported on this endpoint |
+| `audio_events_config` | Not supported on this endpoint |
+
+---
+
+## API Reference - Client Messages
+
+### StartRecognition
+
+The first message you send after connecting. Starts the recognition session and passes configuration. The server responds with `RecognitionStarted`.
+
+```json
+{
+  "message": "StartRecognition",
+  "audio_format": {
+    "type": "raw",
+    "encoding": "pcm_s16le",
+    "sample_rate": 16000
+  },
+  "transcription_config": {
+    "language": "en"
+  }
+}
+```
+
+For all configuration options, see [Configuration](#configuration).
+
+### EndOfStream
+
+Send when you have finished streaming audio. The server finalises any remaining transcript and then emits `EndOfTranscript`.
+
+`last_seq_no` is the sequence number of the last audio frame you sent.
+```json
+{
+  "message": "EndOfStream",
+  "last_seq_no": 1234
+}
+```
+
+### ForceEndOfUtterance
+
+Only applies to the `external` profile. Immediately ends the current turn — the server finalises all audio received so far and emits a single `AddSegment` containing the complete transcript for that turn, followed by `EndOfTurn`.
+
+Use this wherever your application decides a turn is complete: on button release (push-to-talk), on VAD silence, or on an LLM signal.
+
+```json
+{
+  "message": "ForceEndOfUtterance"
+}
+```
+
+### UpdateSpeakerFocus
+
+Updates which speakers are in focus, mid-session. Takes effect immediately. See [Speaker Focus](#speaker-focus) for full details.
+
+```json
+{
+  "message": "UpdateSpeakerFocus",
+  "speaker_focus": {
+    "focus_speakers": ["S1"],
+    "ignore_speakers": [],
+    "focus_mode": "retain"
+  }
+}
+```
+
+### GetSpeakers
+
+Requests voice identifiers for all speakers diarized so far in the session. The server responds with a `SpeakersResult` message. See [Speaker ID](#speaker-id) for full details.
+
+```json
+{
+  "message": "GetSpeakers"
+}
+```
+
+---
+
+## API Reference - Server Messages
 
 ### Standard messages
 
-Standard RT messages are emitted alongside Voice Agent API messages. See the [API reference](/api-ref) for full details.
+The following standard RT messages are emitted alongside Voice Agent API messages. See the [API reference](/api-ref) for full payload details.
 
-- `RecognitionStarted`
-- `AddPartialTranscript`
-- `AddTranscript`
-- `EndOfUtterance`
-- `EndOfTranscript`
-- `Info`
-- `Warning`
-- `Error`
+| Message | When it's emitted |
+|---------|------------------|
+| `AudioAdded` | |
+| `RecognitionStarted` | Session is ready; emitted in response to `StartRecognition` |
+| `AddPartialTranscript` | Word-level partial transcript update (lower-level than `AddPartialSegment`) |
+| `AddTranscript` | Word-level final transcript (lower-level than `AddSegment`) |
+| `EndOfUtterance` | Silence threshold reached; precedes turn finalisation |
+| `EndOfTranscript` | All audio processed; emitted after `EndOfStream` |
+| `Info` | Non-critical informational message from the server |
+| `Warning` | Non-fatal issue (e.g. unsupported config ignored) |
+| `Error` | Fatal error; connection will close |
 
 ### Voice Agent API messages
 
-These messages are only emitted when using a voice profile (`/v2/agent/<profile>`).
+These messages are only emitted when using a voice agent profile (`/v2/agent/<profile>`).
 
 #### `StartOfTurn`
 
-Emitted when a speaker begins a new turn.
+Emitted when a speaker begins a new turn. Use this to signal to your agent that it should stop speaking if it currently is.
 
 ```json
 {
@@ -268,9 +333,12 @@ Emitted when a speaker begins a new turn.
 }
 ```
 
+**Fields:**
+- `turn_id` — monotonically increasing integer; pairs with the corresponding `EndOfTurn`
+
 #### `EndOfTurn`
 
-Emitted when a turn is complete.
+Emitted when turn detection decides the speaker has finished. This is the trigger for your agent to respond. The finalised transcript for the turn is in the preceding `AddSegment`.
 
 ```json
 {
@@ -283,9 +351,13 @@ Emitted when a turn is complete.
 }
 ```
 
+**Fields:**
+- `turn_id` — matches the `StartOfTurn` for this turn
+- `metadata.start_time` / `metadata.end_time` — audio time range for the turn, in seconds from session start
+
 #### `AddPartialSegment`
 
-Interim transcript updates emitted as the speaker talks. Each new partial replaces the previous one.
+Interim transcript update emitted continuously while the speaker is talking. Each new `AddPartialSegment` replaces the previous one — do not concatenate them.
 
 ```json
 {
@@ -314,7 +386,9 @@ Interim transcript updates emitted as the speaker talks. Each new partial replac
 
 #### `AddSegment`
 
-The final, complete transcript for a turn. Emitted at `EndOfTurn`. This is the stable output to send to your LLM.
+The final, complete transcript for a turn. Emitted just before `EndOfTurn`. This is the stable output to pass to your LLM — do not use `AddPartialSegment` for this.
+
+In multi-speaker scenarios, a single `AddSegment` may contain segments from multiple speakers, returned in time order.
 
 ```json
 {
@@ -341,22 +415,25 @@ The final, complete transcript for a turn. Emitted at `EndOfTurn`. This is the s
 }
 ```
 
-**Key fields:**
-- `speaker_id` — speaker label (e.g. `S1`, `S2`)
-- `is_active` — whether this speaker is in your focus list (see [Speaker focus](#speaker-focus))
-- `is_eou` — `true` on final segments
-- `start_time` / `end_time` — time in seconds relative to session start
-- `processing_time` (message-level `metadata`) — transcription latency in seconds
+**Segment fields:**
+- `speaker_id` — speaker label (e.g. `S1`, `S2`, or a custom label if using [Speaker ID](#speaker-id))
+- `is_active` — `true` if this speaker is in your current focus list; `false` if they are a background speaker (see [Speaker Focus](#speaker-focus))
+- `is_eou` — `true` on final segments, `false` on partials
+- `text` — clean, punctuated transcript text
+- `metadata.start_time` / `metadata.end_time` — time range of this segment in seconds from session start
+
+**Message-level fields:**
+- `metadata.processing_time` — transcription latency in seconds for this message
 
 #### `SpeakerStarted` / `SpeakerEnded`
 
-Emitted when a specific speaker starts or stops speaking. Useful for multi-party conversations.
+Emitted when a specific speaker starts or stops being heard. These are voice activity events — they fire based on detected speech, independently of turn boundaries.
 
 ```json
 {
   "message": "SpeakerStarted",
-  "is_active": true,
   "speaker_id": "S1",
+  "is_active": true,
   "time": 0.84,
   "metadata": { "start_time": 0.84, "end_time": 0.84 }
 }
@@ -365,21 +442,23 @@ Emitted when a specific speaker starts or stops speaking. Useful for multi-party
 ```json
 {
   "message": "SpeakerEnded",
-  "is_active": false,
   "speaker_id": "S1",
+  "is_active": true,
   "time": 3.24,
   "metadata": { "start_time": 0.84, "end_time": 3.24 }
 }
 ```
 
-**Key fields:**
-- `time` — seconds of audio from session start when the speaker activity occurred
-- `metadata.start_time` — when that speaker started their current speaking interval
-- `metadata.end_time` (`SpeakerEnded` only) — when that speaker stopped speaking
+**Fields:**
+- `speaker_id` — the speaker whose activity changed
+- `is_active` — whether this speaker is in your current focus list
+- `time` — seconds from session start when the activity was detected
+- `metadata.start_time` — when this speaker started their current speaking interval
+- `metadata.end_time` — when this speaker stopped speaking (`SpeakerEnded` only)
 
-#### `SessionMetrics` / `SpeakerMetrics`
+#### `SessionMetrics`
 
-`SessionMetrics` is emitted every 5 seconds and at the end of the session. `SpeakerMetrics` is emitted each time a speaker speaks a word.
+Emitted every 5 seconds and once at the end of the session.
 
 ```json
 {
@@ -390,6 +469,10 @@ Emitted when a specific speaker starts or stops speaking. Useful for multi-party
   "processing_time": 0.295
 }
 ```
+
+#### `SpeakerMetrics`
+
+Emitted each time a speaker produces a recognised word.
 
 ```json
 {
@@ -405,49 +488,9 @@ Emitted when a specific speaker starts or stops speaking. Useful for multi-party
 }
 ```
 
----
+#### SpeakersResult
 
-## Speaker focus
-
-You can update speaker focus mid-session using `UpdateSpeakerFocus`. This is a Voice Agent API feature — sending it in standard RT mode has no effect.
-
-Diarization is enabled by default when using the Voice Agent API. Speaker IDs (`S1`, `S2`, etc.) are assigned automatically and persist across the session.
-
-```json
-{
-  "message": "UpdateSpeakerFocus",
-  "speaker_focus": {
-    "focus_speakers": ["S1"],
-    "ignore_speakers": [],
-    "focus_mode": "retain"
-  }
-}
-```
-
-**`focus_mode` options:**
-
-- `retain` — non-focused speakers remain in output as passive speakers (`is_active: false`)
-- `ignore` — non-focused speakers are excluded from output entirely
-
-The new config replaces the existing config immediately.
-
----
-
-## Speaker ID
-
-Speaker identifiers let you recognise known speakers across sessions. Once you have identifiers for a speaker, you can pass them into future sessions so the system tags them with a consistent label rather than a generic `S1`, `S2`.
-
-### Getting identifiers — `GetSpeakers`
-
-Send `GetSpeakers` during a session to request identifiers for all diarized speakers so far:
-
-```json
-{
-  "message": "GetSpeakers"
-}
-```
-
-The server responds with a `SpeakersResult` message:
+Emitted as a response to a `GetSpeakers` message.
 
 ```json
 {
@@ -459,11 +502,69 @@ The server responds with a `SpeakersResult` message:
 }
 ```
 
-Store the `speaker_identifiers` values — these are opaque tokens that represent the speaker's voice profile.
 
-### Using identifiers in future sessions
+---
 
-Pass stored identifiers into `StartRecognition` via `known_speakers`. You can assign any label you like:
+## Features
+
+The Voice Agent API introduces key features built with voice agents in mind. These include:
+### **Speaker Focus**
+This lets you control which speakers' output your agent acts on. By default, all detected speakers are active and and their transcripts are included in `AddSegment` output.
+  
+  Speaker IDs (`S1`, `S2`, etc.) are assigned automatically when diarization is enabled and persist for the lifetime of the session.
+  Send `UpdateSpeakerFocus` at any point during the session to change who is in focus - the new config takes place immediately and replaces the previous one.
+
+
+### Speaker Focus
+
+Speaker focus lets you control which speakers' output your agent acts on. By default, all detected speakers are active and their transcripts are included in `AddSegment` output.
+
+Speaker IDs (`S1`, `S2`, etc.) are assigned automatically when diarization is enabled, and persist for the lifetime of the session. Send `UpdateSpeakerFocus` at any point during the session to change who is in focus — the new config takes effect immediately and replaces the previous one.
+
+```json
+{
+  "message": "UpdateSpeakerFocus",
+  "speaker_focus": {
+    "focus_speakers": ["S1"],
+    "ignore_speakers": ["S3"],
+    "focus_mode": "retain"
+  }
+}
+```
+
+**Fields:**
+
+- `focus_speakers` — speaker IDs to treat as active. Their segments appear with `is_active: true`.
+- `ignore_speakers` — speaker IDs to exclude entirely. Their speech is dropped and does not affect turn detection.
+- `focus_mode` — what happens to speakers who are neither in `focus_speakers` nor `ignore_speakers`:
+  - `retain` — they remain in the output as passive speakers (`is_active: false`)
+  - `ignore` — they are excluded from the output entirely
+
+### Speaker ID
+
+Speaker ID lets you recognise the same person across separate sessions. At the end of a session, you can retrieve voice identifiers for each speaker and store them. In future sessions, pass those identifiers into `StartRecognition` and the system will tag matching speakers with a consistent label rather than a generic `S1`, `S2`.
+
+#### Getting identifiers
+
+Send `GetSpeakers` at any point during a session to retrieve identifiers for all diarized speakers so far. The server responds with a `SpeakersResult` message.
+
+`SpeakersResult` response:
+
+```json
+{
+  "message": "SpeakersResult",
+  "speakers": [
+    { "label": "S1", "speaker_identifiers": ["<id1>"] },
+    { "label": "S2", "speaker_identifiers": ["<id2>"] }
+  ]
+}
+```
+
+Store the `speaker_identifiers` values. These are opaque tokens tied to a speaker's voice profile — treat them as credentials and store them securely.
+
+#### Using identifiers in future sessions
+
+Pass stored identifiers into `StartRecognition` via `transcription_config.known_speakers`. You can assign any label:
 
 ```json
 {
@@ -478,18 +579,25 @@ Pass stored identifiers into `StartRecognition` via `known_speakers`. You can as
 }
 ```
 
-When those speakers are detected, segments will be tagged with `"Alice"` or `"Bob"` instead of generic labels. Any unrecognised speakers are still assigned generic labels (`S1`, `S2`, etc.).
+When those speakers are detected, their segments will carry `"Alice"` or `"Bob"` as the `speaker_id` instead of generic labels. Any unrecognised speakers are still assigned generic labels (`S1`, `S2`, etc.).
+
+---
+
+## Code Examples
+
+For working code examples in Python and JavaScript, see the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/basics/11-voice-api-explorer). 
 
 ---
 
 ## Feedback
 
-This is a preview and your feedback shapes what goes to GA. We'd love to hear from you — whether that's something that didn't work as expected, a profile that behaved differently than you anticipated, or a feature you'd want before we ship this more broadly.
+This is a preview and your feedback shapes what goes to GA (General Availability). 
+We'd love to hear from you — Tell us what works well, which features you use, whether something didn't work as expected, a profile that behaved differently than you anticipated, or a feature you'd want before we ship this more broadly.
 
 Specific areas of interest:
 
-- integration experience (documentation, SDKs, API messages/metadata)
-- Accuracy/Latency (including data capture if it's relevant (e.g. phone numbers, spell outs of names/account numbers)
+- Integration experience (documentation, SDKs, API messages/metadata)
+- Accuracy and latency (including data capture if it's relevant. E.g. phone numbers, spell outs of names/account numbers)
 - Turn detection and experience with different profiles
 - Any missing capabilities which would make your product better
 - What would stop you using this in production
