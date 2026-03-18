@@ -263,10 +263,10 @@ With curl:
     -F 'data_file=@~/audio_file.mp3'
 ```
 Returns:
-                on success:json string containing job id: {"job_id": "abcdefgh01"} and HTTP status code 201
-                on failure: technically it raises but the exception is translated to HTTP status code != 200:
-                HTTP status code 503 for server busy
-                HTTP status code 400 for invalid request
+on success: json string containing job id: `{"job_id": "abcdefgh01"}` and HTTP status code 201
+on failure: technically it raises but the exception is translated to HTTP status code != 200:
+  HTTP status code 503 for server busy
+  HTTP status code 400 for invalid request
 
 with [python sdk](https://github.com/speechmatics/speechmatics-python-sdk?tab=readme-ov-file#batch-transcription):
 ```
@@ -386,7 +386,7 @@ This endpoint provides a readiness probe. It can be queried using an HTTP GET re
 The container has been designed to process multiple audio streams at a time. This probe indicates whether the container has a slot free for connections, and can be used as a scaling mechanism.
 
 **Note**: The readiness check is accurate within a 2 second resolution. If you do use this probe for load balancing, be aware that bursts of traffic within that 2 second window could all be allocated to a single Container since its readiness state will not change.
-return {"ready": True, "engines_used": self.engines_used}
+return `{"ready": True, "engines_used": self.engines_used}`
 Possible responses:
 
 - `200` if the container has a free connection slot.
