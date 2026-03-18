@@ -228,7 +228,7 @@ The following example shows how to use `--all-formats` parameter. In this scenar
 ## Batch persisted worker transcription
 
 Batch persisted workers (knows as http batch workers), are multi session capable persisted workers. They work utilizing an http server, which is able to 
-accept jobs through POST and by using the [V2 Batch REST API] (https://docs.speechmatics.com/api-ref/batch/create-a-new-job). This server was build to mimic exactly the V2 API capabilities and the whole life cycle
+accept jobs through POST and by using the [V2 Batch REST API](https://docs.speechmatics.com/api-ref/batch/create-a-new-job). This server was build to mimic exactly the V2 API capabilities and the whole life cycle
 of posting a job, to checking the status of the jobs and asking for the transcript.
 
 
@@ -286,14 +286,59 @@ async def main():
 asyncio.run(main())
 ```
 
-## Job specific endpoints
+Regular lifecycle and how to set a job to use multiple engine, to reduce RTF
 
-/v2/jobs
+..add headers stuff ..
+
+explain what endpoint they need to check before starting a job.
+
+### Job specific endpoints
+
+`/v2/jobs`
 
 args: created_before: string in ISO 8601 format, only returns jobs created before this time
 limit: maximum number of jobs to return, can be between 1 and 100
 
 returns: list of jobs
+```json
+{
+  "jobs": [
+    {
+      "id": "191f47e4a4204fa4ac2b",
+      "created_at": "2026-03-18T19:27:42.436Z",
+      "data_name": "5_min",
+      "text_name": null,
+      "duration": 300,
+      "status": "RUNNING",
+      "config": {
+        "type": "transcription",
+        "transcription_config": {
+          "language": "en",
+          "diarization": "speaker",
+          "operating_point": "standard"
+        }
+      }
+    },
+    {
+      "id": "6dcb02e0dc5943e2b643",
+      "created_at": "2026-03-18T19:27:47.550Z",
+      "data_name": "5_min",
+      "text_name": null,
+      "duration": 300,
+      "status": "RUNNING",
+      "config": {
+        "type": "transcription",
+        "transcription_config": {
+          "language": "en",
+          "diarization": "speaker",
+          "operating_point": "standard"
+        }
+      }
+    }
+  ]
+}
+```
+
 
 `/v2/jobs/{job_id}/transcript`
 
@@ -312,26 +357,46 @@ if the format is not in our included list we return a 404 with error = unsupport
 
 returns job status, including job_id and request_id
 
+```json
+{
+  "job": {
+    "id": "191f47e4a4204fa4ac2b",
+    "created_at": "2026-03-18T19:27:42.436Z",
+    "data_name": "5_min",
+    "duration": 300,
+    "status": "DONE",
+    "config": {
+      "type": "transcription",
+      "transcription_config": {
+        "language": "en",
+        "diarization": "speaker",
+        "operating_point": "standard"
+      }
+    },
+    "request_id": "191f47e4a4204fa4ac2b"
+  }
+}
+```
 
 `/v2/jobs/{job_id}/log`
 
 returns the logs for the specific job
 
 
-## Health service
+### Health service
 
-The container is able to expose an HTTP Health Service, which offers startup, liveness, readiness, and session listing probes. This is accessible from port 8001, and has four endpoints, `started`, `live`, `ready` and `session_status`. This may be especially helpful if you are deploying the container into a Kubernetes cluster. If you are using Kubernetes, we recommend that you also refer to the Kubernetes documentation around
+The container is able to expose an HTTP Health Service, which offers startup, liveness, readiness, and session listing probes. This is accessible from port 8001, and has four endpoints, `started`, `live`, `ready`.. This may be especially helpful if you are deploying the container into a Kubernetes cluster. If you are using Kubernetes, we recommend that you also refer to the Kubernetes documentation around
 [liveness and readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
 
 The Health Service is enabled by default and runs as a subprocess of the main entrypoint to the container.
 
-### Endpoints
+#### Endpoints
 
-The Health Service offers four endpoints:
+The Health Service offers three endpoints:
 
 #### `/sessions`
 
-
+(TODO GH REMOVE)
 ```python (TODO GH REMOVE)
 f"{js.request_id},{js.requested_parallel}" for js in self._jobs_status.values() if js.is_decoding
 ```
@@ -351,7 +416,10 @@ Server: BaseHTTP/0.6 Python/3.8.5
 Date: Mon, 08 Feb 2021 12:46:21 GMT
 Content-Type: application/json
 {
-    "started": true
+  "request_ids": [
+    "978174b1564e40ccacba,2",
+    "52d532a2efcb4b78962b,2"
+  ]
 }
 ```
 
