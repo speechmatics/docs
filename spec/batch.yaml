@@ -63,6 +63,8 @@ paths:
           type: string
           required: false
           description: >-
+            **Note**: Only available for on-prem
+
             JSON dictionary of processing settings for the job worker.
             Currently supports `parallel_engines` (integer), which controls
             the number of engines the worker can use in parallel for this job, and
