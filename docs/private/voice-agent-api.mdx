@@ -18,30 +18,20 @@ The Voice Agent API is a WebSocket API for building voice agents. Stream audio i
 
 Turn detection runs server-side. Choose a [profile](#profiles) based on your use case and the API handles when to finalise each speaker's turn.
 
-To jump straight into code, see working examples in [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/basics/11-voice-api-explorer) for both Python and JavaScript.
+**Looking for code examples?** See working examples in [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/basics/11-voice-api-explorer) for Python and JavaScript.
 
 ---
 
 ## Profiles
 
-Profiles are pre-configured turn detection modes. Each profile sets the right defaults for your use case — you choose one when connecting, and the server handles the rest.
+Profiles are pre-configured turn detection modes. Each profile sets the right defaults for your use case — you choose one when connecting, include it in your endpoint URL, and the server handles the rest.
 
 | Profile | Turn detection | Best for |
 |---------|---------------|----------|
-| `agile` | VAD-based silence detection | Speed-first use cases |
 | `adaptive` | Adapts to speaker pace and hesitation | General conversational agents |
+| `agile` | VAD-based silence detection | Speed-first use cases |
 | `smart` | `adaptive` + ML acoustic turn prediction | High-stakes conversations |
 | `external` | Manual — you trigger turn end | Push-to-talk, custom VAD, LLM-driven |
-
-### `agile`
-
-**Endpoint:** `/v2/agent/agile`
-
-Uses voice activity detection (VAD) to detect silence and finalise turns as quickly as possible. The lowest latency profile.
-
-**Best for:** Use cases where response speed is the top priority and occasional mid-speech finalisations are acceptable.
-
-**Trade-off:** Because it relies on silence, it may finalise a turn while the speaker is still mid-sentence — for example, during a natural pause. This can result in additional downstream LLM calls.
 
 ### `adaptive`
 
@@ -52,6 +42,16 @@ Adapts to each speaker's pace over the course of a conversation. It adjusts the 
 **Best for:** General conversational voice agents.
 
 **Trade-off:** Latency varies by speaker. Disfluency detection is English-only — other languages fall back to speech-rate adaptation.
+
+### `agile`
+
+**Endpoint:** `/v2/agent/agile`
+
+Uses voice activity detection (VAD) to detect silence and finalise turns as quickly as possible. The lowest latency profile.
+
+**Best for:** Use cases where response speed is the top priority and occasional mid-speech finalisations are acceptable.
+
+**Trade-off:** Because it relies on silence, it may finalise a turn while the speaker is still mid-sentence — for example, during a natural pause. This can result in additional downstream LLM calls.
 
 ### `smart`
 
@@ -91,17 +91,26 @@ sequenceDiagram
     loop Audio Stream
         C->>S: Audio frames (binary)
         S-->>C: AudioAdded
+
+        S-->>C: SpeechStarted
         S-->>C: StartOfTurn
         S-->>C: AddPartialSegment
+
+        opt Turn prediction (adaptive, smart profiles)
+            S-->>C: EndOfTurnPrediction
+            S-->>C: SmartTurnPrediction (smart only)
+        end
+
         S-->>C: AddSegment
         S-->>C: EndOfTurn
+        S-->>C: SpeechEnded
 
-        opt Optional — speaker events
+        opt Speaker activity
             S-->>C: SpeakerStarted / SpeakerEnded
             S-->>C: SessionMetrics / SpeakerMetrics
         end
 
-        opt Optional — mid-session controls
+        opt Mid-session controls
             C->>S: ForceEndOfUtterance (external profile only)
             C->>S: UpdateSpeakerFocus
             C->>S: GetSpeakers
@@ -113,27 +122,7 @@ sequenceDiagram
     S-->>C: EndOfTranscript
 ```
 
-**Client → Server**
-
-| Message | When to send |
-|---------|-------------|
-| [`StartRecognition`](#startrecognition) | First message after connecting. Starts the session and passes configuration. |
-| Audio frames | Binary WebSocket frames containing raw PCM audio, sent continuously while audio is available. |
-| [`ForceEndOfUtterance`](#forceendofutterance) | `external` profile only. Signals that the current turn is complete. |
-| [`UpdateSpeakerFocus`](#updatespeakerfocus) | Any time during the session. Changes which speakers are in focus. |
-| [`GetSpeakers`](#getspeakers) | Any time during the session. Requests voice identifiers for enrolled speakers. |
-| [`EndOfStream`](#endofstream) | When there is no more audio to send. |
-
-**Server → Client**
-
-| Message | When it's emitted |
-|---------|------------------|
-| [`RecognitionStarted`](#standard-messages) | Session is ready. |
-| [`StartOfTurn`](#startofturn) | A speaker begins a new turn. |
-| [`AddPartialSegment`](#addpartialsegment) | Interim transcript update. Replaces the previous partial. |
-| [`AddSegment`](#addsegment) | Final transcript for the turn. Send this to your LLM. |
-| [`EndOfTurn`](#endofturn) | Turn is complete. Your agent can now respond. |
-| [`EndOfTranscript`](#standard-messages) | All audio processed. Emitted after `EndOfStream`. |
+For a full reference of all messages, see [Messages Overview](#messages-overview).
 
 ---
 
@@ -173,6 +162,7 @@ Send [`StartRecognition`](#startrecognition) as your first message:
 }
 ```
 For all configuration options, see [Configuration](#configuration).
+
 The server responds with `RecognitionStarted` when the session is ready. You should wait for this message before sending audio.
 
 
@@ -227,11 +217,81 @@ Note: The following require `diarization: speaker` to be set.
 
 ---
 
+## Messages Overview
+
+All messages exchanged during a Voice Agent API session. For payload details, see the API Reference sections.
+
+### Client → Server
+
+| Message | When to send |
+|---------|-------------|
+| [`StartRecognition`](#startrecognition) | First message after connecting. Starts the session and passes configuration. |
+| Audio frames | Binary WebSocket frames containing raw PCM audio, sent continuously. |
+| [`ForceEndOfUtterance`](#forceendofutterance) | `external` profile only. Triggers immediate turn finalisation. |
+| [`UpdateSpeakerFocus`](#updatespeakerfocus) | Any time during the session. Changes which speakers are in focus. |
+| [`GetSpeakers`](#getspeakers) | Any time during the session. Requests voice identifiers for diarized speakers. |
+| [`EndOfStream`](#endofstream) | When there is no more audio to send. |
+
+### Server → Client
+
+**Core turn events** — the messages your agent logic acts on
+
+| Message | Profile | When it's emitted |
+|---------|---------|------------------|
+| [`StartOfTurn`](#startofturn) | All | A speaker begins a new turn |
+| [`AddPartialSegment`](#addpartialsegment) | All | Interim transcript update; each replaces the previous |
+| [`AddSegment`](#addsegment) | All | Final transcript for the turn — pass this to your LLM |
+| [`EndOfTurn`](#endofturn) | All | Turn complete; your agent can now respond |
+
+**Turn prediction** — early signals you can use to prepare a response
+
+| Message | Profile | When it's emitted |
+|---------|---------|------------------|
+| [`EndOfTurnPrediction`](#endofturnprediction) | `adaptive`, `smart` | The model predicts the current turn will end soon |
+| [`SmartTurnPrediction`](#smartturnprediction) | `smart` only | High-confidence acoustic prediction of turn completion |
+
+**Speech and speaker activity**
+
+| Message | Profile | When it's emitted |
+|---------|---------|------------------|
+| [`SpeechStarted`](#speechstarted--speechended) | All | Voice activity detected in the audio stream |
+| [`SpeechEnded`](#speechstarted--speechended) | All | Voice activity stopped |
+| [`SpeakerStarted`](#speakerstarted--speakerended) | All | A specific diarized speaker began talking |
+| [`SpeakerEnded`](#speakerstarted--speakerended) | All | A specific diarized speaker stopped talking |
+| [`SpeakersResult`](#speakersresult) | All | Response to `GetSpeakers` |
+
+**Session lifecycle**
+
+| Message | When it's emitted |
+|---------|------------------|
+| `RecognitionStarted` | Session ready; emitted in response to `StartRecognition` |
+| `AudioAdded` | Audio frame acknowledged |
+| `EndOfTranscript` | Session closing; emitted by the proxy after `EndOfStream` |
+
+**Metrics and diagnostics**
+
+| Message | When it's emitted |
+|---------|------------------|
+| [`SessionMetrics`](#sessionmetrics) | Session stats; emitted every 5 seconds and at session end |
+| [`SpeakerMetrics`](#speakermetrics) | Per-speaker word count and volume; emitted on each recognised word |
+
+**Shared messages with the RT API** - messages shared with the RT API. See the [RT API Reference](/api-ref) for full payload details.
+
+| Message | When it's emitted |
+|---------|------------------|
+| `EndOfUtterance` | Silence threshold reached; precedes turn finalisation |
+| `Info` | Non-critical informational message |
+| `Warning` | Non-fatal issue (e.g. unsupported config field ignored) |
+| `Error` | Fatal error; connection will close |
+
+---
+
 ## API Reference - Client Messages
 
-### StartRecognition
+#### StartRecognition
 
-The first message you send after connecting. Starts the recognition session and passes configuration. The server responds with `RecognitionStarted`.
+The first message you send after connecting. Starts the recognition session and passes configuration. 
+The server responds with `RecognitionStarted`.
 
 ```json
 {
@@ -249,7 +309,7 @@ The first message you send after connecting. Starts the recognition session and 
 
 For all configuration options, see [Configuration](#configuration).
 
-### EndOfStream
+#### EndOfStream
 
 Send when you have finished streaming audio. The server finalises any remaining transcript and then emits `EndOfTranscript`.
 
@@ -261,7 +321,7 @@ Send when you have finished streaming audio. The server finalises any remaining 
 }
 ```
 
-### ForceEndOfUtterance
+#### ForceEndOfUtterance
 
 Only applies to the `external` profile. Immediately ends the current turn — the server finalises all audio received so far and emits a single `AddSegment` containing the complete transcript for that turn, followed by `EndOfTurn`.
 
@@ -273,7 +333,7 @@ Use this wherever your application decides a turn is complete: on button release
 }
 ```
 
-### UpdateSpeakerFocus
+#### UpdateSpeakerFocus
 
 Updates which speakers are in focus, mid-session. Takes effect immediately. See [Speaker Focus](#speaker-focus) for full details.
 
@@ -288,7 +348,7 @@ Updates which speakers are in focus, mid-session. Takes effect immediately. See 
 }
 ```
 
-### GetSpeakers
+#### GetSpeakers
 
 Requests voice identifiers for all speakers diarized so far in the session. The server responds with a `SpeakersResult` message. See [Speaker ID](#speaker-id) for full details.
 
@@ -302,27 +362,9 @@ Requests voice identifiers for all speakers diarized so far in the session. The 
 
 ## API Reference - Server Messages
 
-### Standard messages
+This section covers Voice Agent API-specific messages only. For shared messages (`RecognitionStarted`, `AudioAdded`, `AddPartialTranscript`, `AddTranscript`, `EndOfUtterance`, `EndOfTranscript`, `Info`, `Warning`, `Error`), see the [RT API reference](/api-ref).
 
-The following standard RT messages are emitted alongside Voice Agent API messages. See the [API reference](/api-ref) for full payload details.
-
-| Message | When it's emitted |
-|---------|------------------|
-| `AudioAdded` | |
-| `RecognitionStarted` | Session is ready; emitted in response to `StartRecognition` |
-| `AddPartialTranscript` | Word-level partial transcript update (lower-level than `AddPartialSegment`) |
-| `AddTranscript` | Word-level final transcript (lower-level than `AddSegment`) |
-| `EndOfUtterance` | Silence threshold reached; precedes turn finalisation |
-| `EndOfTranscript` | All audio processed; emitted after `EndOfStream` |
-| `Info` | Non-critical informational message from the server |
-| `Warning` | Non-fatal issue (e.g. unsupported config ignored) |
-| `Error` | Fatal error; connection will close |
-
-### Voice Agent API messages
-
-These messages are only emitted when using a voice agent profile (`/v2/agent/<profile>`).
-
-#### `StartOfTurn`
+#### StartOfTurn
 
 Emitted when a speaker begins a new turn. Use this to signal to your agent that it should stop speaking if it currently is.
 
@@ -336,7 +378,7 @@ Emitted when a speaker begins a new turn. Use this to signal to your agent that 
 **Fields:**
 - `turn_id` — monotonically increasing integer; pairs with the corresponding `EndOfTurn`
 
-#### `EndOfTurn`
+#### EndOfTurn
 
 Emitted when turn detection decides the speaker has finished. This is the trigger for your agent to respond. The finalised transcript for the turn is in the preceding `AddSegment`.
 
@@ -355,7 +397,7 @@ Emitted when turn detection decides the speaker has finished. This is the trigge
 - `turn_id` — matches the `StartOfTurn` for this turn
 - `metadata.start_time` / `metadata.end_time` — audio time range for the turn, in seconds from session start
 
-#### `AddPartialSegment`
+#### AddPartialSegment
 
 Interim transcript update emitted continuously while the speaker is talking. Each new `AddPartialSegment` replaces the previous one — do not concatenate them.
 
@@ -384,7 +426,7 @@ Interim transcript update emitted continuously while the speaker is talking. Eac
 }
 ```
 
-#### `AddSegment`
+#### AddSegment
 
 The final, complete transcript for a turn. Emitted just before `EndOfTurn`. This is the stable output to pass to your LLM — do not use `AddPartialSegment` for this.
 
@@ -425,7 +467,7 @@ In multi-speaker scenarios, a single `AddSegment` may contain segments from mult
 **Message-level fields:**
 - `metadata.processing_time` — transcription latency in seconds for this message
 
-#### `SpeakerStarted` / `SpeakerEnded`
+#### SpeakerStarted / SpeakerEnded
 
 Emitted when a specific speaker starts or stops being heard. These are voice activity events — they fire based on detected speech, independently of turn boundaries.
 
@@ -456,7 +498,7 @@ Emitted when a specific speaker starts or stops being heard. These are voice act
 - `metadata.start_time` — when this speaker started their current speaking interval
 - `metadata.end_time` — when this speaker stopped speaking (`SpeakerEnded` only)
 
-#### `SessionMetrics`
+#### SessionMetrics
 
 Emitted every 5 seconds and once at the end of the session.
 
@@ -470,7 +512,7 @@ Emitted every 5 seconds and once at the end of the session.
 }
 ```
 
-#### `SpeakerMetrics`
+#### SpeakerMetrics
 
 Emitted each time a speaker produces a recognised word.
 
@@ -490,7 +532,7 @@ Emitted each time a speaker produces a recognised word.
 
 #### SpeakersResult
 
-Emitted as a response to a `GetSpeakers` message.
+Emitted in response to `GetSpeakers`. Contains voice identifiers for all diarized speakers so far. See [Speaker ID](#speaker-id) for how to store and use these.
 
 ```json
 {
@@ -502,18 +544,33 @@ Emitted as a response to a `GetSpeakers` message.
 }
 ```
 
+#### EndOfTurnPrediction
+
+Emitted by `adaptive` and `smart` profiles when the model predicts the current turn is about to end. Can be used to begin preparing a response before `EndOfTurn` arrives, reducing perceived latency.
+
+:::note
+todo - payload details.
+:::
+
+#### SmartTurnPrediction
+
+Emitted by the `smart` profile only. A higher-confidence acoustic prediction of turn completion, based on the ML model that analyses vocal cues.
+
+:::note
+todo - payload details.
+:::
+
+#### SpeechStarted / SpeechEnded
+
+Voice activity detection events. Emitted when speech is first detected in the audio stream (`SpeechStarted`) or stops (`SpeechEnded`). These fire independently of speaker identity and turn boundaries.
+
+:::note
+todo - payload details.
+:::
 
 ---
 
 ## Features
-
-The Voice Agent API introduces key features built with voice agents in mind. These include:
-### **Speaker Focus**
-This lets you control which speakers' output your agent acts on. By default, all detected speakers are active and and their transcripts are included in `AddSegment` output.
-  
-  Speaker IDs (`S1`, `S2`, etc.) are assigned automatically when diarization is enabled and persist for the lifetime of the session.
-  Send `UpdateSpeakerFocus` at any point during the session to change who is in focus - the new config takes place immediately and replaces the previous one.
-
 
 ### Speaker Focus
 
