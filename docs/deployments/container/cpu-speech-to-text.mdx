@@ -235,7 +235,12 @@ Batch persisted workers (known as http batch workers), are batch multi session c
 accept batch jobs through POST and by using the [V2 Batch REST API](https://docs.speechmatics.com/api-ref/batch/create-a-new-job). This server was build to mimic exactly the V2 API capabilities and the whole life cycle
 of posting a job, checking the status of the jobs and retrieving for the transcript.
 
+The main benefit of this worker vs normal batch is that you don't incur the cost of spinning up the worker for each you want to transcribe.
+This has the benefit of reduding the turnaround time, especially for smaller files. The memory utilization is reduced as now you can have
+multiple jobs running in parallel in the same container sharing the memory, and remove the need to spin up mulitple container incuring the same memory cost as many times.
+Better utilizing the gpu as now we don't have initial setup times for the worker, and we are able to use the gpu uninterrupted.
 
+### How to run the worker and submit jobs to it
 You can run the persisted worker with:
 
 <CodeBlock language="bash">
