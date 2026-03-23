@@ -225,13 +225,13 @@ The following example shows how to use `--all-formats` parameter. In this scenar
 </CodeBlock>
 
 
-## Batch persisted worker transcription
+## Batch persistent worker transcription
 
 **This feature is available for onPrem containers only.**
 
 **Shall we mention the version which this is available too?????**
 
-Batch persisted workers (known as http batch workers), are batch multi session capable persisted workers. They work utilizing an http server, which is able to 
+Batch persistent workers (known as http batch workers), are batch multi session capable persistent workers. They work utilizing an http server, which is able to 
 accept batch jobs through POST and by using the [V2 Batch REST API](https://docs.speechmatics.com/api-ref/batch/create-a-new-job). This server was build to mimic exactly the V2 API capabilities and the whole life cycle
 of posting a job, checking the status of the jobs and retrieving for the transcript.
 
@@ -241,7 +241,7 @@ multiple jobs running in parallel in the same container sharing the memory, and 
 Better utilizing the gpu as now we don't have initial setup times for the worker, and we are able to use the gpu uninterrupted.
 
 ### How to run the worker and submit jobs to it
-You can run the persisted worker with:
+You can run the persistent worker with:
 
 <CodeBlock language="bash">
   {`docker run -it \\
@@ -302,7 +302,7 @@ async def main():
 asyncio.run(main())
 ```
 
-With the persisted batch worker you have the capability to submit multiple jobs on the same worker given it has enough free capacity to process them.
+With the persistent batch worker you have the capability to submit multiple jobs on the same worker given it has enough free capacity to process them.
 You can figure the free capacity left by querying the `/ready` endpoint outlined below. The result of this endpoint will include (`engines_used`) the total number of engines being 
 used by the running jobs now. To calculate the number of free engines you subtract the initial number of parallel engines you spinned 
 up the worker (set using `--parallel=NUM`) minus the engines you currently use.
@@ -525,7 +525,7 @@ Environment variables:
 The Realtime container provides the ability to transcribe speech data in a predefined language from a live stream or a recorded audio file.
 
 - Multiple instances of the container can be run on the same Docker host. This enables scaling of a single language or multiple languages as required
-- All data is transitory, once a container completes its transcription it removes all record of the operation, no data is persisted
+- All data is transitory, once a container completes its transcription it removes all record of the operation, no data is persistent
 
 Here's an example of how to start the Container from the command line:
 
@@ -640,7 +640,7 @@ Users may wish to run the Container in read-only mode. This may be necessary due
     rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
-The Container still requires a temporary directory with write permissions. Users can provide a directory (e.g `/tmp`) by using the `--tmpfs` Docker argument. A tmpfs mount is temporary, and only persisted in the host memory. When the Container stops, the tmpfs mount is removed, and files written there won’t be persisted.
+The Container still requires a temporary directory with write permissions. Users can provide a directory (e.g `/tmp`) by using the `--tmpfs` Docker argument. A tmpfs mount is temporary, and only persistent in the host memory. When the Container stops, the tmpfs mount is removed, and files written there won’t be persistent.
 
 If customers want to use the shared Custom Dictionary Cache feature, they must also specify the location of cache and mount it as a volume
 
