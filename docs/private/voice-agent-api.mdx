@@ -574,6 +574,10 @@ Emitted by `adaptive` and `smart` profiles when the model predicts the current t
 
 #### SmartTurnResult
 
+:::warning
+This message is currently emitted as `SmartTurnResult` during preview. It will be renamed to `SmartTurnPrediction` at GA.
+:::
+
 Emitted by the `smart` profile only. A higher-confidence acoustic prediction of turn completion, based on the ML model that analyses vocal cues.
 
 ```json
