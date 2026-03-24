@@ -98,7 +98,7 @@ sequenceDiagram
 
         opt Turn prediction (adaptive, smart profiles)
             S-->>C: EndOfTurnPrediction
-            S-->>C: SmartTurnPrediction (smart only)
+            S-->>C: SmartTurnResult (smart only)
         end
 
         S-->>C: AddSegment
@@ -254,7 +254,7 @@ All messages exchanged during a Voice Agent API session. For payload details, se
 | Message | Profile | When it's emitted |
 |---------|---------|------------------|
 | [`EndOfTurnPrediction`](#endofturnprediction) | `adaptive`, `smart` | The model predicts the current turn will end soon |
-| [`SmartTurnPrediction`](#smartturnprediction) | `smart` only | High-confidence acoustic prediction of turn completion |
+| [`SmartTurnResult`](#smartturnresult) | `smart` only | High-confidence acoustic prediction of turn completion |
 
 **Speech and speaker activity**
 
@@ -554,25 +554,87 @@ Emitted in response to `GetSpeakers`. Contains voice identifiers for all diarize
 
 Emitted by `adaptive` and `smart` profiles when the model predicts the current turn is about to end. Can be used to begin preparing a response before `EndOfTurn` arrives, reducing perceived latency.
 
-:::note
-todo - payload details.
-:::
+```json
+{
+    "message": "EndOfTurnPrediction",
+    "turn_id": 2,
+    "predicted_wait": 0.73,
+    "metadata": {
+        "ttl": 0.73,
+        "reasons": ["not__ends_with_eos"]
+    }
+}
+```
 
-#### SmartTurnPrediction
+**Fields:**
+- `turn_id` — the turn this prediction applies to
+- `predicted_wait` — estimated seconds until the turn ends
+- `metadata.ttl` — time to live; how long this prediction remains valid
+- `metadata.reasons` — internal signals that contributed to the prediction
+
+#### SmartTurnResult
 
 Emitted by the `smart` profile only. A higher-confidence acoustic prediction of turn completion, based on the ML model that analyses vocal cues.
 
-:::note
-todo - payload details.
-:::
+```json
+{
+    "message": "SmartTurnResult",
+    "prediction": {
+        "prediction": true,
+        "probability": 0.979,
+        "processing_time": 0.128
+    },
+    "metadata": {
+        "start_time": 0.0,
+        "end_time": 2.2,
+        "language": "en",
+        "speaker_id": "S1",
+        "total_time": 2.2
+    }
+}
+```
+
+**Fields:**
+- `prediction.prediction` — `true` if the model predicts the turn is complete
+- `prediction.probability` — confidence score (0–1)
+- `prediction.processing_time` — time taken by the ML model in seconds
+- `metadata.start_time` / `metadata.end_time` — audio window analysed
+- `metadata.total_time` — total session time at point of prediction
+- `metadata.speaker_id` — speaker being analysed (`null` if not yet identified)
 
 #### SpeechStarted / SpeechEnded
 
 Voice activity detection events. Emitted when speech is first detected in the audio stream (`SpeechStarted`) or stops (`SpeechEnded`). These fire independently of speaker identity and turn boundaries.
 
-:::note
-todo - payload details.
-:::
+```json
+{
+    "message": "SpeechStarted",
+    "probability": 0.508,
+    "transition_duration_ms": 192.0,
+    "metadata": {
+        "start_time": 2.1,
+        "end_time": 2.1
+    }
+}
+```
+
+```json
+{
+    "message": "SpeechEnded",
+    "probability": 0.307,
+    "transition_duration_ms": 192.0,
+    "metadata": {
+        "start_time": 0.4,
+        "end_time": 2.5
+    }
+}
+```
+
+**Fields:**
+- `probability` — VAD confidence score (0–1)
+- `transition_duration_ms` — duration of the speech/silence transition in milliseconds
+- `metadata.start_time` — when speech began (`SpeechStarted`: same as `end_time`; `SpeechEnded`: when the speaking interval started)
+- `metadata.end_time` — when the event was detected
 
 ---
 
