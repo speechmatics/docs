@@ -178,11 +178,17 @@ Configuration is passed in [`StartRecognition`](#startrecognition) and is split 
 
 **`audio_format`**
 
+:::warning
+Only `pcm_s16le` at `8000` or `16000` Hz is supported. Other encodings (e.g. `pcm_f32le`, `mulaw`) and sample rates (e.g. `44100`) may be silently accepted by the API but will not produce correct output.
+:::
+
 | Field | Notes |
 |-------|-------|
 | `type` | Must be `raw` |
 | `encoding` | Must be `pcm_s16le` (16-bit signed little-endian PCM) |
 | `sample_rate` | Must be `8000` or `16000` |
+
+Example: `{"type":"raw","encoding":"pcm_s16le","sample_rate":16000}`
 
 **`transcription_config`**
 
