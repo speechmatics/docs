@@ -675,21 +675,9 @@ Speaker ID lets you recognise the same person across separate sessions. At the e
 
 #### Getting identifiers
 
-Send `GetSpeakers` at any point during a session to retrieve identifiers for all diarized speakers so far. The server responds with a `SpeakersResult` message.
+Send [`GetSpeakers`](#getspeakers) at any point during a session to retrieve identifiers for all diarized speakers so far. The server responds with a [`SpeakersResult`](#speakersresult) message.
 
-`SpeakersResult` response:
-
-```json
-{
-  "message": "SpeakersResult",
-  "speakers": [
-    { "label": "S1", "speaker_identifiers": ["<id1>"] },
-    { "label": "S2", "speaker_identifiers": ["<id2>"] }
-  ]
-}
-```
-
-Store the `speaker_identifiers` values. These are opaque tokens tied to a speaker's voice profile — treat them as credentials and store them securely.
+Store the `speaker_identifiers` values from the response. These are opaque tokens tied to a speaker's voice profile — treat them as credentials and store them securely.
 
 #### Using identifiers in future sessions
 
