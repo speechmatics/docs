@@ -41,7 +41,9 @@ Adapts to each speaker's pace over the course of a conversation. It adjusts the 
 
 **Best for:** General conversational voice agents.
 
-**Trade-off:** Latency varies by speaker. Disfluency detection is English-only — other languages fall back to speech-rate adaptation.
+**Languages:** All supported languages. Disfluency detection is English-only — other languages fall back to speech-rate adaptation.
+
+**Trade-off:** Latency varies by speaker.
 
 ### `agile`
 
@@ -50,6 +52,8 @@ Adapts to each speaker's pace over the course of a conversation. It adjusts the 
 Uses voice activity detection (VAD) to detect silence and finalise turns as quickly as possible. The lowest latency profile.
 
 **Best for:** Use cases where response speed is the top priority and occasional mid-speech finalisations are acceptable.
+
+**Languages:** All supported languages.
 
 **Trade-off:** Because it relies on silence, it may finalise a turn while the speaker is still mid-sentence — for example, during a natural pause. This can result in additional downstream LLM calls.
 
@@ -61,7 +65,9 @@ Builds on `adaptive` with an additional ML model that analyses acoustic cues to 
 
 **Best for:** High-stakes conversations where cutting off the user is costly — finance, healthcare, legal.
 
-**Trade-off:** Higher latency than `adaptive`. Supported languages: Arabic, Bengali, Chinese, Danish, Dutch, English, Finnish, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Marathi, Norwegian, Polish, Portuguese, Russian, Spanish, Turkish, Ukrainian, Vietnamese.
+**Languages:** Arabic, Bengali, Chinese, Danish, Dutch, English, Finnish, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Marathi, Norwegian, Polish, Portuguese, Russian, Spanish, Turkish, Ukrainian, Vietnamese.
+
+**Trade-off:** Higher latency than `adaptive`.
 
 ### `external`
 
@@ -70,6 +76,8 @@ Builds on `adaptive` with an additional ML model that analyses acoustic cues to 
 Turn detection is fully manual. The server accumulates audio and transcript until you send a `ForceEndOfUtterance` message, at which point it finalises everything spoken up to that point and emits an `AddSegment`.
 
 **Best for:** Push-to-talk interfaces, custom VAD pipelines, or setups where an LLM decides when to respond.
+
+**Languages:** All supported languages.
 
 **Trade-off:** You are responsible for all turn detection logic.
 
