@@ -91,27 +91,21 @@ sequenceDiagram
     loop Audio Stream
         C->>S: Audio frames (binary)
         S-->>C: AudioAdded
-
         S-->>C: SpeechStarted
         S-->>C: StartOfTurn
-        S-->>C: AddPartialSegment
-
-        opt Turn prediction (adaptive, smart profiles)
-            S-->>C: EndOfTurnPrediction
-            S-->>C: SmartTurnResult (smart only)
-        end
-
+        S-->>C: SpeakerStarted
+        S-->>C: AddPartialSegment (repeating)
+        S-->>C: SpeakerMetrics (repeating)
+        S-->>C: EndOfTurnPrediction (adaptive, smart)
+        S-->>C: SmartTurnResult (smart only)
+        S-->>C: SpeechEnded
+        S-->>C: EndOfUtterance
+        S-->>C: SpeakerEnded
         S-->>C: AddSegment
         S-->>C: EndOfTurn
-        S-->>C: SpeechEnded
-
-        opt Speaker activity
-            S-->>C: SpeakerStarted / SpeakerEnded
-            S-->>C: SessionMetrics / SpeakerMetrics
-        end
 
         opt Mid-session controls
-            C->>S: ForceEndOfUtterance (external profile only)
+            C->>S: ForceEndOfUtterance (external only)
             C->>S: UpdateSpeakerFocus
             C->>S: GetSpeakers
             S-->>C: SpeakersResult
@@ -121,6 +115,8 @@ sequenceDiagram
     C->>S: EndOfStream
     S-->>C: EndOfTranscript
 ```
+
+`SessionMetrics` is emitted every 5 seconds independently of turn boundaries.
 
 For a full reference of all messages, see [Messages Overview](#messages-overview).
 
