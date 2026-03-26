@@ -12,7 +12,7 @@ import { Grid } from '@radix-ui/themes';
 import { LinkCard } from "@site/src/theme/LinkCard";
 import { Users, BookMarked, Zap, Mic, Radio, Clock } from 'lucide-react';
 
-import javascriptRadioExample from "./assets/javascript-radio-example.js?raw"
+import javascriptRtExample from "./assets/javascript-realtime-example.js?raw"
 import pythonRtExample from "./assets/sm-rt-example.py?raw"
 
 # Quickstart
@@ -50,6 +50,9 @@ Enterprise customers may need to speak to [Support](https://support.speechmatics
   ```
   npm install @speechmatics/real-time-client @speechmatics/auth
   ```
+  :::note
+  This quickstart uses `sox` for microphone input. Install it with `brew install sox` (macOS) or `apt install sox` (Linux).
+  :::
   </TabItem>
 </Tabs>
 
@@ -62,44 +65,45 @@ Replace `YOUR_API_KEY` with your key, then run the script.
     <CodeBlock language="python">
       {pythonRtExample}
     </CodeBlock>
-    Speak into your microphone. You should see output like:
-    ```
-    [Final]: Hello, welcome to Speechmatics.
-    [Final]: This is a real-time transcription example.
-    ```
     Press `Ctrl+C` to stop.
   </TabItem>
   <TabItem value="javascript" label="JavaScript">
     <CodeBlock language="javascript">
-      {javascriptRadioExample}
+      {javascriptRtExample}
     </CodeBlock>
-    This example transcribes a live radio stream. You should see a rolling transcript printed to the console.
-    Press `Ctrl+C` to stop.
   </TabItem>
 </Tabs>
+Speak into your microphone. You should see output like:
+```
+[Final]: Hello, welcome to Speechmatics.
+[Final]: This is a real-time transcription example.
+```
+Press `Ctrl+C` to stop.
 
 ## Understanding the output
 
-The API returns two types of transcript results. You can use either or both depending on your use case.
+The API returns two types of transcript results. **Finals** and **Partials**. 
+
+**Finals** represent the best transcription for a span of audio and are never updated once emitted.
+
+**Partials** are emitted immediately as audio arrives and may be revised as more context is processed.
 
 | Type | Latency | Stability | Best for |
 |------|---------|-----------|----------|
 | **Final** | ~0.7–2s | Definitive, never revised | Accurate transcripts, subtitles |
 | **Partial** | &lt;500ms | May be revised | Live captions, voice interfaces |
 
-**Finals** represent the best transcription for a span of audio and are never updated once emitted. You can tune their latency using [`max_delay`](/speech-to-text/realtime/output#latency) — lower values reduce delay at the cost of slight accuracy.
+## Receiving Finals and Partials
 
-**Partials** are emitted immediately as audio arrives and may be revised as more context is processed. A common pattern is to display partials immediately, then replace them with finals as they arrive.
-
-To receive partials, set `enable_partials=True` in your `TranscriptionConfig` and register a handler for `ADD_PARTIAL_TRANSCRIPT`:
+To receive partials, add the following changes and handlers to your code:
 
 <Tabs groupId="language">
   <TabItem value="python" label="Python">
-    ```python
+    ```python {4,8-11}
     config = TranscriptionConfig(
         language="en",
         max_delay=0.7,
-        enable_partials=True,  # Enable partial transcripts
+        enable_partials=True,
     )
 
     async with AsyncClient(api_key=API_KEY) as client:
@@ -113,38 +117,33 @@ To receive partials, set `enable_partials=True` in your `TranscriptionConfig` an
             if final := TranscriptResult.from_message(msg).metadata.transcript:
                 print(f"[Final]:   {final}")
     ```
-    With both handlers registered, you'll see partials arrive first, then be superseded by the final result:
-    ```
-    [Partial]: Hello wel
-    [Partial]: Hello welcome to
-    [Final]:   Hello, welcome to Speechmatics.
-    ```
   </TabItem>
   <TabItem value="javascript" label="JavaScript">
-    ```javascript
+    ```javascript {5,12-13}
     await client.start(jwt, {
         transcription_config: {
+            max_delay: 0.7,
             language: "en",
-            enable_partials: true, // Enable partial transcripts
+            enable_partials: true,
         },
     });
 
     client.addEventListener("receiveMessage", ({ data }) => {
-        if (data.message === "AddPartialTranscript") {
-            process.stdout.write(`[Partial]: ${data.metadata.transcript}\r`);
-        } else if (data.message === "AddTranscript") {
+        if (data.message === "AddTranscript") {
             console.log(`[Final]:   ${data.metadata.transcript}`);
+        } else if (data.message === "AddPartialTranscript") {
+            console.log(`[Partial]: ${data.metadata.transcript}\r`);
         }
     });
     ```
-    With both handlers registered, you'll see partials arrive first, then be superseded by the final result:
-    ```
-    [Partial]: Hello wel
-    [Partial]: Hello welcome to
-    [Final]:   Hello, welcome to Speechmatics.
-    ```
   </TabItem>
 </Tabs>
+With both handlers registered, you'll see partials arrive first, followed by the final result:
+```
+[Partial]: Hello
+[Partial]: Hello welcome to
+[Final]:   Hello, welcome to Speechmatics.
+```
 
 ## Next steps
 
