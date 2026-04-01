@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from "react";
 
 interface DevIconProps {
   name: string;
@@ -11,6 +11,3 @@ const DevIcon: React.FC<DevIconProps> = ({ name, size = 24 }) => {
 };
 
 export default DevIcon;
-
-
-

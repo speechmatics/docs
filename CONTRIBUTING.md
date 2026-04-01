@@ -44,7 +44,7 @@ This site is built using [Docusaurus](https://docusaurus.io/), a modern static w
 
 When changing the URL of a page, you need to take some steps to avoid broken links
 
-1. Update the `/scripts/redirects.json` file with the `source` and `target` URLs
+1. Update the `/scripts/redirects/redirects.json` file with the `source` and `target` URLs
 2. Run `npm run sync-redirects` to update `vercel.json`.
 3. Commit the changes to `vercel.json` and `scripts/redirects/redirects.json`.
 4. Update any pages which link to the old URL (CI pipeline should fail with an exhaustive list if any are found)

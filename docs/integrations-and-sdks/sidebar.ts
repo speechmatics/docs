@@ -1,5 +1,5 @@
-import pipecatSidebar from "./pipecat/sidebar";
 import livekitSidebar from "./livekit/sidebar";
+import pipecatSidebar from "./pipecat/sidebar";
 
 export default {
   type: "category",

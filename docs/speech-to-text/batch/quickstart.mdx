@@ -15,11 +15,10 @@ import CodeBlock from '@theme/CodeBlock'
 import { LinkCard } from "@site/src/theme/LinkCard";
 import SchemaNode from "@theme/Schema";
 import transcriptResponseSchema from "!openapi-schema-loader!@site/spec/batch.yaml"
-import { HelpCircle, BookOpen, FileAudio } from "lucide-react"
+import { HelpCircle, BookOpen, FileAudio, Users, Sparkles, Layers, BarChart2, BookMarked, Languages } from "lucide-react"
 
 import jsQuickstart from "./assets/file-transcription-quickstart.example.js?raw"
-import pythonQuickstart from "./assets/file-transcription-quickstart.py"
-import transcriptResponseExample from "./assets/transcript-response-example.json?raw"
+import pythonQuickstart from "./assets/speechmatics-batch-quickstart.py"
 
 # Quickstart
 
@@ -42,19 +41,19 @@ Enterprise customers may need to speak to [Support](https://support.speechmatics
 
 ### 2. Pick and install a library
 
-Check out our [JavaScript client](https://www.npmjs.com/package/@speechmatics/batch-client) or [Python client](https://pypi.org/project/speechmatics-python/) to get started.
+Check out our [Batch Python client](https://github.com/speechmatics/speechmatics-python-sdk) or [JavaScript client](https://www.npmjs.com/package/@speechmatics/batch-client) to get started.
 
 <Tabs>
+  <TabItem value="python" label="Python">
+  Install using pip:
+  ```
+  pip install speechmatics-batch
+  ```
+  </TabItem>
   <TabItem value="javascript" label="JavaScript">
   Install using NPM:
   ```
   npm install @speechmatics/batch-client
-  ```
-  </TabItem>
-  <TabItem value="python" label="Python">
-  Install using pip:
-  ```
-  pip3 install speechmatics-python
   ```
   </TabItem>
 </Tabs>
@@ -68,6 +67,15 @@ Download and save our [example.wav](https://github.com/speechmatics/speechmatics
 Paste your API key into `YOUR_API_KEY` in the code below.
 
 <Tabs>
+  <TabItem value="python" label="Python">
+  <CodeBlock language="python">
+    {pythonQuickstart}
+  </CodeBlock>
+  You should see the following output:
+  ```
+  SPEAKER S1: Welcome to Speechmatics. We're delighted that you've decided to try our speech to text software to get going. Just create an API key and submit a transcription request to our API. We hope you'll be very impressed by the results. Thank you.
+  ```
+  </TabItem>
   <TabItem value="javascript" label="JavaScript">
   <CodeBlock language="javascript">
     {jsQuickstart}
@@ -79,56 +87,47 @@ Paste your API key into `YOUR_API_KEY` in the code below.
   Welcome to Speechmatics . We're delighted that you've decided to try our speech to text software to get going . Just create an API key and submit a transcription request to our API . We hope you'll be very impressed by the results . Thank you .
   ```
   </TabItem>
-  <TabItem value="python" label="Python">
-  <CodeBlock language="python">
-    {pythonQuickstart}
-  </CodeBlock>
-  </TabItem>
 </Tabs>
 
+### Next Steps
 
-### Transcript response schema
-
-The transcript includes information about the job and metadata such as the transcription configuration that was used.
-
-Please refer to our [API Reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#responses) for full details about the transcript contents.
-
-<SchemaNode schema={transcriptResponseSchema.paths["/jobs/{jobid}/transcript"].get.responses["200"].schema} />
-
-
-### Example response
-
-The following is an example of a transcript response, which you should see as an output of the provided [example.wav](https://github.com/speechmatics/speechmatics-js-sdk/raw/7d219bfee9166736e6aa21598535a194387b84be/examples/nodejs/example.wav) file used in the [code samples above](#4-insert-api-key).
-
-<CodeBlock language="json">
-  {JSON.stringify(transcriptResponseExample, null, 2)}
-</CodeBlock>
-
-## Quicklinks
+Now that you have a basic transcription working, explore these features to get more out of your audio.
 
 <Grid columns={{initial: "1", md: "2"}} gap="3">
   <LinkCard
-    title="Troubleshooting"
-    description="Resolve common issues with the Batch API"
-    href="/speech-to-text/batch/troubleshooting"
-    icon={<HelpCircle/>}
+    title="Speaker Diarization"
+    description="Identify who said what by labeling each speaker in your transcript"
+    href="/speech-to-text/batch/batch-diarization"
+    icon={<Users/>}
   />
   <LinkCard
-    title="API Reference"
-    description="Full details about the Batch API"
-    href="/api-ref/batch/create-a-new-job"
-    icon={<BookOpen/>}
+    title="Custom Dictionary"
+    description="Boost transcription accuracy with domain-specific vocabulary"
+    href="/speech-to-text/features/custom-dictionary"
+    icon={<BookMarked/>}
   />
   <LinkCard
-    title="Inputs"
-    description="See which file types are supported"
-    href="/speech-to-text/batch/input"
-    icon={<FileAudio/>}
+    title="Summarization"
+    description="Automatically generate concise summaries of your transcripts"
+    href="/speech-to-text/batch/speech-intelligence/summarization"
+    icon={<Sparkles/>}
   />
   <LinkCard
-    title="Limits"
-    description="See the limits for the Batch API"
-    href="/speech-to-text/batch/limits"
-    icon={<FileAudio/>}
+    title="Sentiment Analysis"
+    description="Detect the sentiment and emotional tone within your transcripts"
+    href="/speech-to-text/batch/speech-intelligence/sentiment-analysis"
+    icon={<BarChart2/>}
+  />
+  <LinkCard
+    title="Auto Chapters"
+    description="Segment long transcripts into meaningful, titled chapters"
+    href="/speech-to-text/batch/speech-intelligence/auto-chapters"
+    icon={<Layers/>}
+  />
+  <LinkCard
+    title="Translation"
+    description="Translate your transcripts into other languages automatically"
+    href="/speech-to-text/features/translation"
+    icon={<Languages/>}
   />
 </Grid>

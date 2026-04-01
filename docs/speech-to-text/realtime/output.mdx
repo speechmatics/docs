@@ -4,6 +4,7 @@ keywords: [speechmatics, real-time, rt, latency, low latency, fast, transcriptio
 title: 'Output – Realtime'
 sidebar_label: 'Output'
 ---
+import Admonition from '@theme/Admonition'
 
 # Output
 
@@ -111,3 +112,17 @@ With `Partials` enabled and `max_delay_mode` as `fixed`, messages received could
 - **(Final)**: five.
 
 **Final output**: I am 30 five.
+
+## App usage tracking
+
+:::tip
+First, please contact [Support](https://support.speechmatics.com) to enable this feature.
+:::
+
+For integrations where customers use their own Speechmatics API keys, gain insights into application usage by aggregating data on unique users, processing hours, languages used, and more.
+
+Once enabled, use the `sm-app` query parameter in the connection string when starting a session. For example:
+
+```bash
+wss://eu.rt.speechmatics.com/v2?sm-app=YourAppID
+```
