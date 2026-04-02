@@ -28,6 +28,8 @@ The list above is exhaustive - any file format outside the list above is explici
 
 Only files where the type can be determined by data inspection are supported. Raw audio formats where the codec is not embedded in the file cannot be processed in batch mode. This includes files commonly given extensions like ".raw" or ".g729" where the codec is only hinted at in the name.
 
+The optimal format for speed is 16bit 16kHz mono WAV. This format will not need preprocessing before transcription, which can make a difference to turnaround time for very short input files.
+
 ## Job configuration options
 
 Jobs are configured by passing a JSON string to the `config` field of the `CreateJobRequest` (see [API reference](/api-ref/batch/create-a-new-job))
