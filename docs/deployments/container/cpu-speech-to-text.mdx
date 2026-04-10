@@ -443,7 +443,7 @@ The Health Service offers three endpoints:
 #### `/jobs`
 
 This endpoint provides a list of the currently running jobs. It can be queried using an HTTP GET request.
-Returns a dictionary including the maximum number of engines this worker can use (`max_engines`), the number of free engines able to pick up work `unused_engines`
+Returns a dictionary including the maximum number of engines this worker can use (`max_engines`), the number of free engines able to pick up work (`unused_engines`)
 and a list of the currently running jobs, with element includes the job id and the number of engines that job uses. The number of free engines `unused_engines` can be used
 to determine the number of parallel engines you can request for the next job.
 
