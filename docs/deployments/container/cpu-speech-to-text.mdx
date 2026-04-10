@@ -293,7 +293,7 @@ load_dotenv()
 
 async def main():
     client = AsyncClient(api_key=os.getenv("SPEECHMATICS_API_KEY"), url="address.of.container:PORT/v2")
-    result = await client.transcribe("audio.wav",parallel_engines=2, user_id="MY_USER_ID")
+    result = await client.transcribe("audio.wav", parallel_engines=2, user_id="MY_USER_ID")
     print(result.transcript_text)
     await client.close()
 
