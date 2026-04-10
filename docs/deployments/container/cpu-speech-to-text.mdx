@@ -255,7 +255,7 @@ You can run the persistent worker with:
 </CodeBlock>
 
 The parameters are:
-- `parallel` - The number of parallel sessions you want this container to have (Each session corresponds to one gpu connection). The more sessions the higher
+- `parallel` - The number of parallel engines you want this container to have (Each session corresponds to one gpu connection). The more engines the higher
   throughput you should be able to get (until you max out your gpu capacity). (Might worth adding recommendations here? IDK).
 - `all-formats` This is similar to [Generating multiple transcript formats](https://docs.speechmatics.com/deployments/container/cpu-speech-to-text#generating-multiple-transcript-formats).
   If this is not provided the default path that all jobs and logs will be saved to is `/tmp/jobs`.
@@ -434,7 +434,7 @@ returns the logs for the specific job
 ### Health service
 
 The container is exposes an http Health Service, which offers liveness, readiness, and session listing probes. This is accessible from the same port
-as job posting, and has 3 endpoints, `live`, `ready` and `sessions`. This may be especially helpful if you are deploying the container into a Kubernetes
+as job posting, and has 3 endpoints, `live`, `ready` and `jobs`. This may be especially helpful if you are deploying the container into a Kubernetes
 cluster. If you are using Kubernetes, we recommend that you also refer to the Kubernetes documentation around
 [liveness and readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
 
@@ -442,24 +442,34 @@ cluster. If you are using Kubernetes, we recommend that you also refer to the Ku
 
 The Health Service offers three endpoints:
 
-#### `/sessions`
+#### `/jobs`
 
 This endpoint provides a list of the currently running jobs. It can be queried using an HTTP GET request.
-Returns a list of the currently running jobs, which has a comma separate string of request_id and parallel_engines used for this job pair.
+Returns a dictionary including the maximum number of engines this worker can use (`max_engines`), the number of free engines able to pick up work `unused_engines`
+and a list of the currently running jobs, with element includes the job id and the number of engines that job uses. The number of free engines `unused_engines` can be used
+to determine the number of parallel engines you can request for the next job.
 
 Example:
 
 ```bash-and-response
-$ curl -i address.of.container:PORT/sessions
+$ curl -i address.of.container:PORT/jobs
 HTTP/1.1 200 OK
 Server: BaseHTTP/0.6 Python/3.8.5
 Date: Mon, 08 Feb 2021 12:46:21 GMT
 Content-Type: application/json
 {
-  "request_ids": [
-    "978174b1564e40ccacba,2",
-    "52d532a2efcb4b78962b,2"
-  ]
+  "active_jobs": [
+    {
+      "job_id": "f8a564954b334eecb823",
+      "parallel_engines": 1
+    },
+    {
+      "job_id": "29351ae8cf2c4e8694f0",
+      "parallel_engines": 1
+    }
+  ],
+  "max_engines": 8,
+  "unused_engines": 6
 }
 ```
 
