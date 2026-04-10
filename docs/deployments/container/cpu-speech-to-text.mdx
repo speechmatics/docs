@@ -500,9 +500,8 @@ Content-Type: application/json
 
 This endpoint provides a readiness probe. It can be queried using an HTTP GET request.
 
-The container has been designed to process multiple jobs cuncurrently. This probe indicates whether the container has one slot (one engine) free for connections, and can be used as a scaling mechanism.
+The container has been designed to process multiple jobs concurrently. This probe indicates whether the container has one slot (one engine) free for connections, and can be used as a scaling mechanism.
 
-return `{"ready": True, "engines_used": self.engines_used}`
 Possible responses:
 
 - `200` if the container has a free connection slot.
