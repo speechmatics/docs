@@ -1,98 +1,189 @@
 ---
-description: Learn how to convert streaming audio to text.
+pagination_prev: null
+pagination_next: null
+description: Learn how to transcribe streaming audio to text in real-time.
 ---
 
 import Admonition from '@theme/Admonition';
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { Grid } from '@radix-ui/themes';
+import { LinkCard } from "@site/src/theme/LinkCard";
+import { Users, BookMarked, Zap, Mic, Radio, Clock } from 'lucide-react';
 
-import javascriptRadioExample from "./assets/javascript-radio-example.js?raw"
-import pythonRadioExample from "./assets/url-example.py?raw"
+import javascriptRtExample from "./assets/javascript-realtime-example.mjs?raw"
+import pythonRtExample from "./assets/sm-rt-example.py?raw"
 
 # Quickstart
 
 :::tip
-The easiest way to try Realtime transcription is via the [web portal](https://portal.speechmatics.com/jobs/create/real-time).
+The quickest way to try Realtime transcription is via the [web portal](https://portal.speechmatics.com/jobs/create/real-time) — no code required.
 :::
 
-## Using the Realtime SaaS webSocket API
+## Using the Realtime API
+
+The Realtime API streams audio over a WebSocket connection and returns transcript results as you speak. Unlike the [Batch API](/speech-to-text/batch/quickstart), results arrive continuously — within milliseconds of the spoken words.
 
 ### 1. Create an API key
 
-[Create an API key in the portal here](https://portal.speechmatics.com/settings/api-keys), which you'll use to securely access the API.
-Store the key as a managed secret.
+[Create an API key in the portal](https://portal.speechmatics.com/settings/api-keys), which you'll use to securely access the API. Store the key as a managed secret.
 
 :::info
 Enterprise customers may need to speak to [Support](https://support.speechmatics.com) to get your API keys.
 :::
 
-### 2. Pick and install a library
-
-Check out our [JavaScript client](https://www.npmjs.com/package/@speechmatics/real-time-client) or [Python client](https://pypi.org/project/speechmatics-python/) to get started.
+### 2. Install the library
 
 <Tabs groupId="language">
-  <TabItem value="javascript" label="JavaScript">
-    ```
-    npm install @speechmatics/real-time-client @speechmatics/auth
-    ```
-  </TabItem>
   <TabItem value="python" label="Python">
-    ```
-    pip3 install speechmatics-python
-    ```
+  Install using pip:
+  ```
+  pip install speechmatics-rt pyaudio
+  ```
+  :::note
+  `pyaudio` is required for microphone input in this quickstart.
+  :::
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript">
+  Install using npm:
+  ```
+  npm install @speechmatics/real-time-client @speechmatics/auth
+  ```
+  :::note
+  This quickstart uses `sox` for microphone input. Install it with `brew install sox` (macOS) or `apt install sox` (Linux).
+  :::
   </TabItem>
 </Tabs>
 
+### 3. Run the example
 
-### 3. Insert your API key
-
-Paste your API key into `YOUR_API_KEY` in the code.
+Replace `YOUR_API_KEY` with your key, then run the script.
 
 <Tabs groupId="language">
-  <TabItem value="javascript" label="JavaScript">
-    <CodeBlock language="javascript">
-      {javascriptRadioExample}
-    </CodeBlock>
-  </TabItem>
   <TabItem value="python" label="Python">
     <CodeBlock language="python">
-      {pythonRadioExample}
+      {pythonRtExample}
+    </CodeBlock>
+    Press `Ctrl+C` to stop.
+  </TabItem>
+  <TabItem value="javascript" label="NodeJS + Sox">
+    <CodeBlock language="javascript">
+      {javascriptRtExample}
     </CodeBlock>
   </TabItem>
 </Tabs>
+Speak into your microphone. You should see output like:
+```
+[Final]: Hello, welcome to Speechmatics.
+[Final]: This is a real-time transcription example.
+```
+Press `Ctrl+C` to stop.
 
+## Understanding the output
 
+The API returns two types of transcript results. **Finals** and **Partials**. 
 
-## Transcript outputs
+**Finals** represent the best transcription for a span of audio and are never updated once emitted.
 
-The API returns transcripts in JSON format. You can receive two types of output: [Final](#final-transcripts) and [Partial](#partial-transcripts) transcripts. Choose the type based on your latency and accuracy needs.
+**Partials** are emitted immediately as audio arrives and may be revised as more context is processed.
 
-### Final transcripts
+| Type | Latency | Stability | Best for |
+|------|---------|-----------|----------|
+| **Final** | ~0.7–2s | Definitive, never revised | Accurate transcripts, subtitles |
+| **Partial** | &lt;500ms | May be revised | Live captions, voice interfaces |
 
-Final transcripts are the definitive result.
-- They reflect the best transcription for the spoken audio.
-- Once displayed, they are not updated.
-- Words arrive incrementally, with some delay.
+## Receiving Finals and Partials
 
-You control the latency and accuracy tradeoff [using the `max_delay` setting](/speech-to-text/realtime/output#latency) in your `transcription_config`.
-Larger values of `max_delay` increase accuracy by giving the system more time to process audio context.
+To receive partials, add the following changes and handlers to your code:
 
-:::tip
-Best for accurate, completed transcripts where some delay is acceptable
-:::
+<Tabs groupId="language">
+  <TabItem value="python" label="Python">
+    ```python {4,8-11}
+    config = TranscriptionConfig(
+        language="en",
+        max_delay=0.7,
+        enable_partials=True,
+    )
 
-### Partial transcripts
+    async with AsyncClient(api_key=API_KEY) as client:
+        @client.on(ServerMessageType.ADD_PARTIAL_TRANSCRIPT)
+        def handle_partials(msg):
+            if partial := TranscriptResult.from_message(msg).metadata.transcript:
+                print(f"[Partial]: {partial}")
 
-Partial transcripts are low-latency and can update later as more conversation context arrives.
-- You must enable them using `enable_partials` in your `transcription_config`.
-- Partials are emitted quickly (typically less than 500ms).
-- The engine may revise them as more audio is processed.
+        @client.on(ServerMessageType.ADD_TRANSCRIPT)
+        def handle_finals(msg):
+            if final := TranscriptResult.from_message(msg).metadata.transcript:
+                print(f"[Final]:   {final}")
+    ```
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript">
+    ```javascript {5,12-13}
+    await client.start(jwt, {
+        transcription_config: {
+            max_delay: 0.7,
+            language: "en",
+            enable_partials: true,
+        },
+    });
 
-You can combine partials with finals for a responsive user experience — show partials first, then replace them with finals as they arrive.
+    client.addEventListener("receiveMessage", ({ data }) => {
+        if (data.message === "AddTranscript") {
+            console.log(`[Final]:   ${data.metadata.transcript}`);
+        } else if (data.message === "AddPartialTranscript") {
+            console.log(`[Partial]: ${data.metadata.transcript}\r`);
+        }
+    });
+    ```
+  </TabItem>
+</Tabs>
+With both handlers registered, you'll see partials arrive first, followed by the final result:
+```
+[Partial]: Hello
+[Partial]: Hello welcome to
+[Final]:   Hello, welcome to Speechmatics.
+```
 
-You control the latency and accuracy tradeoff using the [`max_delay` setting](/speech-to-text/realtime/output#latency) in your `transcription_config`.
+## Next steps
 
-:::tip
-Use partials for: real-time captions, voice interfaces, or any case where speed matters
-:::
+Now that you have Realtime transcription working, explore these features to build more powerful applications.
+
+<Grid columns={{initial: "1", md: "2"}} gap="3">
+  <LinkCard
+    title="Speaker Diarization"
+    description="Identify and label individual speakers in a multi-person conversation"
+    href="/speech-to-text/realtime/realtime-diarization"
+    icon={<Users/>}
+  />
+  <LinkCard
+    title="Custom Dictionary"
+    description="Boost accuracy for domain-specific terms, names, and acronyms"
+    href="/speech-to-text/features/custom-dictionary"
+    icon={<BookMarked/>}
+  />
+  <LinkCard
+    title="Turn Detection"
+    description="Detect when a speaker finishes their utterance — ideal for voice assistants"
+    href="/speech-to-text/realtime/turn-detection"
+    icon={<Clock/>}
+  />
+  <LinkCard
+    title="Output & Latency"
+    description="Fine-tune transcript timing with max_delay and partial transcripts"
+    href="/speech-to-text/realtime/output"
+    icon={<Zap/>}
+  />
+  <LinkCard
+    title="Audio Input"
+    description="Supported formats, sample rates, and how to send audio from any source"
+    href="/speech-to-text/realtime/input"
+    icon={<Mic/>}
+  />
+  <LinkCard
+    title="Speaker Identification"
+    description="Recognize known speakers by enrolling voice profiles"
+    href="/speech-to-text/realtime/speaker-identification"
+    icon={<Radio/>}
+  />
+</Grid>
