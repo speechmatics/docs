@@ -230,7 +230,7 @@ The following example shows how to use `--all-formats` parameter. In this scenar
 
 **Available from version 15.5.0**
 
-Batch persistent workers (known as http batch workers), are batch multi session capable persistent workers. They work utilizing an http server, which is able to 
+Batch persistent workers (known as http batch workers), are batch multi session capable persistent workers. They are able to run on both CPU and GPU, although using GPU yields better results.They work utilizing an http server, which is able to 
 accept batch jobs through POST and by using the [V2 Batch REST API](https://docs.speechmatics.com/api-ref/batch/create-a-new-job). This server was build to mimic exactly the V2 API capabilities and the whole life cycle
 of posting a job, checking the status of the jobs and retrieving for the transcript.
 
