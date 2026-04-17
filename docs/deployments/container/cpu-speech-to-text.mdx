@@ -225,6 +225,308 @@ The following example shows how to use `--all-formats` parameter. In this scenar
 </CodeBlock>
 
 
+## Batch persistent worker transcription
+
+
+**Available from version 15.5.0**
+
+Batch persistent workers (known as http batch workers), are batch multi session capable persistent workers. They are able to run on both CPU and GPU, although using GPU yields better results.They work utilizing an http server, which is able to 
+accept batch jobs through POST and by using the [V2 Batch REST API](https://docs.speechmatics.com/api-ref/batch/create-a-new-job). This server was build to mimic exactly the V2 API capabilities and the whole life cycle
+of posting a job, checking the status of the jobs and retrieving for the transcript.
+
+The main benefit of this worker vs normal batch is that you don't incur the cost of spinning up the worker for each you want to transcribe.
+This has the benefit of reduding the turnaround time, especially for smaller files. The memory utilization is reduced as now you can have
+multiple jobs running in parallel in the same container sharing the memory, and remove the need to spin up mulitple container incuring the same memory cost as many times.
+Better utilizing the gpu as now we don't have initial setup times for the worker, and we are able to use the gpu uninterrupted.
+
+### How to run the worker and submit jobs to it
+You can run the persistent worker with:
+
+<CodeBlock language="bash">
+  {`docker run -it \\
+    -e LICENSE_TOKEN=$TOKEN_VALUE \\
+    -p PORT:18000 \\
+    batch-asr-transcriber-en:${smVariables.latestContainerVersion} \\
+    --run-mode http \\
+    --parallel=4 \\
+    --all-formats /output_dir_name
+`}
+</CodeBlock>
+
+The parameters are:
+- `parallel` - The number of parallel engines you want this container to have (Each session corresponds to one gpu connection). The more engines the higher
+  throughput you should be able to get (until you max out your gpu capacity). (Might worth adding recommendations here? IDK).
+- `all-formats` This is similar to [Generating multiple transcript formats](https://docs.speechmatics.com/deployments/container/cpu-speech-to-text#generating-multiple-transcript-formats).
+  If this is not provided the default path that all jobs and logs will be saved to is `/tmp/jobs`.
+- `PORT` The port of your local environment you will forward to docker container's port.
+
+By default the persistent worker listens on port 18000. You can configure this to use a different port via the environment variable `SM_BATCH_WORKER_LISTEN_PORT`.
+
+To submit a job you can either use curl directly or use the python sdk.
+With curl:
+```
+    curl -X POST address.of.container:PORT/v2/jobs \
+    -H 'X-SM-Processing-Data: {"parallel_engines":2, "user_id":"MY_USER_ID"}' \
+    -F 'config={
+            "type":"transcription",
+            "transcription_config":{"language":"en","diarization":"speaker","operating_point":"enhanced"}
+            }' \
+    -F 'data_file=@~/audio_file.mp3'
+```
+
+Returns:
+```
+on success: json string containing job id: `{"job_id": "abcdefgh01"}` and HTTP status code 201
+on failure: returns an HTTP status code != 200:
+  HTTP status code 503 for server busy
+  HTTP status code 400 for invalid request
+```
+
+with [python sdk](https://github.com/speechmatics/speechmatics-python-sdk?tab=readme-ov-file#batch-transcription):
+```
+import asyncio
+import os
+from dotenv import load_dotenv
+from speechmatics.batch import AsyncClient
+
+load_dotenv()
+
+async def main():
+    client = AsyncClient(api_key=os.getenv("SPEECHMATICS_API_KEY"), url="address.of.container:PORT/v2")
+    result = await client.transcribe("audio.wav", parallel_engines=2, user_id="MY_USER_ID")
+    print(result.transcript_text)
+    await client.close()
+
+asyncio.run(main())
+```
+
+With the persistent batch worker you have the capability to submit multiple jobs on the same worker given it has enough free capacity to process them.
+You can figure the free capacity left by querying the `/ready` endpoint outlined below. The result of this endpoint will include (`engines_used`) the total number of engines being 
+used by the running jobs now. To calculate the number of free engines you subtract the initial number of parallel engines you spinned 
+up the worker (set using `--parallel=NUM`) minus the engines you currently use.
+
+If as part of a job you request more engines that those free, the job won't be accepted and will return a 503 with:
+
+`HTTP 503: Service Unavailable - {"detail":"Server busy: 8 engines not available (2 engines in use, 5 parallel allowed)"}`
+
+
+By requesting more engines in parallel for a job, you are able to improve the turnaround time for the job.
+
+To request multiple engines in parallel for a job you need to add a header in the POST request called `X-SM-Processing-Data`, which receives as input a json dictionary.
+The specify the number of parallel engines you want you need to add to this header a dict with key `parallel_engines` and as value the number of engines you want.
+
+For example with curl:
+```
+    curl -X POST address.of.container:PORT/v2/jobs \
+    -H 'X-SM-Processing-Data: {"parallel_engines":2}' \
+    -F 'config={
+            "type":"transcription",
+            "transcription_config":{"language":"en","diarization":"speaker","operating_point":"enhanced"}
+            }' \
+    -F 'data_file=@~/audio_file.mp3'
+```
+
+To enable the [Speaker identification](/speech-to-text/features/speaker-identification) feature using the same header as above `X-SM-Processing-Data`
+insert as a key `user_id`, and value the id of the user/customer.
+```
+    curl -X POST address.of.container:PORT/v2/jobs \
+    -H 'X-SM-Processing-Data: {"user_id":"MY_USER_ID"}' \
+    -F 'config={
+            "type":"transcription",
+            "transcription_config":{"language":"en","diarization":"speaker","operating_point":"enhanced"}
+            }' \
+    -F 'data_file=@~/audio_file.mp3'
+```
+
+### Job API endpoints
+
+`/v2/jobs`
+
+args: created_before: string in ISO 8601 format, only returns jobs created before this time
+limit: maximum number of jobs to return, can be between 1 and 100
+
+returns: list of jobs
+```json
+{
+  "jobs": [
+    {
+      "id": "191f47e4a4204fa4ac2b",
+      "created_at": "2026-03-18T19:27:42.436Z",
+      "data_name": "5_min",
+      "text_name": null,
+      "duration": 300,
+      "status": "RUNNING",
+      "config": {
+        "type": "transcription",
+        "transcription_config": {
+          "language": "en",
+          "diarization": "speaker",
+          "operating_point": "enhanced"
+        }
+      }
+    },
+    {
+      "id": "6dcb02e0dc5943e2b643",
+      "created_at": "2026-03-18T19:27:47.550Z",
+      "data_name": "5_min",
+      "text_name": null,
+      "duration": 300,
+      "status": "RUNNING",
+      "config": {
+        "type": "transcription",
+        "transcription_config": {
+          "language": "en",
+          "diarization": "speaker",
+          "operating_point": "enhanced"
+        }
+      }
+    }
+  ]
+}
+```
+
+
+`/v2/jobs/{job_id}/transcript`
+
+args: job_id and format of the transcript. Options for the format transcript currently are : "json", "txt", "srt".
+
+Returns the transcript for a specific job if it has finished, the format is a valid choice, and the job_id exists.
+
+if the job_id doesn’t exist returns an HTTPException with 404.
+
+if the job hasn’t finished, returns a 404, and includes the status and request_id.
+
+if the format is not in our included list we return a 404 with error = unsupported format.
+
+
+`/v2/jobs/{job_id}`
+
+returns job status, including job_id and request_id
+
+```json
+{
+  "job": {
+    "id": "191f47e4a4204fa4ac2b",
+    "created_at": "2026-03-18T19:27:42.436Z",
+    "data_name": "5_min",
+    "duration": 300,
+    "status": "DONE",
+    "config": {
+      "type": "transcription",
+      "transcription_config": {
+        "language": "en",
+        "diarization": "speaker",
+        "operating_point": "enhanced"
+      }
+    },
+    "request_id": "191f47e4a4204fa4ac2b"
+  }
+}
+```
+
+`/v2/jobs/{job_id}/log`
+
+returns the logs for the specific job
+
+
+### Health service
+
+The container is exposes an http Health Service, which offers liveness, readiness, and session listing probes. This is accessible from the same port
+as job posting, and has 3 endpoints, `live`, `ready` and `jobs`. This may be especially helpful if you are deploying the container into a Kubernetes
+cluster. If you are using Kubernetes, we recommend that you also refer to the Kubernetes documentation around
+[liveness and readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
+
+#### Endpoints
+
+The Health Service offers three endpoints:
+
+#### `/jobs`
+
+This endpoint provides a list of the currently running jobs. It can be queried using an HTTP GET request.
+Returns a dictionary including the maximum number of engines this worker can use (`max_engines`), the number of free engines able to pick up work (`unused_engines`)
+and a list of the currently running jobs, with element includes the job id and the number of engines that job uses. The number of free engines `unused_engines` can be used
+to determine the number of parallel engines you can request for the next job.
+
+Example:
+
+```bash-and-response
+$ curl -i address.of.container:PORT/jobs
+HTTP/1.1 200 OK
+Server: BaseHTTP/0.6 Python/3.8.5
+Date: Mon, 08 Feb 2021 12:46:21 GMT
+Content-Type: application/json
+{
+  "active_jobs": [
+    {
+      "job_id": "f8a564954b334eecb823",
+      "parallel_engines": 1
+    },
+    {
+      "job_id": "29351ae8cf2c4e8694f0",
+      "parallel_engines": 1
+    }
+  ],
+  "max_engines": 8,
+  "unused_engines": 6
+}
+```
+
+#### `/live`
+
+This endpoint provides a liveness probe. It can be queried using an HTTP GET request.
+
+This probe indicates whether all services in the Container are active. 
+
+Possible responses:
+
+- `200` if all of the services in the Container have successfully started, and have recently sent an update to the Health Service.
+
+A JSON object is also returned in the body of the response, indicating the status.
+
+Example:
+
+```bash-and-response
+$ curl -i address.of.container:PORT/live
+HTTP/1.1 200 OK
+Server: BaseHTTP/0.6 Python/3.8.5
+Date: Mon, 08 Feb 2021 12:46:45 GMT
+Content-Type: application/json
+{
+    "live": true
+}
+```
+
+#### `/ready`
+
+This endpoint provides a readiness probe. It can be queried using an HTTP GET request.
+
+The container has been designed to process multiple jobs concurrently. This probe indicates whether the container has one slot (one engine) free for connections, and can be used as a scaling mechanism.
+
+Possible responses:
+
+- `200` if the container has a free connection slot.
+- `503` otherwise.
+
+In the body of the response there is also a JSON object with the current status, and the total number of engines being used.
+
+Example:
+
+```bash-and-response
+$ curl -i address.of.container:PORT/ready
+HTTP/1.1 200 OK
+Server: BaseHTTP/0.6 Python/3.8.5
+Date: Mon, 08 Feb 2021 12:47:05 GMT
+Content-Type: application/json
+{
+    "ready": true,
+    "engines_used": 2
+}
+```
+
+Environment variables:
+
+`SM_BATCH_WORKER_MAX_JOB_HISTORY` : This is the maximum number of job records to keep in memory
+
 ## Realtime transcription
 
 The Realtime container provides the ability to transcribe speech data in a predefined language from a live stream or a recorded audio file.
