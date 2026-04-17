@@ -1,0 +1,185 @@
+---
+description: Get started with our next generation model
+---
+
+# Next Generation Model
+## Introduction
+We are excited to offer early access to our next generation model, codenamed Omni. This new architecture is designed to provide improved multilingual capabilities, faster turnaround time and improved alphanumeric accuracy across all supported languages.
+
+Currently available for Batch transcription, the Omni model will be made available for Realtime transcription in Q3 2026.
+
+This page will guide you through how to access the new model, and what to expect in terms of capabilities.
+
+## Getting started 
+You can start right away using your existing API keys, no new credentials needed. If you don't have an API key, head to the [Portal](https://portal.speechmatics.com) to get one. 
+
+Once you have your API key, there are a few ways to try out the new model:
+1. Try the [**demo app**](https://next-gen-preview.speechmatics.com/) to quickly compare the new model's results with the current Standard and Enhanced model
+2. Try the API using the reference documentation below
+
+## API reference
+The API schema is consistent with the [V2 Batch REST API](https://docs.speechmatics.com/api-ref/batch/create-a-new-job). Example minimal transcription config:
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    // highlight-start
+    "language": "multi",
+    "operating_point": "omni-v1",
+    // highlight-end
+  }
+}
+```
+
+Two new properties have been introduced into the returned job metadata based on languages appearing in the transcript:
+
+
+```json
+{
+  "language_pack_info": {
+    ...
+    "per_language_word_delimiters": {
+      "ar": " ",
+      "en": " ",
+    },
+    "per_language_writing_direction": {
+      "ar": "right-to-left",
+      "en": "left-to-right",
+    }
+  }
+} 
+```
+
+### Supported Endpoints
+
+| Region          | Endpoint                         |
+| ------------- | --------------- |
+| EU1 (Europe)    | **eu1.asr.api.speechmatics.com** |
+| US1 (USA)       | **us1.asr.api.speechmatics.com** |
+
+## Capabilities
+
+|  Feature  | Current capability     | Future plans     |
+| ------------- | --------------- |----- |
+| Modes |   Batch only | Q3: Realtime mode available |
+| Accuracy - Monolingual audio |  Matching Standard model on general conversation |  Q3: Improved recognition of domain specific terms and proper nouns   | 
+| Accuracy - Multilingual audio |  Multilingual files fully supported across all [supported languages](../speech-to-text/languages#transcription-languages)      | Q2: Specify a list of languages that may be present in the audio to improve accuracy <br/> Q3: Improved code-switching accuracy |
+| Accuracy - Alphanumerics | ✅ Matching Enhanced model accuracy, though formatting consistency not yet implemented | Q3: Further improved accuracy and formatting consistency |
+| Diarization | Channel diarization available | Q2: Speaker diarization available |
+| Additional context | Custom dictionary not supported | Q3: Support for additional context, similar to custom dictionary |
+| Language labelling | Language labelling at the granularity of around 14 seconds | Q2: Word level language labelling |
+| Disfluencies | Reduced disfluency transcription | Q3: Increased transcription (with tagging)|
+| Turnaround time |	✅ Match Standard model | Further improvements expected throughout 2026 |
+| Word timings |	✅ Match current behaviour| |
+| Punctuation |	✅ Match current behaviour| |
+| Notifications |	✅ Match current behaviour| |
+| Output locale | ⚠️ Not available| Q2: Matching current behaviour |
+| Profanity tagging | ⚠️ Not available | Q3: Match current behaviour |
+| Entity detection | ⚠️ Not available| Prioritised according to customer need |
+| Audio volume filtering | ⚠️ Not available| Prioritised according to customer need |
+| Find and replace | ⚠️ Not available | Prioritised according to customer need |
+| Spoken form output| ⚠️ Not available | Prioritised according to customer need |
+| Confidence scores | ⚠️ Not available | Prioritised according to customer need |
+| Speech understanding (Audio Events, Translation, Summarization, Chapters, Topics, Sentiment) | ⚠️ Not available | Prioritised according to customer need |
+
+
+## Batch Container deployment
+
+The containers, by default, are designed to spin up when needed, process the job, then spin down.
+
+Transcription containers will connect to GPU inference servers that will result in improved accuracy and reduced turnaround times (for batch jobs)
+
+#### Create a network
+Create a network for the transcription service to run on
+```bash
+docker network create -d bridge transcription
+```
+
+#### Batch inference
+
+```bash
+docker run --rm -it \
+  --network=transcription \
+  --name=sm-triton-batch \
+  -v $PWD/license.json:/license.json \
+  --gpus '"device=0"' \
+  -e CUDA_VISIBLE_DEVICES \
+  -e SM_BATCH_MODE=true \
+  -p 8001:8001 \
+  speechmaticspublic.azurecr.io/demo/sm-gpu-inference-server-aed:0.4.0
+```
+
+#### Transcription conifg
+
+It is advised to create a config file for the transcriptions jobs.  An example of the minimum required is below:
+
+Create the config.json file with the following contents
+
+```
+{
+    "type": "transcription",
+    "transcription_config": {
+        "language":"multi",
+        "model": "omni-v1"
+    }
+}
+```
+
+#### Running the transcription
+
+The transcriber will process a single audio file (audio.wav in the example below) at a time.  The example below will process the file and output the transcript information into the directory named transcript_output (this will need to be created)
+
+```bash
+docker run --rm -it \
+  --network=transcription \
+  -v $PWD/license.json:/license.json \
+  -v $PWD/audio.wav:/input.audio \
+  -v $PWD/config.json:/config.json \
+  -v $PWD/transcript_output:/output_dir \
+  -e SM_INFERENCE_ENDPOINT=sm-triton-batch:8001 \
+  speechmaticspublic.azurecr.io/demo/batch-asr-transcriber-omni:0.3.0 \
+  --parallel=4 --all-formats /output_dir
+```
+
+#### Running persistent worker mode
+
+The following will run the transcriber in http mode which runs the container in server mode allowing for RESTful POST and GET methods for job submission/retrieval (aligned to the [V2 Batch REST API](https://docs.speechmatics.com/api-ref/batch/create-a-new-job)
+
+```bash
+docker run --rm -it \
+  --network=transcription \
+  -v $PWD/license.json:/license.json \
+  -v $PWD/transcript_output:/output_dir \
+  -e SM_INFERENCE_ENDPOINT=sm-triton-batch:8001 \
+  -p 18000:18000 \
+  speechmaticspublic.azurecr.io/demo/batch-asr-transcriber-omni:0.3.0 \
+  --parallel=4 --run-mode http --all-formats /output_dir
+```
+
+You can then POST your files directly to the specified endpoint
+
+```bash
+ curl -X POST address.of.container:18000/v2/jobs \
+    -H 'X-SM-Processing-Data: {"parallel_engines":2}' \
+    -F 'config={
+            "type":"transcription",
+            "transcription_config":{"language":"multi","model":"omni-v1"}
+            }' \
+    -F 'data_file=@$PWD/audio.wav'
+```
+
+This will return a job id for the succesful submission
+
+```json
+{"id":"cdc14205e4374dd69e33"}
+```
+
+You can GET the status of all jobs, a specific job or the transcript result of a completed job
+
+```bash
+curl address.of.container:18000/v2/jobs
+
+curl address.of.container:18000/v2/jobs/{jobid}
+
+curl address.of.container:18000/v2/jobs/{jobid}/transcript
+```
