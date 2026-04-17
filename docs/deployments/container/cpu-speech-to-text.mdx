@@ -326,8 +326,9 @@ For example with curl:
     -F 'data_file=@~/audio_file.mp3'
 ```
 
-To enable the [Speaker identification](/speech-to-text/features/speaker-identification) feature using the same header as above `X-SM-Processing-Data`
-insert as a key `user_id`, and value the id of the user/customer.
+To enable the [Speaker identification](/speech-to-text/features/speaker-identification) feature the same logic around secrets [outlined here](/deployments/container/speaker-identification) applies.
+If there is a need to have encrypted identifiers per customer, similar to how our [SaaS](/speech-to-text/features/speaker-identification) handles this, you can use the same header as above `X-SM-Processing-Data`
+and insert as a key `user_id`, and value the id of the user/customer for each job request, but this is an optional step.
 ```
     curl -X POST address.of.container:PORT/v2/jobs \
     -H 'X-SM-Processing-Data: {"user_id":"MY_USER_ID"}' \
