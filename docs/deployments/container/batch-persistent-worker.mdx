@@ -290,6 +290,12 @@ Returns the transcript for a completed job.
 
 Returns the processing logs for a specific job.
 
+**Error responses:**
+
+| Code | Reason |
+|---|---|
+| `404` | Log for job ID `{job_id}` not found |
+| `404` | No log file found for job `{job_id}`. Verbosity isn't enough to produce debug logs. Add `-v` to the container arguments or set the environment variable `DEBUG=true` for higher verbosity. |
 
 ## Health endpoints
 
