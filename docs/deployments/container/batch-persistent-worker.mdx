@@ -18,7 +18,7 @@ Available from version 15.7.0
 
 A batch persistent worker (also called an **HTTP batch worker**) is a long-running transcription service that accepts jobs over HTTP. Unlike standard batch workers, it stays alive between jobs — meaning you pay the startup cost once, not on every request.
 
----
+
 
 ## Why use a persistent worker?
 
@@ -31,7 +31,7 @@ A batch persistent worker (also called an **HTTP batch worker**) is a long-runni
 
 The persistent worker is especially beneficial for smaller audio files, where startup overhead would otherwise dominate total turnaround time.
 
----
+
 
 ## Starting the worker
 
@@ -57,7 +57,7 @@ docker run -it \
 To use a different internal port, set the `SM_BATCH_WORKER_LISTEN_PORT` environment variable.
 :::
 
----
+
 
 ## Submitting a job
 
@@ -116,7 +116,7 @@ asyncio.run(main())
 | `400` | Invalid request |
 | `503` | Server busy — not enough free engines |
 
----
+
 
 ## Managing capacity
 
@@ -143,7 +143,6 @@ curl -X POST address.of.container:PORT/v2/jobs \
   -F 'data_file=@~/audio_file.mp3'
 ```
 
----
 
 ## Speaker identification
 
@@ -168,7 +167,6 @@ curl -X POST address.of.container:PORT/v2/jobs \
 For details on secrets management, refer to the [Speaker identification documentation](/deployments/container/speaker-identification).
 :::
 
----
 
 ## Job API reference
 
@@ -224,7 +222,6 @@ Returns a list of jobs.
 }
 ```
 
----
 
 ### `GET /v2/jobs/{job_id}`
 
@@ -253,7 +250,6 @@ Returns the status of a specific job.
 }
 ```
 
----
 
 ### `GET /v2/jobs/{job_id}/transcript`
 
@@ -271,13 +267,11 @@ Returns the transcript for a completed job.
 |---|---|
 | `404` | Job not found, job not yet complete (includes current status), or unsupported format |
 
----
 
 ### `GET /v2/jobs/{job_id}/log`
 
 Returns the processing logs for a specific job.
 
----
 
 ## Health endpoints
 
@@ -304,7 +298,6 @@ Returns current engine usage and a list of active jobs. Use `unused_engines` to 
 }
 ```
 
----
 
 ### `GET /live`
 
@@ -314,7 +307,6 @@ Liveness probe. Returns `200` when all container services are running and health
 { "live": true }
 ```
 
----
 
 ### `GET /ready`
 
@@ -327,7 +319,6 @@ Readiness probe. Returns `200` when at least one engine slot is free, `503` when
 }
 ```
 
----
 
 ## Environment variables
 
