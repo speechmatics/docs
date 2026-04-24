@@ -8,7 +8,7 @@ description: Run a long-lived HTTP transcription worker that accepts multiple jo
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem'
 import { smVariables } from "/sm-variables";
-
+import CodeBlock from "@theme/CodeBlock";
 
 # Batch persistent worker
 
@@ -16,7 +16,13 @@ import { smVariables } from "/sm-variables";
 Available from version 15.7.0
 :::
 
-A batch persistent worker (also called an **HTTP batch worker**) is a long-running transcription service that accepts jobs over HTTP. Unlike standard batch workers, it stays alive between jobs — meaning you pay the startup cost once, not on every request.
+A batch persistent worker (also called an **HTTP batch worker**) is a long-running transcription service that loads the ASR models once at startup and then accepts jobs over an HTTP API for the lifetime of the container. Unlike standard batch containers — which start up, process a single job, and exit — a persistent worker stays alive indefinitely, serving jobs as they arrive.
+
+This gives you:
+- **No per-job cold start.** The model is loaded into memory once. Every subsequent job skips the startup cost entirely.
+- **Concurrent processing.** The `--parallel` flag controls how many processing units the worker handles simultaneously. Individual jobs can also be assigned multiple processing units(called `engines` in this document) to reduce their own turnaround time.
+
+The worker exposes an HTTP API for submitting jobs, polling status, fetching transcripts, and checking availability.
 
 
 
@@ -29,23 +35,31 @@ A batch persistent worker (also called an **HTTP batch worker**) is a long-runni
 | CPU/GPU utilisation | Interrupted between jobs | Continuous |
 | Best for | Large, infrequent files | High throughput or smaller files |
 
-The persistent worker is especially beneficial for smaller audio files, where startup overhead would otherwise dominate total turnaround time.
+**Cold start overhead is significant for short audio.** Loading the ASR models — especially onto GPU — takes several seconds. For a 5-minute file this cost is negligible. For a 10-second clip, startup can take longer than transcription itself. The persistent worker eliminates this by loading the model once.
+
+**High-throughput workloads benefit from a single long-lived container.** Routing many jobs to one worker is more efficient than launching a container per job. The `--parallel` setting lets you tune concurrency to your workload.
+
+**GPU utilisation is maximised.** On GPU deployments, a standard batch container leaves the GPU idle between jobs. A persistent worker keeps the GPU warm and available, reducing wasted capacity across back-to-back requests.
+
+When processing long audio jobs the benefits on RTF of the Persistent batch worker is negligible, and the resultant RTF is similar to that of a standard batch job.
 
 
 
-## Starting the worker
+## Deploying the worker
 
-```bash
-docker run -it \
+### Docker
+
+<CodeBlock language="bash">
+{`docker run -it \
   -e LICENSE_TOKEN=$TOKEN_VALUE \
   -p PORT:18000 \
   batch-asr-transcriber-en:${smVariables.latestContainerVersion} \
   --run-mode http \
   --parallel=4 \
-  --all-formats /output_dir_name
-```
+  --all-formats /output_dir_name`}
+</CodeBlock>
 
-### Parameters
+#### Parameters
 
 | Parameter | Description |
 |---|---|
@@ -53,13 +67,17 @@ docker run -it \
 | `--all-formats` | Directory where all job outputs and logs are saved. If omitted, defaults to `/tmp/jobs`. See [Generating multiple transcript formats](https://docs.speechmatics.com/deployments/container/cpu-speech-to-text#generating-multiple-transcript-formats) for details. |
 | `PORT` | The local port forwarded to the container's internal port (`18000`). |
 
-:::tip
-To use a different internal port, set the `SM_BATCH_WORKER_LISTEN_PORT` environment variable.
-:::
+#### Environment variables
+
+| Variable | Description |
+|---|---|
+| `SM_BATCH_WORKER_LISTEN_PORT` | Override the default internal port (`18000`). |
+| `SM_BATCH_WORKER_MAX_JOB_HISTORY` | Maximum number of completed job records to retain in memory. |
 
 
 
 ## Submitting a job
+Once the worker is running and is available, submit jobs by `POST`ing to `/v2/jobs` with an audio file and a transcription config. The worker queues the job and returns a `job_id` immediately; poll [`GET /v2/jobs/{job_id}`](#get-v2jobsjob_id) for status, then fetch the transcript once it reaches `DONE`.
 
 <Tabs>
   <TabItem value="curl" label="curl" default>
@@ -318,11 +336,3 @@ Readiness probe. Returns `200` when at least one engine slot is free, `503` when
   "engines_used": 2
 }
 ```
-
-
-## Environment variables
-
-| Variable | Description |
-|---|---|
-| `SM_BATCH_WORKER_LISTEN_PORT` | Override the default internal port (`18000`). |
-| `SM_BATCH_WORKER_MAX_JOB_HISTORY` | Maximum number of completed job records to retain in memory. |
