@@ -1,17 +1,19 @@
 ---
 id: batch-persistent-worker
-title: Batch Persistent Worker
-sidebar_label: Batch Persistent Worker
+title: Batch persistent worker
+sidebar_label: Batch persistent worker
 description: Run a long-lived HTTP transcription worker that accepts multiple jobs without restarting, reducing turnaround time and improving GPU utilisation.
 ---
 
 import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import TabItem from '@theme/TabItem'
+import { smVariables } from "/sm-variables";
 
-# Batch Persistent Worker
+
+# Batch persistent worker
 
 :::note
-Available from version 15.5.0
+Available from version 15.7.0
 :::
 
 A batch persistent worker (also called an **HTTP batch worker**) is a long-running transcription service that accepts jobs over HTTP. Unlike standard batch workers, it stays alive between jobs — meaning you pay the startup cost once, not on every request.
@@ -37,7 +39,7 @@ The persistent worker is especially beneficial for smaller audio files, where st
 docker run -it \
   -e LICENSE_TOKEN=$TOKEN_VALUE \
   -p PORT:18000 \
-  batch-asr-transcriber-en:15.5.0 \
+  batch-asr-transcriber-en:${smVariables.latestContainerVersion} \
   --run-mode http \
   --parallel=4 \
   --all-formats /output_dir_name
@@ -48,7 +50,7 @@ docker run -it \
 | Parameter | Description |
 |---|---|
 | `--parallel` | Number of parallel engines (each engine maps to one GPU connection). |
-| `--all-formats` | Directory where all job outputs and logs are saved. If omitted, defaults to `/tmp/jobs`. See [Generating multiple transcript formats](#) for details. |
+| `--all-formats` | Directory where all job outputs and logs are saved. If omitted, defaults to `/tmp/jobs`. See [Generating multiple transcript formats](https://docs.speechmatics.com/deployments/container/cpu-speech-to-text#generating-multiple-transcript-formats) for details. |
 | `PORT` | The local port forwarded to the container's internal port (`18000`). |
 
 :::tip
