@@ -144,7 +144,8 @@ curl -X POST address.of.container:PORT/v2/jobs \
 
 ## Speaker identification
 
-To enable per-customer encrypted identifiers (as used in our SaaS offering), pass a `user_id` in the `X-SM-Processing-Data` header. This is optional.
+To enable the [Speaker identification](/speech-to-text/features/speaker-identification feature you can use the same logic used for the one shot batch container.
+To enable per-customer encrypted identifiers (as used in our SaaS offering), pass a `user_id` in the `X-SM-Processing-Data` header.
 
 ```bash
 curl -X POST address.of.container:PORT/v2/jobs \
@@ -161,7 +162,7 @@ curl -X POST address.of.container:PORT/v2/jobs \
 ```
 
 :::info
-For details on secrets management, refer to the [Speaker identification documentation](#).
+For details on secrets management, refer to the [Speaker identification documentation](/deployments/container/speaker-identification).
 :::
 
 ---
