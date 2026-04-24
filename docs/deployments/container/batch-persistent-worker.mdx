@@ -19,7 +19,7 @@ Available from version 15.7.0
 A batch persistent worker (also called an **HTTP batch worker**) is a long-running transcription service that loads the ASR models once at startup and then accepts jobs over an HTTP API for the lifetime of the container. Unlike standard batch containers — which start up, process a single job, and exit — a persistent worker stays alive indefinitely, serving jobs as they arrive.
 
 This gives you:
-- **No per-job cold start.** The model is loaded into memory once. Every subsequent job skips the startup cost entirely.
+- **No per-job cold start.** The models are loaded into memory once. Every subsequent job skips the startup cost entirely.
 - **Concurrent processing.** The `--parallel` flag controls how many processing units the worker handles simultaneously. Individual jobs can also be assigned multiple processing units(called `engines` in this document) to reduce their own turnaround time.
 
 The worker exposes an HTTP API for submitting jobs, polling status, fetching transcripts, and checking availability.
@@ -35,7 +35,7 @@ The worker exposes an HTTP API for submitting jobs, polling status, fetching tra
 | CPU/GPU utilisation | Interrupted between jobs | Continuous |
 | Best for | Large, infrequent files | High throughput or smaller files |
 
-**Cold start overhead is significant for short audio.** Loading the ASR models — especially onto GPU — takes several seconds. For a 5-minute file this cost is negligible. For a 10-second clip, startup can take longer than transcription itself. The persistent worker eliminates this by loading the model once.
+**Cold start overhead is significant for short audio.** Loading the ASR models — especially onto GPU — takes several seconds. For a 5-minute file this cost is negligible. For a 10-second clip, startup can take longer than transcription itself. The persistent worker eliminates this by loading the models once.
 
 **High-throughput workloads benefit from a single long-lived container.** Routing many jobs to one worker is more efficient than launching a container per job. The `--parallel` setting lets you tune concurrency to your workload.
 
