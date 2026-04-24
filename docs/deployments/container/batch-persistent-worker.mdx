@@ -1,17 +1,17 @@
 ---
 id: batch-persistent-worker
-title: Batch Persistent Worker
-sidebar_label: Batch Persistent Worker
+title: Batch persistent worker
+sidebar_label: Batch persistent worker
 description: Run a long-lived HTTP transcription worker that accepts multiple jobs without restarting, reducing turnaround time and improving GPU utilisation.
 ---
 
 import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import TabItem from '@theme/TabItem'
 
-# Batch Persistent Worker
+# Batch persistent worker
 
 :::note
-Available from version 15.5.0
+Available from version 15.7.0
 :::
 
 A batch persistent worker (also called an **HTTP batch worker**) is a long-running transcription service that accepts jobs over HTTP. Unlike standard batch workers, it stays alive between jobs — meaning you pay the startup cost once, not on every request.
