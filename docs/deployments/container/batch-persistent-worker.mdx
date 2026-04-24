@@ -26,7 +26,7 @@ A batch persistent worker (also called an **HTTP batch worker**) is a long-runni
 |---|---|---|
 | Startup cost | Per job | Once |
 | Memory usage | One container per job | Multiple jobs share one container |
-| GPU utilisation | Interrupted between jobs | Continuous |
+| CPU/GPU utilisation | Interrupted between jobs | Continuous |
 | Best for | Large, infrequent files | High throughput or smaller files |
 
 The persistent worker is especially beneficial for smaller audio files, where startup overhead would otherwise dominate total turnaround time.
@@ -49,7 +49,7 @@ docker run -it \
 
 | Parameter | Description |
 |---|---|
-| `--parallel` | Number of parallel engines (each engine maps to one GPU connection). |
+| `--parallel` | Number of parallel engines (each engine maps to one GPU connection when on GPU container). |
 | `--all-formats` | Directory where all job outputs and logs are saved. If omitted, defaults to `/tmp/jobs`. See [Generating multiple transcript formats](https://docs.speechmatics.com/deployments/container/cpu-speech-to-text#generating-multiple-transcript-formats) for details. |
 | `PORT` | The local port forwarded to the container's internal port (`18000`). |
 
