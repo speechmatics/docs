@@ -7,6 +7,8 @@ description: Run a long-lived HTTP transcription worker that accepts multiple jo
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem'
+import { smVariables } from "/sm-variables";
+
 
 # Batch persistent worker
 
@@ -37,7 +39,7 @@ The persistent worker is especially beneficial for smaller audio files, where st
 docker run -it \
   -e LICENSE_TOKEN=$TOKEN_VALUE \
   -p PORT:18000 \
-  batch-asr-transcriber-en:15.5.0 \
+  batch-asr-transcriber-en:${smVariables.latestContainerVersion} \
   --run-mode http \
   --parallel=4 \
   --all-formats /output_dir_name
