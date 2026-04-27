@@ -358,7 +358,7 @@
     },
     {
       "source": "/on-prem/kubernetes/flow",
-      "destination": "/deployments/kubernetes/flow",
+      "destination": "/deployments/kubernetes",
       "permanent": true
     },
     {
