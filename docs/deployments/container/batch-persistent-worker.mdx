@@ -35,15 +35,13 @@ The worker exposes an HTTP API for submitting jobs, polling status, fetching tra
 | CPU/GPU utilisation | Interrupted between jobs | Continuous |
 | Best for | Large, infrequent files | High throughput or smaller files |
 
-**Cold start overhead is significant for short audio.** Loading the ASR models — especially onto GPU — takes several seconds. For a 5-minute file this cost is negligible. For a 10-second clip, startup can take longer than transcription itself. The persistent worker eliminates this by loading the models once.
+**Cold start overhead is significant for short audio.** Loading the ASR models — especially onto GPU — takes several seconds. For a five minute file this cost is negligible. For a ten second clip, startup can take longer than transcription itself. The persistent worker eliminates this by loading the models once.
 
 **High-throughput workloads benefit from a single long-lived container.** Routing many jobs to one worker is more efficient than launching a container per job. The `--parallel` setting lets you tune concurrency to your workload.
 
 **GPU utilisation is maximised.** On GPU deployments, a standard batch container leaves the GPU idle between jobs. A persistent worker keeps the GPU warm and available, reducing wasted capacity across back-to-back requests.
 
-When processing long audio jobs the benefits on RTF of the Persistent batch worker is negligible, and the resultant RTF is similar to that of a standard batch job.
-
-
+When processing long audio jobs the benefits on RTF of the persistent batch worker is negligible, and the resultant RTF is similar to that of a standard batch job.
 
 ## Deploying the worker
 
@@ -64,7 +62,7 @@ When processing long audio jobs the benefits on RTF of the Persistent batch work
 | Parameter | Description |
 |---|---|
 | `--parallel` | Number of parallel engines (each engine maps to one GPU connection when on GPU container). |
-| `--all-formats` | Directory where all job outputs and logs are saved. If omitted, defaults to `/tmp/jobs`. See [Generating multiple transcript formats](https://docs.speechmatics.com/deployments/container/cpu-speech-to-text#generating-multiple-transcript-formats) for details. |
+| `--all-formats` | Directory where all job outputs and logs are saved. If omitted, defaults to `/tmp/jobs`. See [generating multiple transcript formats](https://docs.speechmatics.com/deployments/container/cpu-speech-to-text#generating-multiple-transcript-formats) for details. |
 | `PORT` | The local port forwarded to the container's internal port (`18000`). |
 
 #### Environment variables
@@ -74,11 +72,9 @@ When processing long audio jobs the benefits on RTF of the Persistent batch work
 | `SM_BATCH_WORKER_LISTEN_PORT` | Override the default internal port (`18000`). |
 | `SM_BATCH_WORKER_MAX_JOB_HISTORY` | Maximum number of completed job records to retain in memory. |
 
-
-
 ## Submitting a job
 
-Once the worker is running and is available, submit jobs by `POST`ing to `/v2/jobs` with an audio file and a transcription config. The worker queues the job and returns a `job_id` immediately; poll [`GET /v2/jobs/{job_id}`](#get-v2jobsjob_id) for status, then fetch the transcript once it reaches `DONE`.
+Once the worker is running and is available, submit jobs by making a `POST` request to `/v2/jobs` with an audio file and transcription config. The worker queues the job and returns a `job_id` immediately. You can poll [`GET /v2/jobs/{job_id}`](#get-v2jobsjob_id) for the job status, and fetch the transcript when the status changes to `DONE`.
 
 <Tabs>
   <TabItem value="curl" label="curl" default>
@@ -133,7 +129,6 @@ asyncio.run(main())
 
 
 The worker processes multiple jobs concurrently, up to the `--parallel` limit you set at startup.
-
 
 To check available capacity before submitting, query the `/jobs` endpoint.
 
@@ -202,20 +197,17 @@ For details on secrets management, refer to the [Speaker identification document
 
 ## Job API reference
 
-The API is made on purpose similar to our [V2 SaaS API](/api-ref/batch/create-a-new-job) to ease integration to our SaaS, and be able to use both SaaS and On-prem interchangeably.
-There are some difference between the SaaS vs On-prem API outlined below:
-
-#### For the Batch persistent worker:
+The HTTP batch worker API is similar to our [V2 SaaS API](/api-ref/batch/create-a-new-job). This makes it easy to use our SaaS and on-prem offerings interchangeably. The only differences between the SaaS API and our HTTP workers are:
 
 We don't support:
 - The `include_deleted` parameter in the `GET /v2/jobs` call.
-- 'GET /v2/usage` call.
+- `GET /v2/usage` call.
 
 For the API call `GET /v2/jobs/{job_id}`, we also return the `request_id` as part of the response.
 
 ## Health endpoints
 
-The worker exposes three health endpoints on the same port as job submission.
+The worker exposes two health endpoints on the same port as job submission.
 
 :::tip Kubernetes users
 These endpoints are designed to work as [liveness and readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) in a Kubernetes cluster.
