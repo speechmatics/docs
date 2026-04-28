@@ -1,0 +1,234 @@
+---
+id: batch-persistent-worker
+title: Batch persistent worker
+sidebar_label: Batch persistent worker
+description: Run a long-lived HTTP transcription worker that accepts multiple jobs without restarting, reducing turnaround time and improving CPU/GPU utilisation.
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem'
+import { smVariables } from "/sm-variables";
+import CodeBlock from "@theme/CodeBlock";
+
+# Batch persistent worker
+
+:::note
+Available from version 15.7.0
+:::
+
+A batch persistent worker (also called an **HTTP batch worker**) is a long-running transcription service that loads the ASR models once at startup and then accepts jobs over an HTTP API for the lifetime of the container. Unlike standard batch containers — which start up, process a single job, and exit — a persistent worker stays alive indefinitely, serving jobs as they arrive.
+
+This gives you:
+- **No per-job cold start.** The models are loaded into memory once. Every subsequent job skips the startup cost entirely.
+- **Concurrent processing.** The `--parallel` flag controls how many processing units the worker handles simultaneously. Individual jobs can also be assigned multiple processing units(called `engines` in this document) to reduce their own turnaround time.
+
+The worker exposes an HTTP API for submitting jobs, polling status, fetching transcripts, and checking availability.
+
+
+
+## Why use a persistent worker?
+
+| | Standard batch | Persistent worker |
+|---|---|---|
+| Startup cost | Per job | Once |
+| Memory usage | One container per job | Multiple jobs share one container |
+| CPU/GPU utilisation | Interrupted between jobs | Continuous |
+| Best for | Large, infrequent files | High throughput or smaller files |
+
+**Cold start overhead is significant for short audio.** Loading the ASR models — especially onto GPU — takes several seconds. For a five minute file this cost is negligible. For a ten second clip, startup can take longer than transcription itself. The persistent worker eliminates this by loading the models once.
+
+**High-throughput workloads benefit from a single long-lived container.** Routing many jobs to one worker is more efficient than launching a container per job. The `--parallel` setting lets you tune concurrency to your workload.
+
+**GPU utilisation is maximised.** On GPU deployments, a standard batch container leaves the GPU idle between jobs. A persistent worker keeps the GPU warm and available, reducing wasted capacity across back-to-back requests.
+
+When processing long audio jobs the benefits on RTF of the persistent batch worker is negligible, and the resultant RTF is similar to that of a standard batch job.
+
+## Deploying the worker
+
+### Docker
+
+<CodeBlock language="bash">
+{`docker run -it \
+  -e LICENSE_TOKEN=$TOKEN_VALUE \
+  -p PORT:18000 \
+  batch-asr-transcriber-en:${smVariables.latestContainerVersion} \
+  --run-mode http \
+  --parallel=4 \
+  --all-formats /output_dir_name`}
+</CodeBlock>
+
+#### Parameters
+
+| Parameter | Description |
+|---|---|
+| `--parallel` | Number of parallel engines (each engine maps to one GPU connection when on GPU container). |
+| `--all-formats` | Directory where all job outputs and logs are saved. If omitted, defaults to `/tmp/jobs`. See [generating multiple transcript formats](https://docs.speechmatics.com/deployments/container/cpu-speech-to-text#generating-multiple-transcript-formats) for details. |
+| `PORT` | The local port forwarded to the container's internal port (`18000`). |
+
+#### Environment variables
+
+| Variable | Description |
+|---|---|
+| `SM_BATCH_WORKER_LISTEN_PORT` | Override the default internal port (`18000`). |
+| `SM_BATCH_WORKER_MAX_JOB_HISTORY` | Maximum number of completed job records to retain in memory. |
+
+## Submitting a job
+
+Once the worker is running and is available, submit jobs by making a `POST` request to `/v2/jobs` with an audio file and transcription config. The worker queues the job and returns a `job_id` immediately. You can poll [`GET /v2/jobs/{job_id}`](#get-v2jobsjob_id) for the job status, and fetch the transcript when the status changes to `DONE`.
+
+<Tabs>
+  <TabItem value="curl" label="curl" default>
+
+```bash
+curl -X POST address.of.container:PORT/v2/jobs \
+  -H 'X-SM-Processing-Data: {"parallel_engines": 2, "user_id": "MY_USER_ID"}' \
+  -F 'config={
+    "type": "transcription",
+    "transcription_config": {
+      "language": "en",
+      "diarization": "speaker",
+      "operating_point": "enhanced"
+    }
+  }' \
+  -F 'data_file=@~/audio_file.mp3'
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python SDK">
+
+```python
+import asyncio
+import os
+from dotenv import load_dotenv
+from speechmatics.batch import AsyncClient
+
+load_dotenv()
+
+async def main():
+    client = AsyncClient(
+        api_key=os.getenv("SPEECHMATICS_API_KEY"),
+        url="address.of.container:PORT/v2"
+    )
+    result = await client.transcribe(
+        "audio.wav",
+        parallel_engines=2,
+        user_id="MY_USER_ID"
+    )
+    print(result.transcript_text)
+    await client.close()
+
+asyncio.run(main())
+```
+
+  </TabItem>
+</Tabs>
+
+
+## Managing capacity
+
+
+
+The worker processes multiple jobs concurrently, up to the `--parallel` limit you set at startup.
+
+To check available capacity before submitting, query the `/jobs` endpoint.
+
+### `GET /jobs`
+
+Returns current engine usage and a list of active jobs. The `unused_engines` field tells you how many engines are free, and you can use it to determine how many engines you can request for the next job.
+
+**Example response:**
+
+```json
+{
+  "active_jobs": [
+    { "job_id": "f8a564954b334eecb823", "parallel_engines": 1 },
+    { "job_id": "29351ae8cf2c4e8694f0", "parallel_engines": 1 }
+  ],
+  "max_engines": 8,
+  "unused_engines": 6
+}
+```
+
+
+
+
+### Requesting parallel engines
+
+Each job can request multiple engines using the `parallel_engines` value in the `X-SM-Processing-Data` header. More engines per job means faster turnaround for that job, at the cost of reduced concurrency for others.
+
+```bash
+curl -X POST address.of.container:PORT/v2/jobs \
+  -H 'X-SM-Processing-Data: {"parallel_engines": 2}' \
+  -F 'config={"type": "transcription", "transcription_config": {"language": "en"}}' \
+  -F 'data_file=@~/audio_file.mp3'
+```
+
+:::warning
+If a job requests more engines than are currently available, it will be rejected:
+
+```
+HTTP 503: {"detail": "Server busy: 8 engines not available (2 engines in use, 5 parallel allowed)"}
+```
+:::
+
+## Speaker identification
+
+To enable the Speaker identification feature you can use the same logic used for the one shot [batch container](/speech-to-text/features/speaker-identification).
+To enable per-customer encrypted identifiers (as used in our SaaS offering), pass a `user_id` in the `X-SM-Processing-Data` header.
+
+```bash
+curl -X POST address.of.container:PORT/v2/jobs \
+  -H 'X-SM-Processing-Data: {"user_id": "MY_USER_ID"}' \
+  -F 'config={
+    "type": "transcription",
+    "transcription_config": {
+      "language": "en",
+      "diarization": "speaker",
+      "operating_point": "enhanced"
+    }
+  }' \
+  -F 'data_file=@~/audio_file.mp3'
+```
+
+:::info
+For details on secrets management, refer to the [Speaker identification documentation](/deployments/container/speaker-identification).
+:::
+
+
+## Job API reference
+
+The HTTP batch worker API is similar to our [V2 SaaS API](/api-ref/batch/create-a-new-job). This makes it easy to use our SaaS and on-prem offerings interchangeably. The only differences between the SaaS API and our HTTP workers are:
+
+We don't support:
+- The `include_deleted` parameter in the `GET /v2/jobs` call.
+- `GET /v2/usage` call.
+
+For the API call `GET /v2/jobs/{job_id}`, we also return the `request_id` as part of the response.
+
+## Health endpoints
+
+The worker exposes two health endpoints on the same port as job submission.
+
+:::tip Kubernetes users
+These endpoints are designed to work as [liveness and readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) in a Kubernetes cluster.
+:::
+
+### `GET /live`
+
+Liveness probe. Returns `200` when all container services are running and healthy.
+
+```json
+{ "live": true }
+```
+
+
+### `GET /ready`
+
+Readiness probe. Returns `200` when at least one engine slot is free, `503` when all engines are occupied.
+
+```json
+{
+  "ready": true,
+  "engines_used": 2
+}
+```
