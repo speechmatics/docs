@@ -13,18 +13,18 @@ This is a comparison of the performance and estimated running costs of transcrip
 
 | Operating Point                            | [CPU Standard](./cpu-speech-to-text) | [CPU Enhanced](./cpu-speech-to-text) | [GPU Standard](./gpu-speech-to-text) | [GPU Enhanced](./gpu-speech-to-text) |
 |--------------------------------------------|--------------|--------------|--------------|--------------|
-| Lowest Processing Cost (US ¢ per hour)     | 1.7          | 3.8          | 0.46         | 1.88         |
-| Cost vs CPU Standard (%)                   | -            | 224%         | 27%          | 110%         |
-| Cost vs CPU Enhanced (%)                   | 45%          | -            | 12%          | 49%          |
-| Maximum Throughput[^1]                     | 53.2         | 23.7         | 260          | 40           |
-| Representative Real-Time Factor (RTF)[^2]  | 0.085        | 0.2          | 0.029        | 0.127        |
-| Transcriber Count                          | 20           | 20           | 13           | 6            |
+| Lowest Processing Cost (US ¢ per hour)     | 1.7          | 3.8          | 0.34         | 1.67         |
+| Cost vs CPU Standard (%)                   | -            | 224%         | 20%          | 98%          |
+| Cost vs CPU Enhanced (%)                   | 45%          | -            | 9%           | 44%          |
+| Maximum Throughput[^1]                     | 53.2         | 23.7         | 350          | 45           |
+| Representative Real-Time Factor (RTF)[^2]  | 0.085        | 0.2          | 0.034        | 0.120        |
+| Job Concurrency                            | 20           | 20           | 15[^3]       | 6[^3]        |
 
 The benchmark uses the following configuration:
 
 | Benchmark details |                                     |
 | ----------------- | ----------------------------------- |
-| Version           | 14.8.0                              |
+| Version           | 15.7.0                              |
 | CPU               | D16ds_v5                            |
 | GPU Standard      | Standard_NC16as_T4_v3               |
 | GPU Enhanced      | Standard_NC8as_T4_v3                |
@@ -63,7 +63,7 @@ Each first session, transcriber requires 0.25 cores for both OPs, with 1.2 GB me
 
 [^1]: Throughput is measured as hours of audio per hour of runtime. A throughput of 50 would mean that in one hour, the system as a whole can transcribe 50 hours of audio.
 [^2]: An RTF of 1 would mean that a one hour file would take one hour to transcribe. An RTF of 0.1 would mean that a one hour file would take six minutes to transcribe. Benchmark RTFs are representative for processing audio files over 20 minutes in duration using `parallel=4`.
-[^3]: Multiple sessions are handled by a single worker configured with the required concurrency.
+[^3]: Multiple jobs (batch mode) or sessions (Realtime mode) are handled by a single worker configured with the required concurrency.
 [^4]: Benchmark results reflect performance on a fully loaded inference server operating at the session density recommended for the respective GPU platform.
 
 ## Translation (GPU)
