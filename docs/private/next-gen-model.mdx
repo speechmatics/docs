@@ -18,7 +18,17 @@ Once you have your API key, there are a few ways to try out the new model:
 2. Try the API using the reference documentation below
 
 ## API reference
-The API schema is consistent with the [V2 Batch REST API](https://docs.speechmatics.com/api-ref/batch/create-a-new-job). Example minimal transcription config:
+The API schema is consistent with the [V2 Batch REST API](https://docs.speechmatics.com/api-ref/batch/create-a-new-job) with some minor additions.
+
+### Supported Endpoints
+
+| Region          | Endpoint                         |
+| ------------- | --------------- |
+| EU1 (Europe)    | **eu1.asr.api.speechmatics.com** |
+| US1 (USA)       | **us1.asr.api.speechmatics.com** |
+
+### Minimal example
+Example minimal transcription config:
 ```json
 {
   "type": "transcription",
@@ -30,7 +40,33 @@ The API schema is consistent with the [V2 Batch REST API](https://docs.speechmat
   }
 }
 ```
+### Language hints
+If you know which languages are spoken in a given audio file, you can optionally provide a list of language hints to reduce the likelihood of unexpected languages and scripts being output. 
 
+Example config with language hints:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "multi",
+    "operating_point": "omni-v1",
+    // highlight-start
+    "language_hints": ["en", "ar"]
+    // highlight-end
+  }
+}
+```
+
+- You can specify any number of Speechmatics [supported language ISO codes](../speech-to-text/languages#transcription-languages)
+- For monolingual audio files, specifying the single language present can also improve WER by around 2% relative
+
+### Language labelling
+The JSON output already includes a `language`  property for each predicted word. 
+The `standard` and `enhanced` models will predict the same language for every word in the file.
+The `omni-v1` model will more accurately predict the language being spoken at a granularity of around 14 seconds.
+
+#### Language pack information
 Two new properties have been introduced into the returned job metadata based on languages appearing in the transcript:
 
 
@@ -50,13 +86,6 @@ Two new properties have been introduced into the returned job metadata based on 
 } 
 ```
 
-### Supported Endpoints
-
-| Region          | Endpoint                         |
-| ------------- | --------------- |
-| EU1 (Europe)    | **eu1.asr.api.speechmatics.com** |
-| US1 (USA)       | **us1.asr.api.speechmatics.com** |
-
 ## Capabilities
 
 |  Feature  | Current capability     | Future plans     |
@@ -73,7 +102,7 @@ Two new properties have been introduced into the returned job metadata based on 
 | Word timings |	✅ Match current behaviour| |
 | Punctuation |	✅ Match current behaviour| |
 | Notifications |	✅ Match current behaviour| |
-| Output locale | ⚠️ Not available| Q2: Matching current behaviour |
+| Output locale | ✅ Match current behaviour|  |
 | Profanity tagging | ⚠️ Not available | Q3: Match current behaviour |
 | Entity detection | ⚠️ Not available| Prioritised according to customer need |
 | Audio volume filtering | ⚠️ Not available| Prioritised according to customer need |
@@ -111,19 +140,7 @@ docker run --rm -it \
 
 #### Transcription config
 
-It is advised to create a config file for the transcriptions jobs.  An example of the minimum required is below:
-
-Create the config.json file with the following contents
-
-```
-{
-    "type": "transcription",
-    "transcription_config": {
-        "language":"multi",
-        "model": "omni-v1"
-    }
-}
-```
+It is advised to create a config.json file for the transcriptions jobs.  A [minimal example](#minimal-example) is shown above.
 
 #### Running the transcription
 
