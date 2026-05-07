@@ -2355,7 +2355,7 @@ definitions:
     enum:
       - data
       - audio_mp3
-            - transcript
+      - transcript
   SpeakersInputItem:
     type: object
     properties:
