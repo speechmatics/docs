@@ -11,6 +11,7 @@ const batchAPIPaths = [
   "/jobs",
   "/jobs/{jobid}",
   "/jobs/{jobid}/transcript",
+  "/jobs/{jobid}/object-urls",
   "/usage",
 ];
 
