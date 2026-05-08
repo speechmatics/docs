@@ -710,7 +710,11 @@ paths:
           required: true
           type: array
           items:
-            $ref: "#/definitions/ObjectUrlForEnum"
+            type: string
+            enum:
+              - data
+              - audio_mp3
+              - transcript
       responses:
         "200":
           description: OK
@@ -2350,12 +2354,6 @@ definitions:
         type: string
       transcript:
         type: string
-  ObjectUrlForEnum:
-    type: string
-    enum:
-      - data
-      - audio_mp3
-      - transcript
   SpeakersInputItem:
     type: object
     properties:
