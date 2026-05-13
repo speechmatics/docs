@@ -13,7 +13,7 @@ export default function middleware(request: Request): Response | undefined {
   // Section index pages (e.g. /speech-to-text → /docs/speech-to-text/index.md)
   // are handled by the create-md-aliases build script, which copies each
   // index.md to a flat sibling file so /docs/speech-to-text.md also exists.
-  url.pathname = pathname === "/" ? "/llms.txt" : `{pathname}.md`;
+  url.pathname = pathname === "/" ? "/llms.txt" : `${pathname}.md`;
 
   return Response.redirect(url.toString(), 302);
 }
