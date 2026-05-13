@@ -171,6 +171,11 @@ const config: Config = {
             outputDir: "docs/api-ref/batch",
             template: "templates/api.mustache",
           } satisfies OpenApiPlugin.Options,
+          mp: {
+            specPath: "static/mp-api.yaml",
+            outputDir: "docs/api-ref/management",
+            template: "templates/api.mustache",
+          } satisfies OpenApiPlugin.Options,
         },
       },
     ],

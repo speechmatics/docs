@@ -6,7 +6,7 @@ description: Browse API reference for Speechmatics APIs
 ---
 import { Grid } from "@radix-ui/themes";
 import { LinkCard } from "@site/src/theme/LinkCard";
-import { ArrowUpDown, BotMessageSquare, CloudUpload, FileDown, LockKeyholeOpen } from "lucide-react";
+import { ArrowUpDown, BotMessageSquare, CloudUpload, FileDown, LockKeyholeOpen, Settings2 } from "lucide-react";
 
 # API reference
 
@@ -21,11 +21,6 @@ Speechmatics offers flexible REST and Websocket APIs for transcription and voice
     href="/api-ref/realtime-transcription-websocket"
   />
   <LinkCard
-  title="Flow Voice AI over websocket"
-  icon={<BotMessageSquare/>}
-  href="/api-ref/flow-voice-ai-websocket"
-  />
-  <LinkCard
     title="Create a transcription job by API"
     icon={<CloudUpload/>}
     href="/api-ref/batch/create-a-new-job"
@@ -34,6 +29,11 @@ Speechmatics offers flexible REST and Websocket APIs for transcription and voice
     title="Get an API key"
     icon={<LockKeyholeOpen/>}
     href="https://portal.speechmatics.com/settings/api-keys/"
+  />
+  <LinkCard
+    title="Manage your account programmatically"
+    icon={<Settings2/>}
+    href="/api-ref/management/create-an-api-key"
   />
   <LinkCard
     title="Download the Batch transcription API spec"

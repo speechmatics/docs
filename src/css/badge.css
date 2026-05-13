@@ -59,6 +59,15 @@ a.menu__link.menu__link--active {
   content: "POST";
 }
 
+.put.api-method > .menu__link::before,
+.badge.badge--info {
+  --accent-3: var(--yellow-3);
+  --accent-6: var(--yellow-6);
+  --accent-9: var(--yellow-9);
+  --accent-11: var(--yellow-11);
+  content: "PUT";
+}
+
 .delete.api-method > .menu__link::before,
 .badge.badge--danger {
   --accent-3: var(--red-3);

@@ -20,7 +20,8 @@ export const sidebarItemsGenerator: SidebarItemsGeneratorOption = async ({
 }) => {
   const docs = args.docs
     .filter((doc) => {
-      if (doc.frontMatter.api_path) {
+      const isBatchDoc = (doc.frontMatter.info_path as string | undefined)?.startsWith("api-ref/batch/");
+      if (doc.frontMatter.api_path && isBatchDoc) {
         return batchAPIPaths.includes(doc.frontMatter.api_path as string);
       }
       // TODO we can also filter schema docs we don't want here.

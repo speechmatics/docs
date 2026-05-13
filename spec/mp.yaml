@@ -1,0 +1,358 @@
+swagger: '2.0'
+info:
+  title: Management API
+  version: 1.0.0
+  description: >-
+    The management API is used to manage customers and contracts.
+  contact:
+    email: support@speechmatics.com
+basePath: /v1
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  '/api-keys':
+    get:
+      summary: Get all API keys
+      parameters:
+        - name: project_id
+          in: query
+          required: false
+          type: integer
+          description: The project_id to filter API keys by
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiKeysResponse'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
+          description: Project not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '410':
+          description: Gone
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    post:
+      summary: Create an API key
+      consumes:
+        - application/json
+      parameters:
+        - name: type
+          in: query
+          required: false
+          type: string
+          description: Set the product this token will be authorised to access. Defaults to batch.
+          enum:
+            - rt
+            - batch
+            - flow
+            - tts
+        - name: body
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/CreateApiKeysRequest'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/CreateApiKeysResponse'
+        '403':
+          description: Forbidden, project has maximum number of api keys already
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '410':
+          description: Gone
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/api-keys/{apikey_id}':
+    delete:
+      summary: Delete an API key
+      consumes:
+        - application/json
+      parameters:
+        - name: apikey_id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OkResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '410':
+          description: Gone
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/projects':
+    get:
+      summary: Get all projects
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ProjectsResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '410':
+          description: Gone
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    post:
+      summary: Post a new project
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CreateProjectRequest'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/Project'
+        '410':
+          description: Gone
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/projects/{project_id}':
+    parameters:
+      - name: project_id
+        in: path
+        required: true
+        type: integer
+    get:
+      summary: Get a project by ID
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Project'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
+          description: Project was not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '410':
+          description: Project Gone
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    put:
+      summary: Update a project
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateProjectRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Project'
+        '404':
+          description: Not Found
+    delete:
+      summary: Delete a project
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        '204':
+          description: Project deleted.
+        '403':
+          description: Forbidden. Most probably due to outstanding payments.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
+          description: Project was not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '410':
+          description: Gone
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+definitions:
+  Project:
+    type: object
+    required:
+      - project_id
+    properties:
+      project_id:
+        type: integer
+      is_default:
+        type: boolean
+        x-nullable: true
+      is_active:
+        type: boolean
+        x-nullable: true
+      name:
+        type: string
+      description:
+        type: string
+      created_at:
+        type: string
+        format: datetime
+      deleted_at:
+        type: string
+        format: datetime
+  ProjectsResponse:
+    type: array
+    items:
+      $ref: '#/definitions/Project'
+  CreateProjectRequest:
+    type: object
+    required:
+      - name
+    properties:
+      contract_id:
+        type: integer
+        description: For backward compatibility, this field is optional. The contract_id for the contract which the project should be created
+      name:
+        type: string
+        description: The name of the project
+      description:
+        type: string
+        description: A description of the project and its intended use
+  UpdateProjectRequest:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: The new name for the project
+  ApiKey:
+    type: object
+    required:
+      - apikey_id
+    properties:
+      apikey_id:
+        type: string
+      name:
+        type: string
+      created_at:
+        type: string
+        format: datetime
+      client_ref:
+        type: string
+  CreateApiKeysRequest:
+    type: object
+    properties:
+      project_id:
+        type: integer
+        x-nullable: true
+      name:
+        type: string
+        x-nullable: true
+        maxLength: 120
+      client_ref:
+        type: string
+        x-nullable: true
+      ttl:
+        type: integer
+        x-nullable: true
+        minimum: 60
+        maximum: 86400
+      region:
+        type: string
+        x-nullable: true
+        enum:
+          - eu
+          - usa
+          - au
+  CreateApiKeysResponse:
+    type: object
+    required:
+      - key_value
+      - apikey_id
+    properties:
+      key_value:
+        type: string
+      apikey_id:
+        type: string
+  ApiKeysResponse:
+    type: array
+    items:
+      $ref: '#/definitions/ApiKey'
+  ErrorResponse:
+    type: object
+    required:
+      - code
+      - error
+    properties:
+      code:
+        type: integer
+        description: The HTTP status code.
+      error:
+        type: string
+        description: The error message.
+      detail:
+        type: string
+        description: The details of the error.
+  OkResponse:
+    type: object
+    properties:
+      status:
+        type: string
+        description: the OK string
+        example: OK
