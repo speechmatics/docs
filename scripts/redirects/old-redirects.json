@@ -196,7 +196,7 @@
   { "source": "/on-prem/kubernetes", "destination": "/deployments/kubernetes" },
   {
     "source": "/on-prem/kubernetes/flow",
-    "destination": "/deployments/kubernetes/flow"
+    "destination": "/deployments/kubernetes"
   },
   {
     "source": "/on-prem/kubernetes/prerequisites",
