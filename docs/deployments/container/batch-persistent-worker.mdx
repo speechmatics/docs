@@ -125,7 +125,7 @@ asyncio.run(main())
 
 ### Fetching audio from a URL
 
-Instead of uploading the audio file directly, you can have the worker fetch it from a remote URL by adding a `fetch_data` section to the job config. See [Fetch URL](/speech-to-text/batch/input#fetch-url) for the full configuration reference.
+As well as uploading audio files directly, you can have the worker fetch them from a remote URL by adding a `fetch_data` section to the job config. You can find an example of this below. The full config options are documented [here](/speech-to-text/batch/input#fetch-url).
 
 ```bash
 curl -X POST address.of.container:PORT/v2/jobs \
