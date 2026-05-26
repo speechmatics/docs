@@ -225,10 +225,11 @@ Liveness probe. Returns `200` when all container services are running and health
 
 ### `GET /ready`
 
-Readiness probe. Returns `200` when at least one engine slot is free, `503` when all engines are occupied.
+Readiness probe. Returns `200` when at least one engine slot is free, `503` when all engines are occupied. The response includes the current number of engines in use.
 
 ```json
 {
   "ready": true,
+  "engines_used": 0
 }
 ```
