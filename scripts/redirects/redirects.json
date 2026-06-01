@@ -66,5 +66,37 @@
   {
     "source": "/voice-agents-flow",
     "destination": "/voice-agents/flow"
+  },
+  {
+    "source": "/voice-agents/flow",
+    "destination": "/voice-agents/overview"
+  },
+  {
+    "source": "/voice-agents/flow/features/application-inputs",
+    "destination": "/voice-agents/overview"
+  },
+  {
+    "source": "/voice-agents/flow/features/webrtc-livekit",
+    "destination": "/voice-agents/overview"
+  },
+  {
+    "source": "/voice-agents/flow/setup",
+    "destination": "/voice-agents/overview"
+  },
+  {
+    "source": "/voice-agents/flow/supported-languages",
+    "destination": "/voice-agents/overview"
+  },
+  {
+    "source": "/voice-agents/flow/features/function-calling",
+    "destination": "/voice-agents/overview"
+  },
+  {
+    "source": "/voice-agents/flow/guides/nextjs-guide",
+    "destination": "/voice-agents/overview"
+  },
+  {
+    "source": "/voice-agents/flow/guides/react-native",
+    "destination": "/voice-agents/overview"
   }
 ]
