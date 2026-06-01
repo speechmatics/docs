@@ -92,7 +92,7 @@
   },
   {
     "source": "/flow-api-ref",
-    "destination": "/api-ref/flow-voice-ai-websocket"
+    "destination": "/voice-agents/overview"
   },
   {
     "source": "/flow/application-inputs",
