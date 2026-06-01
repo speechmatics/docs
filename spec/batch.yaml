@@ -7,34 +7,12 @@ info:
   contact:
     email: support@speechmatics.com
 basePath: /v2
-schemes:
-  - https
 produces:
   - application/json
   # users are using this header for Accept get job and delete job REQ-17778
   - application/vnd.speechmatics.v2+json
-# security:
-# Authentication is handled by a proxy component in front of this API.
-# The authentication proxy must attach the verified userid to all
-# API end points under this path using this custom header.
-parameters:
-  AuthHeader:
-    name: Authorization
-    in: header
-    description: Customer API token
-    required: true
-    type: string
-  EARTag:
-    name: X-SM-EAR-Tag
-    in: header
-    description: Early Access Release Tag
-    required: false
-    type: string
 paths:
   "/jobs":
-    parameters:
-      - $ref: "#/parameters/AuthHeader"
-      - $ref: "#/parameters/EARTag"
     post:
       summary: Create a new job
       consumes:
@@ -50,12 +28,6 @@ paths:
           in: formData
           description: >-
             The data file to be processed. Alternatively the data file can be fetched from a url specified in `JobConfig`.
-          required: false
-          type: file
-        - name: text_file
-          in: formData
-          description: >-
-            For alignment jobs, the text file that the data file should be aligned to.
           required: false
           type: file
         - name: X-SM-Processing-Data
@@ -100,16 +72,14 @@ paths:
             application/json:
               code: 403
               error: Invalid or missing license
-        "410":
-          description: Gone
+        "429":
+          description: Rate Limited
           schema:
             $ref: "#/definitions/ErrorResponse"
           examples:
             application/json:
-              code: 410
-              error: Requested Early Access Release not available
-        "429":
-          description: Rate Limited
+              code: 429
+              error: Max concurrent running jobs exceeded
         "500":
           description: Internal Server Error
           schema:
@@ -134,7 +104,7 @@ paths:
           maximum: 100
           minimum: 1
           description: >-
-            Limit for paginating the request response. Defaults to 100.
+            Limit on the number of items returned. By default, no limit is applied.
           required: false
         - name: include_deleted
           in: query
@@ -163,8 +133,6 @@ paths:
             application/json:
               code: 422
               error: limit in query must be of type int64
-        "429":
-          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -174,9 +142,6 @@ paths:
               code: 500
               error: Internal Server Error
   "/jobs/{jobid}":
-    parameters:
-      - $ref: "#/parameters/AuthHeader"
-      - $ref: "#/parameters/EARTag"
     get:
       summary: Get job details
       description: Get job details, including progress and any error reports.
@@ -216,8 +181,6 @@ paths:
             application/json:
               code: 410
               error: Job Expired
-        "429":
-          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -279,120 +242,6 @@ paths:
             application/json:
               code: 423
               error: Resource Locked
-        "429":
-          description: Rate Limited
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 500
-              error: Internal Server Error
-  "/jobs/{jobid}/data":
-    parameters:
-      - $ref: "#/parameters/AuthHeader"
-      - $ref: "#/parameters/EARTag"
-    get:
-      summary: Get the data file used as input to a job.
-      produces:
-        - application/octet-stream
-        - application/json
-      parameters:
-        - name: jobid
-          in: path
-          description: ID of the job.
-          required: true
-          type: string
-          x-example: a1b2c3d4e5
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: file
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 401
-              error: Permission Denied
-        "404":
-          description: Not found
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 404
-              error: Job not found
-        "410":
-          description: Gone
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 410
-              error: File Expired
-              detail: File deleted from the storage
-        "429":
-          description: Rate Limited
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 500
-              error: Internal Server Error
-  "/jobs/{jobid}/text":
-    parameters:
-      - $ref: "#/parameters/AuthHeader"
-      - $ref: "#/parameters/EARTag"
-    get:
-      summary: Get the text file used as input to an alignment job.
-      produces:
-        - text/plain
-        - application/json
-      parameters:
-        - name: jobid
-          in: path
-          description: ID of the job.
-          required: true
-          type: string
-          x-example: a1b2c3d4e5
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: file
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 401
-              error: Permission Denied
-        "404":
-          description: Not found
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 404
-              error: Job not found
-        "410":
-          description: Gone
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 410
-              error: File Expired
-              detail: File deleted from the storage
-        "429":
-          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -402,9 +251,6 @@ paths:
               code: 500
               error: Internal Server Error
   "/jobs/{jobid}/transcript":
-    parameters:
-      - $ref: "#/parameters/AuthHeader"
-      - $ref: "#/parameters/EARTag"
     get:
       summary: Get the transcript for a transcription job
       produces:
@@ -532,8 +378,6 @@ paths:
               code: 410
               error: File Expired
               detail: File deleted from the storage
-        "429":
-          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -542,83 +386,7 @@ paths:
             application/json:
               code: 500
               error: Internal Server Error
-  "/jobs/{jobid}/alignment":
-    parameters:
-      - $ref: "#/parameters/AuthHeader"
-      - $ref: "#/parameters/EARTag"
-    get:
-      summary: Get the aligned text file for an alignment job.
-      produces:
-        - text/plain
-        - application/json
-      parameters:
-        - name: jobid
-          in: path
-          description: ID of the job.
-          required: true
-          type: string
-          x-example: a1b2c3d4e5
-        - name: tags
-          in: query
-          description: >-
-            Control how timing information is added to the text file provided as input to the alignment job. If set to `word_start_and_end`, SGML tags are inserted at the start and end of each word, for example <time=0.41>. If set to `one_per_line` square bracket tags are inserted at the start of each line, for example `[00:00:00.4] `. The default is `word_start_and_end`.
-          required: false
-          type: string
-          enum:
-            - word_start_and_end
-            - one_per_line
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: file
-          examples:
-            word_start_and_end: |
-              <time=0.41>hello<time=0.76> <time=0.89>world<time=1.18>
-            one_per_line: |
-              [00:00:00.4]    hello world
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 401
-              error: Permission Denied
-        "404":
-          description: Not found
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 404
-              error: Job not found
-        "410":
-          description: Gone
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 410
-              error: File Expired
-              detail: File deleted from the storage
-        "429":
-          description: Rate Limited
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 500
-              error: Internal Server Error
-      externalDocs:
-        description: More details of our alignment service can be found here.
-        url: "https://docs.speechmatics.com/speech-to-text/batch/word-alignment"
   "/jobs/{jobid}/log":
-    parameters:
-      - $ref: "#/parameters/AuthHeader"
-      - $ref: "#/parameters/EARTag"
     get:
       summary: Get the log file for a job.
       produces:
@@ -665,8 +433,6 @@ paths:
               code: 410
               error: File Expired
               detail: File deleted from the storage
-        "429":
-          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -683,82 +449,7 @@ paths:
             application/json:
               code: 501
               error: Not Implemented
-  "/jobs/{jobid}/object-urls":
-    parameters:
-      - $ref: "#/parameters/AuthHeader"
-      - $ref: "#/parameters/EARTag"
-    get:
-      summary: Get object URLs
-      description: Get signed urls for data files associated to the job.
-      produces:
-        - application/octet-stream
-        - application/json
-      parameters:
-        - name: jobid
-          in: path
-          description: ID of the job.
-          required: true
-          type: string
-          x-example: a1b2c3d4e5
-        - name: ttl
-          in: query
-          required: true
-          type: integer
-          description: "Time to live in seconds for the signed URLs"
-        - name: url_for
-          in: query
-          required: true
-          type: array
-          items:
-            type: string
-            enum:
-              - data
-              - audio_mp3
-              - transcript
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: "#/definitions/RetrieveObjectUrlsResponse"
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 401
-              error: Permission Denied
-        "404":
-          description: Not found
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 404
-              error: Job not found
-        "410":
-          description: Gone
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 410
-              error: File Expired
-              detail: File deleted from the storage
-        "429":
-          description: Rate Limited
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-          examples:
-            application/json:
-              code: 500
-              error: Internal Server Error
   "/usage":
-    parameters:
-      - $ref: "#/parameters/AuthHeader"
-      - $ref: "#/parameters/EARTag"
     get:
       summary: Get usage statistics
       produces:
@@ -781,37 +472,6 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/UsageResponse"
-          examples:
-            application/json:
-              since: "2021-09-12T00:00:00Z"
-              until: "2022-01-01T23:59:59Z"
-              summary:
-                - mode: batch
-                  type: transcription
-                  count: 5
-                  duration_hrs: 1.53
-                - mode: batch
-                  type: alignment
-                  count: 1
-                  duration_hrs: 0.1
-              details:
-                - mode: batch
-                  type: transcription
-                  language: sv
-                  operating_point: standard
-                  count: 4
-                  duration_hrs: 1.33
-                - mode: batch
-                  type: transcription
-                  language: de
-                  operating_point: enhanced
-                  count: 1
-                  duration_hrs: 0.2
-                - mode: batch
-                  type: alignment
-                  language: en
-                  count: 1
-                  duration_hrs: 0.1
         "401":
           description: Unauthorized
           schema:
@@ -820,8 +480,6 @@ paths:
           description: Forbidden
           schema:
             $ref: "#/definitions/ErrorResponse"
-        "429":
-          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -850,7 +508,6 @@ definitions:
           - Job error
           - Job Expired
           - Job In Progress
-          - Job is not of type alignment
           - Job is not of type transcription
           - Job not found
           - Job rejected
@@ -859,19 +516,19 @@ definitions:
           - Malformed request
           - Missing callback
           - Missing data_file
-          - Missing text_file
           - No language selected
           - Not Implemented
           - Permission Denied
           - Requested product not available
           - Transcription not ready
           - Log file not available
-          - Requested Early Access Release not available
           - Unprocessable Entity
+          - Max concurrent running jobs exceeded
       detail:
         type: string
         description: The details of the error.
   TrackingData:
+    type: object
     properties:
       title:
         type: string
@@ -899,6 +556,7 @@ definitions:
   DataFetchConfig:
     required:
       - url
+    type: object
     properties:
       url:
         type: string
@@ -909,15 +567,8 @@ definitions:
           type: string
         description: >-
           A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token.
-  AlignmentConfig:
-    required:
-      - language
-    properties:
-      language:
-        type: string
-    example:
-      language: en
   TranslationError:
+    type: object
     properties:
       type:
         type: string
@@ -929,6 +580,7 @@ definitions:
         description: >-
           Human readable error message
   SummarizationError:
+    type: object
     properties:
       type:
         type: string
@@ -940,6 +592,7 @@ definitions:
         description: >-
           Human readable error message
   SentimentAnalysisError:
+    type: object
     properties:
       type:
         type: string
@@ -951,6 +604,7 @@ definitions:
         description: >-
           Human readable error message
   TopicDetectionError:
+    type: object
     properties:
       type:
         type: string
@@ -963,6 +617,7 @@ definitions:
         description: >-
           Human readable error message
   AutoChaptersResultError:
+    type: object
     properties:
       type:
         type: string
@@ -1016,6 +671,7 @@ definitions:
         description: >-
           List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition.
       punctuation_overrides:
+        type: object
         properties:
           sensitivity:
             type: number
@@ -1080,8 +736,8 @@ definitions:
             description: >-
               Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound.
       transcript_filtering_config:
+        description: Configuration for applying filtering to the transcription
         type: object
-        description: Configuration for applying filtering to the transcription.
         properties:
           remove_disfluencies:
             type: boolean
@@ -1099,16 +755,13 @@ definitions:
               properties:
                 from:
                   type: string
-                  description: >-
-                    The text or pattern identified to be replaced.
                 to:
                   type: string
-                  description: >-
-                    The corrected or formatted string to appear in the transcript.
             description: >-
               An array of objects defining custom replacements. Each replacement contains a pair of strings: the text to find ("from:") and the text to replace it with ("to:").
       speaker_diarization_config:
         description: Configuration for speaker diarization
+        type: object
         properties:
           prefer_current_speaker:
             type: boolean
@@ -1135,7 +788,7 @@ definitions:
               is detected in the audio. A maximum of 50 speakers identifiers across all speakers
               can be provided.
             items:
-              $ref: '#/definitions/SpeakersInputItem'
+              $ref: "#/definitions/SpeakersInputItem"
     example:
       language: en
       output_locale: en-GB
@@ -1157,10 +810,9 @@ definitions:
         - Caller
         - Agent
   NotificationConfig:
-    type: object
-    title: NotificationConfig
     required:
       - url
+    type: object
     properties:
       url:
         type: string
@@ -1202,9 +854,6 @@ definitions:
             - transcript.json-v2
             - transcript.txt
             - transcript.srt
-            - alignment
-            - alignment.word_start_and_end
-            - alignment.one_per_line
             - data
             - text
         description: >-
@@ -1235,6 +884,7 @@ definitions:
       Properties of the language pack.
     required:
       - word_delimiter
+    type: object
     properties:
       language_description:
         type: string
@@ -1275,7 +925,6 @@ definitions:
   JobType:
     type: string
     enum:
-      - alignment
       - transcription
   JobConfig:
     description: |
@@ -1295,6 +944,7 @@ definitions:
       possible in the job results and in callbacks.
     required:
       - type
+    type: object
     properties:
       type:
         $ref: "#/definitions/JobType"
@@ -1302,8 +952,6 @@ definitions:
         $ref: "#/definitions/DataFetchConfig"
       fetch_text:
         $ref: "#/definitions/DataFetchConfig"
-      alignment_config:
-        $ref: "#/definitions/AlignmentConfig"
       transcription_config:
         $ref: "#/definitions/TranscriptionConfig"
       notification_config:
@@ -1327,11 +975,10 @@ definitions:
         $ref: "#/definitions/TopicDetectionConfig"
       auto_chapters_config:
         $ref: "#/definitions/AutoChaptersConfig"
-      audio_events_config:
-        $ref: "#/definitions/AudioEventsConfig"
   TranslationConfig:
     required:
       - target_languages
+    type: object
     properties:
       target_languages:
         type: array
@@ -1339,6 +986,7 @@ definitions:
         items:
           type: string
   LanguageIdentificationConfig:
+    type: object
     properties:
       expected_languages:
         type: array
@@ -1390,6 +1038,7 @@ definitions:
           - paragraphs
           - bullets
   TopicDetectionConfig:
+    type: object
     properties:
       topics:
         x-omitempty: true
@@ -1400,18 +1049,10 @@ definitions:
     type: object
   AutoChaptersConfig:
     type: object
-  AudioEventsConfig:
-    x-omitempty: true
-    type: object
-    properties:
-      types:
-        x-omitempty: true
-        type: array
-        items:
-          type: string
   CreateJobResponse:
     required:
       - id
+    type: object
     properties:
       id:
         type: string
@@ -1432,6 +1073,7 @@ definitions:
       # large configs, And this is only client side validation so we will enforce config included in the job details
       # for one job in e2e tests for batch jobs api. I have considered also having two JobDetails definitions with inheritance
       # but Open API spec 2.0 does not support inheritance.
+    type: object
     properties:
       created_at:
         type: string
@@ -1441,9 +1083,6 @@ definitions:
       data_name:
         type: string
         description: Name of the data file submitted for job.
-      text_name:
-        type: string
-        description: Name of the text file submitted to be aligned to audio.
       duration:
         type: integer
         description: The file duration (in seconds). May be missing for fetch URL jobs.
@@ -1478,6 +1117,7 @@ definitions:
   RetrieveJobsResponse:
     required:
       - jobs
+    type: object
     properties:
       jobs:
         type: array
@@ -1500,25 +1140,6 @@ definitions:
               segment: 8
               seg_start: 963.201
               seg_end: 1091.481
-          transcription_config:
-            language: en
-            additional_vocab:
-              - content: Speechmatics
-                sounds_like:
-                  - speechmatics
-              - content: gnocchi
-                sounds_like:
-                  - nyohki
-                  - nokey
-                  - nochi
-              - content: CEO
-                sounds_like:
-                  - C.E.O.
-              - content: financial crisis
-            diarization: channel
-            channel_diarization_labels:
-              - Agent
-              - Caller
           notification_config:
             - url: https://collector.example.org/callback
               contents: ["transcript", "data"]
@@ -1526,24 +1147,10 @@ definitions:
                 [
                   "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ.-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM",
                 ]
-        - created_at: "2018-01-09T11:23:42.984612Z"
-          data_name: hello.wav
-          duration: 130
-          id: 084d1f86-9fe9-11e8-9c91-00155d019c0b
-          status: aligning
-          type: alignment
-          text_name: hello.txt
-          alignment_config:
-            language: en
-          notification_config:
-            - url: https://collector.example.org/trigger-fetch
-              contents: []
-          tracking:
-            title: Project X Intro
-            reference: /data/projects/X/overview/audio/hello.wav
   RetrieveJobResponse:
     required: &ref_0
       - job
+    type: object
     properties: &ref_1
       job:
         $ref: "#/definitions/JobDetails"
@@ -1592,6 +1199,7 @@ definitions:
             seg_end: 1091.481
   DeleteJobResponse:
     required: *ref_0
+    type: object
     properties: *ref_1
     example:
       job:
@@ -1644,6 +1252,7 @@ definitions:
       - data_name
       - duration
       - id
+    type: object
     properties:
       created_at:
         type: string
@@ -1661,9 +1270,6 @@ definitions:
         type: string
         example: a1b2c3d4e5
         description: The unique id assigned to the job.
-      text_name:
-        type: string
-        description: Name of the text file submitted to be aligned to audio.
       tracking:
         $ref: "#/definitions/TrackingData"
   RecognitionMetadata:
@@ -1672,6 +1278,7 @@ definitions:
     required:
       - created_at
       - type
+    type: object
     properties:
       created_at:
         type: string
@@ -1682,10 +1289,6 @@ definitions:
         $ref: "#/definitions/JobType"
       transcription_config:
         $ref: "#/definitions/TranscriptionConfig"
-      orchestrator_version:
-        type: string
-        example: "2025.11.07+cd4ff775c0+14.7.0"
-        description: The engine version used to generate transcription output.
       translation_errors:
         x-omitempty: true
         type: array
@@ -1716,8 +1319,6 @@ definitions:
         items:
           $ref: "#/definitions/AutoChaptersResultError"
         description: List of errors that occurred in the auto chapters stage.
-      alignment_config:
-        $ref: "#/definitions/AlignmentConfig"
       output_config:
         $ref: "#/definitions/OutputConfig"
       language_pack_info:
@@ -1725,10 +1326,15 @@ definitions:
       language_identification:
         $ref: "#/definitions/LanguageIdentificationResult"
         description: >-
-          Result of the language identification of the audio, configured using `language_identification_config`,  or setting the transcription language to `auto`.
+          Result of the language identification of the audio, configured using `language_identification_config`, or setting the transcription language to `auto`.
+      orchestrator_version:
+        type: string
+        description: >-
+          Orchestrator version in PEP 440 Format or set to 'version_not_found' as default.
   RecognitionDisplay:
     required:
       - direction
+    type: object
     properties:
       direction:
         type: string
@@ -1742,6 +1348,7 @@ definitions:
       - content
       - confidence
       - language
+    type: object
     properties:
       content:
         type: string
@@ -1768,6 +1375,7 @@ definitions:
       - start_time
       - end_time
       - type
+    type: object
     properties:
       channel:
         type: string
@@ -1884,7 +1492,6 @@ definitions:
       - alternatives
     type: "object"
   RetrieveTranscriptResponse:
-    title: RetrieveTranscriptResponse
     type: object
     required:
       - format
@@ -1908,7 +1515,7 @@ definitions:
         type: array
         x-omitempty: true
         items:
-          $ref: '#/definitions/SpeakersResultItem'
+          $ref: "#/definitions/SpeakersResultItem"
         description: List of unique speaker identifiers detected in the transcript.
       translations:
         type: object
@@ -1937,26 +1544,6 @@ definitions:
         $ref: "#/definitions/TopicDetectionResult"
       chapters:
         $ref: "#/definitions/AutoChaptersResult"
-      audio_events:
-        x-omitempty: true
-        type: array
-        description: Timestamped audio events, only set if `audio_events_config` is in the config
-        items:
-          $ref: "#/definitions/AudioEventItem"
-      audio_event_summary:
-        type: object
-        description: Summary statistics per event type, keyed by `type`, e.g. music
-        properties:
-          overall:
-            type: object
-            description: Overall summary on all channels
-            $ref: "#/definitions/AudioEventSummary"
-          channels:
-            description: Summary keyed by channel, only set if channel diarization is enabled
-            type: object
-            additionalProperties:
-              type: object
-              $ref: "#/definitions/AudioEventSummary"
   SummarizationResult:
     description: >-
       Summary of the transcript, configured using `summarization_config`.
@@ -2050,7 +1637,7 @@ definitions:
     description: Holds overall sentiment information, as well as detailed per-speaker and per-channel sentiment data.
     properties:
       overall:
-        description: Summary for all segments in the file
+        description: Summary of overall sentiment data.
         $ref: "#/definitions/SentimentSummaryDetail"
       speakers:
         type: array
@@ -2173,43 +1760,6 @@ definitions:
       end_time:
         type: number
         description: The end time of the chapter in the audio file
-  AudioEventItem:
-    type: object
-    properties:
-      type:
-        type: string
-        description: Kind of audio event. E.g. music
-      start_time:
-        type: number
-        description: Time (in seconds) at which the audio event starts
-        format: float
-      end_time:
-        type: number
-        description: Time (in seconds) at which the audio event ends
-        format: float
-      confidence:
-        type: number
-        format: float
-        description: Prediction confidence associated with this event
-      channel:
-        type: string
-        description: Input channel this event occurred on
-  AudioEventSummary:
-    type: object
-    additionalProperties:
-      type: object
-      $ref: "#/definitions/AudioEventSummaryItem"
-  AudioEventSummaryItem:
-    type: object
-    description: Summary statistics for this audio event type
-    properties:
-      total_duration:
-        type: number
-        description: Total duration (in seconds) of all audio events of this type
-        format: float
-      count:
-        type: number
-        description: Number of events of this type
   TranslationSentence:
     type: object
     properties:
@@ -2345,15 +1895,6 @@ definitions:
         type: number
         format: float
         description: Total duration of billable jobs (in hours) this cycle
-  RetrieveObjectUrlsResponse:
-    type: object
-    properties:
-      data:
-        type: string
-      audio_mp3:
-        type: string
-      transcript:
-        type: string
   SpeakersInputItem:
     type: object
     properties:
