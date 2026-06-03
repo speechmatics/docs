@@ -699,7 +699,7 @@ definitions:
         $ref: "#/definitions/OperatingPoint"
         deprecated: true
         description: |-
-          **Deprecated**: Use `model` instead. `operating_point` is left only for backward compatibility for `standard` and `enhanced`.
+          **Deprecated**: Use `model` instead. `operating_point` is left only for backward compatibility.
       additional_vocab:
         type: array
         x-omitempty: true
@@ -1400,8 +1400,6 @@ definitions:
         items:
           $ref: "#/definitions/AutoChaptersResultError"
         description: List of errors that occurred in the auto chapters stage.
-      alignment_config:
-        $ref: "#/definitions/AlignmentConfig"
       output_config:
         $ref: "#/definitions/OutputConfig"
       language_pack_info:
