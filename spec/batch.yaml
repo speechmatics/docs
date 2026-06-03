@@ -17,7 +17,7 @@ securityDefinitions:
     type: apiKey
     in: header
     name: Authorization
-    description: "Bearer token authentication. Use the format: Bearer <api_key/jwt>"
+    description: "Bearer token authentication. Use the format: Bearer $API_KEY_OR_JWT"
 security:
   - bearerAuth: []
 paths:
