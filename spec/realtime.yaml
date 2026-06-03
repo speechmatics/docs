@@ -770,6 +770,8 @@ components:
           default: true
         operating_point:
           $ref: "#/components/schemas/OperatingPoint"
+        model:
+          $ref: "#/components/schemas/Model"
         punctuation_overrides:
           $ref: "#/components/schemas/PunctuationOverrides"
         conversation_config:
@@ -809,6 +811,14 @@ components:
         conversation_config:
           $ref: "#/components/schemas/ConversationConfig"
     OperatingPoint:
+      type: string
+      deprecated: true
+      description: |
+        **Deprecated**: Kept for backward compatibility only. Use `model` instead going forward.
+      enum:
+        - standard
+        - enhanced
+    Model:
       type: string
       description: |
         Which model you wish to use. See [Operating points](http://docs.speechmatics.com/speech-to-text/#models) for more details.
