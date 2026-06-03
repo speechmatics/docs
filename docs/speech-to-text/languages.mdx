@@ -21,7 +21,7 @@ keywords:
     es-pr,
     es-ar,
     pt-br,
-    operating point,
+    model,
     standard,
     enhanced,
   ]
@@ -30,20 +30,20 @@ keywords:
 # Languages and models
 
 
-### Operating points
+### Models {#operating-points}
 
 Choose between two accuracy models when configuring your transcription session:
 - **Standard** — optimized for faster turnaround with strong accuracy. Recommended when speed and efficiency are your priorities
 - **Enhanced** — our highest-accuracy model with strong turnaround times. Recommended when precision is critical, and especially for complex audio (e.g. noisy environments, varied accents)
 
-By default, the `standard` operating point is used. You can specify the `enhanced` operating point as a part of the transcription config. For example:
+By default, the `standard` model is used. You can specify the `enhanced` model as a part of the transcription config. For example:
 ```json
 {
   "type": "transcription",
   "transcription_config": {
     "language": "en",
     // highlight-start
-    "operating_point": "enhanced"    
+    "model": "enhanced"    
     // highlight-end
   }
 }
@@ -190,10 +190,10 @@ Speechmatics offers domain-specific medical transcription models which provide u
 
 These models are kept up to date using officially maintained data sources. This brings significant improvements in recognition of medical terminology such as names of procedures, medications, conditions, and anatomy.
 
-Note that for languages without a medical transcription model, Speechmatics still offers industry-leading accuracy in the healthcare domain when using the general purpose `enhanced` [operating point](#operating-points). 
+Note that for languages without a medical transcription model, Speechmatics still offers industry-leading accuracy in the healthcare domain when using the general purpose `enhanced` [model](#operating-points). 
 
 :::info
-The medical domain-specific model must be used with the `enhanced` operating point.
+The medical domain-specific model must be used with the `enhanced` model.
 :::
  
 Medical domain example:
@@ -203,7 +203,7 @@ Medical domain example:
   "transcription_config": {
     "language": "en",
     // highlight-start
-    "operating_point": "enhanced",
+    "model": "enhanced",
     "domain": "medical"
   // highlight-end
   }

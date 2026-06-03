@@ -26,7 +26,7 @@ The following example shows a typical configuration for low latency applications
   "type": "transcription",
   "transcription_config": {
     "language": "en",
-    "operating_point": "enhanced",
+    "model": "enhanced",
     // highlight-start
     "max_delay": 0.7,
     "max_delay_mode": "flexible",
@@ -62,7 +62,7 @@ Partial transcripts allow you to receive preliminary transcription and update as
   "type": "transcription",
   "transcription_config": {
     "language": "en",
-    "operating_point": "enhanced",
+    "model": "enhanced",
     "max_delay": 2,
     // highlight-start
     "enable_partials": true,
