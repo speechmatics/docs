@@ -7,10 +7,19 @@ info:
   contact:
     email: support@speechmatics.com
 basePath: /v2
+schemes:
+  - https
 produces:
   - application/json
-  # users are using this header for Accept get job and delete job REQ-17778
   - application/vnd.speechmatics.v2+json
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    in: header
+    name: Authorization
+    description: "Bearer token authentication. Use the format: Bearer <api_key/jwt>"
+security:
+  - bearerAuth: []
 paths:
   "/jobs":
     post:
@@ -22,7 +31,7 @@ paths:
           in: formData
           type: string
           description: >-
-            JSON containing a [`JobConfig`](/speech-to-text/batch/input#jobconfig-schema) model indicating the type and parameters for the recognition job.
+            JSON containing a `JobConfig` model indicating the type and parameters for the recognition job.
           required: true
         - name: data_file
           in: formData
@@ -37,11 +46,7 @@ paths:
           description: >-
             **Note**: Only available for on-prem
 
-            JSON dictionary of processing settings for the job worker.
-            Currently supports `parallel_engines` (integer), which controls
-            the number of engines the worker can use in parallel for this job, and
-            `user_id` (string), which is the user id for this job.
-            Example: `{"parallel_engines": 4}`
+            JSON dictionary of processing settings for the job worker. Currently supports `parallel_engines` (integer), which controls the number of engines the worker can use in parallel for this job, and `user_id` (string), which is the user id for this job. Example: `{"parallel_engines": 4}`
       responses:
         "201":
           description: OK
@@ -133,6 +138,8 @@ paths:
             application/json:
               code: 422
               error: limit in query must be of type int64
+        "429":
+          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -181,6 +188,8 @@ paths:
             application/json:
               code: 410
               error: Job Expired
+        "429":
+          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -242,6 +251,8 @@ paths:
             application/json:
               code: 423
               error: Resource Locked
+        "429":
+          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -378,6 +389,8 @@ paths:
               code: 410
               error: File Expired
               detail: File deleted from the storage
+        "429":
+          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -433,6 +446,8 @@ paths:
               code: 410
               error: File Expired
               detail: File deleted from the storage
+        "429":
+          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -472,6 +487,37 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/UsageResponse"
+          examples:
+            application/json:
+              since: "2021-09-12T00:00:00Z"
+              until: "2022-01-01T23:59:59Z"
+              summary:
+                - mode: batch
+                  type: transcription
+                  count: 5
+                  duration_hrs: 1.53
+                - mode: batch
+                  type: alignment
+                  count: 1
+                  duration_hrs: 0.1
+              details:
+                - mode: batch
+                  type: transcription
+                  language: sv
+                  operating_point: standard
+                  count: 4
+                  duration_hrs: 1.33
+                - mode: batch
+                  type: transcription
+                  language: de
+                  operating_point: enhanced
+                  count: 1
+                  duration_hrs: 0.2
+                - mode: batch
+                  type: alignment
+                  language: en
+                  count: 1
+                  duration_hrs: 0.1
         "401":
           description: Unauthorized
           schema:
@@ -480,6 +526,8 @@ paths:
           description: Forbidden
           schema:
             $ref: "#/definitions/ErrorResponse"
+        "429":
+          description: Rate Limited
         "500":
           description: Internal Server Error
           schema:
@@ -640,19 +688,18 @@ definitions:
       domain:
         type: string
         description: >-
-          Request a specialized model based on 'language' but optimized for a particular field, e.g. "finance" or "medical".
+          Request a specialized model based on 'language' but optimized for a particular field, e.g. 'finance' or 'medical'.
       output_locale:
         type: string
         description: >-
           Language locale to be used when generating the transcription output, normally specified as an ISO language code
+      model:
+        $ref: "#/definitions/Model"
       operating_point:
         $ref: "#/definitions/OperatingPoint"
+        deprecated: true
         description: |-
-          Specify an operating point to use.
-          Operating points change the transcription process in a high level way, such as altering the acoustic model.
-          The default is `standard`.
-            - `standard`:
-            - `enhanced`: transcription will take longer but be more accurate than 'standard'
+          **Deprecated**: Use `model` instead. `operating_point` is left only for backward compatibility for `standard` and `enhanced`.
       additional_vocab:
         type: array
         x-omitempty: true
@@ -681,10 +728,6 @@ definitions:
             description: |-
               Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5.
           permitted_marks:
-            # Do not add `x-omitempty` here as this breaks behaviour when this array is empty.
-            # An empty `[]` permitted_marks array is valid, to make sure that transcript contains no punctuation marks.
-            # Currently BJA produces a `null` value for this array. UniASR has an exception for this.
-            # See REQ-17613
             type: array
             items:
               type: string
@@ -742,7 +785,7 @@ definitions:
           remove_disfluencies:
             type: boolean
             description: >-
-              If true, words identified as disfluencies (e.g., 'um', 'uh') will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'.
+              If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'.
           replacements:
             type: array
             x-omitempty: true
@@ -758,7 +801,7 @@ definitions:
                 to:
                   type: string
             description: >-
-              An array of objects defining custom replacements. Each replacement contains a pair of strings: the text to find ("from:") and the text to replace it with ("to:").
+              An array of objects defining custom replacements. Each replacement contains a pair of strings: the text to find `from` and the text to replace it with `to`.
       speaker_diarization_config:
         description: Configuration for speaker diarization
         type: object
@@ -766,7 +809,7 @@ definitions:
           prefer_current_speaker:
             type: boolean
             description: >-
-              If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."
+              If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section.
           speaker_sensitivity:
             type: number
             format: float
@@ -782,11 +825,7 @@ definitions:
             type: array
             x-omitempty: true
             description: >-
-              Use this option to provide speaker labels linked to their speaker identifiers.
-              When passed, the transcription system will tag spoken words in the transcript
-              with the provided speaker labels whenever any of the specified speakers
-              is detected in the audio. A maximum of 50 speakers identifiers across all speakers
-              can be provided.
+              Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided.
             items:
               $ref: "#/definitions/SpeakersInputItem"
     example:
@@ -975,6 +1014,8 @@ definitions:
         $ref: "#/definitions/TopicDetectionConfig"
       auto_chapters_config:
         $ref: "#/definitions/AutoChaptersConfig"
+      audio_events_config:
+        $ref: "#/definitions/AudioEventsConfig"
   TranslationConfig:
     required:
       - target_languages
@@ -1014,7 +1055,6 @@ definitions:
           - auto
           - informative
           - conversational
-        default: auto
         description: |
           Choose from three options:
           - `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.
@@ -1049,6 +1089,15 @@ definitions:
     type: object
   AutoChaptersConfig:
     type: object
+  AudioEventsConfig:
+    x-omitempty: true
+    type: object
+    properties:
+      types:
+        x-omitempty: true
+        type: array
+        items:
+          type: string
   CreateJobResponse:
     required:
       - id
@@ -1068,11 +1117,6 @@ definitions:
       - data_name
       - id
       - status
-      # config is not required anymore, because we use JobDetails definition for list and get one job endpoints
-      # and in context of the list in BVA where we return all the jobs, returning configs can lead to OOMK due to potentially
-      # large configs, And this is only client side validation so we will enforce config included in the job details
-      # for one job in e2e tests for batch jobs api. I have considered also having two JobDetails definitions with inheritance
-      # but Open API spec 2.0 does not support inheritance.
     type: object
     properties:
       created_at:
@@ -1083,6 +1127,9 @@ definitions:
       data_name:
         type: string
         description: Name of the data file submitted for job.
+      text_name:
+        type: string
+        description: Name of the text file submitted to be aligned to audio.
       duration:
         type: integer
         description: The file duration (in seconds). May be missing for fetch URL jobs.
@@ -1140,6 +1187,25 @@ definitions:
               segment: 8
               seg_start: 963.201
               seg_end: 1091.481
+          transcription_config:
+            language: en
+            additional_vocab:
+              - content: Speechmatics
+                sounds_like:
+                  - speechmatics
+              - content: gnocchi
+                sounds_like:
+                  - nyohki
+                  - nokey
+                  - nochi
+              - content: CEO
+                sounds_like:
+                  - C.E.O.
+              - content: financial crisis
+            diarization: channel
+            channel_diarization_labels:
+              - Agent
+              - Caller
           notification_config:
             - url: https://collector.example.org/callback
               contents: ["transcript", "data"]
@@ -1147,6 +1213,21 @@ definitions:
                 [
                   "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ.-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM",
                 ]
+        - created_at: "2018-01-09T11:23:42.984612Z"
+          data_name: hello.wav
+          duration: 130
+          id: 084d1f86-9fe9-11e8-9c91-00155d019c0b
+          status: aligning
+          type: alignment
+          text_name: hello.txt
+          alignment_config:
+            language: en
+          notification_config:
+            - url: https://collector.example.org/trigger-fetch
+              contents: []
+          tracking:
+            title: Project X Intro
+            reference: /data/projects/X/overview/audio/hello.wav
   RetrieveJobResponse:
     required: &ref_0
       - job
@@ -1319,6 +1400,8 @@ definitions:
         items:
           $ref: "#/definitions/AutoChaptersResultError"
         description: List of errors that occurred in the auto chapters stage.
+      alignment_config:
+        $ref: "#/definitions/AlignmentConfig"
       output_config:
         $ref: "#/definitions/OutputConfig"
       language_pack_info:
@@ -1368,7 +1451,6 @@ definitions:
         items:
           type: string
   RecognitionResult:
-    title: RecognitionResult
     description: >-
       An ASR job output item. The primary item types are `word` and `punctuation`. Other item types may be present, for example to provide semantic information of different forms.
     required:
@@ -1442,7 +1524,7 @@ definitions:
               direction: ltr
   WrittenFormRecognitionResult:
     description: >-
-      A WrittenFormRecognitionResult describes a simple object which consists solely of 'word' type entries with a start and end time. It can occur only inside the written_form property of a full RecognitionResult"
+      A WrittenFormRecognitionResult describes a simple object which consists solely of 'word' type entries with a start and end time. It can occur only inside the written_form property of a full RecognitionResult'
     properties:
       alternatives:
         items:
@@ -1467,7 +1549,7 @@ definitions:
     type: "object"
   SpokenFormRecognitionResult:
     description: >-
-      A SpokenFormRecognitionResult describes a simple object which consists solely of 'word' or 'punctuation' type entries with a start and end time. It can occur only inside the spoken_form property of a full "RecognitionResult"
+      A SpokenFormRecognitionResult describes a simple object which consists solely of 'word' or 'punctuation' type entries with a start and end time. It can occur only inside the spoken_form property of a full 'RecognitionResult'
     properties:
       alternatives:
         items:
@@ -1544,6 +1626,26 @@ definitions:
         $ref: "#/definitions/TopicDetectionResult"
       chapters:
         $ref: "#/definitions/AutoChaptersResult"
+      audio_events:
+        x-omitempty: true
+        type: array
+        description: Timestamped audio events, only set if `audio_events_config` is in the config
+        items:
+          $ref: "#/definitions/AudioEventItem"
+      audio_event_summary:
+        type: object
+        description: Summary statistics per event type, keyed by `type`, e.g. music
+        properties:
+          overall:
+            type: object
+            description: Overall summary on all channels
+            $ref: "#/definitions/AudioEventSummary"
+          channels:
+            description: Summary keyed by channel, only set if channel diarization is enabled
+            type: object
+            additionalProperties:
+              type: object
+              $ref: "#/definitions/AudioEventSummary"
   SummarizationResult:
     description: >-
       Summary of the transcript, configured using `summarization_config`.
@@ -1626,12 +1728,11 @@ definitions:
         type: string
         description: The channel label for the segment, if channel diarization is enabled
       confidence:
-        {
-          type: number,
-          format: float,
-          description: A confidence score in the range of 0-1,
+        type: number,
+        format: float,
+        description: |
+          A confidence score in the range of 0-1,
           indicating the model's certainty in the predicted sentiment,
-        }
   SentimentSummary:
     type: object
     description: Holds overall sentiment information, as well as detailed per-speaker and per-channel sentiment data.
@@ -1653,25 +1754,36 @@ definitions:
     type: object
     description: Holds the count of sentiment information grouped by positive, neutral and negative.
     properties:
-      positive_count: { type: integer }
-      negative_count: { type: integer }
-      neutral_count: { type: integer }
+      positive_count:
+        type: integer
+      negative_count:
+        type: integer
+      neutral_count:
+        type: integer
   SentimentSpeakerSummary:
     type: object
     description: Holds sentiment information for a specific speaker.
     properties:
-      speaker: { type: string }
-      positive_count: { type: integer }
-      negative_count: { type: integer }
-      neutral_count: { type: integer }
+      speaker:
+        type: string
+      positive_count:
+        type: integer
+      negative_count:
+        type: integer
+      neutral_count:
+        type: integer
   SentimentChannelSummary:
     type: object
     description: Holds sentiment information for a specific channel.
     properties:
-      channel: { type: string }
-      positive_count: { type: integer }
-      negative_count: { type: integer }
-      neutral_count: { type: integer }
+      channel:
+        type: string
+      positive_count:
+        type: integer
+      negative_count:
+        type: integer
+      neutral_count:
+        type: integer
   TopicDetectionResult:
     description: Main object that holds topic detection results.
     type: object
@@ -1707,9 +1819,14 @@ definitions:
     type: object
     description: Represents a segment of text and its associated topic information.
     properties:
-      text: { type: string }
-      start_time: { type: number, format: float }
-      end_time: { type: number, format: float }
+      text:
+        type: string
+      start_time:
+        type: number
+        format: float
+      end_time:
+        type: number
+        format: float
       topics:
         type: array
         items:
@@ -1718,7 +1835,8 @@ definitions:
     type: object
     description: Represents a topic and its associated information.
     properties:
-      topic: { type: string }
+      topic:
+        type: string
   TopicDetectionSummary:
     type: object
     description: Holds overall information on the topics detected.
@@ -1759,7 +1877,43 @@ definitions:
         description: The start time of the chapter in the audio file
       end_time:
         type: number
-        description: The end time of the chapter in the audio file
+  AudioEventItem:
+    type: object
+    properties:
+      type:
+        type: string
+        description: Kind of audio event. E.g. music
+      start_time:
+        type: number
+        description: Time (in seconds) at which the audio event starts
+        format: float
+      end_time:
+        type: number
+        description: Time (in seconds) at which the audio event ends
+        format: float
+      confidence:
+        type: number
+        format: float
+        description: Prediction confidence associated with this event
+      channel:
+        type: string
+        description: Input channel this event occurred on
+  AudioEventSummary:
+    type: object
+    additionalProperties:
+      type: object
+      $ref: "#/definitions/AudioEventSummaryItem"
+  AudioEventSummaryItem:
+    type: object
+    description: Summary statistics for this audio event type
+    properties:
+      total_duration:
+        type: number
+        description: Total duration (in seconds) of all audio events of this type
+        format: float
+      count:
+        type: number
+        description: Number of events of this type
   TranslationSentence:
     type: object
     properties:
@@ -1840,6 +1994,13 @@ definitions:
         example: "Audio fetch error, http status 418"
   OperatingPoint:
     type: string
+    enum:
+      - standard
+      - enhanced
+  Model:
+    type: string
+    description: >-
+      Specific model to use in transcription (previously called operating point).
     enum:
       - standard
       - enhanced
