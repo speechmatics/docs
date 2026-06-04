@@ -123,6 +123,23 @@ asyncio.run(main())
   </TabItem>
 </Tabs>
 
+### Fetching audio from a URL
+
+As well as uploading audio files directly, you can have the worker fetch them from a remote URL by adding a `fetch_data` section to the job config. You can find an example of this below. The full config options are documented [here](/speech-to-text/batch/input#fetch-url).
+
+```bash
+curl -X POST address.of.container:PORT/v2/jobs \
+  -F 'config={
+    "type": "transcription",
+    "transcription_config": {
+      "language": "en"
+    },
+    "fetch_data": {
+      "url": "https://example.com/audio_file.mp3"
+    }
+  }'
+```
+
 
 ## Managing capacity
 
@@ -225,10 +242,11 @@ Liveness probe. Returns `200` when all container services are running and health
 
 ### `GET /ready`
 
-Readiness probe. Returns `200` when at least one engine slot is free, `503` when all engines are occupied.
+Readiness probe. Returns `200` when at least one engine slot is free, `503` when all engines are occupied. The response includes the current number of engines in use.
 
 ```json
 {
   "ready": true,
+  "engines_used": 0
 }
 ```
