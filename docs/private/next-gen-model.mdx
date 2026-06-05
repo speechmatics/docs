@@ -35,11 +35,16 @@ Example minimal transcription config:
   "transcription_config": {
     // highlight-start
     "language": "multi",
-    "operating_point": "omni-v1",
+    "model": "omni-v1", 
     // highlight-end
   }
 }
 ```
+
+:::warning 
+The early access naming of `omni-v1` will be replaced with `melia-1` as a part of the upcoming public release. 
+:::
+
 ### Language hints
 If you know which languages are spoken in a given audio file, you can optionally provide a list of language hints to reduce the likelihood of unexpected languages and scripts being output. 
 
@@ -50,7 +55,7 @@ Example config with language hints:
   "type": "transcription",
   "transcription_config": {
     "language": "multi",
-    "operating_point": "omni-v1",
+    "model": "omni-v1",
     // highlight-start
     "language_hints": ["en", "ar"]
     // highlight-end
@@ -92,13 +97,13 @@ Two new properties have been introduced into the returned job metadata based on 
 | ------------- | --------------- |----- |
 | Modes |   Batch only | Q3: Realtime mode available |
 | Accuracy - Monolingual audio |  Matching Standard model on general conversation |  Q3: Improved recognition of domain specific terms and proper nouns   | 
-| Accuracy - Multilingual audio |  Multilingual files fully supported across all [supported languages](../speech-to-text/languages#transcription-languages)      | Q2: Specify a list of languages that may be present in the audio to improve accuracy <br/> Q3: Improved code-switching accuracy |
+| Accuracy - Multilingual audio |  Multilingual files fully supported across all [supported languages](../speech-to-text/languages#transcription-languages)      | Q2: Improved code-switching accuracy |
 | Accuracy - Alphanumerics | ✅ Matching Enhanced model accuracy, though formatting consistency not yet implemented | Q3: Further improved accuracy and formatting consistency |
-| Diarization | Channel diarization available | Q2: Speaker diarization available |
 | Additional context | Custom dictionary not supported | Q3: Support for additional context, similar to custom dictionary |
 | Language labelling | Language labelling at the granularity of around 14 seconds | Q2: Word level language labelling |
 | Disfluencies | Reduced disfluency transcription | Q3: Increased transcription (with tagging)|
 | Turnaround time |	✅ Match Standard model | Further improvements expected throughout 2026 |
+| Diarization | ✅ Match current behaviour | |
 | Word timings |	✅ Match current behaviour| |
 | Punctuation |	✅ Match current behaviour| |
 | Notifications |	✅ Match current behaviour| |
