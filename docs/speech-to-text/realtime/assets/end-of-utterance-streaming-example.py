@@ -103,7 +103,7 @@ class VoiceAITranscriber:
             )  # Adjust as needed
 
             conf = speechmatics.models.TranscriptionConfig(
-                operating_point="enhanced",
+                model="enhanced",
                 language=LANGUAGE,
                 enable_partials=True,
                 max_delay=1,

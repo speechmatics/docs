@@ -12,7 +12,7 @@ const response = await client.createTranscriptionJob({
   config: {
     type: "transcription",
     transcription_config: {
-      operating_point: "enhanced",
+      model: "enhanced",
       language: "en",
     },
   },

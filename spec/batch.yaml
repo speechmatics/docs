@@ -504,13 +504,13 @@ paths:
                 - mode: batch
                   type: transcription
                   language: sv
-                  operating_point: standard
+                  model: standard
                   count: 4
                   duration_hrs: 1.33
                 - mode: batch
                   type: transcription
                   language: de
-                  operating_point: enhanced
+                  model: enhanced
                   count: 1
                   duration_hrs: 0.2
                 - mode: batch

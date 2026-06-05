@@ -37,7 +37,7 @@ async function transcribe() {
   await client.start(jwt, {
     transcription_config: {
       language: "en",
-      operating_point: "enhanced",
+      model: "enhanced",
       max_delay: 1.0,
       transcript_filtering_config: {
         remove_disfluencies: true,

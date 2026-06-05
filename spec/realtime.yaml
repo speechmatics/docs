@@ -330,7 +330,7 @@ components:
           "transcription_config":
             {
               "language": "en",
-              "operating_point": "enhanced",
+              "model": "enhanced",
               "output_locale": "en-US",
               "additional_vocab": ["gnocchi", "bucatini", "bigoli"],
               "diarization": "speaker",
