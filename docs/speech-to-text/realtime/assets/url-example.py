@@ -47,7 +47,7 @@ settings = speechmatics.models.AudioSettings()
 # Define transcription parameters
 # Full list of parameters described here: https://speechmatics.github.io/speechmatics-python/models
 conf = speechmatics.models.TranscriptionConfig(
-    operating_point="enhanced",
+    model="enhanced",
     language=LANGUAGE,
     enable_partials=True,
     max_delay=1,
