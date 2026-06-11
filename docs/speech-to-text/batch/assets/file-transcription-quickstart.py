@@ -12,7 +12,7 @@ settings = ConnectionSettings(
 )
 
 # Define transcription parameters
-conf = {"type": "transcription", "transcription_config": {"language": LANGUAGE, "operating_point": "enhanced"}}
+conf = {"type": "transcription", "transcription_config": {"language": LANGUAGE, "model": "enhanced"}}
 
 # Open the client using a context manager
 with BatchClient(settings) as client:

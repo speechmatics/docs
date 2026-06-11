@@ -44,8 +44,8 @@ It is recommended to minimize the number of speaker IDs to achieve optimal accur
 
 Speaker identifiers have the following limitations and scoping rules:
 
-- **Model-specific** — Identifiers are tied to the model used to generate them and are valid only within the same operating point. Using identifiers across different operating points is not supported and any such identifiers will be ignored.
-  Whenever a model within an operating point is updated, existing identifiers must always be regenerated.
+- **Model-specific** — Identifiers are tied to the model used to generate them. Using identifiers across different models is not supported and any such identifiers will be ignored.
+  Whenever a model is updated, existing identifiers must always be regenerated.
 
 - **Encrypted and scoped** — Identifiers are securely encrypted and scoped to your account context:
   - **Per customer** — Identifiers are unique to each customer and cannot be shared or reused across customers.
