@@ -40,6 +40,24 @@ Below are the complete fields of the configuration object:
 
 <SchemaNode schema={batchSchema.definitions.JobConfig} />
 
+### Multilingual transcription with Melia 1
+
+The Melia 1 model transcribes audio containing more than one language. Select it with `"model": "melia-1"` and `"language": "multi"`; for basic model selection, refer to [Models](/speech-to-text/models).
+
+If you know which languages appear in the audio, provide them as language hints to reduce the chance of unexpected languages or scripts in the output. This config hints that the audio contains English and Arabic:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "melia-1",
+    "language": "multi",
+    "language_hints": ["en", "ar"]
+  }
+}
+```
+
+Specify any number of [supported language codes](/speech-to-text/languages#transcription-languages). For a monolingual file, hinting the single language present can improve accuracy.
 
 ## Fetch URL
 
