@@ -31,7 +31,7 @@ Feature availability varies depending on the deployment method you choose. Below
 
 | Feature                                                                               | Modes           | Deployments   |
 | ------------------------------------------------------------------------------------- | --------------- | ------------- |
-| [Multilingual speech to text](/speech-to-text/languages#multilingual-speech-to-text) | Batch, Realtime | SaaS, On-prem |
+| [Multilingual speech to text](/speech-to-text/languages#bilingual-and-multi-language-packs) | Batch, Realtime | SaaS, On-prem |
 | [Alignment](/speech-to-text/batch/alignment)                                          | Batch           | SaaS          |
 | [Audio events](/speech-to-text/features/audio-events)                                 | Batch, Realtime | SaaS, On-prem |
 | [Audio filtering](/speech-to-text/features/audio-filtering)                           | Batch, Realtime | SaaS, On-prem |
