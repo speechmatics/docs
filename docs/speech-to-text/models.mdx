@@ -1,0 +1,103 @@
+---
+title: Models
+description: Compare the Enhanced, Standard, and Melia 1 models and choose the right one for your audio.
+---
+
+# Models
+
+Compare the Speech to Text models and choose the right one for your audio.
+
+Speechmatics offers three models for Speech to Text: Enhanced, Standard, and Melia 1. All three use the same API. The model you choose determines accuracy, how multilingual audio is handled, and which processing modes and regions are available.
+
+## Compare the models
+
+| Capability | Enhanced | Standard | Melia 1 |
+|---|---|---|---|
+| `model` value | `enhanced` | `standard` | `melia-1` |
+| Accuracy | Highest | High | High |
+| Turnaround | Fast | Fastest | Fast |
+| Processing modes | Batch and Realtime | Batch and Realtime | Batch |
+| Regions | EU, US, AUS | EU, US, AUS | EU, US |
+| Language handling | Selected language or pack | Selected language or pack | Automatic multilingual |
+| Custom dictionary | ✅ | ✅ | Not yet |
+| Confidence scores | ✅ | ✅ | Not yet |
+| Speech intelligence | ✅ | ✅ | Not yet |
+
+Enhanced and Standard are feature-identical and differ only in accuracy and speed: Enhanced delivers the highest accuracy, and Standard prioritises throughput. Melia 1 matches Standard for accuracy and adds automatic multilingual transcription, but it is available for Batch only and supports a reduced feature set. Speech intelligence covers translation, summarization, topic detection, chapters, sentiment, and audio events.
+
+## Choose a model
+
+Use Enhanced for the highest accuracy on single-language audio, such as medical, legal, or subtitling work.
+
+Use Standard when throughput, cost, or latency matter more than the last increment of accuracy, such as archival transcription, content indexing, or large-scale captioning.
+
+Use Melia 1 for audio that contains more than one language, including speakers who switch language mid-conversation. It offers fast turnaround and accuracy on par with Standard.
+
+## Specify a model
+
+Set the `model` property in your transcription config. If you do not set it, the `standard` model is used.
+
+This config selects the `enhanced` model:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    // highlight-start
+    "model": "enhanced",
+    // highlight-end
+    "language": "en"
+  }
+}
+```
+
+Enhanced and Standard are available for Realtime and Batch transcription. Melia 1 is available for Batch transcription only.
+
+## Melia 1
+
+Melia 1 is a multilingual model. It transcribes audio that contains more than one language, including speakers who switch language mid-conversation, and returns a single continuous transcript. It does not require you to select a language pack, and its accuracy is on par with the Standard model.
+
+Set `"model": "melia-1"` and `"language": "multi"`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    // highlight-start
+    "model": "melia-1",
+    "language": "multi"
+    // highlight-end
+  }
+}
+```
+
+:::warning
+Melia 1 requires `language` to be set to `multi`. Any other value returns an error.
+:::
+
+Melia 1 is available for Batch transcription in the EU and US regions only. It is not available in the Australia (AU1) region.
+
+| Region | Endpoint |
+|---|---|
+| EU1 (Europe) | `eu1.asr.api.speechmatics.com` |
+| US1 (USA) | `us1.asr.api.speechmatics.com` |
+
+For the full list of Batch endpoints, refer to [Authentication](https://docs.speechmatics.com/get-started/authentication#supported-endpoints).
+
+Melia 1 matches the Enhanced and Standard models for core transcription features, including diarization, word timings, punctuation, notifications, and output locale. It does not yet support the following features, which are available with the Enhanced and Standard models:
+
+- Custom vocabulary and formatting: custom dictionary, find and replace, spoken form output, profanity tagging
+- Output detail: confidence scores, entity detection, audio filtering
+- Speech intelligence: audio events, translation, summarization, chapters, topics, sentiment
+
+Melia 1 is an early-access model and its feature support is expanding. Check the [release notes](https://speechmatics.featurebase.app/en/changelog) for the latest.
+
+To configure language hints and read the per-language output metadata, refer to [Input](https://docs.speechmatics.com/speech-to-text/batch/input) and [Output](https://docs.speechmatics.com/speech-to-text/batch/output).
+
+## Operating points
+
+The `model` property replaces the `operating_point` property. Existing configs that use `operating_point` continue to transcribe without changes.
+
+:::note
+In SaaS (cloud) deployments, `operating_point` is deprecated. It maps to `model` and accepts the same `enhanced` and `standard` values. Use [`model`](#specify-a-model) going forward.
+:::

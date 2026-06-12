@@ -1,227 +1,174 @@
 ---
-description: "Information about the wide array of languages Speechmatics supports transcription for"
-keywords:
-  [
-    speechmatics,
-    languages,
-    transcription,
-    speech recognition,
-    asr,
-    en-us,
-    en-gb,
-    en-nz,
-    en-au,
-    fr-ca,
-    fr-be,
-    de-at,
-    de-ch,
-    es-mx,
-    es-cl,
-    es-ve,
-    es-pr,
-    es-ar,
-    pt-br,
-    model,
-    standard,
-    enhanced,
-  ]
+title: Languages
+description: See which languages Speechmatics supports for transcription and translation, including bilingual packs.
 ---
 
-# Languages and models
+# Languages
 
+To choose a transcription model, refer to [Models](https://docs.speechmatics.com/speech-to-text/models).
 
-### Models
-
-Choose between two accuracy models when configuring your transcription session:
-- **Standard** — optimized for faster turnaround with strong accuracy. Recommended when speed and efficiency are your priorities
-- **Enhanced** — our highest-accuracy model with strong turnaround times. Recommended when precision is critical, and especially for complex audio (e.g. noisy environments, varied accents)
-
-By default, the `standard` model is used. You can specify the `enhanced` model as a part of the transcription config. For example:
-```json
-{
-  "type": "transcription",
-  "transcription_config": {
-    "language": "en",
-    // highlight-start
-    "model": "enhanced"    
-    // highlight-end
-  }
-}
-```
-
+The languages, packs, and options on this page apply to the Enhanced and Standard models. The Melia 1 model is multilingual: it transcribes the individual languages listed here and switches between them automatically, without language selection. It does not support the `auto` option, the bilingual and multi-language packs, or translation. For Melia 1, refer to [Models](https://docs.speechmatics.com/speech-to-text/models).
 
 ## Transcription languages
-:::info
-To automatically identify the language in an audio file, use our [Language Identification](/speech-to-text/batch/language-identification) feature.
 
-To dynamically update your system with the latest languages and features offered by Speechmatics, use our [Feature Discovery](/speech-to-text/features/feature-discovery) endpoint. 
-:::
+To automatically identify the language in an audio file, use the [Language Identification](https://docs.speechmatics.com/speech-to-text/batch/language-identification) feature.
 
-Speechmatics supports the following languages. Your ability to use any or all of the languages will depend on what languages you are contracted to use.
+To dynamically update your system with the latest languages and features offered by Speechmatics, use the [Feature Discovery](https://docs.speechmatics.com/speech-to-text/features/feature-discovery) endpoint.
 
-Speechmatics takes a global-first approach to our languages. In a single language pack, we aim to support many different accents and dialects. This simplifies your workflow when selecting which language to use, not requiring you to know which accent is being spoken in your audio upfront. With this approach we still achieve very high accuracy compared to accent-specific language packs.
+Speechmatics supports the following languages. Your ability to use any or all of them depends on the languages you are contracted to use.
 
-| Language                     | Language Code                   | Description                                                                                                                                                                                                                                                                                                                                 |
-| ---------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Automatic                    | auto                            | Automatically detect the language using our [Language Identification](/speech-to-text/batch/language-identification) feature. <br />Please note, this is currently only supported with Batch Transcriptions.                                                                                                                                               |
-| Arabic                       | ar                              | Our global Arabic gives high-accuracy transcription across many different accents and dialects including (but not limited to) Modern Standard Arabic (MSA) and Arabic spoken in the Gulf, Egypt and the Levant.                                                                                                                            |
-| Arabic & English bilingual   | ar_en                           | Ideal when transcribing Arabic and English in the same media file or stream. Supports all accents and dialects listed under Arabic and English.                                |
-| Bashkir                      | ba                              |                                                                                                                                                                                                                                                                                                                                           |
-| Basque                       | eu                              |                                                                                                                                                                                                                                                                                                                                           |
-| Belarusian                   | be                              |                                                                                                                                                                                                                                                                                                                                           |
-| Bengali                      | bn                              |                                                                                                                                                                                                                                                                                                                                           |
-| Bulgarian                    | bg                              |                                                                                                                                                                                                                                                                                                                                           |
-| Cantonese                    | yue                             |                                                                                                                                                                                                                                                                                                                                           |
-| Catalan                      | ca                              |                                                                                                                                                                                                                                                                                                                                           |
-| Croatian                     | hr                              |                                                                                                                                                                                                                                                                                                                                           |
-| Czech                        | cs                              |                                                                                                                                                                                                                                                                                                                                           |
-| Danish                       | da                              |                                                                                                                                                                                                                                                                                                                                           |
-| Dutch                        | nl                              |                                                                                                                                                                                                                                                                                                                                           |
-| English                      | en                              | Our global English gives high-accuracy transcription across many different accents including (but not limited to) English spoken in the United Kingdom, United States, Australia, New Zealand and non-native speakers. To standardise spelling, we recommend specifying the [Output Locale](/speech-to-text/formatting#output-locale).         |
-| Esperanto                    | eo                              |                                                                                                                                                                                                                                                                                                                                           |
-| Estonian                     | et                              |                                                                                                                                                                                                                                                                                                                                           |
-| Finnish                      | fi                              |                                                                                                                                                                                                                                                                                                                                           |
-| French                       | fr                              | Our global French gives high-accuracy transcription across many different accents including (but not limited to) French spoken in France, Canada and Belgium.                                                                                                                                                                            |
-| Galician                     | gl                              |                                                                                                                                                                                                                                                                                                                                           |
-| German                       | de                              | Our global German gives high-accuracy transcription across many different accents including (but not limited to) German spoken in Germany, Austria and Switzerland.                                                                                                                                                                      |
-| Greek                        | el                              |                                                                                                                                                                                                                                                                                                                                           |
-| Hebrew                       | he                              |                                                                                                                                                                                                                                                                                                                                           |
-| Hindi                        | hi                              |                                                                                                                                                                                                                                                                                                                                           |
-| Hungarian                    | hu                              |                                                                                                                                                                                                                                                                                                                                           |
-| Indonesian                   | id                              |                                                                                                                                                                                                                                                                                                                                           |
-| Interlingua                  | ia                              |                                                                                                                                                                                                                                                                                                                                           |
-| Irish                        | ga                              |                                                                                                                                                                                                                                                                                                                                           |
-| Italian                      | it                              |                                                                                                                                                                                                                                                                                                                                           |
-| Japanese                     | ja                              |                                                                                                                                                                                                                                                                                                                                           |
-| Korean                       | ko                              |                                                                                                                                                                                                                                                                                                                                           |
-| Latvian                      | lv                              |                                                                                                                                                                                                                                                                                                                                           |
-| Lithuanian                   | lt                              |                                                                                                                                                                                                                                                                                                                                           |
-| Malay                        | ms                              |                                                                                                                                                                                                                                                                                                                                           |
-| Malay & English bilingual    | en_ms                           | Ideal when transcribing Malay and English in the same media file or stream. Supports all accents and dialects listed under Malay and English.                                                                                                                                                                                             |
-| Maltese                      | mt                              |                                                                                                                                                                                                                                                                                                                                           |
-| Mandarin                     | cmn                             | Our global Mandarin can output [Traditional or Simplified characters](/speech-to-text/formatting#output-locale) and gives high accuracy transcription across many different accents including (but not limited to) China, Taiwan, Singapore, Malaysia.                                                                                   |
-| Mandarin & English bilingual | cmn_en                          | Ideal when transcribing Mandarin and English in the same media file or stream. Supports all accents and dialects listed under Mandarin and English.                                                                                                                                                                                       |
-| Mandarin Malay Tamil & English multilingual | cmn_en_ms_ta                          | Ideal when transcribing Mandarin, Malay, Tamil and English in the same media file or stream. Supports all accents and dialects listed under Mandarin, Malay, Tamil and English.                                                                                                                                                                                       |
-| Marathi                      | mr                              |                                                                                                                                                                                                                                                                                                                                           |
-| Mongolian                    | mn                              |                                                                                                                                                                                                                                                                                                                                           |
-| Norwegian                    | no                              |                                                                                                                                                                                                                                                                                                                                           |
-| Persian                      | fa                              |                                                                                                                                                                                                                                                                                                                                           |
-| Polish                       | pl                              |                                                                                                                                                                                                                                                                                                                                           |
-| Portuguese                   | pt                              | Our global Portuguese gives high-accuracy transcription across many different accents including (but not limited to) Portuguese spoken in Portugal and Brazil.                                                                                                                                                                           |
-| Romanian                     | ro                              |                                                                                                                                                                                                                                                                                                                                           |
-| Russian                      | ru                              |                                                                                                                                                                                                                                                                                                                                           |
-| Slovakian                    | sk                              |                                                                                                                                                                                                                                                                                                                                           |
-| Slovenian                    | sl                              |                                                                                                                                                                                                                                                                                                                                           |
-| Spanish                      | es                              | Our global Spanish gives high-accuracy transcription across many different accents including (but not limited to) Spanish spoken in Spain, US, Mexico, Colombia, Argentina, Venezuela, Chile and Peru.                                                                                                                                   |
-| Spanish & English bilingual  | es (with domain='bilingual-en') | Ideal when transcribing Spanish and English in the same media file or stream. Supports all accents and dialects listed under English and Spanish. [Requires the domain config to be set](/speech-to-text/languages#multilingual-speech-to-text).                                                                             |
-| Swahili                      | sw                              |                                                                                                                                                                                                                                                                                                                                           |
-| Swedish                      | sv                              |                                                                                                                                                                                                                                                                                                                                           |
-| Tagalog (Filipino) & English bilingual          | tl                              | Ideal when transcribing Tagalog (Filipino) and English in the same media file or stream. Supports all accents and dialects listed under English.                                                                                                                                                                                                                                                                                                                                          |
-| Tamil                        | ta                              |                                                                                                                                                                                                                                                                                                                                           |
-| Tamil & English bilingual    | en_ta                           | Ideal when transcribing Tamil and English in the same media file or stream. Supports all accents and dialects listed under Tamil and English.                                                                                                                                                                                             |
-| Thai                         | th                              |                                                                                                                                                                                                                                                                                                                                           |
-| Turkish                      | tr                              |                                                                                                                                                                                                                                                                                                                                           |
-| Ukrainian                    | uk                              |                                                                                                                                                                                                                                                                                                                                           |
-| Urdu                         | ur                              |                                                                                                                                                                                                                                                                                                                                           |
-| Uyghur                       | ug                              |                                                                                                                                                                                                                                                                                                                                           |
-| Vietnamese                   | vi                              |                                                                                                                                                                                                                                                                                                                                           |
-| Welsh                        | cy                              | Welsh must be explicitly added to the [expected languages](/speech-to-text/batch/language-identification#expected-languages) list when using our Language Identification feature, otherwise a [language not supported for transcription error](/speech-to-text/batch/language-identification#language-not-supported-for-transcription) will be returned.                     |
+Speechmatics takes a global-first approach to languages. A single language pack supports many accents and dialects, so you do not need to know which accent is in your audio before selecting a language. This approach achieves high accuracy compared to accent-specific language packs.
 
-Each language above is uniquely identified by a two-letter code (ISO639-1) or three-letter code (ISO639-3) in API requests and responses.
+| Language | Language code | Description |
+|---|---|---|
+| Automatic | `auto` | Automatically detect the language using the [Language Identification](https://docs.speechmatics.com/speech-to-text/batch/language-identification) feature. Currently supported with Batch transcription only. |
+| Arabic | `ar` | Global Arabic gives high-accuracy transcription across many accents and dialects, including (but not limited to) Modern Standard Arabic (MSA) and Arabic spoken in the Gulf, Egypt, and the Levant. |
+| Arabic & English bilingual | `ar_en` | Ideal when transcribing Arabic and English in the same media file or stream. Supports all accents and dialects listed under Arabic and English. |
+| Bashkir | `ba` | |
+| Basque | `eu` | |
+| Belarusian | `be` | |
+| Bengali | `bn` | |
+| Bulgarian | `bg` | |
+| Cantonese | `yue` | |
+| Catalan | `ca` | |
+| Croatian | `hr` | |
+| Czech | `cs` | |
+| Danish | `da` | |
+| Dutch | `nl` | |
+| English | `en` | Global English gives high-accuracy transcription across many accents, including (but not limited to) English spoken in the United Kingdom, United States, Australia, New Zealand, and by non-native speakers. To standardize spelling, specify the [output locale](https://docs.speechmatics.com/speech-to-text/formatting#output-locale). |
+| Esperanto | `eo` | |
+| Estonian | `et` | |
+| Finnish | `fi` | |
+| French | `fr` | Global French gives high-accuracy transcription across many accents, including (but not limited to) French spoken in France, Canada, and Belgium. |
+| Galician | `gl` | |
+| German | `de` | Global German gives high-accuracy transcription across many accents, including (but not limited to) German spoken in Germany, Austria, and Switzerland. |
+| Greek | `el` | |
+| Hebrew | `he` | |
+| Hindi | `hi` | |
+| Hungarian | `hu` | |
+| Indonesian | `id` | |
+| Interlingua | `ia` | |
+| Irish | `ga` | |
+| Italian | `it` | |
+| Japanese | `ja` | |
+| Korean | `ko` | |
+| Latvian | `lv` | |
+| Lithuanian | `lt` | |
+| Malay | `ms` | |
+| Malay & English bilingual | `en_ms` | Ideal when transcribing Malay and English in the same media file or stream. Supports all accents and dialects listed under Malay and English. |
+| Maltese | `mt` | |
+| Mandarin | `cmn` | Global Mandarin can output [Traditional or Simplified characters](https://docs.speechmatics.com/speech-to-text/formatting#output-locale) and gives high-accuracy transcription across many accents, including (but not limited to) China, Taiwan, Singapore, and Malaysia. |
+| Mandarin & English bilingual | `cmn_en` | Ideal when transcribing Mandarin and English in the same media file or stream. Supports all accents and dialects listed under Mandarin and English. |
+| Mandarin Malay Tamil & English | `cmn_en_ms_ta` | Ideal when transcribing Mandarin, Malay, Tamil, and English in the same media file or stream. Supports all accents and dialects listed under Mandarin, Malay, Tamil, and English. |
+| Marathi | `mr` | |
+| Mongolian | `mn` | |
+| Norwegian | `no` | |
+| Persian | `fa` | |
+| Polish | `pl` | |
+| Portuguese | `pt` | Global Portuguese gives high-accuracy transcription across many accents, including (but not limited to) Portuguese spoken in Portugal and Brazil. |
+| Romanian | `ro` | |
+| Russian | `ru` | |
+| Slovakian | `sk` | |
+| Slovenian | `sl` | |
+| Spanish | `es` | Global Spanish gives high-accuracy transcription across many accents, including (but not limited to) Spanish spoken in Spain, the US, Mexico, Colombia, Argentina, Venezuela, Chile, and Peru. |
+| Spanish & English bilingual | `es` (with domain=`bilingual-en`) | Ideal when transcribing Spanish and English in the same media file or stream. Supports all accents and dialects listed under English and Spanish. [Requires the domain config to be set](https://docs.speechmatics.com/speech-to-text/languages#bilingual-and-multi-language-packs). |
+| Swahili | `sw` | |
+| Swedish | `sv` | |
+| Tagalog (Filipino) & English bilingual | `tl` | Ideal when transcribing Tagalog (Filipino) and English in the same media file or stream. Supports all accents and dialects listed under English. |
+| Tamil | `ta` | |
+| Tamil & English bilingual | `en_ta` | Ideal when transcribing Tamil and English in the same media file or stream. Supports all accents and dialects listed under Tamil and English. |
+| Thai | `th` | |
+| Turkish | `tr` | |
+| Ukrainian | `uk` | |
+| Urdu | `ur` | |
+| Uyghur | `ug` | |
+| Vietnamese | `vi` | |
+| Welsh | `cy` | Welsh must be explicitly added to the [expected languages](https://docs.speechmatics.com/speech-to-text/batch/language-identification#expected-languages) list when using the Language Identification feature. Otherwise a [language not supported for transcription error](https://docs.speechmatics.com/speech-to-text/batch/language-identification#language-not-supported-for-transcription) is returned. |
+
+Each language is uniquely identified by a two-letter code (ISO 639-1) or three-letter code (ISO 639-3) in API requests and responses.
 
 ## Translation languages
 
-Translation is supported for the majority of Speechmatics' languages. The supported translation pairs are listed below.
-For more details, see [Translation](/speech-to-text/features/translation).
+Translation is available with the Enhanced and Standard models. It is supported for most Speechmatics languages, with the supported translation pairs listed below. For more details, see [Translation](https://docs.speechmatics.com/speech-to-text/features/translation).
 
-| Audio Language                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Translation Target Language                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| English (en)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Bulgarian (bg), Catalan (ca), Mandarin (cmn), Czech (cs), Danish (da), German (de), Greek (el), Spanish (es), Estonian (et), Finnish (fi), French (fr), Galician (gl), Hindi (hi), Croatian (hr), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Korean (ko), Lithuanian (lt), Latvian (lv), Malay (ms), Dutch (nl), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Slovakian (sk), Slovenian (sl), Swedish (sv), Turkish (tr), Ukrainian (uk), Vietnamese (vi) |
-| Bulgarian (bg), Catalan (ca), Mandarin (cmn), Czech (cs), Danish (da), German (de), Greek (el), Spanish (es), Estonian (et), Finnish (fi), French (fr), Galician (gl), Hindi (hi), Croatian (hr), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Korean (ko), Lithuanian (lt), Latvian (lv), Malay (ms), Dutch (nl), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Slovakian (sk), Slovenian (sl), Swedish (sv), Turkish (tr), Ukrainian (uk), Vietnamese (vi) | English (en)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| Norwegian Bokmål (no)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Norwegian Nynorsk (nn)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Audio language | Translation target language |
+|---|---|
+| English (en) | Bulgarian (bg), Catalan (ca), Mandarin (cmn), Czech (cs), Danish (da), German (de), Greek (el), Spanish (es), Estonian (et), Finnish (fi), French (fr), Galician (gl), Hindi (hi), Croatian (hr), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Korean (ko), Lithuanian (lt), Latvian (lv), Malay (ms), Dutch (nl), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Slovakian (sk), Slovenian (sl), Swedish (sv), Turkish (tr), Ukrainian (uk), Vietnamese (vi) |
+| Bulgarian (bg), Catalan (ca), Mandarin (cmn), Czech (cs), Danish (da), German (de), Greek (el), Spanish (es), Estonian (et), Finnish (fi), French (fr), Galician (gl), Hindi (hi), Croatian (hr), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Korean (ko), Lithuanian (lt), Latvian (lv), Malay (ms), Dutch (nl), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Slovakian (sk), Slovenian (sl), Swedish (sv), Turkish (tr), Ukrainian (uk), Vietnamese (vi) | English (en) |
+| Norwegian Bokmål (no) | Norwegian Nynorsk (nn) |
 
+## Bilingual and multi-language packs
 
-## Multilingual speech-to-text
+The Enhanced and Standard models can transcribe a selected combination of languages in one media file or stream, including speakers who switch between the languages in that pack. Each pack covers a fixed set of languages that you select with the `language` property.
 
-These packs are ideal when transcribing multiple languages in the same media file or stream with high accuracy. For more information on the supported languages, please refer to [Supported Language Packs](/speech-to-text/languages).
+Supported packs are:
 
-Supported multilingual packs are:
+| Language pack | Transcription config |
+|---|---|
+| Arabic and English | `{"language": "ar_en"}` |
+| Malay and English | `{"language": "en_ms"}` |
+| Mandarin and English | `{"language": "cmn_en"}` |
+| Mandarin Malay Tamil and English | `{"language": "cmn_en_ms_ta"}` |
+| Spanish and English | `{"language": "es", "domain": "bilingual-en"}` |
+| Tamil and English | `{"language": "en_ta"}` |
+| Tagalog (Filipino) and English | `{"language": "tl"}` |
 
-| Language Pack | Transcription config |
-|----------------|----------------------|
-| Arabic and English |  `{"language": "ar_en"}` |
-| Malay and English |  `{"language": "en_ms"}` |
-| Mandarin and English |  `{"language": "cmn_en"}` |
-| Mandarin Malay Tamil and English |  `{"language": "cmn_en_ms_ta"}` |
-| Spanish and English |  `{"language": "es", "domain": "bilingual-en"}` |
-| Tamil and English |  `{"language": "en_ta"}` |
-| Tagalog (Filipino) and English |  `{"language": "tl"}` |
-
-Bilingual (excluding Spanish and English) example:
+This config selects the Mandarin and English pack:
 
 ```json
 {
   "type": "transcription",
   "transcription_config": {
-    // highlight-start
     "language": "cmn_en"
-    // highlight-end
   }
 }
 ```
 
-Bilingual Spanish and English example:
+This config selects the Spanish and English pack, which requires the `domain` property:
 
 ```json
 {
   "type": "transcription",
   "transcription_config": {
     "language": "es",
-      // highlight-start
     "domain": "bilingual-en"
-    // highlight-end
   }
 }
 ```
 
+These packs handle a fixed set of languages that you select in advance. To transcribe audio without selecting languages, including spontaneous switching across all supported languages, use the Melia 1 multilingual model. Refer to [Models](https://docs.speechmatics.com/speech-to-text/models).
 
-## Healthcare transcription
-Speechmatics offers domain-specific medical transcription models which provide unparallelled accuracy for medical use cases such as ambient scribes and dictation tools.
+## Healthcare domain
 
-These models are kept up to date using officially maintained data sources. This brings significant improvements in recognition of medical terminology such as names of procedures, medications, conditions, and anatomy.
+Speechmatics offers a medical domain that provides high accuracy for healthcare use cases such as ambient scribes and dictation tools. The medical domain is available with the Enhanced model only. It does not apply to the Standard or Melia 1 models.
 
-Note that for languages without a medical transcription model, Speechmatics still offers industry-leading accuracy in the healthcare domain when using the general purpose `enhanced` [model](#models). 
+The medical domain is kept up to date using officially maintained data sources. This improves recognition of medical terminology such as procedures, medications, conditions, and anatomy.
 
-:::info
-The medical domain-specific model must be used with the `enhanced` model.
-:::
- 
-Medical domain example:
+For languages without medical domain support, the Enhanced model still gives high accuracy in the healthcare domain.
+
+Set the `domain` property to `medical`:
+
 ```json
 {
   "type": "transcription",
   "transcription_config": {
-    "language": "en",
-    // highlight-start
     "model": "enhanced",
+    "language": "en",
     "domain": "medical"
-  // highlight-end
   }
 }
 ```
 
-
-
-|Language| Realtime | Batch|
-|----------------|--|-|
-|Arabic English| Available | Available |
-|Danish| Available | Available |
-|Dutch| Available | Available |
-|English| Available | Available |
-|Finnish| Available | Available |
-|French| Available | Available |
-|German| Available | Available |
-|Norwegian| Available | Available |
-|Spanish| Available | Available |
-|Swedish| Available | Available |
-|Additional languages| [Contact us for more information](https://www.speechmatics.com/speak-to-sales)|
+| Language | Realtime | Batch |
+|---|---|---|
+| Arabic English | Available | Available |
+| Danish | Available | Available |
+| Dutch | Available | Available |
+| English | Available | Available |
+| Finnish | Available | Available |
+| French | Available | Available |
+| German | Available | Available |
+| Norwegian | Available | Available |
+| Spanish | Available | Available |
+| Swedish | Available | Available |
+| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | |
