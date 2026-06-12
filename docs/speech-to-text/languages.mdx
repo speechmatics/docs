@@ -34,7 +34,7 @@ See which languages Speechmatics supports for transcription and translation.
 
 To choose a transcription model, refer to [Models](/speech-to-text/models).
 
-The languages, packs, and options on this page apply to the Enhanced and Standard models. The Melia 1 model is multilingual: it transcribes the individual languages listed here and switches between them automatically, without language selection. It does not support the `auto` option, the bilingual and multi-language packs, or translation. For Melia 1, refer to [Models](/speech-to-text/models).
+The languages, packs, and options on this page apply to the Enhanced and Standard models. The Melia 1 model is multilingual: it transcribes the individual languages listed here and switches between them automatically, without language selection. You can use their language codes as [language hints](/speech-to-text/batch/input#multilingual-transcription-with-melia-1). Melia 1 does not support the `auto` option, the bilingual and multi-language pack codes, or translation. For Melia 1, refer to [Models](/speech-to-text/models).
 
 ## Transcription languages
 
@@ -126,6 +126,10 @@ Translation is available with the Enhanced and Standard models. It is supported 
 
 ## Bilingual and multi-language packs
 
+:::note
+These packs handle a fixed set of languages that you select in advance. To transcribe audio without selecting languages, including spontaneous switching across all supported languages, use the Melia 1 multilingual model. Refer to [Models](/speech-to-text/models).
+:::
+
 The Enhanced and Standard models can transcribe a selected combination of languages in one media file or stream, including speakers who switch between the languages in that pack. Each pack covers a fixed set of languages that you select with the `language` property.
 
 Supported packs are:
@@ -162,8 +166,6 @@ This config selects the Spanish and English pack, which requires the `domain` pr
   }
 }
 ```
-
-These packs handle a fixed set of languages that you select in advance. To transcribe audio without selecting languages, including spontaneous switching across all supported languages, use the Melia 1 multilingual model. Refer to [Models](/speech-to-text/models).
 
 ## Healthcare domain
 
