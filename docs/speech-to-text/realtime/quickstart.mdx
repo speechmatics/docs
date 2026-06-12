@@ -99,8 +99,9 @@ To receive partials, add the following changes and handlers to your code:
 
 <Tabs groupId="language">
   <TabItem value="python" label="Python">
-    ```python {4,8-11}
+    ```python {5,9-12}
     config = TranscriptionConfig(
+        model="enhanced",
         language="en",
         max_delay=0.7,
         enable_partials=True,
@@ -119,9 +120,10 @@ To receive partials, add the following changes and handlers to your code:
     ```
   </TabItem>
   <TabItem value="javascript" label="JavaScript">
-    ```javascript {5,12-13}
+    ```javascript {6,13-14}
     await client.start(jwt, {
         transcription_config: {
+            model: "enhanced",
             max_delay: 0.7,
             language: "en",
             enable_partials: true,
