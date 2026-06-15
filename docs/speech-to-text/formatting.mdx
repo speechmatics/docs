@@ -24,6 +24,7 @@ Some languages have multiple spelling conventions that vary by region. To ensure
 {
   "type": "transcription",
   "transcription_config": {
+    "model": "enhanced",
     "language": "en",
     "output_locale": "en-GB"
   }
@@ -151,6 +152,7 @@ You can automatically remove disfluencies from your transcript:
 
 ```json
 "transcription_config": {
+  "model": "enhanced",
   "language": "en",
   "transcript_filtering_config": {
     "remove_disfluencies": true
@@ -174,6 +176,7 @@ Word replacement lets you substitute specific words or patterns in the transcrip
 
 ```json
 "transcription_config": {
+  "model": "enhanced",
   "language": "en",
   "transcript_filtering_config": {
     "replacements": [
@@ -230,6 +233,7 @@ To include detailed information about entities in your JSON output, add this to 
 {
   "type": "transcription",
   "transcription_config": {
+    "model": "enhanced",
     "language": "en",
     "enable_entities": true
   }
@@ -384,6 +388,7 @@ You can control which punctuation marks appear in your transcripts using the `pu
 
 ```json
 "transcription_config": {
+   "model": "enhanced",
    "language": "en",
     // highlight-start
    "punctuation_overrides": {
