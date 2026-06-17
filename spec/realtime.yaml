@@ -818,6 +818,7 @@ components:
       enum:
         - standard
         - enhanced
+        - melia-1
     Model:
       type: string
       description: |
@@ -825,6 +826,7 @@ components:
       enum:
         - standard
         - enhanced
+        - melia-1
       default: standard
     PunctuationOverrides:
       type: object
