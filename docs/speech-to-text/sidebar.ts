@@ -16,6 +16,10 @@ export default {
     batchSidebar,
     {
       type: "doc",
+      id: "speech-to-text/models",
+    },
+    {
+      type: "doc",
       id: "speech-to-text/languages",
     },
     {

@@ -1995,6 +1995,7 @@ definitions:
     enum:
       - standard
       - enhanced
+      - melia-1
   Model:
     type: string
     description: >-
@@ -2002,6 +2003,7 @@ definitions:
     enum:
       - standard
       - enhanced
+      - melia-1
   JobMode:
     type: string
     enum:

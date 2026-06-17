@@ -1,6 +1,6 @@
 ---
 keywords: [speechmatics, transcription, speech recognition, asr, api, limits]
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 title: 'Input – Batch'
 sidebar_label: 'Input'
 description: 'Learn about configuration and supported input audio formats for the Speechmatics Batch API'
@@ -40,6 +40,26 @@ Below are the complete fields of the configuration object:
 
 <SchemaNode schema={batchSchema.definitions.JobConfig} />
 
+### Language hints
+
+The Melia 1 model detects every language it hears automatically, so language hints are optional. To select Melia 1, refer to [Models](/speech-to-text/models).
+
+Hints tell the model which languages to expect in the audio, biasing detection toward them. They are most useful for short clips, audio with heavy accents, or recordings where two languages sound similar, where they make language labeling more reliable.
+
+Provide hints as a list of [supported languages](/speech-to-text/languages#transcription-languages) to guide detection without restricting it. This config hints that the audio contains English and Arabic:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "melia-1",
+    "language": "multi",
+    "language_hints": ["en", "ar"]
+  }
+}
+```
+
+The model can still detect and label a language you did not hint, and it labels only the languages it actually hears.
 
 ## Fetch URL
 

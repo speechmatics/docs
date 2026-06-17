@@ -36,6 +36,10 @@ Once you are set up, just set `language` to `auto` to use Automatic Language Ide
 }
 ```
 
+:::note
+The Melia 1 model does not support `language: auto` and returns an error. Set `language` to `multi` instead; Melia 1 is multilingual and detects languages automatically. Refer to [Models](/speech-to-text/models).
+:::
+
 :::info
 To reliably identify the predominant language, the file should contain at least 60 seconds of speech in that language.
 :::
