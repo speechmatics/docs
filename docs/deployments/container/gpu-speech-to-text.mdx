@@ -105,14 +105,16 @@ The server can only support one of these modes at once.
 
 Once the GPU Server is running, follow the [Instructions for Linking a CPU Container](/deployments/container/cpu-speech-to-text#linking-to-a-gpu-inference-container).
 
-### Running only one operating point
+### Running only one model
 
-[Operating Points](/speech-to-text/models) represent different levels of model complexity.
-To save GPU memory for throughput, you can run the server with only one Operating Point loaded. To do this, pass the
-`SM_OPERATING_POINT` environment variable to the container and set it to either `standard` or `enhanced`.
+[Models](/speech-to-text/models) (previously called Operating Points) represent different levels of model complexity.
+To save GPU memory for throughput, you can run the server with only one model loaded. To do this, pass the
+`SM_MODEL` environment variable to the container and set it to either `standard` or `enhanced`.
+
+`SM_MODEL` replaces the older `SM_OPERATING_POINT` environment variable. `SM_OPERATING_POINT` is deprecated but still works and accepts the same `standard` and `enhanced` values; use `SM_MODEL` going forward.
 
 :::info
-When running the all language standard Operating Point GPU inference server you must set the `SM_OPERATING_POINT` environment variable to `standard`
+When running the all language standard model GPU inference server you must set the `SM_MODEL` environment variable to `standard`
 :::
 
 ### Monitoring the server
