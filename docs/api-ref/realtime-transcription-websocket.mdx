@@ -23,6 +23,10 @@ import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml";
   <h2 className="openapi__method-endpoint-path">wss://eu.rt.speechmatics.com/v2/</h2>
 </pre>
 
+:::info
+You can also connect to `wss://global.rt.speechmatics.com/v2/`, which automatically routes to the lowest-latency region. Customers with data residency requirements should use a regional endpoint (`eu.rt` / `us.rt`) instead. See [Supported endpoints](/get-started/authentication#supported-endpoints).
+:::
+
 ## Protocol overview
 
 A basic Realtime session will have the following message exchanges:
