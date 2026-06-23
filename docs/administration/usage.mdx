@@ -1,0 +1,36 @@
+---
+title: Usage
+description: Track transcription usage by processing mode and model in the portal and through the API.
+---
+
+# Usage
+
+:::info
+Usage reporting in the portal covers cloud usage only. On-prem deployments report usage differently. See [on-prem usage reporting](/deployments/usage-reporting/).
+:::
+
+## View usage in the portal
+
+1. Go to **Usage** in the sidebar under **Workspace**.
+2. Select a time range, such as **7D**, **30D**, or **Custom**.
+3. Use the **All projects** dropdown to view usage for a single [project](/administration/projects) or across the workspace.
+
+Usage is shown in two charts, **Realtime** and **Batch**, matching the processing mode of each request. Each chart breaks usage down by model and reports total time used and request count.
+
+## Usage by model
+
+The models shown depend on the processing mode:
+
+- **Realtime**: Standard and Enhanced.
+- **Batch**: Standard, Enhanced, and Melia 1.
+
+Medical and agent variants are reported under their underlying model, not as separate lines. For example, Batch usage on the medical variant appears under Enhanced.
+
+## Track usage with the API
+
+To retrieve usage data programmatically, use the Usage API. See [Get usage statistics](/api-ref/batch/get-usage-statistics) in the API reference for endpoint details.
+
+## Next steps
+
+- [Billing](/administration/billing): understand how usage translates into charges.
+- [Projects](/administration/projects): organize work to track usage separately.

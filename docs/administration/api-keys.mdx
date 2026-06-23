@@ -1,0 +1,53 @@
+---
+title: API keys
+description: Create, view, and revoke the API keys that authenticate your applications to Speechmatics.
+---
+
+# API keys
+
+An API key authenticates requests to the Speech to Text and Text to Speech APIs. Each key is scoped to a single [project](/administration/projects): it can access only the transcripts produced within that project. For how keys are used in requests, see [Authentication](/get-started/authentication).
+
+API keys differ from [management tokens](/administration/management-tokens). API keys authenticate transcription and synthesis requests and are scoped to a project. Management tokens authenticate workspace administration and are scoped to the workspace.
+
+## Create an API key
+
+API keys are created within your active project. To create a key in a different project, switch projects first. See [Projects](/administration/projects#switch-between-projects).
+
+1. Go to **API keys** in the sidebar under **Projects**.
+2. Click **Create new key**.
+3. Enter a descriptive name for the key.
+4. Click **Generate new key**.
+5. Copy the key value from the dialog.
+
+:::warning
+You cannot access the key value again after closing this dialog. Store it in a secure location immediately.
+:::
+
+## Revoke an API key
+
+Revoking a key disables it immediately. Requests made with the key are rejected, which may break any application that depends on it.
+
+1. Go to **API keys** in the sidebar under **Projects**.
+2. Click the delete button next to the key.
+3. Confirm the removal.
+
+## Manage API keys with the API
+
+You can manage API keys programmatically with the Management API, authenticated with a [management token](/administration/management-tokens). Available operations include:
+
+- [Get all API keys](/api-ref/management/get-all-api-keys)
+- [Create an API key](/api-ref/management/create-an-api-key)
+- [Delete an API key](/api-ref/management/delete-an-api-key)
+
+## API key best practices
+
+- **Use descriptive names.** Name keys after the application or environment that uses them, so you can audit and revoke the right key later.
+- **Scope keys to projects.** Create keys in the project that matches their purpose to keep transcripts and usage isolated.
+- **Rotate keys periodically.** Create a replacement key, update your application, then revoke the old one.
+- **Revoke unused keys.** Remove any key that is no longer in use.
+
+## Next steps
+
+- [Authentication](/get-started/authentication): how to use API keys in requests.
+- [Projects](/administration/projects): scope keys by creating them in the right project.
+- [Management tokens](/administration/management-tokens): automate key management programmatically.

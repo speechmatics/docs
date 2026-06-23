@@ -1,0 +1,68 @@
+---
+title: Management tokens
+description: Automate workspace administration with tokens that create projects and manage API keys programmatically.
+---
+
+# Management tokens
+
+## How management tokens work
+
+Management tokens authenticate programmatic access to workspace administration. Use them to automate project creation, API key management, and other workspace operations through the Management API.
+
+Tokens are scoped to the workspace and do not expire unless you revoke them. Each token can be assigned a subset of permissions, so you can limit access to only what your automation requires.
+
+### Permissions
+
+| Permission | Description |
+|---|---|
+| View projects | View projects created within your workspace. |
+| Manage projects | Manage, edit, and delete projects in your workspace. |
+| View API keys | View API keys generated in your workspace. |
+| Delete API keys | Delete API keys in your workspace. |
+| Create API key | Create API keys in your workspace. |
+
+## Create a management token
+
+1. Go to **Manage workspace** in the sidebar under **Workspace**.
+2. In the **Management tokens** section, click **+ Create management token**.
+3. Enter a descriptive name for the token.
+4. Select the permissions your automation needs.
+5. Click **Create management token**.
+6. Copy the token value from the **Save your key** dialog.
+
+:::warning
+You cannot access the token value again after closing this dialog. Store it in a secure location immediately.
+:::
+
+## View token details
+
+1. In the **Management tokens** table, click the options menu (⋯) next to the token.
+2. Select **View details**.
+
+The details panel displays the token name, key prefix, last used timestamp, assigned permissions, and creation date.
+
+## Revoke a management token
+
+Revoking a token disables it immediately. API requests made with the token are rejected, which may break any systems that depend on it.
+
+:::danger
+Revoking a management token cannot be undone.
+:::
+
+1. In the **Management tokens** table, click the options menu (⋯) next to the token.
+2. Select **Revoke key**.
+3. Review the token name and key in the confirmation dialog.
+4. Click **Revoke key** to confirm.
+
+## Management token best practices
+
+- **Limit permissions.** Assign only the permissions each token needs. A token that creates API keys does not need permission to delete them.
+- **Use descriptive names.** Name tokens after their purpose or the system that uses them, such as `ci-pipeline` or `key-rotation-script`. This makes it easier to audit and revoke the right token later.
+- **Rotate tokens periodically.** Create a replacement token, update your systems, then revoke the old one.
+- **Revoke unused tokens.** Check the **Last used** column regularly. Revoke any token that has never been used or has not been used recently.
+
+## Next steps
+
+- [Create an API key](/api-ref/management/create-an-api-key): Management API reference for creating keys programmatically.
+- [Projects](/administration/projects): create and manage projects.
+- [API keys](/administration/api-keys): how API keys differ from management tokens.
