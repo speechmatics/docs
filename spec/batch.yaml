@@ -47,6 +47,26 @@ paths:
             **Note**: Only available for on-prem
 
             JSON dictionary of processing settings for the job worker. Currently supports `parallel_engines` (integer), which controls the number of engines the worker can use in parallel for this job, and `user_id` (string), which is the user id for this job. Example: `{"parallel_engines": 4}`
+        - name: wait
+          in: query
+          type: integer
+          required: false
+          description: >-
+            **Note**: Only available on SaaS on Cloud.
+
+            Number of seconds to block until the job reaches a terminal state before responding. Capped server-side. When set, the response includes a `status` field reporting the outcome, and on `done` the transcript is embedded under the requested `format` key when available. When omitted, the request returns as soon as the job is created and `status` is not included.
+        - name: format
+          in: query
+          type: string
+          required: false
+          enum:
+            - json-v2
+            - txt
+            - srt
+          description: >-
+            **Note**: Only available on SaaS on Cloud, and only applies when `wait` is set.
+
+            Format of the transcript embedded in the response when the job finishes within `wait`. Defaults to `json-v2`.
       responses:
         "201":
           description: OK
@@ -159,6 +179,14 @@ paths:
           required: true
           type: string
           x-example: a1b2c3d4e5
+        - name: wait
+          in: query
+          type: integer
+          required: false
+          description: >-
+            **Note**: Only available on SaaS on Cloud.
+
+            Number of seconds to block until the job reaches a terminal state before responding. Capped server-side. The response is always returned with HTTP 200 in the job's current state; if the job is still running when `wait` elapses, retry to keep waiting.
       responses:
         "200":
           description: OK
@@ -286,6 +314,14 @@ paths:
             - json-v2
             - txt
             - srt
+        - name: wait
+          in: query
+          type: integer
+          required: false
+          description: >-
+            **Note**: Only available on SaaS on Cloud.
+
+            Number of seconds to block until the transcript is ready before responding. Capped server-side. Returns HTTP 200 with the transcript if it becomes ready within `wait`; otherwise returns the usual HTTP 404, and you can retry to keep waiting.
       responses:
         "200":
           description: OK
@@ -1107,6 +1143,27 @@ definitions:
         type: string
         description: >-
           The unique ID assigned to the job. Keep a record of this for later retrieval of your completed job.
+      status:
+        type: string
+        description: >-
+          **Note**: Only available on SaaS on Cloud. Present only when the `wait` query parameter is set. Reports the outcome of the wait, which is distinct from the job lifecycle status returned by `GET /jobs/{jobid}`. * `created` - the job was created and is still running, or `wait` elapsed before it finished. * `done` - the job finished; the transcript is embedded under the requested `format` key when available. * `rejected` - the job could not be processed. * `deleted` - the job was deleted before it could finish.
+        enum:
+          - created
+          - done
+          - rejected
+          - deleted
+      json-v2:
+        description: >-
+          **Note**: Only available on SaaS on Cloud. The transcript in `json-v2` format, embedded when `status` is `done` and `format` was `json-v2` (the default). Best-effort: if absent, fetch it from `GET /jobs/{jobid}/transcript`.
+        $ref: "#/definitions/RetrieveTranscriptResponse"
+      txt:
+        type: string
+        description: >-
+          **Note**: Only available on SaaS on Cloud. The transcript in plain text, embedded when `status` is `done` and `format` was `txt`. Best-effort: if absent, fetch it from `GET /jobs/{jobid}/transcript`.
+      srt:
+        type: string
+        description: >-
+          **Note**: Only available on SaaS on Cloud. The transcript in SRT format, embedded when `status` is `done` and `format` was `srt`. Best-effort: if absent, fetch it from `GET /jobs/{jobid}/transcript`.
     example:
       id: a1b2c3d4e5
   JobDetails:
