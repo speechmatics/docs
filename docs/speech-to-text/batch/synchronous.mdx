@@ -1,0 +1,109 @@
+---
+sidebar_position: 3
+description: 'Block for a job result with the wait parameter instead of polling.'
+---
+
+import { Card, Link, Text, Flex, Button, Box, Grid } from '@radix-ui/themes'
+import { LinkCard } from "@site/src/theme/LinkCard";
+import { HelpCircle, BookOpen, FileAudio } from "lucide-react"
+
+# Synchronous transcription
+
+Batch jobs are processed asynchronously: you create a job, then [poll its status](/speech-to-text/batch/output) or [receive a notification](/speech-to-text/batch/notifications) when it finishes. The `wait` query parameter lets you block on a single request until the result is ready instead, which is convenient for short files and quick integrations.
+
+:::info
+`wait` is only available on Batch SaaS.
+:::
+
+## How `wait` works
+
+Add `wait=N` (a number of seconds) to a request. The request blocks until the job reaches a terminal state or `N` seconds elapse, whichever comes first. The limit is capped server-side, so a very large value is clamped. If the job hasn't finished when the wait elapses, the request returns the current state and you can send it again to keep waiting.
+
+`wait` is supported on three endpoints:
+
+- `POST /jobs` — create a job and wait for it to finish.
+- `GET /jobs/{id}` — wait for a job to reach a terminal state.
+- `GET /jobs/{id}/transcript` — wait for the transcript to become available.
+
+## Create and wait
+
+Add `wait` to `POST /jobs` to create a job and block for its result in one request. The response is always `201` (the job record is created) and adds a `status` field reporting the outcome:
+
+- **`created`**: the job is still running — the wait elapsed before it finished.
+- **`done`**: the job finished. The transcript is embedded best-effort (see below).
+- **`rejected`**: the job could not be processed.
+- **`deleted`**: the job was deleted while waiting.
+
+`status` is only set when you send `wait`, so the response schema is fully opt-in: omit `wait` and the response is unchanged.
+
+```bash
+API_KEY="YOUR_API_KEY"
+PATH_TO_FILE="example.wav"
+
+curl -L -X POST "https://eu1.asr.api.speechmatics.com/v2/jobs/?wait=30" \
+    -H "Authorization: Bearer ${API_KEY}" \
+    -F data_file=@${PATH_TO_FILE} \
+    -F config='{"type": "transcription","transcription_config": { "model": "enhanced","language": "en" }}'
+```
+
+### Embedded transcript
+
+On `done`, the transcript is returned best-effort under a key named after the requested `format`. Use the `format` query parameter to choose it — `json-v2` (default), `txt`, or `srt`:
+
+```bash
+curl -L -X POST "https://eu1.asr.api.speechmatics.com/v2/jobs/?wait=30&format=txt" \
+    -H "Authorization: Bearer ${API_KEY}" \
+    -F data_file=@${PATH_TO_FILE} \
+    -F config='{"type": "transcription","transcription_config": { "model": "enhanced","language": "en" }}'
+```
+
+```json
+{
+  "id": "a1b2c3d4e5",
+  "status": "done",
+  "txt": "Welcome to Speechmatics..."
+}
+```
+
+The transcript is best-effort: if the key is absent (for example, the transcript briefly lagged the `done` status), fall back to [`GET /jobs/{id}/transcript`](/api-ref/batch/get-the-transcript-for-a-transcription-job) to retrieve it.
+
+## Wait on an existing job
+
+Add `wait` to `GET /jobs/{id}` to block for a terminal state. The response is always `200` with the job in its current state, so a non-finishing wait returns the still-running job — retry to keep waiting.
+
+```bash
+curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/a1b2c3d4e5?wait=30" \
+    -H "Authorization: Bearer ${API_KEY}"
+```
+
+## Wait for the transcript
+
+Add `wait` to `GET /jobs/{id}/transcript` to block until the transcript is available. If it becomes ready within the wait, the response is `200` with the transcript; otherwise it returns the usual `404` (transcription not ready), which you can retry to keep waiting.
+
+```bash
+curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/a1b2c3d4e5/transcript?wait=30&format=txt" \
+    -H "Authorization: Bearer ${API_KEY}"
+```
+
+## Quicklinks
+
+<Grid columns={{initial: "1", md: "2"}} gap="3">
+  <LinkCard
+    title="Output"
+    description="Poll job status and load transcripts"
+    href="/speech-to-text/batch/output"
+    icon={<FileAudio/>}
+  />
+  <LinkCard
+    title="Notifications"
+    description="Receive job output on a webhook instead of polling"
+    href="/speech-to-text/batch/notifications"
+    icon={<HelpCircle/>}
+  />
+  <LinkCard
+    title="API reference"
+    description="Full details about the Batch API"
+    href="/api-ref/batch/create-a-new-job"
+    icon={<BookOpen/>}
+  />
+</Grid>

@@ -16,6 +16,10 @@ export default {
     },
     {
       type: "doc",
+      id: "speech-to-text/batch/synchronous",
+    },
+    {
+      type: "doc",
       id: "speech-to-text/batch/limits",
     },
     {

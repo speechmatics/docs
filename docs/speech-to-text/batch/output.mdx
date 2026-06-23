@@ -25,6 +25,10 @@ Transcription jobs are processed asynchronously. You can check the status of a j
 You can also configure notifications to be sent to a webhook when a job is completed. See [Notifications](/speech-to-text/batch/notifications) for more details.
 :::
 
+:::tip
+Instead of polling, you can block on a single request until the result is ready with the `wait` parameter. See [Synchronous transcription](/speech-to-text/batch/synchronous).
+:::
+
 ## Check single job status
 
 If you wish to retrieve a particular job, you can do so using the job ID for up to 7 days, after which time it will be automatically deleted in accordance with our [Data Retention Policy](/speech-to-text/batch/limits#data-retention-limits).

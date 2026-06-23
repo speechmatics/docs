@@ -47,6 +47,28 @@ paths:
             **Note**: Only available for on-prem
 
             JSON dictionary of processing settings for the job worker. Currently supports `parallel_engines` (integer), which controls the number of engines the worker can use in parallel for this job, and `user_id` (string), which is the user id for this job. Example: `{"parallel_engines": 4}`
+        - name: wait
+          in: query
+          type: integer
+          required: false
+          description: >-
+            **Note**: Only available for Batch SaaS.
+
+
+            Number of seconds to block before responding. When set, the request waits until the job reaches a terminal state or the wait elapses, whichever comes first (the limit is capped server-side). The response is always `201` and includes a `status` field reporting the outcome; on `done` the transcript is embedded best-effort under the key named after `format`. When omitted, the request returns immediately and `status` is not set, keeping the new schema fully opt-in.
+        - name: format
+          in: query
+          type: string
+          required: false
+          enum:
+            - json-v2
+            - txt
+            - srt
+          description: >-
+            **Note**: Only available for Batch SaaS.
+
+
+            Format of the transcript embedded in the response when the job finishes within `wait`. Defaults to `json-v2`. Has no effect unless `wait` is set.
       responses:
         "201":
           description: OK
@@ -159,6 +181,15 @@ paths:
           required: true
           type: string
           x-example: a1b2c3d4e5
+        - name: wait
+          in: query
+          type: integer
+          required: false
+          description: >-
+            **Note**: Only available for Batch SaaS.
+
+
+            Number of seconds to block before responding. When set, the request waits until the job reaches a terminal state or the wait elapses, whichever comes first (the limit is capped server-side). The response is always `200` with the job in its current state, so a non-finishing wait returns the still-running job and the request can be retried to keep waiting.
       responses:
         "200":
           description: OK
@@ -286,6 +317,15 @@ paths:
             - json-v2
             - txt
             - srt
+        - name: wait
+          in: query
+          type: integer
+          required: false
+          description: >-
+            **Note**: Only available for Batch SaaS.
+
+
+            Number of seconds to block before responding. When set, the request waits until the transcript becomes available or the wait elapses, whichever comes first (the limit is capped server-side). Returns `200` with the transcript if it becomes ready within the wait; otherwise the usual `404` (transcription not ready), which can be retried to keep waiting.
       responses:
         "200":
           description: OK
@@ -1107,6 +1147,25 @@ definitions:
         type: string
         description: >-
           The unique ID assigned to the job. Keep a record of this for later retrieval of your completed job.
+      status:
+        type: string
+        description: >-
+          **Batch SaaS only.** Outcome of the job, present only when the `wait` query parameter was set on the request. * `created` - the job is still running (the wait elapsed before it finished). * `done` - the job finished; the transcript is embedded best-effort under the `json-v2`, `txt`, or `srt` key. * `rejected` - the job could not be processed. * `deleted` - the job was deleted while waiting.
+        enum:
+          - created
+          - done
+          - rejected
+          - deleted
+      json-v2:
+        $ref: "#/definitions/RetrieveTranscriptResponse"
+      txt:
+        type: string
+        description: >-
+          The transcript in plain text, embedded best-effort when `status` is `done` and `format` is `txt`. If absent, retrieve it from `GET /jobs/{id}/transcript`.
+      srt:
+        type: string
+        description: >-
+          The transcript in SRT format, embedded best-effort when `status` is `done` and `format` is `srt`. If absent, retrieve it from `GET /jobs/{id}/transcript`.
     example:
       id: a1b2c3d4e5
   JobDetails:
