@@ -64,21 +64,21 @@ See [how to run the Core Speech CPU container here.](/deployments/container/cpu-
 
 The Transcription GPU images are required to use the most accurate models.
 
-### Standard operating point
+### Standard model
 
-There is a single image available that supports all languages for the Standard Operating Point. There are language specific images available that support the Enhanced and Standard Operating Point.
+There is a single image available that supports all languages for the Standard model. There are language specific images available that support the Enhanced and Standard models.
 
 <CodeBlock>
-  {`# pulling the Standard operating point Transcription GPU inference server which supports all languages with the ${smVariables.latestContainerVersion} tag:
+  {`# pulling the Standard model Transcription GPU inference server which supports all languages with the ${smVariables.latestContainerVersion} tag:
 docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-standard-all:${smVariables.latestContainerVersion}
 \0
-# pulling language specific Transcription GPU inference servers available for en, es, de, fr. Supports both Enhanced and Standard operating points with the ${smVariables.latestContainerVersion} tag:
+# pulling language specific Transcription GPU inference servers available for en, es, de, fr. Supports both Enhanced and Standard models with the ${smVariables.latestContainerVersion} tag:
 docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-en:${smVariables.latestContainerVersion}`}
 </CodeBlock>
 
-### Enhanced operating point
+### Enhanced model
 
-Depending on which Enhanced Operating Point languages are required, you can pull specific images.
+Depending on which Enhanced model languages are required, you can pull specific images.
 
 <details open>
   <summary>Language Pack 1</summary>

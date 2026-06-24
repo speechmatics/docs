@@ -123,7 +123,7 @@ The inference server is based on [Nvidia's Triton architecture](https://develope
 can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP APIs. To expose these, configure an external mapping for port
 8002(Prometheus) or 8000(HTTP).
 
-### Operating points in GPU inference
+### Models in GPU inference
 
 When inference is outsourced to a GPU server, alternative GPU-specific models are used, so you should not expect to see identical results compared to CPU-based inference. For convenience, the GPU models are also designated as 'standard' and 'enhanced'.
 

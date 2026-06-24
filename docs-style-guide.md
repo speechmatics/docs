@@ -209,7 +209,7 @@ Help readers find information quickly by organizing content into clear levels of
 
 2.  **Section heading (H2)** -- key steps or concepts, e.g., *Realtime processing*.
 
-3.  **Subheading (H3+)** -- finer details within a section, e.g., *Operating points*.
+3.  **Subheading (H3+)** -- finer details within a section, e.g., *Models*.
 
 4.  **Paragraph** -- up to 3 sentences per paragraph.
 
