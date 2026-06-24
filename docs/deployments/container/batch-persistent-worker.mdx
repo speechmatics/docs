@@ -74,7 +74,7 @@ When processing long audio jobs the benefits on RTF of the persistent batch work
 
 ## Submitting a job
 
-Once the worker is running and is available, submit jobs by making a `POST` request to `/v2/jobs` with an audio file and transcription config. The worker queues the job and returns a `job_id` immediately. You can poll [`GET /v2/jobs/{job_id}`](#get-v2jobsjob_id) for the job status, and fetch the transcript when the status changes to `DONE`.
+Once the worker is running and is available, submit jobs by making a `POST` request to `/v2/jobs` with an audio file and transcription config. The worker queues the job and returns a `job_id` immediately. You can poll [`GET /v2/jobs/{job_id}`](#job-api-reference) for the job status, and fetch the transcript when the status changes to `DONE`.
 
 <Tabs>
   <TabItem value="curl" label="curl" default>
