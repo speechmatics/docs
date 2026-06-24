@@ -127,6 +127,11 @@
       "permanent": true
     },
     {
+      "source": "/guides/projects",
+      "destination": "/administration/projects",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true
