@@ -1,0 +1,50 @@
+---
+title: Workspaces concepts
+description: Understand how workspaces organize users, projects, billing, and access on the Speechmatics platform.
+---
+
+# Workspaces concepts
+
+A workspace is the top-level container for your team's use of Speechmatics. Members, projects, API keys, billing, and usage all sit inside a workspace. Anything you do in the portal and API happens within one workspace at a time.
+
+## What a workspace contains
+
+A workspace groups four things:
+
+- **Members.** Users who can sign in to the workspace, each with an assigned role.
+- **Projects.** Organizational units inside the workspace. API keys are created within projects, and usage can be viewed per project. See [Projects](/administration/projects).
+- **API keys and management tokens.** API keys are scoped to a project; [management tokens](/administration/management-tokens) are scoped to the workspace.
+- **Billing and usage.** Pricing plan, payment method, invoices, and aggregated usage belong to the workspace.
+
+## Switch between workspaces
+
+A user can belong to more than one workspace. Each workspace is independent: switching changes which members, projects, keys, and billing details you see.
+
+To switch, open the avatar menu in the portal sidebar and select a workspace from the list.
+
+## Roles
+
+Every member of a workspace has a role that determines what they can do.
+
+| Role | Capabilities |
+|---|---|
+| Admin | Full access to the workspace, including settings, billing, members, and projects. Can invite and remove members, create and delete projects and API keys, and rename the workspace. |
+| Member | Access to all workspace resources, including projects and usage. Cannot manage members, billing, or workspace settings. |
+
+For instructions on inviting members and changing roles, see [Manage members](/administration/manage-members).
+
+## Workspaces and authentication
+
+Speechmatics uses [WorkOS AuthKit](https://workos.com/docs/authkit) for identity and access. A Speechmatics workspace corresponds to a WorkOS Organization, and the Admin and Member roles correspond to the WorkOS organization roles `admin` and `member`. Sign-in methods, including OAuth and SSO, are configured per workspace.
+
+When you verify a domain, new users signing up with an email address on that domain are added to your workspace automatically. See [Domain verification](/administration/domain-verification).
+
+## Workspaces and regions
+
+A workspace is not tied to a single region. The [region](/administration/regions) you select determines which [endpoint processes](/get-started/authentication#supported-endpoints) a request, not where the workspace lives. Members of the same workspace can submit work to different regions.
+
+## Next steps
+
+- [Manage members](/administration/manage-members): invite users, change roles, and remove access.
+- [Domain verification](/administration/domain-verification): let users from your organization join your workspace automatically.
+- [Single sign-on (SSO)](/administration/sso): configure SSO for your workspace.

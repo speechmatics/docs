@@ -1,3 +1,4 @@
+import administrationSidebar from "./docs/administration/sidebar";
 import apiRefSidebar from "./docs/api-ref/sidebar";
 import deploymentsSidebar from "./docs/deployments/sidebar";
 import gettingStartedSidebar from "./docs/get-started/sidebar";
@@ -14,6 +15,7 @@ export default {
     voiceAgentsSidebar,
     integrationsAndSDKSidebar,
     deploymentsSidebar,
+    administrationSidebar,
     {
       type: "category",
       label: "Developer Resources",
