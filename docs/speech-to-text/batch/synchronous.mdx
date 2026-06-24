@@ -5,7 +5,7 @@ description: Wait for a transcription job to finish synchronously via HTTP
 
 # Synchronous transcription
 
-The `wait` query parameter blocks a request until the job reaches a terminal state (`done`, `rejected`, or `deleted`), so you can get a transcript in one call instead of polling. It applies to job creation, job status, and transcript retrieval.
+The `wait` query parameter lets you block a request until the job reaches a terminal state (`done`, `rejected`, or `deleted`), so you can get a transcript in one call instead of polling. It applies to job creation, job status, and transcript retrieval.
 
 :::info
 `wait` is available on SaaS on Cloud only; on-prem deployments do not support it.
@@ -15,7 +15,7 @@ The `wait` query parameter blocks a request until the job reaches a terminal sta
 
 ## Create a job and wait for the transcript
 
-Pass `wait` to `POST /jobs` to block until the job finishes. Add `format` to choose the embedded transcript format (`json-v2`, `txt`, or `srt`; defaults to `json-v2`).
+Pass the `wait` query parameter to `POST /jobs` to block until the job finishes. Add `format` to choose the embedded transcript format (`json-v2`, `txt`, or `srt`; defaults to `json-v2`).
 
 ```bash
 API_KEY="YOUR_API_KEY"
