@@ -1,0 +1,120 @@
+---
+title: Synchronous transcription
+description: Wait for a transcription job to finish synchronously via HTTP
+---
+
+# Synchronous transcription
+
+The `wait` query parameter lets you block a request until the job reaches a terminal state (`done`, `rejected`, or `deleted`), so you can get a transcript in one call instead of polling. It applies to job creation, job status, and transcript retrieval.
+
+:::info
+`wait` is available on SaaS on Cloud only; on-prem deployments do not support it.
+:::
+
+`wait` takes a number of seconds and is capped server-side. If the job has not finished when `wait` elapses, the request returns the current state and you retry to keep waiting.
+
+## Create a job and wait for the transcript
+
+Pass the `wait` query parameter to `POST /jobs` to block until the job finishes. Add `format` to choose the embedded transcript format (`json-v2`, `txt`, or `srt`; defaults to `json-v2`).
+
+```bash
+API_KEY="YOUR_API_KEY"
+PATH_TO_FILE="example.wav"
+
+# Create a job and block for up to 60 seconds for a plain-text transcript
+curl -L -X POST "https://eu1.asr.api.speechmatics.com/v2/jobs/?wait=60&format=txt" \
+-H "Authorization: Bearer ${API_KEY}" \
+-F data_file=@${PATH_TO_FILE} \
+-F config='{"type": "transcription","transcription_config": { "model": "enhanced", "language": "en" }}'
+```
+
+The response is always HTTP 201. When `wait` is set, it includes a `status` field reporting the outcome. On `done`, the transcript is embedded under a key named after the requested format. For `format=txt` (and `srt`) the value is a string:
+
+```json
+{
+  "id": "a1b2c3d4e5",
+  "status": "done",
+  "txt": "Welcome to Speechmatics..."
+}
+```
+
+For the default `format=json-v2`, the value is a nested object with the same shape as the [transcript endpoint](/api-ref/batch/get-the-transcript-for-a-transcription-job) response, not a string. The `results` array is abbreviated below:
+
+```json
+{
+  "id": "uwcl3jevp3",
+  "status": "done",
+  "json-v2": {
+    "format": "2.9",
+    "job": {
+      "created_at": "2026-06-23T13:33:24.230Z",
+      "data_name": "example.wav",
+      "duration": 10,
+      "id": "uwcl3jevp3"
+    },
+    "metadata": {
+      "created_at": "2026-06-23T13:33:24.879071Z",
+      "transcription_config": { "language": "en", "model": "enhanced" },
+      "type": "transcription"
+    },
+    "results": [
+      {
+        "alternatives": [
+          { "confidence": 1.0, "content": "I", "language": "en", "speaker": "UU" }
+        ],
+        "start_time": 1.5,
+        "end_time": 1.79,
+        "type": "word"
+      }
+    ]
+  }
+}
+```
+
+If the job is still running when `wait` elapses, `status` is `created` and no transcript is embedded:
+
+```json
+{
+  "id": "a1b2c3d4e5",
+  "status": "created"
+}
+```
+
+
+| `status` | Meaning |
+|---|---|
+| `created` | Created and still running, or `wait` elapsed before it finished. Retry to get the result. |
+| `done` | Finished. The transcript is embedded under the requested format key when available. |
+| `rejected` | The job could not be processed. |
+| `deleted` | The job was deleted before it could finish. |
+
+The embedded transcript is best-effort. If `status` is `done` but no transcript key is present, fetch it from the transcript endpoint.
+
+## Wait when checking job status
+
+Pass `wait` to `GET /jobs/{jobid}` to block until the job reaches a terminal state.
+
+```bash
+# Wait up to 30 seconds for the job to reach a terminal state
+curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/${JOB_ID}?wait=30" \
+-H "Authorization: Bearer ${API_KEY}"
+```
+
+The response is always HTTP 200 with the job in its current state. If the job is still running when `wait` elapses, retry to keep waiting.
+
+## Wait for the transcript
+
+Pass `wait` to `GET /jobs/{jobid}/transcript` to block until the transcript is ready.
+
+```bash
+# Wait up to 30 seconds for the transcript, then return it as plain text
+curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/${JOB_ID}/transcript?wait=30&format=txt" \
+-H "Authorization: Bearer ${API_KEY}"
+```
+
+If the transcript becomes ready within `wait`, the response is HTTP 200 with the transcript. Otherwise it returns the usual HTTP 404, and you retry to keep waiting.
+
+## Next steps
+
+- [Output formats](/speech-to-text/batch/output) — load and process the transcript.
+- [API reference](/api-ref/batch/create-a-new-job) — full request and response details.
