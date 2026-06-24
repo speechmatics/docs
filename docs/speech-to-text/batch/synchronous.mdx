@@ -4,10 +4,10 @@ description: 'Block for a transcript in a single request instead of polling for 
 
 # Synchronous transcription
 
-The `wait` query parameter blocks a request until the job reaches a terminal state, so you can get a transcript in one call instead of polling. It applies to job creation, job status, and transcript retrieval.
+The `wait` query parameter blocks a request until the job reaches a terminal state (`done`, `rejected`, or `deleted`), so you can get a transcript in one call instead of polling. It applies to job creation, job status, and transcript retrieval.
 
 :::info
-`wait` is available on SaaS on Cloud only. It is not available on on-prem deployments.
+`wait` is available on SaaS on Cloud only; on-prem deployments do not support it.
 :::
 
 `wait` takes a number of seconds and is capped server-side. If the job has not finished when `wait` elapses, the request returns the current state and you retry to keep waiting.
