@@ -98,5 +98,9 @@
   {
     "source": "/voice-agents/flow/guides/react-native",
     "destination": "/voice-agents/overview"
+  },
+  {
+    "source": "/guides/projects",
+    "destination": "/administration/projects"
   }
 ]

@@ -62,16 +62,6 @@ export default {
       id: "speech-to-text/batch/troubleshooting",
     },
     {
-      type: "category",
-      label: "Guides",
-      items: [
-        {
-          type: "doc",
-          id: "guides/projects",
-        },
-      ],
-    },
-    {
       type: "link",
       href: "/api-ref/batch/create-a-new-job",
       label: "API reference",
