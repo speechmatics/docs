@@ -64,20 +64,24 @@ Pick a starting point below.
 
 <Grid columns={{initial: "1", md: "2"}} gap="3">
   <LinkCard
+    title="Cloud SaaS"
+    description="Access Speechmatics APIs as a fully managed cloud service. No infrastructure to deploy or maintain — just send audio and receive transcripts. Ideal for fast time-to-value, dynamic scaling, and teams that want to focus on building rather than operations."
+    href="/deployments#cloud"
+  />
+  <LinkCard
     title="On-prem deployment"
     description="Host our APIs in your environment, ensuring complete data privacy, infrastructure control, and straightforward integration into existing developer workflows and technology stacks"
-    href="/deployments"
+    href="/deployments#on-prem"
   />
   <LinkCard
-    title="Core CPU container"
-    description="Run our APIs locally, optimizing for low resource usage and data privacy. Ideal for battery-sensitive devices or secure environments, enabling high performance without cloud dependence."
-    href="/deployments/container/cpu-speech-to-text"
+    title="GPU container"
+    description="Run our APIs on GPU-accelerated infrastructure for maximum throughput and lowest latency. Best suited to high-volume workloads and real-time applications where processing speed is the priority."
+    href="/deployments/container/gpu-speech-to-text"
   />
   <LinkCard
-    title="On-device deployment"
-    description="Run our APIs locally, optimizing for low resource usage and data privacy. Ideal for battery-sensitive devices or secure environments, enabling high performance without cloud dependence."
-    disabled
-    badgeText="Coming soon"
+    title="Kubernetes"
+    description="Deploy our APIs across Kubernetes clusters for elastic scaling, automated orchestration, and resilient operations. A natural fit for teams with existing K8s infrastructure who need production-grade speech processing at scale."
+    href="/deployments/kubernetes"
   />
 </Grid>
 
