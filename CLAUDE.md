@@ -47,3 +47,11 @@ The project uses cspell (`cspell.json`) for spell checking. Add new technical te
 ## API reference
 
 We generate API reference pages from the YAML files in the `spec/` folder. There are scripts in `package.json` which handle this process. Check there if you need more information on their workings.
+
+## Additional context
+
+The `.claude/context/` folder holds extra Markdown context files on specific topics. Consult the relevant file when working in its area — see `.claude/context/README.md` for the convention and add a "read this when…" pointer here when you add a file.
+
+- `.claude/context/terminology.md` — read before editing or reviewing any page copy; the canonical authority for product naming, capitalization, and word-level style.
+- `.claude/context/product-architecture.md` — read when writing or reviewing anything about products, processing modes, models, or packaging; the source of truth for how the product is structured.
+- `.claude/context/claude-code-docs-workflow.md` — the working agreement for how to handle docs changes and PR reviews in this repo.
