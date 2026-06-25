@@ -39,7 +39,7 @@ End of utterance detection is a feature that allows you to detect when a person 
 End of utterance uses server-side word timings to detect periods without speech. The moment a word is detected on the server, a countdown begins.
 If a new word is detected, the countdown restarts.
 If the configured interval passes without another word being detected, an end of utterance is triggered.
-When this happens, the server sends a [final transcript](/speech-to-text/realtime/quickstart#final-transcripts) message to the client, followed by an extra `EndOfUtterance` message.
+When this happens, the server sends a [final transcript](/speech-to-text/realtime/quickstart#receiving-finals-and-partials) message to the client, followed by an extra `EndOfUtterance` message.
 
 ### Configuration
 
