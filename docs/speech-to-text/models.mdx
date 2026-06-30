@@ -43,6 +43,8 @@ Use Standard when throughput or latency matter more than maximum accuracy, such 
 
 Use Melia 1 for audio that contains more than one language, including speakers who switch language mid-conversation.
 
+For healthcare audio, the Enhanced model also offers a [medical domain](#healthcare-domain) tuned for medical terminology.
+
 ## Specify a model
 
 Set the `model` property in your transcription config. If you do not set it, the `standard` model is used.
@@ -105,3 +107,40 @@ The `model` property replaces the `operating_point` property. Existing configs t
 :::note
 In SaaS (cloud) deployments, `operating_point` is deprecated. It maps to `model` and accepts the same `enhanced` and `standard` values. Use [`model`](#specify-a-model) going forward.
 :::
+
+## Healthcare domain
+
+Speechmatics offers a medical domain that delivers high accuracy on healthcare audio such as ambient scribes and dictation tools. The medical domain is available with the Enhanced model only; it does not apply to the Standard or Melia 1 models.
+
+The medical domain is kept up to date using officially maintained data sources. This improves recognition of medical terminology such as procedures, medications, conditions, and anatomy.
+
+For languages not listed below, the Enhanced model still delivers high accuracy on healthcare audio without the medical domain.
+
+Set the `domain` property to `medical`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    // highlight-start
+    "domain": "medical"
+    // highlight-end
+  }
+}
+```
+
+| Language | Realtime | Batch |
+|---|---|---|
+| Arabic English | Available | Available |
+| Danish | Available | Available |
+| Dutch | Available | Available |
+| English | Available | Available |
+| Finnish | Available | Available |
+| French | Available | Available |
+| German | Available | Available |
+| Norwegian | Available | Available |
+| Spanish | Available | Available |
+| Swedish | Available | Available |
+| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | |
