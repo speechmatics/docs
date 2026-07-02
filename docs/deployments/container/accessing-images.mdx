@@ -54,7 +54,10 @@ docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-en:${smVariables
 docker pull speechmaticspublic.azurecr.io/batch-asr-transcriber-es:${smVariables.latestContainerVersion}
 \0
 # pulling Realtime Global English (en) with the ${smVariables.latestContainerVersion} tag:
-docker pull speechmaticspublic.azurecr.io/rt-asr-transcriber-en:${smVariables.latestContainerVersion}`}
+docker pull speechmaticspublic.azurecr.io/rt-asr-transcriber-en:${smVariables.latestContainerVersion}
+\0
+# pulling the Melia 1 Batch transcriber with the ${smVariables.latestMelia1ContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion}`}
 </CodeBlock>
 
 See [how to run the Core Speech CPU container here.](/deployments/container/cpu-speech-to-text)
@@ -111,6 +114,15 @@ Depending on which Enhanced Operating Point languages are required, you can pull
     {`docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-enhanced-recipe4:${smVariables.latestContainerVersion} `}
   </CodeBlock>
 </details>
+
+### Melia 1 model
+
+Melia 1 is a multilingual GPU only transcription model available for Batch transcription only. For an overview, see [Models](/speech-to-text/models#melia-1).
+
+<CodeBlock>
+  {`# pulling the Melia 1 GPU inference server with the ${smVariables.latestMelia1ContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:${smVariables.latestMelia1ContainerVersion}`}
+</CodeBlock>
 
 See [how to run the Transcription GPU container here.](/deployments/container/gpu-speech-to-text)
 
