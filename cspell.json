@@ -1,5 +1,5 @@
 {
-  "dictionaries": ["custom-words", "en-gb", "es"],
+  "dictionaries": ["custom-words", "en-us", "es"],
   "ignorePaths": ["docs/api-ref/batch"],
   "dictionaryDefinitions": [
     {

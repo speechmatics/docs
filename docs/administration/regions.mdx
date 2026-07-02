@@ -1,0 +1,37 @@
+---
+title: Regions
+description: Choose where Speechmatics processes your audio across the available regions.
+---
+
+# Regions
+
+A region is the location where your audio is processed. Each region is reached through its own API endpoint, so the region you use is determined by the endpoint you call. For the endpoint hostnames, see [supported endpoints](/get-started/authentication#supported-endpoints).
+
+Whether anything is stored depends on the processing mode, not the region. See [Data handling](/administration/security-and-compliance#data-handling).
+
+## Available regions
+
+The following regions are available to all customers:
+
+- **EU1** (Europe)
+- **US1** (United States)
+- **AU1** (Australia), which supports Batch only
+
+Realtime is available in EU1 and US1. Batch is available in all three regions.
+
+## Select a region
+
+In the portal, use the **Region** selector in the top navigation. Your selection sets the region for transcription started from the portal.
+
+When using the API, the endpoint you call determines the region. A job is created in the region of the endpoint used, and all requests relating to that job must use the same endpoint.
+
+## Use multiple regions
+
+You can use more than one region to balance load or to fail over if one region is disrupted. Because each job belongs to the region it was created in, retrieve a job from the same region that created it.
+
+Enterprise customers may have region arrangements set in their contract. To use a different region, contact your account manager or [support](https://support.speechmatics.com).
+
+## Next steps
+
+- [Supported endpoints](/get-started/authentication#supported-endpoints): the endpoint hostname for each region.
+- [Usage](/administration/usage): track usage across your workspace.

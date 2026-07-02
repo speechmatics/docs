@@ -16,6 +16,10 @@ export default {
     },
     {
       type: "doc",
+      id: "speech-to-text/batch/synchronous",
+    },
+    {
+      type: "doc",
       id: "speech-to-text/batch/limits",
     },
     {
@@ -56,16 +60,6 @@ export default {
     {
       type: "doc",
       id: "speech-to-text/batch/troubleshooting",
-    },
-    {
-      type: "category",
-      label: "Guides",
-      items: [
-        {
-          type: "doc",
-          id: "guides/projects",
-        },
-      ],
     },
     {
       type: "link",

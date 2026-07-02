@@ -1,5 +1,5 @@
 ---
-title: Speech to text — Overview
+title: Speech to Text — Overview
 pagination_prev: null
 pagination_next: null
 description: Learn how to turn audio into text.
@@ -17,10 +17,10 @@ import {
   ChartLine,
 } from "lucide-react";
 
-# Speech to text overview
+# Speech to Text overview
 
 
-Use speech to text to transcribe using one of the modes:
+Use Speech to Text to transcribe using one of the modes:
 - [Realtime processing](#realtime-processing): Stream audio from an input device or file and receive instant updates of the transcription as it happens
 - [Batch processing](#batch-processing): Submit an audio file and receive a complete text transcription once the processing is finished
 
@@ -30,7 +30,7 @@ Use speech to text to transcribe using one of the modes:
   <LinkCard
     icon={<ChevronsRightIcon/>}
     direction="column"
-    title="Transcribe in real-time"
+    title="Transcribe in real time"
     description="Instantly convert streaming audio to text with Realtime processing"
     href="/speech-to-text/realtime/quickstart"
   />
@@ -59,7 +59,7 @@ For deploying our API in your environment, [contact sales](https://www.speechmat
 
 Turn live audio into accurate transcripts — instantly.
 
-The [Speechmatics Realtime speech to text API](/api-ref/realtime-transcription-websocket) converts spoken audio into text with low latency and high accuracy.
+The [Speechmatics Realtime Speech to Text API](/api-ref/realtime-transcription-websocket) converts spoken audio into text with low latency and high accuracy.
 
 :::info
 - Use when speed matters
@@ -74,7 +74,7 @@ The [Speechmatics Realtime speech to text API](/api-ref/realtime-transcription-w
 
 Create transcripts from pre-recorded audio or video.
 
-The [Speechmatics batch speech to text API](/api-ref/batch/create-a-new-job) processes pre-recorded files asynchronously, returning highly accurate transcripts in a range of formats.
+The [Speechmatics Batch Speech to Text API](/api-ref/batch/create-a-new-job) processes pre-recorded files asynchronously by default, returning highly accurate transcripts in a range of formats. To block for the result in a single request instead, use [synchronous transcription](/speech-to-text/batch/synchronous).
 
 :::info
 - Transcribe recorded meetings or interviews
@@ -87,7 +87,7 @@ The [Speechmatics batch speech to text API](/api-ref/batch/create-a-new-job) pro
 
 ### What is a job?
 
-Behind the scenes, each transcription request is handled as a job — a self-contained unit representing a single transcription task.
+Each transcription request is handled as a job — a self-contained unit representing a single transcription task.
 
 A job includes:
 - The audio or video file to be transcribed
@@ -97,8 +97,6 @@ A job includes:
 
 You submit a job to the API, monitor its progress, and retrieve results once it's complete. Jobs can be created via direct upload or by referencing a URL.
 
-Both modes support the same input/output formats and features — only the underlying model differs.
-
 
 ## Quicklinks
 
@@ -107,7 +105,7 @@ Both modes support the same input/output formats and features — only the under
     title="Languages"
     icon={<Globe/>}
     href="/speech-to-text/languages"
-    description="See which languages are supported"
+    description="See the languages Speechmatics supports"
   />
   <LinkCard
     title="Pricing"

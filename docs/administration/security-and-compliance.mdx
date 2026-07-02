@@ -1,0 +1,33 @@
+---
+title: Security and compliance
+description: Find Speechmatics security certifications and request compliance documentation.
+---
+
+# Security and compliance
+
+Speechmatics maintains the following certifications and compliance standards:
+
+- ISO/IEC 27001:2022
+- SOC 2 Type II
+- GDPR
+- HIPAA
+
+For an overview of how Speechmatics protects your data, see the [security page](https://www.speechmatics.com/security).
+
+## Request documentation
+
+Security and compliance documentation, including certificates and reports, is distributed through the [Speechmatics Trust Center](https://speechmatics.safebase.us/).
+
+To access documentation, request access in the Trust Center, agree to the non-disclosure agreement, and download the documents you need. Access is reviewed and granted by the Speechmatics security team.
+
+## Data handling
+
+How long your data is stored depends on the processing mode:
+
+- **Realtime.** Audio is streamed over a WebSocket and is never recorded or stored. Transcripts are streamed back as they are produced and then discarded. Processing happens in memory.
+- **Batch.** Audio files, transcripts, and job configuration are stored for 7 days, then deleted automatically. You can delete them sooner with the API. See [Delete a job](/api-ref/batch/delete-a-job).
+
+## Next steps
+
+- [Security page](https://www.speechmatics.com/security): how Speechmatics secures your data.
+- [Trust Center](https://speechmatics.safebase.us/): request certificates and compliance reports.

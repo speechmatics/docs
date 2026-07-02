@@ -1,0 +1,30 @@
+---
+title: Single sign-on (SSO)
+description: Configure single sign-on for your workspace so users authenticate through your identity provider.
+---
+
+# Single sign-on (SSO)
+
+SSO lets users sign in to Speechmatics using your existing identity provider, such as Okta, Azure AD, or Google Workspace. Authentication is delegated to the provider; Speechmatics does not store user passwords for SSO users.
+
+:::info
+SSO is an add-on service with a separate subscription. To enable SSO for your workspace, contact [support@speechmatics.com](mailto:support@speechmatics.com).
+:::
+
+## Supported protocols
+
+Speechmatics supports SSO through [WorkOS AuthKit](https://workos.com/docs/sso):
+
+- SAML 2.0
+- OpenID Connect (OIDC)
+
+## Configure SSO
+
+Once SSO is enabled for your workspace by Speechmatics support, follow the provider-specific setup instructions to exchange metadata between your identity provider and Speechmatics.
+
+Configuration requires the Admin role.
+
+## Next steps
+
+- [Domain verification](/administration/domain-verification): verify your domain so SSO users join your workspace automatically.
+- [Manage members](/administration/manage-members): assign roles to users who join through SSO.

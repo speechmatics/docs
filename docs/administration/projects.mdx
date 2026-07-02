@@ -1,0 +1,57 @@
+---
+title: Projects
+description: Organize work inside a workspace, scope API keys to projects, and track usage per project.
+---
+
+# Projects
+
+A project is an organizational unit inside a [workspace](/administration/workspaces-concepts). API keys, the transcripts they produce, and any voice agent configurations belong to a project. Any member of the workspace can access any project within it.
+
+Each workspace starts with a default project, which cannot be deleted. A workspace can have up to 1000 projects. If you need more, use [temporary keys](/get-started/authentication) or contact [support@speechmatics.com](mailto:support@speechmatics.com).
+
+API keys are scoped to a single project: a key created in one project cannot access transcripts produced in another. Billing and usage are not segmented by project, though usage can be viewed per project. See [Usage](/administration/usage).
+
+## Common use cases
+
+- **Development workflows.** Separate environments such as development, staging, and production.
+- **Organization segmentation.** Monitor usage by product line, department, or business unit.
+- **Multi-client service providers.** Give each client their own API keys and isolate their transcripts and usage data.
+
+## Create a project
+
+1. Open the projects dropdown in the top navigation.
+2. Select **Create project**.
+3. Enter a descriptive name.
+4. Click **Create**.
+
+## Switch between projects
+
+Your active project is shown in the top navigation. Transcribing in the portal and managing API keys both apply to the active project.
+
+1. Click the projects dropdown.
+2. Select a project.
+
+When using the API, you do not specify a project. Each API key is tied to one project, so the key determines which project a request applies to.
+
+## Rename or delete a project
+
+Manage projects under **Settings > Projects**. The project ID is read-only, and the default project cannot be deleted.
+
+:::danger
+Deleting a project permanently removes all of its transcripts, usage history, and API keys. This cannot be undone.
+:::
+
+## Manage projects with the API
+
+You can manage projects programmatically with the Management API, authenticated with a [management token](/administration/management-tokens). Available operations include:
+
+- [Get all projects](/api-ref/management/get-all-projects)
+- [Get a project by ID](/api-ref/management/get-a-project-by-id)
+- [Create a project](/api-ref/management/post-a-new-project)
+- [Update a project](/api-ref/management/update-a-project)
+- [Delete a project](/api-ref/management/delete-a-project)
+
+## Next steps
+
+- [API keys](/administration/api-keys): create and scope keys to a project.
+- [Usage](/administration/usage): track usage for a single project or across the workspace.
