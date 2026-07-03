@@ -87,13 +87,13 @@ The EU2 and US2 Batch SaaS endpoints are provided for enterprise customer high a
 
 Speechmatics Realtime SaaS supports the following endpoints for production use:
 
-| Customer type | Region       | Endpoint                       |
-| ------------- | ------------ | ------------------------------ |
-| All           | All regions  | **global.rt.speechmatics.com** |
-| All           | EU1 (Europe) | **eu.rt.speechmatics.com**     |
-| All           | US1 (USA)    | **us.rt.speechmatics.com**     |
+| Region       | Endpoint                       |
+| ------------ | ------------------------------ |
+| All regions  | **global.rt.speechmatics.com** |
+| EU1 (Europe) | **eu.rt.speechmatics.com**     |
+| US1 (USA)    | **us.rt.speechmatics.com**     |
 
-`global.rt.speechmatics.com` automatically routes each connection to the lowest-latency region, so you do not have to choose one. The regional endpoints remain available if you want to pin to a specific region.
+`global.rt.speechmatics.com` automatically routes each connection to the nearest region for lowest latency, so you don't have to select one. The regional endpoints remain available if you want to pin to a specific region.
 
 :::warning
 `global.rt.speechmatics.com` may route a connection to any region. If you have data residency or compliance requirements, use a regional endpoint (`eu.rt.speechmatics.com` or `us.rt.speechmatics.com`) instead.

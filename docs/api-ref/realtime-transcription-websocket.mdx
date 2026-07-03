@@ -24,7 +24,7 @@ import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml";
 </pre>
 
 :::info
-You can also connect to `wss://global.rt.speechmatics.com/v2/`, which automatically routes to the lowest-latency region. See [Supported endpoints](/get-started/authentication#supported-endpoints).
+You can either pin to a specific region for data residency or connect to `wss://global.rt.speechmatics.com/v2/`, which automatically routes each connection to the nearest region for lowest latency. See [Supported endpoints](/get-started/authentication#supported-endpoints).
 :::
 
 ## Protocol overview
