@@ -341,7 +341,4 @@ configmap
 sessiongroups
 melia
 مرحبا
-Diátaxis
-frontmatter
-Quickstarts
-codenames
+Theo
