@@ -34,7 +34,7 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   </TabItem>
   <TabItem value="real-time" label="Realtime transcription" default>
 
-For server-side calls, your API key must be provided in the header of the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses). For example:
+For server-side calls, your API key must be provided in the header of the [WebSocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses). For example:
 ```bash
 GET /v2/ HTTP/1.1
 Host: eu.rt.speechmatics.com
@@ -43,7 +43,7 @@ Connection: Upgrade
 Authorization: Bearer YOUR_API_KEY
 User-Agent: Python/3.8 websockets/8.1
 ```
-For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. These can be passed as a query param to the [Websocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses) URL. For example:
+For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. These can be passed as a query param to the [WebSocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses) URL. For example:
 
 ```bash
 wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
@@ -87,11 +87,11 @@ The EU2 and US2 Batch SaaS endpoints are provided for enterprise customer high a
 
 Speechmatics Realtime SaaS supports the following endpoints for production use:
 
-| Customer type | Region                  | Endpoint                   |
-| ------------- | ----------------------- | -------------------------- |
-| All           | Global                  | global.rt.speechmatics.com |
-| All           | EU1 (Europe)            | eu.rt.speechmatics.com     |
-| All           | US1 (USA)               | us.rt.speechmatics.com     |
+| Customer type | Region       | Endpoint                       |
+| ------------- | ------------ | ------------------------------ |
+| All           | All regions  | **global.rt.speechmatics.com** |
+| All           | EU1 (Europe) | **eu.rt.speechmatics.com**     |
+| All           | US1 (USA)    | **us.rt.speechmatics.com**     |
 
 `global.rt.speechmatics.com` automatically routes each connection to the lowest-latency region, so you do not have to choose one. The regional endpoints remain available if you want to pin to a specific region.
 
@@ -154,7 +154,7 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   </TabItem>
   <TabItem value="realtime" label="Realtime transcription">
 
-For Realtime transcription, temporary keys allow the end-user to start a websocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription, as well as development effort. 
+For Realtime transcription, temporary keys allow the end-user to start a WebSocket connection with Speechmatics directly, without exposing your long-lived API key. This will reduce the latency of transcription, as well as development effort. 
 
 A Realtime temporary key is not tied to a region. The same key works with any Realtime endpoint, including `global.rt.speechmatics.com`.
 
@@ -186,7 +186,7 @@ Note that when starting a Realtime transcription session in the browser, you mus
 |--------------|-----------|-----------------------------------------------------------
 | `ttl`        | Yes            | Integer: 60-86400. The temporary key's time to live in seconds. **Note** We suggest using the shortest TTL possible to minimise security risks.
 | `client_ref` | No             | String. When provided, `batch` tokens can only create and retrieve jobs with that reference; without it, they can access any job. **Must** be set when temporary keys are exposed to end-users to prevent accessing another user's data. `client_ref` is ignored when requesting `rt` tokens.
-| `region`     | No             | String: `eu` (default), `usa`, or `au` (Batch transcription only). Accepted for backward compatibility; temporary keys are no longer scoped to a region.
+| `region`     | No             | String: `eu` (default), `usa`, or `au` (Batch transcription only). Accepted for backward compatibility; the key is no longer scoped to a region. Batch jobs are still created in the region of the endpoint used.
 
 
 ## Next steps
