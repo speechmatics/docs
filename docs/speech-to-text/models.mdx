@@ -12,13 +12,14 @@ Speechmatics offers three models for Speech to Text: Enhanced, Standard, and Mel
 | Capability | Enhanced | Standard | Melia 1 |
 |---|---|---|---|
 | Model | `enhanced` | `standard` | `melia-1` |
+| Specialized variant | Medical | — | — |
 | Accuracy | Highest | High | High |
 | Turnaround | Fast | Fastest | Fastest |
 | Processing modes | Batch and Realtime | Batch and Realtime | Batch |
 | Regions | EU, US, AUS | EU, US, AUS | EU, US |
 | Language handling | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Automatic multilingual](#melia-1) |
 | Diarization | Speaker and channel | Speaker and channel | Speaker and channel |
-| Word labeling | Per file | Per file | Per word |
+| Language labeling | — | — | Per word |
 | Custom dictionary | ✅ | ✅ | Not yet |
 | Confidence scores | ✅ | ✅ | Not yet |
 | Speaker identification | ✅ | ✅ | Not yet |
@@ -100,14 +101,6 @@ For the features Melia 1 does not yet support, refer to [Compare the models](#co
 
 To configure language hints and read the per-language output metadata, refer to [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output).
 
-## Operating points
-
-The `model` property replaces the `operating_point` property. Existing configs that use `operating_point` continue to transcribe without changes.
-
-:::note
-In SaaS (cloud) deployments, `operating_point` is deprecated. It maps to `model` and accepts the same `enhanced` and `standard` values. Use [`model`](#specify-a-model) going forward.
-:::
-
 ## Enhanced Medical model
 
 Speechmatics offers the Enhanced Medical model that delivers high accuracy on healthcare audio such as ambient scribes and dictation tools.
@@ -144,3 +137,11 @@ To use the Enhanced Medical model, set the `domain` property to `medical`:
 | Spanish | Available | Available |
 | Swedish | Available | Available |
 | Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | |
+
+## Operating points
+
+The `model` property replaces the `operating_point` property. Existing configs that use `operating_point` continue to transcribe without changes.
+
+:::note
+In SaaS (cloud) deployments, `operating_point` is deprecated. It maps to `model` and accepts the same `enhanced` and `standard` values. Use [`model`](#specify-a-model) going forward.
+:::
