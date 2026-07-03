@@ -87,7 +87,7 @@ curl -X POST address.of.container:PORT/v2/jobs \
     "transcription_config": {
       "language": "en",
       "diarization": "speaker",
-      "operating_point": "enhanced"
+      "model": "enhanced"
     }
   }' \
   -F 'data_file=@~/audio_file.mp3'
@@ -201,7 +201,7 @@ curl -X POST address.of.container:PORT/v2/jobs \
     "transcription_config": {
       "language": "en",
       "diarization": "speaker",
-      "operating_point": "enhanced"
+      "model": "enhanced"
     }
   }' \
   -F 'data_file=@~/audio_file.mp3'
