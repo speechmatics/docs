@@ -76,14 +76,6 @@ When processing long audio jobs the benefits on RTF of the persistent batch work
 
 Once the worker is running and is available, submit jobs by making a `POST` request to `/v2/jobs` with an audio file and transcription config. The worker queues the job and returns a `job_id` immediately. You can poll [`GET /v2/jobs/{job_id}`](#job-api-reference) for the job status, and fetch the transcript when the status changes to `DONE`.
 
-:::note
-The `model` property replaces `operating_point`, which is deprecated. `model` accepts the same `enhanced` and `standard` values as an alias, plus `melia-1`. Use `model` going forward.
-
-To transcribe with the multilingual [Melia 1](/speech-to-text/models#melia-1) model, set `"model": "melia-1"` and `"language": "multi"` in `transcription_config`. Melia 1 requires a GPU inference server. For the full configuration, see [Melia 1](/speech-to-text/models#melia-1).
-:::
-
-{/* TODO(melia-on-prem): Confirm the Melia 1 transcription_config for the on-prem batch worker matches the SaaS API (model=melia-1, language=multi). Add a Melia 1 request example if the config differs from the standard/enhanced examples below. */}
-
 <Tabs>
   <TabItem value="curl" label="curl" default>
 
