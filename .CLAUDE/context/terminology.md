@@ -57,7 +57,7 @@ These name the layers, model variants, and packaged products in the STT decision
 
 Standard and Enhanced are also model variants; their casing is in Canonical product and API names above.
 
-### agent STT and voice agents
+### Interaction patterns
 
 | Canonical form | Do not use | Notes |
 |---|---|---|
