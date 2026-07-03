@@ -123,13 +123,7 @@ can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP API
 
 ### Operating points in GPU inference
 
-When inference is outsourced to a GPU server, alternative GPU-specific models are used, so you should not expect to see identical results compared to CPU-based inference. For convenience, the GPU models are also designated as 'standard' and 'enhanced'.
-
-### Melia 1 model
-
-Melia 1 is a separate multilingual model, not an Operating Point. It is available for Batch transcription only and requires an NVIDIA H100 GPU. See [Models](/speech-to-text/models#melia-1).
-
-{/* TODO(melia-on-prem): Confirm how Melia 1 is loaded on the GPU inference server — whether it ships as a separate image or is selected via an SM_OPERATING_POINT / env-var value, and whether it can be co-loaded alongside the standard/enhanced models. Document the run command once confirmed. */}
+When inference is outsourced to a GPU server, alternative GPU-specific models are used, so you should not expect to see identical results compared to CPU-based inference. For convenience, the GPU models are also designated as 'standard', 'enhanced' and 'melia-1'.
 
 ## Docker compose example
 
