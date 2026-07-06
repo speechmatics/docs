@@ -97,6 +97,8 @@ docker run --rm -it \
   <speech_container_image_name>
 ```
 
+To accept multiple jobs over an HTTP API without restarting the container between jobs, run the transcriber as a [batch persistent worker](/deployments/container/batch-persistent-worker).
+
 ### Monitoring the server
 
 The inference server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such
