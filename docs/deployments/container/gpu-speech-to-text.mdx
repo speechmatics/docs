@@ -10,7 +10,7 @@ import { smVariables } from '/sm-variables';
 import CodeBlock from '@theme/CodeBlock';
 import gpuSttDockerCompose from './assets/gpu-stt-docker-compose.yml?raw';
 
-# GPU Speech to text container
+# GPU Speech to text container (Standard and Enhanced)
 
 ## Prerequisites
 
@@ -117,10 +117,6 @@ To save GPU memory for throughput, you can run the server with only one model lo
 When running the all language standard model GPU inference server you must set the `SM_MODEL` environment variable to `standard`.
 :::
 
-:::note
-This section does not apply to `melia-1`. It is provided as a dedicated image and is loaded by default, so you do not set `SM_MODEL` or `SM_OPERATING_POINT`.
-:::
-
 ### Monitoring the server
 
 The inference server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such
@@ -129,7 +125,7 @@ can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP API
 
 ### Models in GPU inference
 
-When inference is outsourced to a GPU server, alternative GPU-specific models are used, so you should not expect to see identical results compared to CPU-based inference. For convenience, the GPU models are also designated as 'standard', 'enhanced' and 'melia-1'.
+When inference is outsourced to a GPU server, alternative GPU-specific models are used, so you should not expect to see identical results compared to CPU-based inference. For convenience, the GPU models are also designated as 'standard' and 'enhanced'.
 
 ## Docker compose example
 

@@ -1,0 +1,117 @@
+---
+toc_max_heading_level: 3
+description: 'Learn about the Speechmatics Melia 1 GPU container system'
+keywords: [speechmatics, container, gpu, GPU, NVIDIA, CUDA, melia, melia-1, SaaS, on-prem]
+---
+
+import { smVariables } from '/sm-variables';
+import CodeBlock from '@theme/CodeBlock';
+import melia1GpuSttDockerCompose from './assets/gpu-stt-melia-1-docker-compose.yml?raw';
+
+# GPU Speech to text container (Melia 1)
+
+Melia 1 is a multilingual, GPU-only model, available for Batch transcription only. For an overview of the model, see [Models](/speech-to-text/models#melia-1).
+
+## Prerequisites
+
+- [A license file or a license token](/deployments/container/licensing)
+  - There is no specific license for the GPU Inference Container, it will run using an existing Speechmatics license for the Batch Container
+- [Access to our Docker repository](/deployments/container/accessing-images)
+
+## System requirements
+
+The system must have:
+
+- Nvidia GPU(s) with at least 16GB of GPU memory
+- Nvidia drivers (see below for supported versions)
+- CUDA [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of 7.5-12.1 inclusive,
+  which corresponds to the Turing, Ampere, Lovelace, Hopper, Blackwell architectures. Cards with the Volta architecture or below are not able to run the models
+- 24 GB RAM
+- The [nvidia-container-toolkit](https://github.com/NVIDIA/nvidia-docker) installed
+- Docker version > 19.03
+
+:::tip
+See [Performance and cost](/deployments/container/performance-and-cost) for more information on the performance and cost of the container.
+:::
+
+### Nvidia drivers
+
+- 15.0.0 container version or higher: The GPU Inference Container is based on CUDA 13.0.1, which requires NVIDIA Driver release 580 or later.
+- 14.13.0 container version or lower: The GPU Inference Container is based on CUDA 12.4.1, which requires NVIDIA Driver release 525 or later.
+
+Driver installation can be validated by running `nvidia-smi`. This command should return the Nvidia driver version and show additional information about the GPU(s).
+
+#### Cloud instances
+
+The GPU node can be provisioned in the cloud.
+
+## Running the image
+
+Currently, each GPU Inference Container can only run on a single GPU.
+If a system has more than one GPU, the device must be specified using `CUDA_VISIBLE_DEVICES`
+or selecting the device using the `--gpus` argument. See [Nvidia/CUDA documentation for details](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#cuda-environment-variables).
+
+Pull the Melia 1 inference server image as described in [Accessing images](/deployments/container/accessing-images#melia-1-model), then run it:
+
+<CodeBlock language="bash">
+  {`docker run --rm -it \\
+    -v $PWD/license.json:/license.json \\
+    --gpus '"device=0"' \\
+    -e CUDA_VISIBLE_DEVICES \\
+    -p 8001:8001 \\
+    speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:${smVariables.latestMelia1ContainerVersion}
+`}
+</CodeBlock>
+
+When the Container starts you should see output similar to this,
+indicating that the server has started and is ready to serve requests.
+
+```
+I0705 08:12:55.419608 1 server.cc:709]
++--------------+---------+--------+
+| Model        | Version | Status |
++--------------+---------+--------+
+| aed          | 1       | READY  |
+| body         | 1       | READY  |
+| detokenizer  | 1       | READY  |
+| dz           | 1       | READY  |
+| ensemble     | 1       | READY  |
+| preprocessor | 1       | READY  |
++--------------+---------+--------+
+...
+I0705 08:12:55.515473 1 grpc_server.cc:2579] "Started GRPCInferenceService at 0.0.0.0:8001"
+I0705 08:12:55.515940 1 http_server.cc:4961] "Started HTTPService at 0.0.0.0:8000"
+I0705 08:12:55.598672 1 http_server.cc:400] "Started Metrics Service at 0.0.0.0:8002"
+```
+
+### Batch and Realtime inference
+
+The Melia 1 inference server currently runs in _batch_ mode only, processing whole files and returning the transcript at the end. Support for _real-time_ processing of audio streams is not yet available.
+
+The corresponding client speech Container is:
+
+- sm-asr-transcriber-melia-1:&lt;version&gt;
+
+### Linking to a GPU inference container
+
+Once the GPU Server is running, follow the [Instructions for Linking a CPU Container](/deployments/container/cpu-speech-to-text#linking-to-a-gpu-inference-container).
+
+### Model configuration
+
+Melia 1 is provided as a dedicated image and is the only model loaded. The `SM_MODEL` and `SM_OPERATING_POINT` environment variables used by the standard and enhanced [GPU container](/deployments/container/gpu-speech-to-text#running-only-one-model) do not apply to this image.
+
+### Monitoring the server
+
+The inference server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such
+can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP APIs. To expose these, configure an external mapping for port
+8002(Prometheus) or 8000(HTTP).
+
+## Docker compose example
+
+This Docker Compose file will create a Speechmatics Melia 1 GPU Inference Server:
+
+(assumes your `license.json` file is in the current working directory)
+
+<CodeBlock language="yaml" title="docker-compose.yml">
+{melia1GpuSttDockerCompose.replace('{{ CONTAINER_VERSION }}', smVariables.latestMelia1ContainerVersion)}
+</CodeBlock>
