@@ -37,8 +37,8 @@ The system must have:
 
 - Nvidia GPU(s) with at least 16GB of GPU memory
 - Nvidia drivers (see below for supported versions)
-- CUDA [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of 7.5-9.0 inclusive,
-  which corresponds to the Turing, Ampere, Lovelace, Hopper architecture. Cards with the Volta architecture or below are not able to run the models
+- CUDA [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of 7.5-12.1 inclusive,
+  which corresponds to the Turing, Ampere, Lovelace, Hopper, Blackwell architecture. Cards with the Volta architecture or below are not able to run the models
 - 5GB RAM
 - 4 vCPUs
 - The [nvidia-container-toolkit](https://github.com/NVIDIA/nvidia-docker) installed
@@ -48,8 +48,8 @@ The raw Docker image size of the Translation Container is around 10GB.
 
 ### Nvidia drivers
 
-- The GPU Inference Container is based on CUDA 12.3.2, which requires NVIDIA Driver release 545 or later.
-- If you are running on a data center GPU (e.g, a T4) you can use drivers: 470.57 (or later R470), 525.85 (or later R525), 535.86 (or later R535), or 545.23 (or later R545).
+- 15.0.0 container version or higher: The GPU Inference Container is based on CUDA 13.0.1, which requires NVIDIA Driver release 580 or later.
+- 14.13.0 container version or lower: The GPU Inference Container is based on CUDA 12.4.1, which requires NVIDIA Driver release 525 or later.
 
 Driver installation can be validated by running `nvidia-smi`. This command should return the Nvidia driver version and show additional information about the GPU(s).
 
