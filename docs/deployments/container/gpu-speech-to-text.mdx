@@ -25,8 +25,8 @@ The system must have:
 
 - Nvidia GPU(s) with at least 16GB of GPU memory
 - Nvidia drivers (see below for supported versions)
-- CUDA [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of 7.5-9.0 inclusive,
-  which corresponds to the Turing, Ampere, Lovelace, Hopper architectures. Cards with the Volta architecture or below are not able to run the models
+- CUDA [compute capability](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capabilities) of 7.5-12.1 inclusive,
+  which corresponds to the Turing, Ampere, Lovelace, Hopper, Blackwell architectures. Cards with the Volta architecture or below are not able to run the models
 - 24 GB RAM
 - The [nvidia-container-toolkit](https://github.com/NVIDIA/nvidia-docker) installed
 - Docker version > 19.03
@@ -105,14 +105,16 @@ The server can only support one of these modes at once.
 
 Once the GPU Server is running, follow the [Instructions for Linking a CPU Container](/deployments/container/cpu-speech-to-text#linking-to-a-gpu-inference-container).
 
-### Running only one operating point
+### Running only one model
 
-[Operating Points](/speech-to-text/models) represent different levels of model complexity.
-To save GPU memory for throughput, you can run the server with only one Operating Point loaded. To do this, pass the
-`SM_OPERATING_POINT` environment variable to the container and set it to either `standard` or `enhanced`.
+[Models](/speech-to-text/models) (previously called Operating Points) represent different levels of model complexity.
+To save GPU memory for throughput, you can run the server with only one model loaded. To do this, pass the
+`SM_MODEL` environment variable to the container and set it to either `standard` or `enhanced`.
+
+`SM_MODEL` replaces the older `SM_OPERATING_POINT` environment variable. `SM_OPERATING_POINT` is deprecated but still works and accepts the same `standard` and `enhanced` values; use `SM_MODEL` going forward.
 
 :::info
-When running the all language standard Operating Point GPU inference server you must set the `SM_OPERATING_POINT` environment variable to `standard`
+When running the all language standard model GPU inference server you must set the `SM_MODEL` environment variable to `standard`
 :::
 
 ### Monitoring the server
@@ -121,7 +123,7 @@ The inference server is based on [Nvidia's Triton architecture](https://develope
 can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP APIs. To expose these, configure an external mapping for port
 8002(Prometheus) or 8000(HTTP).
 
-### Operating points in GPU inference
+### Models in GPU inference
 
 When inference is outsourced to a GPU server, alternative GPU-specific models are used, so you should not expect to see identical results compared to CPU-based inference. For convenience, the GPU models are also designated as 'standard', 'enhanced' and 'melia-1'.
 

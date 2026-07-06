@@ -165,37 +165,3 @@ This config selects the Spanish and English pack, which requires the `domain` pr
 }
 ```
 
-## Healthcare domain
-
-Speechmatics offers a medical domain that provides high accuracy for healthcare use cases such as ambient scribes and dictation tools. The medical domain is available with the Enhanced model only. It does not apply to the Standard or Melia 1 models.
-
-The medical domain is kept up to date using officially maintained data sources. This improves recognition of medical terminology such as procedures, medications, conditions, and anatomy.
-
-For languages without medical domain support, the Enhanced model still gives high accuracy in the healthcare domain.
-
-Set the `domain` property to `medical`:
-
-```json
-{
-  "type": "transcription",
-  "transcription_config": {
-    "model": "enhanced",
-    "language": "en",
-    "domain": "medical"
-  }
-}
-```
-
-| Language | Realtime | Batch |
-|---|---|---|
-| Arabic English | Available | Available |
-| Danish | Available | Available |
-| Dutch | Available | Available |
-| English | Available | Available |
-| Finnish | Available | Available |
-| French | Available | Available |
-| German | Available | Available |
-| Norwegian | Available | Available |
-| Spanish | Available | Available |
-| Swedish | Available | Available |
-| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | |

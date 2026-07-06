@@ -12,13 +12,14 @@ Speechmatics offers three models for Speech to Text: Enhanced, Standard, and Mel
 | Capability | Enhanced | Standard | Melia 1 |
 |---|---|---|---|
 | Model | `enhanced` | `standard` | `melia-1` |
+| Specialized variant | Medical | — | — |
 | Accuracy | Highest | High | High |
 | Turnaround | Fast | Fastest | Fastest |
 | Processing modes | Batch and Realtime | Batch and Realtime | Batch |
 | Regions | EU, US, AUS | EU, US, AUS | EU, US |
 | Language handling | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Automatic multilingual](#melia-1) |
 | Diarization | Speaker and channel | Speaker and channel | Speaker and channel |
-| Word labeling | Per file | Per file | Per word |
+| Language labeling | — | — | Per word |
 | Custom dictionary | ✅ | ✅ | Not yet |
 | Confidence scores | ✅ | ✅ | Not yet |
 | Speaker identification | ✅ | ✅ | Not yet |
@@ -42,6 +43,8 @@ Use Enhanced for the highest accuracy on single-language audio, such as medical,
 Use Standard when throughput or latency matter more than maximum accuracy, such as archival transcription, content indexing, or large-scale captioning.
 
 Use Melia 1 for audio that contains more than one language, including speakers who switch language mid-conversation.
+
+For healthcare use cases, use the [Enhanced Medical model](#healthcare-domain) which is tuned for medical terminology.
 
 ## Specify a model
 
@@ -97,6 +100,43 @@ For the full list of Batch endpoints, refer to [Authentication](/get-started/aut
 For the features Melia 1 does not yet support, refer to [Compare the models](#compare-the-models).
 
 To configure language hints and read the per-language output metadata, refer to [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output).
+
+## Enhanced Medical model {#healthcare-domain}
+
+Speechmatics offers the Enhanced Medical model that delivers high accuracy on healthcare audio such as ambient scribes and dictation tools.
+
+The Enhanced Medical model is kept up to date using officially maintained data sources. This improves recognition of medical terminology such as procedures, medications, conditions, and anatomy.
+
+For languages not listed below, the Enhanced model still delivers high accuracy on healthcare audio without the medical domain.
+
+To use the Enhanced Medical model, set the `domain` property to `medical`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    // highlight-start
+    "domain": "medical"
+    // highlight-end
+  }
+}
+```
+
+| Language | Realtime | Batch |
+|---|---|---|
+| Arabic English | Available | Available |
+| Danish | Available | Available |
+| Dutch | Available | Available |
+| English | Available | Available |
+| Finnish | Available | Available |
+| French | Available | Available |
+| German | Available | Available |
+| Norwegian | Available | Available |
+| Spanish | Available | Available |
+| Swedish | Available | Available |
+| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | |
 
 ## Operating points
 

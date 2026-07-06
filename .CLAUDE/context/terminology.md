@@ -16,7 +16,7 @@ Capitalize named products and APIs. Use lowercase for capabilities and deploymen
 | Batch transcription processes pre-recorded audio. | Batch Transcription processes pre-recorded audio. |
 | The Standard model is recommended for most use cases. | The standard model is recommended for most use cases. |
 
-Deployment methods are common nouns: write "on-prem deployment", "container deployment", "virtual appliance" in lowercase.
+Deployment methods are common nouns: write "on-prem deployment", "on-device deployment", "container deployment", "virtual appliance" in lowercase. The named cloud surface "SaaS on Cloud" is the exception, capitalized as shown.
 
 ---
 
@@ -34,11 +34,48 @@ Deployment methods are common nouns: write "on-prem deployment", "container depl
 
 ---
 
+## Speech to Text model and interaction terms
+
+These name the layers, model variants, and packaged products in the STT decision tree. See `product-architecture.md` for how the product is structured; this section governs only the words and their casing.
+
+### Structural level names
+
+| Level | Canonical name | Formerly | Notes |
+|---|---|---|---|
+| L2 | interaction pattern | — | Lowercase. Its values are lowercase: streaming, agent STT, pre-recorded. |
+| L3 | model variant | Model | Lowercase common noun. Named variants (Standard, Enhanced, Melia 1, Linden 1) are capitalized. |
+| L4 | model sub-variant | Modification | Lowercase common noun. A separately trained, sector-specific extension of a parent model variant, not a standalone model. |
+
+### Model variants and packaged products
+
+| Canonical form | Do not use | Notes |
+|---|---|---|
+| Melia 1 | Melia-1, melia 1, Melia | Model variant. Space, no hyphen. The `model` config/API value is `melia-1` (hyphenated, lowercase) — use that form only in code, config, and API references. Multilingual; Batch only today. |
+| Linden 1 | Linden-1, linden 1 | Model variant for the agent STT interaction pattern. Coming soon. |
+| Medical | medical domain, Medical domain | Model sub-variant of Enhanced. Capitalized when naming the sub-variant or a product (Batch Enhanced Medical); lowercase as an ordinary adjective ("medical transcription"). |
+| Agent STT Linden 1 | Agent Transcription API, Agent Transcription API v1 | Packaged product: agent STT on the Linden 1 model variant. Coming soon. |
+
+Standard and Enhanced are also model variants; their casing is in Canonical product and API names above.
+
+### Interaction patterns
+
+| Canonical form | Do not use | Notes |
+|---|---|---|
+| streaming | Streaming | Interaction pattern. Lowercase, except at the start of a sentence. |
+| pre-recorded | Pre-recorded, prerecorded | Interaction pattern. Lowercase, hyphenated. |
+| agent STT | Voice agent transcription, voice agent transcription, agent transcription | Interaction pattern on the Realtime API: the speech-to-text layer for building voice agents. Lowercase "agent", all-caps "STT". Capitalize "Agent" only at the start of a sentence or in the product name Agent STT Linden 1. Coming soon. |
+
+Speechmatics does not sell a "voice agent." A voice agent is a full conversational pipeline (STT + LLM + STT) and is a distinct concept Speechmatics does not offer. agent STT provides the STT layer only, for developers building voice agents. Never describe a Speechmatics product as a "voice agent."
+
+---
+
 ## Common terms and preferred forms
 
 | Preferred form | Do not use | Notes |
 |---|---|---|
 | on-prem | on-premise | Preferred short form. "On-premises" is acceptable only when the topic warrants an explicit description. Never "on-premise." |
+| on-device | On-device, on device | Deployment method. Lowercase, hyphenated. Coming soon; feature coverage is currently narrower than SaaS on Cloud and on-prem. |
+| SaaS on Cloud | SaaS on cloud, cloud SaaS | Named cloud deployment surface. "SaaS" all-caps, "Cloud" capitalized. The exception to the lowercase deployment-method rule. |
 | container deployment | Container deployment | Lowercase. A deployment method, not a product name. |
 | virtual appliance | Virtual Appliance | Lowercase. A deployment method, not a product name. |
 | portal | Portal | The self-service console at portal.speechmatics.com where users manage API keys, usage, and billing. Lowercase unless starting a sentence. |
@@ -103,6 +140,6 @@ Example: legacy platform names such as "V1 SaaS" or "AWS SaaS" must not appear. 
 
 "Flow" (and the lowercase "flow" when used as the product or feature name) referred to a standalone voice agent product and API that has been removed from the Speechmatics offering. It is deprecated and must not be documented, referenced, or reintroduced in any user-facing content.
 
-If "Flow" appears in the codebase, existing docs, release notes, or source material, treat it as a deprecated reference: remove it rather than carrying it forward. Where the surrounding content still needs a voice agent reference, use the current voice agents surface instead (see `product-architecture.md` for how the voice agent capability is delivered).
+If "Flow" appears in the codebase, existing docs, release notes, or source material, treat it as a deprecated reference: remove it rather than carrying it forward. Where the surrounding content still needs a conversational speech-to-text reference, point to agent STT — the interaction pattern on the Realtime API that provides the speech-to-text layer for building voice agents (see `product-architecture.md`). Do not carry Flow's framing forward: Speechmatics does not sell a "voice agent" (a full STT + LLM + STT pipeline), so never describe agent STT, or any Speechmatics product, as a voice agent.
 
 This rule targets the product/feature named Flow. It does not apply to ordinary uses of the word in phrases such as "authentication flow" or "data flow", which are unaffected.
