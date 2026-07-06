@@ -109,7 +109,7 @@ Once the GPU Server is running, follow the [Instructions for Linking a CPU Conta
 
 [Models](/speech-to-text/models) (previously called Operating Points) represent different levels of model complexity.
 To save GPU memory for throughput, you can run the server with only one model loaded. To do this, pass the
-`SM_MODEL` environment variable to the container and set it to either `standard` or `enhanced`.
+`SM_MODEL` environment variable to the container and set it to one of `standard`, `enhanced` or `melia-1`.
 
 `SM_MODEL` replaces the older `SM_OPERATING_POINT` environment variable. `SM_OPERATING_POINT` is deprecated but still works and accepts the same `standard` and `enhanced` values; use `SM_MODEL` going forward.
 
