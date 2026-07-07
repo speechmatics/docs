@@ -5,6 +5,7 @@ keywords:
     numeral formatting,
     output formatting,
     punctuation,
+    smart formatting,
     transcript format,
     transcription
   ]
@@ -221,13 +222,15 @@ Word replacement rules:
 
 ## Smart formatting
 
-Speechmatics automatically converts spoken numbers, dates, currencies, and other entities into properly formatted text. This makes transcripts more readable without losing timing information.
+Smart formatting converts spoken numbers, dates, currencies, and other entities into properly formatted text. This makes transcripts more readable without losing timing information.
 
-For example, spoken words like "nineteen ninety nine" become "1999" in the output.
+An *entity* is a spoken value that has a conventional written form, such as a number, date, currency, time, or measurement. Speechmatics detects each entity and converts it from the words as spoken into its written form. For example, the spoken words "nineteen ninety nine" become "1999" in the output.
+
+Smart formatting is applied by default. Set `enable_entities` to `true` to also expose the structure of each entity in the JSON output: the class of entity, and the individual spoken and written words it is made from.
 
 ### Configuration
 
-To include detailed information about entities in your JSON output, add this to your configuration:
+To include detailed entity information in your JSON output, add `enable_entities` to your configuration:
 
 ```json
 {
@@ -351,7 +354,7 @@ Examples:
 - **German**: Uses periods for thousands (20.000), commas for decimals (10,5), and places currency symbols after values with a non-breaking space (10 $)
 - **French**: Uses non-breaking spaces for thousands (20 000), commas for decimals (10,5), and places currency symbols after values with a non-breaking space (10 $)
 
-Smart formatting is available in these languages:
+Smart formatting has had dedicated work for consistent results in these languages:
 
 - Cantonese
 - Chinese Mandarin (Simplified and Traditional)
@@ -370,6 +373,10 @@ Smart formatting is available in these languages:
 - Spanish
 - Swedish
 - Tamil & English (bilingual)
+
+Other languages still format numbers and entities on a best-effort basis through the model, with variable results. If you rely on formatting for a language that isn't listed, test it with representative audio rather than assuming full coverage.
+
+Formatting coverage isn't reported by [feature discovery](/speech-to-text/features/feature-discovery), which covers transcription, translation, and language identification. This page is the reference for formatting language support.
 
 ## Punctuation
 
