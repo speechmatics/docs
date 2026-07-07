@@ -2,6 +2,7 @@ export const smVariables = {
   jsonOutputVersion: "2.9",
   latestApplianceVersion: "6.3.0",
   latestContainerVersion: "15.14.0",
+  latestMelia1ContainerVersion: "1.3.0",
   usageContainerVersion: "0.3.0",
   helmChartVersion: "1.3.0",
 } as const;

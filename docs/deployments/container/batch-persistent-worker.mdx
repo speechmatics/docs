@@ -50,6 +50,7 @@ When processing long audio jobs the benefits on RTF of the persistent batch work
 <CodeBlock language="bash">
 {`docker run -it \
   -e LICENSE_TOKEN=$TOKEN_VALUE \
+  -e SM_INFERENCE_ENDPOINT=<server>:<port> \
   -p PORT:18000 \
   batch-asr-transcriber-en:${smVariables.latestContainerVersion} \
   --run-mode http \

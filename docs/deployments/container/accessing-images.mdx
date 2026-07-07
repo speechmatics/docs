@@ -118,6 +118,20 @@ See [how to run the Transcription GPU container here.](/deployments/container/gp
 To access additional language configurations for containers, please [speak to our Support Team](https://support.speechmatics.com).
 :::
 
+### Melia 1 model
+
+Melia 1 is a multilingual, GPU-only model, currently available in Batch. For an overview, see [Models](/speech-to-text/models#melia-1).
+
+<CodeBlock language="bash">
+  {`# pulling the Melia 1 Batch transcriber with the ${smVariables.latestMelia1ContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion}
+\0
+# pulling the Melia 1 GPU inference server with the ${smVariables.latestMelia1ContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:${smVariables.latestMelia1ContainerVersion}`}
+</CodeBlock>
+
+See [how to run the Melia 1 GPU container here.](/deployments/container/gpu-speech-to-text-melia-1)
+
 ## Pulling translation GPU image
 
 This GPU image is required to use Translation in Batch or Realtime.
