@@ -106,6 +106,8 @@ Customer-facing features and concepts that appear in the docs. Lowercase as comm
 | language pack | Language Pack, languagepack | Lowercase. The model assets for a given language. |
 | language identification | Language Identification, LID | Lowercase. Define on first use if abbreviating; prefer the full form. |
 | feature discovery | Feature Discovery | Lowercase. The endpoint returning current capability metadata. |
+| smart formatting | numeral formatting, Smart Formatting | Lowercase. The feature that converts spoken entities (numbers, dates, currencies, times, measurements, and more) into their written form. Avoid "numeral formatting": it is too narrow, implying numbers only and excluding non-numeric entity classes such as dates, times, and email addresses. |
+| entity | Entity | Lowercase. A spoken value with a conventional written form (a number, date, currency, time, measurement, and so on) that smart formatting detects and converts. `enable_entities` exposes each entity's structure in the JSON output. |
 
 ---
 

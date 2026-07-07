@@ -43,9 +43,9 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Fetch URL](/speech-to-text/batch/input#fetch-url)                                    | Batch           | SaaS, On-Prem |
 | [Language identification](/speech-to-text/batch/language-identification)              | Batch           | SaaS          |
 | [Notifications](/speech-to-text/batch/notifications.md)                               | Batch           | SaaS, On-prem |
-| [Numeral formatting](/speech-to-text/formatting#smart-formatting)                     | Batch, Realtime | SaaS, On-prem |
 | [Punctuation settings](/speech-to-text/formatting#punctuation)                        | Batch, Realtime | SaaS, On-prem |
 | [Sentiment analysis](/speech-to-text/batch/speech-intelligence/sentiment-analysis)    | Batch           | SaaS, On-prem |
+| [Smart formatting](/speech-to-text/formatting#smart-formatting)                       | Batch, Realtime | SaaS, On-prem |
 | [Speaker identification](/speech-to-text/features/speaker-identification)             | Batch, Realtime | SaaS, On-prem |
 | [Summarization](/speech-to-text/batch/speech-intelligence/summarization)              | Batch           | SaaS          |
 | [Topic detection](/speech-to-text/batch/speech-intelligence/topic-detection)          | Batch           | SaaS          |
