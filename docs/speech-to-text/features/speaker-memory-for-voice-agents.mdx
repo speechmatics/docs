@@ -23,7 +23,7 @@ Speaker memory lets a voice agent recognize a returning speaker by name across s
 Diarization gives you labels: `S1`, `S2`, `S3`. Those labels are only good for the life of one session. The person who was `S1` today might be `S2` tomorrow, or `S1` again by chance. The labels carry no memory. Speaker identifiers are how you give them memory. During a session the engine builds a voice fingerprint for each speaker, and you can save those fingerprints as durable identifiers. Feed them back into a later session and the engine attributes matching voices to a name you chose, `Sam` instead of `S1`.
 
 :::info
-Speaker memory builds on [speaker identification](/speech-to-text/features/speaker-identification) with speaker [diarization](/speech-to-text/features/diarization) enabled. The Speechmatics Python [voice SDK](/voice-agents/voice-sdk) (Python only) exposes it through `known_speakers` and the speakers request. Speechmatics provides the speech-to-text layer for voice agents, not the full pipeline.
+Speaker memory is an application of [speaker identification](/speech-to-text/features/speaker-identification), a standard capability of the Realtime and Batch APIs and their clients, not a voice-specific feature. Speaker identifiers and `known_speakers` are available in [realtime](/speech-to-text/realtime/speaker-identification) and [batch](/speech-to-text/batch/speaker-identification) speaker identification; the exact names vary by client. This page covers the voice-agent pattern: capturing identifiers live and reusing them across sessions, with speaker [diarization](/speech-to-text/features/diarization) enabled.
 :::
 
 ## How speaker identifiers work
@@ -153,7 +153,7 @@ This walks through two sessions.
 
 ## Speaker memory in the voice SDK, Pipecat and LiveKit
 
-The concepts above map onto real integrations with little code: get identifiers out of one session, feed them back into the next as known speakers. The Speechmatics Python [voice SDK](/voice-agents/voice-sdk) exposes `known_speakers` (using `SpeakerIdentifier`) and a speakers request; the Pipecat and LiveKit plugins wrap the same SDK.
+The concepts above map onto real integrations with little code: get identifiers out of one session, feed them back into the next as known speakers. `known_speakers` is available across the Realtime and Batch clients; the [voice SDK](/voice-agents/voice-sdk), Pipecat, and LiveKit expose it for the agent use case, with method names differing per client.
 
 For [Pipecat](https://github.com/pipecat-ai/pipecat), the result arrives on an event:
 
