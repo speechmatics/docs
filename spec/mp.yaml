@@ -2,8 +2,10 @@ swagger: '2.0'
 info:
   title: Management API
   version: 1.0.0
-  description: >-
-    The management API is used to manage customers and contracts.
+  description: |
+    The Management API lets you manage projects and API keys in your workspace programmatically. Authenticate each request with a [management token](/administration/management-tokens), which is scoped to the workspace.
+
+    Use it to automate workspace administration, such as creating a project and issuing its API key from a CI pipeline. To get started, [create a management token](/administration/management-tokens), then call the endpoints below.
   contact:
     email: support@speechmatics.com
 basePath: /v1
@@ -44,6 +46,15 @@ paths:
             $ref: '#/definitions/ErrorResponse'
     post:
       summary: Create an API key
+      description: |
+        Create an API key in your workspace, authenticated with a [management token](/administration/management-tokens).
+
+        This endpoint issues two kinds of key:
+
+        - **Permanent key** — a long-lived key for a project. Set `project_id` (and optionally `name`) and omit `ttl`. Use this for a normal project API key.
+        - **Temporary key** — a short-lived key that expires automatically. Set `ttl` to the lifetime in seconds. Use temporary keys to authenticate end-user requests without exposing a long-lived key.
+
+        The `au` region supports Batch only, so it cannot be combined with `type=rt`.
       consumes:
         - application/json
       parameters:
@@ -51,11 +62,12 @@ paths:
           in: query
           required: false
           type: string
-          description: Set the product this token will be authorised to access. Defaults to batch.
+          description: >-
+            The product this key can access: `batch` (default), `rt` (Realtime),
+            or `tts` (Text to Speech).
           enum:
             - rt
             - batch
-            - flow
             - tts
         - name: body
           in: body
@@ -301,21 +313,31 @@ definitions:
       project_id:
         type: integer
         x-nullable: true
+        description: The project the API key belongs to. Set this to create a permanent key for a specific project.
       name:
         type: string
         x-nullable: true
         maxLength: 120
+        description: A display name for the API key (up to 120 characters).
       client_ref:
         type: string
         x-nullable: true
+        description: An end-user reference. For `batch` keys, it restricts the key to jobs created with the same `client_ref`; it is ignored for `rt` keys.
       ttl:
         type: integer
         x-nullable: true
         minimum: 60
         maximum: 86400
+        description: >-
+          Time to live for a temporary key, in seconds, from 60 (1 minute) to
+          86400 (24 hours). Set `ttl` to create a temporary key that expires
+          automatically; omit it to create a permanent key.
       region:
         type: string
         x-nullable: true
+        description: >-
+          The region where the key is valid: `eu` (default), `usa`, or `au`. The
+          `au` region supports Batch only, so it cannot be used with `type=rt`.
         enum:
           - eu
           - usa
