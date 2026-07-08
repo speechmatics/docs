@@ -42,7 +42,7 @@ While a session is running, you request the current speakers. The engine replies
 
 The following pseudocode requests identifiers and persists the ones you want:
 
-```text
+```python
 # Ask the engine for the fingerprints of everyone heard so far.
 speakers = request_speakers()
 
@@ -70,7 +70,7 @@ To use them, pass them as known speakers when you open the next session. Each en
 
 The following pseudocode configures known speakers at session start:
 
-```text
+```python
 configure_stt(
     enable_diarization = true,
     known_speakers = [
@@ -88,7 +88,7 @@ As with [speaker focus](/speech-to-text/features/speaker-focus-for-voice-agents)
 
 The following pseudocode defines the tools:
 
-```text
+```python
 remember_voices(speakers: { speaker_id: string, name: string }[])
     # Save one or more speakers so they're recognized in future sessions.
     # Only call when a speaker explicitly asks to be saved. The name must
@@ -105,7 +105,7 @@ The `remember_voices` handler needs care, because fetching fingerprints is async
 
 The following pseudocode shows that non-blocking handler:
 
-```text
+```python
 pending = {}   # label -> real name, awaiting the speakers result
 
 on remember_voices(speakers):
