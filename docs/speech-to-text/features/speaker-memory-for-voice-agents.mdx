@@ -66,7 +66,7 @@ Some integrations let you flag the request as final, meaning "give me the defini
 
 Saving the identifiers is up to you. A local file works and keeps things offline, but a database or a user record is just as valid.
 
-To use them, pass them as known speakers when you open the next session. Each entry pairs a label (now a real name) with the list of identifiers you saved.
+To use them, pass them as known speakers when you open the next session. Each entry pairs a label (now a real name) with a list of identifiers. You can pass several identifiers under one label: this is how you cover the same voice heard through different devices or microphones (a laptop mic, a smartphone, an tablet, a handset), so recognition holds up wherever the person speaks from.
 
 The following pseudocode configures known speakers at session start:
 
@@ -74,7 +74,8 @@ The following pseudocode configures known speakers at session start:
 configure_stt(
     enable_diarization = true,
     known_speakers = [
-        { label: "Sam",   speaker_identifiers: ["XX...XX"] },
+        # One label, several identifiers for the same voice across devices.
+        { label: "Sam",   speaker_identifiers: ["XX...XX", "ZZ...ZZ"] },
         { label: "Alice", speaker_identifiers: ["YY...YY"] },
     ],
 )

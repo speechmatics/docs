@@ -208,7 +208,7 @@ Pick format strings to suit your model, and teach the LLM whichever format you c
 
 `RETAIN` is the safer default for a chatty agent, because a background speaker can be brought in without a config change. `IGNORE` is blunter. Reach for it when you truly want the engine to stop listening, not just stop responding.
 
-Keep the agent's own voice out of the loop. Either use the `__ASSISTANT__` double-underscore convention or add the agent's speaker to the ignore list. Otherwise the agent's audio output is transcribed straight back in and it starts talking to itself.
+Keep the agent's own voice out of the loop, otherwise its audio output is transcribed straight back in and it starts talking to itself. Any speaker enrolled with a label wrapped in double underscores (such as `__ASSISTANT__`) is excluded automatically, so you never have to ignore it explicitly. To use this, pass the agent's voice as a [known speaker](/speech-to-text/features/speaker-memory-for-voice-agents) at session start, labeled `__ASSISTANT__`, with a speaker identifier captured from an earlier session or from enrollment. The engine recognizes the agent's own audio and drops it before it reaches the transcript. This is the clean option for complex speaker or microphone setups, where the agent's voice can leak back in through the mic. You can pass several identifiers under the one label to cover that voice across different output paths or capture devices. Adding the agent's speaker to the ignore list at runtime also works.
 
 Speaker focus pairs with [speaker memory](/speech-to-text/features/speaker-memory-for-voice-agents). Once a voice is recognized by name, every focus and ignore operation can target that name instead of a throwaway label.
 
