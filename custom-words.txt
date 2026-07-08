@@ -342,3 +342,4 @@ sessiongroups
 melia
 مرحبا
 Theo
+pipecat
