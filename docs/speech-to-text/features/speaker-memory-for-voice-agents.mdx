@@ -30,6 +30,10 @@ Speaker memory is an application of [speaker identification](/speech-to-text/fea
 
 A speaker identifier is a voice fingerprint the engine produces once diarization is on. It is a string, tied to your Speechmatics account. That last point matters: identifiers are unique per account and do not work across accounts, so you cannot take a fingerprint from one account and use it under another.
 
+:::warning
+Speechmatics does not store speaker identifiers. They exist only for the session that produces them, so you must save them yourself and supply them again in every future session. Identifiers are derived from a person's voice and may qualify as biometric data under data-protection law (for example, GDPR). Treat them as sensitive personal data: obtain consent, store them securely, and support deletion.
+:::
+
 Speaker memory and [speaker identification](/speech-to-text/features/speaker-identification) use the same identifiers for different jobs. Speaker identification enrolls known speakers ahead of time from short audio clips and applies them in batch or realtime transcription. Speaker memory captures identifiers live during an agent session and reuses them in later sessions, so an agent can recognize a returning speaker without prior enrollment.
 
 A speaker can accumulate more than one identifier over time, as the engine hears them in different conditions. A saved profile is therefore a name plus a list of identifiers, and you keep adding to that list as you see the person again. More identifiers mean better recognition.
@@ -66,7 +70,7 @@ Some integrations let you flag the request as final, meaning "give me the defini
 
 Saving the identifiers is up to you. A local file works and keeps things offline, but a database or a user record is just as valid.
 
-To use them, pass them as known speakers when you open the next session. Each entry pairs a label (now a real name) with a list of identifiers. You can pass several identifiers under one label: this is how you cover the same voice heard through different devices or microphones (a laptop mic, a smartphone, an tablet, a handset), so recognition holds up wherever the person speaks from.
+To use them, pass them as known speakers when you open the next session. Each entry pairs a label (now a real name) with a list of identifiers. You can pass several identifiers under one label: this is how you cover the same voice heard through different devices or microphones (a laptop mic, a smartphone, a tablet, a handset), so recognition holds up wherever the person speaks from.
 
 The following pseudocode configures known speakers at session start:
 
