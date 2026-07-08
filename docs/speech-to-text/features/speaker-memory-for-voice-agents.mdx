@@ -30,6 +30,8 @@ Speaker memory builds on [speaker identification](/speech-to-text/features/speak
 
 A speaker identifier is a voice fingerprint the engine produces once diarization is on. It is a string, tied to your Speechmatics account. That last point matters: identifiers are unique per account and do not work across accounts, so you cannot take a fingerprint from one account and use it under another.
 
+Speaker memory and [speaker identification](/speech-to-text/features/speaker-identification) use the same identifiers for different jobs. Speaker identification enrolls known speakers ahead of time from short audio clips and applies them in batch or realtime transcription. Speaker memory captures identifiers live during an agent session and reuses them in later sessions, so an agent can recognize a returning speaker without prior enrollment.
+
 A speaker can accumulate more than one identifier over time, as the engine hears them in different conditions. A saved profile is therefore a name plus a list of identifiers, and you keep adding to that list as you see the person again. More identifiers mean better recognition.
 
 There are two halves to speaker memory: getting identifiers out of a live session, and feeding them back into a later one.
@@ -207,5 +209,6 @@ Speaker memory pairs with [speaker focus](/speech-to-text/features/speaker-focus
 ## Next steps
 
 - [Speaker focus for voice agents](/speech-to-text/features/speaker-focus-for-voice-agents) — direct the agent to specific speakers.
-- [Voice SDK](/voice-agents/voice-sdk) — the Python SDK reference for `known_speakers` and speaker management.
 - [Speaker identification](/speech-to-text/features/speaker-identification) — how identifiers are generated and scoped.
+- [Voice agents overview](/voice-agents/overview) — ways to build a voice agent with Speechmatics.
+- [Voice SDK](/voice-agents/voice-sdk) — the Python SDK reference for `known_speakers` and speaker management.
