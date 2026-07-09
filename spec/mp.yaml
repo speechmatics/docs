@@ -336,8 +336,8 @@ definitions:
         type: string
         x-nullable: true
         description: >-
-          The region where the key is valid: `eu` (default), `usa`, or `au`. The
-          `au` region supports Batch only, so it cannot be used with `type=rt`.
+          Deprecated. Region is determined by the endpoint you call, not the
+          key. Still accepted for backward compatibility, but it has no effect.
         enum:
           - eu
           - usa
