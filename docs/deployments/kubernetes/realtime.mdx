@@ -22,8 +22,12 @@ Providing the [Prerequisites](/deployments/kubernetes/prerequisites) have been m
 helm upgrade --install speechmatics-realtime \\
   oci://speechmaticspublic.azurecr.io/sm-charts/sm-realtime \\
   --version ${smVariables.helmChartVersion} \\
-  --set proxy.ingress.url="speechmatics.example.com"`}
+  --set proxy.ingress.hostname="speechmatics.example.com"`}
 </CodeBlock>
+
+:::note
+`proxy.ingress.url` Helm value is deprecated in favour of `proxy.ingress.hostname` for configuring the Ingress hostname. Existing deployments remain compatible: if `proxy.ingress.hostname` is not set, the chart continues to honour `proxy.ingress.url` as a fallback.
+:::
 
 ### Validate
 

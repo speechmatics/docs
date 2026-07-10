@@ -4,7 +4,7 @@ export const smVariables = {
   latestContainerVersion: "15.14.0",
   latestMelia1ContainerVersion: "1.3.0",
   usageContainerVersion: "0.3.0",
-  helmChartVersion: "1.3.0",
+  helmChartVersion: "1.4.0",
 } as const;
 
 // TODO investigate if there is a better way to handle these version numbers
