@@ -78,7 +78,7 @@ For other languages, consider using [word replacement](#word-replacement) to ide
 
 ## Disfluencies
 
-Disfluencies are hesitation sounds like "um", "uh", and "hmm". In English, these are automatically tagged with `disfluency`:
+Disfluencies are hesitation sounds like "um", "uh", and "hmm". Speechmatics automatically tags them with `disfluency` in the transcript output:
 
 ```json
 "results": [
@@ -101,7 +101,7 @@ Disfluencies are hesitation sounds like "um", "uh", and "hmm". In English, these
 ```
 
 <details data-accent-color="gray">
-  <summary>Full list of tagged disfluencies</summary>
+  <summary>Full list of tagged English disfluencies</summary>
 <CodeBlock>
 {`huh
 aha
@@ -147,6 +147,33 @@ uum`}
 </CodeBlock>
 </details>
 
+### Supported languages
+
+Disfluency tagging and removal are available for the following languages. Each language has its own set of hesitation sounds; the full list above is for English.
+
+- Arabic
+- Chinese Mandarin
+- Danish
+- Dutch
+- English
+- Finnish
+- French
+- German
+- Greek
+- Hebrew
+- Hindi
+- Hungarian
+- Italian
+- Japanese
+- Norwegian
+- Polish
+- Portuguese
+- Russian
+- Spanish
+- Swedish
+
+Coverage of hesitation sounds varies by language. If you rely on disfluency removal for a specific language, test it with representative audio rather than assuming full coverage.
+
 ### Removing disfluencies
 
 You can automatically remove disfluencies from your transcript:
@@ -169,7 +196,7 @@ Without disfluency removal:
 With disfluency removal:
 > What would you like?
 
-This feature is available for English only. The default setting is `"remove_disfluencies": false`.
+This feature is available for the [supported languages](#supported-languages). The default setting is `"remove_disfluencies": false`.
 
 ## Word replacement
 
