@@ -336,8 +336,9 @@ definitions:
         type: string
         x-nullable: true
         description: >-
-          Deprecated. Region is determined by the endpoint you call, not the
-          key. Still accepted for backward compatibility, but it has no effect.
+          Deprecated. Region (`eu` (default), `usa`, or `au`) is now determined
+          by the endpoint you call. Still accepted for backward
+          compatibility, but it has no effect.
         enum:
           - eu
           - usa

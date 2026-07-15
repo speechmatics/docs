@@ -186,7 +186,7 @@ Note that when starting a Realtime transcription session in the browser, you mus
 |--------------|-----------|-----------------------------------------------------------
 | `ttl`        | Yes            | Integer: 60-86400. The temporary key's time to live in seconds. **Note** We suggest using the shortest TTL possible to minimise security risks.
 | `client_ref` | No             | String. When provided, `batch` tokens can only create and retrieve jobs with that reference; without it, they can access any job. **Must** be set when temporary keys are exposed to end-users to prevent accessing another user's data. `client_ref` is ignored when requesting `rt` tokens.
-| `region`     | No             | **Deprecated.** String: `eu` (default), `usa`, or `au` (Batch transcription only). Region is determined by the [endpoint you call](#supported-endpoints), not the key. Still accepted for backward compatibility, but it has no effect.
+| `region`     | No             | **Deprecated.** String: `eu` (default), `usa`, or `au` (Batch transcription only). Region is determined by the [endpoint you call](#supported-endpoints). Still accepted for backward compatibility, but it has no effect.
 
 
 ## Next steps

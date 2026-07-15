@@ -639,7 +639,7 @@ components:
           example: "2025-03-25T08:45:31Z"
         region:
           description: >-
-            Only set when `type` is `concurrent_session_usage`. The region that reported this usage, for example `eu`. Present only when the cluster has a region configured, so it is omitted for on-premises and unconfigured deployments. Useful with the global endpoint (`global.rt.speechmatics.com`), which may route a connection to any region.
+            Only set when `type` is `concurrent_session_usage`. The region that reported this usage, for example `eu`.
           type: string
           example: "eu"
       required:
