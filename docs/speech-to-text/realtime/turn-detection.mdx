@@ -119,6 +119,7 @@ To achieve higher accuracy, you can include an optional timestamp parameter. Thi
   "message": "ForceEndOfUtterance",
   "timestamp": 63.5
 }
+```
 
 You can also use `ForceEndOfUtterance` with multi-channel diarization:
 
@@ -129,7 +130,7 @@ You can also use `ForceEndOfUtterance` with multi-channel diarization:
 }
 ```
 
-When this message is received, the server will send an [AddTranscript](../../api-ref/realtime-transcription-websocket#addtranscript) message, with a `forced` field to indicate it came from a ForceEndOfUtterance request, followed by an [EndOfUtterance](../../api-ref/realtime-transcription-websocket#endofutterance) message.
+When the server receives this message, it sends an [AddTranscript](../../api-ref/realtime-transcription-websocket#addtranscript) message followed by an [EndOfUtterance](../../api-ref/realtime-transcription-websocket#endofutterance) message. Both include a `forced` field set to `true` to indicate they were triggered by a `ForceEndOfUtterance` message.
 
 ## Semantic turn detection
 

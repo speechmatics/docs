@@ -486,7 +486,7 @@ components:
         forced:
           type: boolean
           description: |
-            Indicates whether this message was triggered as a result of a ForceEndOfUtterance request.     
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -513,7 +513,7 @@ components:
         forced:
           type: boolean
           description: |
-            Indicates whether this message was triggered as a result of a ForceEndOfUtterance request.      
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -531,7 +531,7 @@ components:
         forced:
           type: boolean
           description: |
-            Indicates whether this message was triggered as a result of a ForceEndOfUtterance request.
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
