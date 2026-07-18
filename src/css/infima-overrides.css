@@ -1,4 +1,4 @@
-/* 
+/*
   You can override the default Infima variables here.
   Here we're intentionally setting the same tokens for light and dark mode, since Radix handles this automatically.
 */
@@ -112,6 +112,9 @@ html[data-theme="dark"] {
 
   --ifm-alert-color: var(--cyan-10);
   --ifm-alert-border-color: var(--cyan-10);
+
+  --default-font-family: "DM Sans", sans-serif;
+  --ifm-font-family-base: var(--default-font-family);
 
   --docusaurus-highlighted-code-line-bg: var(--gray-4);
   --docusaurus-details-decoration-color: var(--gray-11);
