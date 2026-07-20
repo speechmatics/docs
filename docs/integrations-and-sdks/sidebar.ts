@@ -21,6 +21,11 @@ export default {
     },
     {
       type: "doc",
+      id: "integrations-and-sdks/zapier",
+      label: "Zapier",
+    },
+    {
+      type: "doc",
       id: "integrations-and-sdks/sdks",
       label: "SDKs",
     },
