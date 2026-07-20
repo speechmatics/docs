@@ -14,7 +14,7 @@ settings = ConnectionSettings(
 # Define transcription parameters
 conf = {
     "type": "transcription",
-    "transcription_config": {"language": LANGUAGE},
+    "transcription_config": {"language": LANGUAGE, "model": "enhanced"},
     # highlight-start
     # You can also configure the list of topics you wish to detect. See below for more detail.
     "topic_detection_config": {},

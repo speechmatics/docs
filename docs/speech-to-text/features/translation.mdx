@@ -197,7 +197,8 @@ settings = ConnectionSettings(
 conf = {
     "type": "transcription",
     "transcription_config": {
-        "language": LANGUAGE
+        "language": LANGUAGE,
+        "model": "enhanced"
     },
     "translation_config": {
         "target_languages":TRANSLATION_LANGUAGES
@@ -292,6 +293,7 @@ translation_config = speechmatics.models.RTTranslationConfig(
 )
 
 transcription_config = speechmatics.models.TranscriptionConfig(
+    model="enhanced",
     language=LANGUAGE,
     translation_config=translation_config
 )
