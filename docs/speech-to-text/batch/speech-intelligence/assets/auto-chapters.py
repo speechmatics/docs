@@ -14,7 +14,7 @@ settings = ConnectionSettings(
 # Define transcription parameters
 conf = {
     "type": "transcription",
-    "transcription_config": {"language": LANGUAGE},
+    "transcription_config": {"language": LANGUAGE, "model": "enhanced"},
     # highlight-start
     "auto_chapters_config": {},
     # highlight-end

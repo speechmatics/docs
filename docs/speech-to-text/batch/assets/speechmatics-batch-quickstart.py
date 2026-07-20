@@ -5,7 +5,8 @@ API_KEY = "YOUR_API_KEY"
 AUDIO_FILE= "example.wav"
 
 config = TranscriptionConfig(
-    diarization="speaker"
+    diarization="speaker",
+    language="en",
     model="enhanced"
 )
 
