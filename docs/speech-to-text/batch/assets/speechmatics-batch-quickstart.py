@@ -6,12 +6,13 @@ AUDIO_FILE= "example.wav"
 
 config = TranscriptionConfig(
     diarization="speaker"
+    model="enhanced"
 )
 
 async def main():
     client = AsyncClient(api_key=API_KEY)
     result = await client.transcribe(
-        audio_file=AUDIO_FILE, 
+        audio_file=AUDIO_FILE,
         transcription_config=config
     )
     print(result.transcript_text)
