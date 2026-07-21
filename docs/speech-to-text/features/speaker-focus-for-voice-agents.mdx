@@ -1,4 +1,5 @@
 ---
+title: "Speaker focus for voice agents"
 description: "Direct a voice agent to respond to chosen speakers and treat others as background, and update the focus live mid-session."
 keywords:
   [
@@ -22,7 +23,7 @@ Speaker focus lets a voice agent decide which speakers to respond to and how to 
 Put a voice agent in a room with more than one person and you hit a problem straight away: whose words should the agent act on? If two people are talking and a third asks a question, you don't want the agent replying to the crossfire. You want it locked onto the person talking to it, with everyone else treated as background it can hear but shouldn't answer. Speaker focus is how you do that.
 
 :::info
-Speaker focus is a helper provided by the Speechmatics Python [voice SDK](/voice-agents/voice-sdk), which applies the focus rules on top of speaker [diarization](/speech-to-text/features/diarization) (labeling every word with a speaker: `S1`, `S2`, and so on). The Realtime API does not expose speaker focus directly today, and the voice SDK is Python only. Speechmatics provides the speech-to-text layer for voice agents, not the full pipeline.
+Speaker focus is a helper provided by the Speechmatics Python [voice SDK](/voice-agents/voice-sdk), which applies the focus rules on top of speaker [diarization](/speech-to-text/features/diarization). The Realtime API does not expose speaker focus directly today, and the voice SDK is Python only. Speechmatics provides the speech-to-text layer for voice agents, not the full pipeline.
 :::
 
 ## Focus and focus mode
@@ -42,11 +43,11 @@ Any speaker whose label starts and ends with double underscores (such as `__ASSI
 
 ## Set and update focus
 
-You set an initial focus when you open the session, and you can update it at any point while the session runs. The two format strings decide how active and passive speakers are rendered into the transcript the LLM reads.
+You set an initial focus when you open the session, and you can update it at any point while the session runs. The two format strings decide how active and passive speakers are rendered into the transcript the LLM (large language model) reads.
 
 The following pseudocode configures focus at session start and updates it live:
 
-```python
+```python showLineNumbers
 # At session start, with diarization on. The format strings control how
 # active and passive speaker lines are rendered for the LLM.
 configure_stt(
@@ -72,7 +73,7 @@ Rather than a human flipping switches, you hand the LLM a small set of function 
 
 The following pseudocode defines a sensible tool set:
 
-```python
+```python showLineNumbers
 focus_on_speaker(speaker_ids: string[])
     # Prioritize one or more speakers. Everyone else stays audible as
     # background (RETAIN). Replaces any current focus.
@@ -111,7 +112,7 @@ Third, the labels are internal. The agent must never read `S1` or `S2` aloud, an
 
 The following prompt fragment covers the speaker rules:
 
-```text
+```text showLineNumbers
 # Speakers
 
 - Each message is prefixed with the speaker, like @S1: or, for a
@@ -149,7 +150,7 @@ The concepts above map onto real integrations with little code. The Speechmatics
 
 For the voice SDK, set the focus on the session config and update it live with `update_diarization_config`:
 
-```python
+```python showLineNumbers
 from speechmatics.voice import SpeakerFocusConfig, SpeakerFocusMode
 
 # Session setup: set focus on the transcription config's speaker_config
@@ -166,7 +167,7 @@ client.update_diarization_config(
 
 For [Pipecat](https://github.com/pipecat-ai/pipecat), configure focus on the STT service and update it inside a tool handler:
 
-```python
+```python showLineNumbers
 # Session setup
 stt = SpeechmaticsSTTService(
     params=SpeechmaticsSTTService.InputParams(
@@ -187,7 +188,7 @@ stt.update_params(
 
 For the [LiveKit Speechmatics plugin](https://github.com/livekit/agents/tree/main/livekit-plugins/livekit-plugins-speechmatics), use `update_speakers`:
 
-```python
+```python showLineNumbers
 # Session setup
 stt = speechmatics.STT(
     enable_diarization=True,

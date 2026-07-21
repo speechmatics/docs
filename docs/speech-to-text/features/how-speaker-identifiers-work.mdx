@@ -1,0 +1,44 @@
+---
+title: How speaker identifiers work
+description: Understand how the Speechmatics engine produces speaker identifiers and how they differ from diarization labels.
+keywords:
+  [
+    speechmatics,
+    speaker identifiers,
+    speaker identification,
+    diarization,
+    realtime,
+    batch,
+  ]
+sidebar_position: 4
+---
+
+# How speaker identifiers work
+
+Understand how the Speechmatics engine produces speaker identifiers and how they differ from diarization labels.
+
+Diarization assigns per-session labels: `S1`, `S2`, `S3`. These labels last only for one session. The person who is `S1` in one session may be `S2` in the next. Speaker identifiers give those speakers durable memory. During a session the engine builds a voice fingerprint for each speaker, and you can save those fingerprints as identifiers. Supplied to a later session, the engine attributes matching voices to a name you chose, such as `Sam` instead of `S1`.
+
+## What a speaker identifier is
+
+A speaker identifier is a voice fingerprint the engine produces once diarization is enabled. It is a string, unique per Speechmatics account. Identifiers do not work across accounts: a fingerprint created under one account cannot be used under another.
+
+:::info
+Speaker identifiers and `known_speakers` are available in [realtime](/speech-to-text/realtime/speaker-identification) and [batch](/speech-to-text/batch/speaker-identification) speaker identification. The exact names vary by client.
+:::
+
+A speaker can accumulate more than one identifier over time, as the engine hears them in different conditions. A saved profile is therefore a name plus a list of identifiers, and you extend that list each time you encounter the speaker. More identifiers improve recognition.
+
+## Speaker memory compared with speaker identification
+
+Speaker memory and [speaker identification](/speech-to-text/features/speaker-identification) use the same identifiers for different jobs.
+
+| Capability | When identifiers are captured | Typical use |
+|---|---|---|
+| Speaker identification | Enrolled ahead of time from short audio clips | Apply known speakers in batch or realtime transcription |
+| Speaker memory | Captured live during an agent session | Recognize a returning speaker without prior enrollment |
+
+## Next steps
+
+- [Speaker memory for voice agents](/speech-to-text/features/speaker-memory-for-voice-agents) — capture and reuse identifiers across sessions.
+- [Speaker identification](/speech-to-text/features/speaker-identification) — enroll known speakers ahead of time.
