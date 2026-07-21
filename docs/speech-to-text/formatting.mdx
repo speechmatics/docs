@@ -245,6 +245,10 @@ To include detailed entity information in your JSON output, add `enable_entities
 
 By default, `enable_entities` is `false`. When enabled, entity metadata appears only in JSON output (SRT and TXT formats remain unchanged).
 
+:::note
+Entity output (`enable_entities` and the `spoken_form` and `written_form` representations) is available with the Standard and Enhanced models. The Melia 1 multilingual model does not support entity detection yet; see [Models](/speech-to-text/models).
+:::
+
 ### Output
 
 The JSON output will include:
@@ -374,7 +378,7 @@ Smart formatting has had dedicated work for consistent results in these language
 - Swedish
 - Tamil & English (bilingual)
 
-Other languages still format numbers and entities on a best-effort basis through the model, with variable results. If you rely on formatting for a language that isn't listed, test it with representative audio rather than assuming full coverage.
+Other languages still format numbers and entities on a best-effort basis through the model. If you rely on formatting for a language that isn't listed, test it with representative audio rather than assuming full coverage.
 
 Formatting coverage isn't reported by [feature discovery](/speech-to-text/features/feature-discovery), which covers transcription, translation, and language identification. This page is the reference for formatting language support.
 
