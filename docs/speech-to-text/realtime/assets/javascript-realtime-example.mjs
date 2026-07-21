@@ -27,7 +27,8 @@ async function transcribe() {
     await client.start(jwt, {
         transcription_config: {
             language: "en",
-            max_delay: 0.7
+            max_delay: 0.7,
+            model: "enhanced",
         },
         audio_format,
     });

@@ -483,6 +483,10 @@ components:
           type: string
           description: |
             The channel identifier to which the audio belongs. This field is only seen in multichannel.
+        forced:
+          type: boolean
+          description: |
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -506,6 +510,10 @@ components:
           type: string
           description: |
             The channel identifier to which the audio belongs. This field is only seen in multichannel.
+        forced:
+          type: boolean
+          description: |
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -520,6 +528,10 @@ components:
         channel:
           type: string
           description: The channel identifier to which the EndOfUtterance message belongs. This field is only seen in multichannel.
+        forced:
+          type: boolean
+          description: |
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -637,6 +649,11 @@ components:
             Only set when `type` is `concurrent_session_usage`. Indicates the timestamp of the most recent usage update, in the format `YYYY-MM-DDTHH:MM:SSZ` (UTC). This value is updated even when usage exceeds the quota, as it represents the most recent known data. In some cases, it may be empty or outdated due to internal errors preventing successful update.
           type: string
           example: "2025-03-25T08:45:31Z"
+        region:
+          description: >-
+            Only set when `type` is `concurrent_session_usage`. The region that reported this usage, for example `eu`.
+          type: string
+          example: "eu"
       required:
         - message
         - type

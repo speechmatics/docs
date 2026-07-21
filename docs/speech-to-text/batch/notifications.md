@@ -48,7 +48,8 @@ Below are examples of a configuration that requests a `JSON-v2` transcript and t
 {
   "type": "transcription",
   "transcription_config": {
-    "language": "en"
+    "language": "en",
+    "model": "enhanced"
   },
   "notification_config": [
     {
