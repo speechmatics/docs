@@ -1,5 +1,6 @@
 ---
 title: Speaker memory for voice agents
+sidebar_label: Speaker memory
 description: Persist speaker identifiers so a voice agent recognizes returning speakers by name across sessions.
 keywords:
   [
@@ -10,7 +11,7 @@ keywords:
     voice agents,
     realtime,
   ]
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 # Speaker memory for voice agents
@@ -29,7 +30,7 @@ While a session is running, you request the current speakers. The engine returns
 
 The following pseudocode requests identifiers and persists the ones you want:
 
-```python
+```python showLineNumbers
 # Request the fingerprints of every speaker heard so far
 speakers = request_speakers()
 
@@ -57,7 +58,7 @@ To reuse identifiers, pass them as known speakers when you open the next session
 
 The following pseudocode configures known speakers at session start:
 
-```python
+```python showLineNumbers
 configure_stt(
     enable_diarization = true,
     known_speakers = [
@@ -76,7 +77,7 @@ As with [speaker focus](/speech-to-text/features/speaker-focus-for-voice-agents)
 
 The following pseudocode defines the tools:
 
-```python
+```python showLineNumbers
 # Save one or more speakers for recognition in future sessions
 remember_voices(speakers: { speaker_id: string, name: string }[])
     "remember me, I'm Sam" -> remember_voices([{ speaker_id: "S1", name: "Sam" }])
@@ -90,7 +91,7 @@ The `remember_voices` handler needs care, because fetching fingerprints is async
 
 The following pseudocode shows the non-blocking handler:
 
-```python
+```python showLineNumbers
 pending = {}   # label -> real name, awaiting the speakers result
 
 on remember_voices(speakers):
@@ -118,7 +119,7 @@ The name must be a real name. `S1` is a label, not a name. If the agent does not
 
 The following prompt fragment covers the memory rules:
 
-```text
+```text showLineNumbers
 # Speaker memory
 
 - Only call remember_voices when a speaker explicitly asks to be saved,
@@ -141,13 +142,13 @@ This example walks through two sessions.
 
 On the next session startup, you load that profile and pass it as a known speaker. Sam speaks, the engine matches his voice, and his transcript arrives as `@Sam: hello again`. Because he is now a named speaker, you can point [speaker focus](/speech-to-text/features/speaker-focus-for-voice-agents) at `Sam` directly.
 
-## Use speaker memory in the voice SDK, Pipecat, and LiveKit
+## Use speaker memory in the Voice SDK, Pipecat, and LiveKit
 
-The pattern maps onto real integrations with little code: get identifiers out of one session, feed them back into the next as known speakers. `known_speakers` is available across the Realtime and Batch clients; the [voice SDK](/voice-agents/voice-sdk), Pipecat, and LiveKit expose it for the agent use case, with method names differing per client.
+The pattern maps onto real integrations with little code: get identifiers out of one session, feed them back into the next as known speakers. `known_speakers` is available across the Realtime and Batch clients; the [Voice SDK](/voice-agents/voice-sdk), Pipecat, and LiveKit expose it for the agent use case, with method names differing per client.
 
 For [Pipecat](https://github.com/pipecat-ai/pipecat), the result arrives on an event:
 
-```python
+```python showLineNumbers
 # Request fingerprints, then save them when the event fires
 await stt.send_message("GetSpeakers")
 
@@ -171,7 +172,7 @@ stt = SpeechmaticsSTTService(
 
 For the [LiveKit Speechmatics plugin](https://github.com/livekit/agents/tree/main/livekit-plugins/livekit-plugins-speechmatics), the request is a single awaitable:
 
-```python
+```python showLineNumbers
 # Request fingerprints, waiting for the result with a short timeout
 speakers = await stt.get_speaker_ids()
 for s in speakers:

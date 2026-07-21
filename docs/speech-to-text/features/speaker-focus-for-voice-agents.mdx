@@ -1,5 +1,6 @@
 ---
 title: "Speaker focus for voice agents"
+sidebar_label: "Speaker focus"
 description: "Direct a voice agent to respond to chosen speakers and treat others as background, and update the focus live mid-session."
 keywords:
   [
@@ -13,17 +14,17 @@ keywords:
     automatic speech recognition,
     asr,
   ]
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Speaker focus for voice agents
 
 Speaker focus lets a voice agent decide which speakers to respond to and how to treat everyone else, and update that choice live during a session.
 
-Put a voice agent in a room with more than one person and you hit a problem straight away: whose words should the agent act on? If two people are talking and a third asks a question, you don't want the agent replying to the crossfire. You want it locked onto the person talking to it, with everyone else treated as background it can hear but shouldn't answer. Speaker focus is how you do that.
+A voice agent in a room with more than one person faces an immediate problem: whose words should it act on? If two people are talking and a third asks a question, the agent should not reply to the crossfire. It should stay locked onto the person addressing it, with everyone else treated as background it can hear but should not answer. Speaker focus provides that control.
 
 :::info
-Speaker focus is a helper provided by the Speechmatics Python [voice SDK](/voice-agents/voice-sdk), which applies the focus rules on top of speaker [diarization](/speech-to-text/features/diarization). The Realtime API does not expose speaker focus directly today, and the voice SDK is Python only. Speechmatics provides the speech-to-text layer for voice agents, not the full pipeline.
+Speaker focus is a helper provided by the Speechmatics Python [Voice SDK](/voice-agents/voice-sdk), which applies the focus rules on top of speaker [diarization](/speech-to-text/features/diarization). The Realtime API does not expose speaker focus directly today, and the Voice SDK is Python only. Speechmatics provides the speech-to-text layer for voice agents, not the full pipeline.
 :::
 
 ## Focus and focus mode
@@ -63,7 +64,7 @@ ignore_speaker(add = "S2")                          # separate ignore list
 set_speaker_focus(focus = [], mode = RETAIN)        # reset, hear everyone
 ```
 
-The format strings matter more than they look. The active speaker's line arrives as `@S1: can you help me`, and a background speaker as `@S2 [background]: yeah but what about lunch`. That `[background]` tag is the signal your system prompt teaches the LLM to ignore.
+The format strings determine what the LLM sees. The active speaker's line arrives as `@S1: can you help me`, and a background speaker as `@S2 [background]: yeah but what about lunch`. That `[background]` tag is the signal your system prompt teaches the LLM to ignore.
 
 A live focus update replaces the previous focus, it does not merge. To build up a multi-speaker focus one speaker at a time, track the set yourself and send the full list each time.
 
@@ -106,7 +107,7 @@ The tools do nothing without a system prompt that teaches the LLM how to read th
 
 First, the LLM must understand the speaker tags. Every incoming line is prefixed, either `@S1:` for a raw label or `@Sam:` once a speaker is recognized by name. Lines carrying `[background]` are passive and should be left alone unless an active speaker brings that person in.
 
-Second, the LLM has to resolve "me." When someone says "focus on me," the word "me" means whoever is speaking, which is the ID prefixing their own message. A "focus on me" arriving on a `@S1:` line resolves to `S1`. Without this rule the model guesses, and it guesses badly.
+Second, the LLM has to resolve "me." When someone says "focus on me," the word "me" means whoever is speaking, which is the ID prefixing their own message. A "focus on me" arriving on a `@S1:` line resolves to `S1`. Without this rule the model has to guess, and often picks the wrong speaker.
 
 Third, the labels are internal. The agent must never read `S1` or `S2` aloud, and never echo a speaker tag into its reply. Real names are fine once known.
 
@@ -144,11 +145,11 @@ This walks through "just listen to me" from a speaker labeled `S1`, with someone
 
 Saying "listen to everyone again" runs step 3 in reverse: empty focus, empty ignore list, mode back to `RETAIN`, everyone audible.
 
-## Speaker focus in the voice SDK, Pipecat and LiveKit
+## Speaker focus in the Voice SDK, Pipecat and LiveKit
 
-The concepts above map onto real integrations with little code. The Speechmatics Python [voice SDK](/voice-agents/voice-sdk) exposes the two levers as `SpeakerFocusConfig` and `SpeakerFocusMode`; the Pipecat and LiveKit plugins wrap the same SDK under their own method names.
+The concepts above map onto real integrations with little code. The Speechmatics Python [Voice SDK](/voice-agents/voice-sdk) exposes the two levers as `SpeakerFocusConfig` and `SpeakerFocusMode`; the Pipecat and LiveKit plugins wrap the same SDK under their own method names.
 
-For the voice SDK, set the focus on the session config and update it live with `update_diarization_config`:
+For the Voice SDK, set the focus on the session config and update it live with `update_diarization_config`:
 
 ```python showLineNumbers
 from speechmatics.voice import SpeakerFocusConfig, SpeakerFocusMode
@@ -209,7 +210,11 @@ Pick format strings to suit your model, and teach the LLM whichever format you c
 
 `RETAIN` is the safer default for a chatty agent, because a background speaker can be brought in without a config change. `IGNORE` is blunter. Reach for it when you truly want the engine to stop listening, not just stop responding.
 
-Keep the agent's own voice out of the loop, otherwise its audio output is transcribed straight back in and it starts talking to itself. Any speaker enrolled with a label wrapped in double underscores (such as `__ASSISTANT__`) is excluded automatically, so you never have to ignore it explicitly. To use this, pass the agent's voice as a [known speaker](/speech-to-text/features/speaker-memory-for-voice-agents) at session start, labeled `__ASSISTANT__`, with a speaker identifier captured from an earlier session or from enrollment. The engine recognizes the agent's own audio and drops it before it reaches the transcript. This is the clean option for complex speaker or microphone setups, where the agent's voice can leak back in through the mic. You can pass several identifiers under the one label to cover that voice across different output paths or capture devices. Adding the agent's speaker to the ignore list at runtime also works.
+Keep the agent's own voice out of the loop, otherwise its audio output is transcribed straight back in and it starts talking to itself. Any speaker enrolled with a label wrapped in double underscores (such as `__ASSISTANT__`) is excluded automatically, so you never have to ignore it explicitly.
+
+To use this, pass the agent's voice as a [known speaker](/speech-to-text/features/speaker-memory-for-voice-agents) at session start, labeled `__ASSISTANT__`, with a speaker identifier captured from an earlier session or from enrollment. The engine recognizes the agent's own audio and drops it before it reaches the transcript. You can pass several identifiers under the one label to cover that voice across different output paths or capture devices.
+
+This is the clean option for complex speaker or microphone setups, where the agent's voice can leak back in through the mic. Adding the agent's speaker to the ignore list at runtime also works.
 
 Speaker focus pairs with [speaker memory](/speech-to-text/features/speaker-memory-for-voice-agents). Once a voice is recognized by name, every focus and ignore operation can target that name instead of a throwaway label.
 
