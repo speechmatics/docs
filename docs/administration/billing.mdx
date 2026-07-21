@@ -1,15 +1,21 @@
 ---
 title: Billing
-description: Manage your Pro payment card, and view and download invoices.
+description: Manage your payment card, understand how credits are used, and view and download invoices.
 ---
 
 # Billing
 
-On the Billing page you add or manage your payment card and review what you have been charged. Free users add a card here to upgrade to Pro. Managing billing requires the Admin role.
+On the Billing page you add or manage your payment card, review your credits, and see what you have been charged. Free users add a card here to upgrade to Pro. Managing billing requires the Admin role.
 
 :::info
 Enterprise billing is handled through a contract, not a payment card. The card and invoices described here apply to the Pro plan only. See [Enterprise](/administration/plans#enterprise).
 :::
+
+## Credits and pay-as-you-go
+
+Speechmatics bills in credits. One credit is worth one US dollar. New sign-ups receive a $100 credit grant.
+
+Pro accounts pay through pay-as-you-go (PAYG): you keep a payment card on file, and usage draws down your granted credits first. Once your granted credits are used up, Speechmatics charges your card.
 
 ## Add or edit a payment card
 
@@ -22,8 +28,8 @@ Adding a card upgrades a Free plan to Pro. See [Plans](/administration/plans).
 
 ## Remove a payment card
 
-:::warning
-Removing your payment card downgrades your plan to Free. Usage beyond the Free allowance stops being available.
+:::note
+Removing your payment card does not change your plan.
 :::
 
 1. In the **Payment method** section, click the delete icon next to your card.
@@ -31,13 +37,13 @@ Removing your payment card downgrades your plan to Free. Usage beyond the Free a
 
 ## Invoices and payments
 
-The **Payments** section lists each billing period with its usage, cost, and status. Pro plans are billed on the first of each month for the previous month's usage. For how charges are calculated, see [Plans](/administration/plans#upgrade-to-pro).
+The **Payments** section lists each billing period with its usage, cost, and status. Usage draws down your granted credits first; once they are used up, Speechmatics charges your payment card. For how charges are calculated, see [Plans](/administration/plans#upgrade-to-pro).
 
 A billing period has one of the following statuses:
 
 - **Paid.** The charge has been settled.
 - **Due.** The charge is outstanding.
-- **Skipped.** No charge was raised for the period.
+- **Skipped.** No charge was raised for the period, for example when usage was fully covered by your granted credits.
 
 To view and download the invoice for a period, click the link icon at the end of its row.
 
