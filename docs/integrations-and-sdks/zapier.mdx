@@ -1,0 +1,129 @@
+---
+title: Zapier integration
+description: Learn how to use Speechmatics to transcribe audio in your Zapier workflow — no code required.
+---
+
+# Zapier integration
+
+:::info
+The Speechmatics Zapier integration is currently in beta. Features and behavior may change.
+:::
+
+[Zapier](https://zapier.com) is a no-code automation platform. You connect your apps to build workflows that run automatically when a chosen event happens — no coding required.
+
+Zapier lets you connect thousands of apps — including Speechmatics — into automated workflows.
+
+This guide walks you through adding Speechmatics as an action in your Zaps.
+
+## Before you begin
+
+To build a Speechmatics Zap, you'll need:
+
+- A Speechmatics API key from the [Speechmatics portal](https://portal.speechmatics.com).
+- A [Zapier account](https://zapier.com).
+
+## Create a Zap
+
+Sign in to your [Zap dashboard](https://zapier.com/app/assets/zaps) and click **Create** to open a blank Zap in the editor. This is where you build workflows by adding a trigger and chaining actions.
+
+You should see something like this:
+
+<div style={{ textAlign: 'center' }}>
+  <img
+    src="/img/integrations/zapier-creating-zap.png"
+    alt="Zapier dashboard with the Create button highlighted, ready to open a new blank Zap in the editor"
+    style={{ width: '542px', maxWidth: '100%', height: 'auto' }}
+  />
+</div>
+
+### Set up a trigger
+
+Zaps are made up of **triggers** and **actions**. The **trigger** is the event that starts your Zap. Pick the app you want to trigger from — this example trigger runs when a new file is shared in Slack.
+
+<div style={{ textAlign: 'center' }}>
+  <img
+    src="/img/integrations/zapier-example.png"
+    alt='Zapier editor showing a Slack "new file" trigger connected to the Speechmatics Get Transcript from Audio action'
+    style={{ width: '542px', maxWidth: '100%', height: 'auto' }}
+  />
+</div>
+
+Zapier might prompt you to sign in when connecting certain apps. Some apps need additional account permissions before they can run in your Zap.
+
+### Add Speechmatics to your Zap
+
+Next, set up your **actions** — the events that run after your trigger fires.
+
+Speechmatics provides two actions in Zapier:
+
+| Action | What it does | Best for |
+|---|---|---|
+| **Get Transcript from Audio** | Sends audio to Speechmatics and returns the transcript inside the Zap. | Short audio. Keeping the transcript in Zapier. |
+| **Submit Audio (Webhook)** | Sends audio to Speechmatics and delivers the finished transcript to a webhook URL you provide. | Longer recordings. Sending transcript to another system asynchronously. |
+
+For simplicity, this example uses **Get Transcript from Audio**.
+
+Click the Action box and search for Speechmatics. You should see the following menu:
+
+<div style={{ textAlign: 'center' }}>
+  <img
+    src="/img/integrations/zapier-speechmatics-menu.png"
+    alt="Zapier editor showing the Speechmatics app menu with the two available actions"
+    style={{ width: '542px', maxWidth: '100%', height: 'auto' }}
+  />
+</div>
+
+Choose **Get Transcript from Audio** as the action, then connect your Speechmatics account by pasting your API key into the Account section.
+
+### Configure transcription settings
+
+Click on the **Configure** tab. You should see something like this:
+
+<div style={{ textAlign: 'center' }}>
+  <img
+    src="/img/integrations/zapier-configure.png"
+    alt="Zapier editor showing the Configure tab for the Speechmatics Get Transcript from Audio action"
+    style={{ width: '542px', maxWidth: '100%', height: 'auto' }}
+  />
+</div>
+
+Each **trigger** has **fields** you can connect to your action. Connect the trigger's file URL to the **Audio URL** field on the Speechmatics action. Depending on the trigger app, that URL might be called something like `/file` or `/url` — you may need to experiment to find it.
+
+Then configure your transcript output using these settings:
+
+| Setting | What it does | Learn more |
+|---|---|---|
+| **Language hints** | **Optional.** Speechmatics auto-detects the language by default. Use hints to narrow detection to specific languages — search the dropdown by name, or type a language code. | [Languages](/speech-to-text/languages) |
+| **Speaker diarization** | Separates the transcript by speaker. | [Speaker diarization](/speech-to-text/features/diarization) |
+| **Output format** | Controls the shape of the returned transcript. | [Output formats](/speech-to-text/batch/output) |
+
+
+Once you've configured your settings, click the **Test** tab, then click **Test Step**. Zapier validates your configuration and runs it.
+
+<div style={{ textAlign: 'center' }}>
+  <img
+    src="/img/integrations/zapier-test-complete.png"
+    alt="Zapier editor showing a successful Test Step result for the Speechmatics Get Transcript from Audio action"
+    style={{ width: '542px', maxWidth: '100%', height: 'auto' }}
+  />
+</div>
+
+When test succeeds, click **Publish** — your Zap is now live.
+
+## Troubleshooting
+
+| Problem | What to try |
+|---|---|
+| **You can't sign in to Speechmatics** | Sign out from the Speechmatics account dropdown, then sign in again. If that fails, verify your login details in the [Speechmatics portal](https://portal.speechmatics.com). |
+| **Your API key isn't accepted** | Check that your account has credits in the usage and billing section of the [Speechmatics portal](https://portal.speechmatics.com). |
+| **You can't find the right field for Audio URL** | Field paths start with `/` — Zapier uses this to map fields between triggers and actions. Names vary by app; try `/file`, `/url`, or similar. |
+| **Your test step keeps failing** | Confirm you're passing an audio file, not another file type. To rule out a file problem, test with this [sample audio file](https://github.com/speechmatics/speechmatics-js-sdk/raw/7d219bfee9166736e6aa21598535a194387b84be/examples/nodejs/example.wav). |
+
+Still stuck? See [Zapier support](https://help.zapier.com/hc/en-us) or [contact Speechmatics](https://www.speechmatics.com/company/contact).
+
+## Next steps
+
+- [Explore all supported languages](/speech-to-text/languages)
+- [Configure speaker diarization](/speech-to-text/features/diarization)
+- [Choose an output format](/speech-to-text/batch/output)
+- [Learn what the Batch API supports](/speech-to-text/batch/quickstart)
