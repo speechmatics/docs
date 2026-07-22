@@ -24,20 +24,6 @@ While there is generally no limit to the number of jobs you can submit, the foll
 
 This limit is intended as a safety mechanism and is unlikely to be reached during normal operation. However, it may occur if very slow audio fetching from your servers results in a large build-up of jobs waiting to be processed.
 
-## Hourly usage limits
-
-Speechmatics limits the number of hours of audio users can process each month to help manage load on our servers. The current limits (in hours) by account type are listed in the table below:
-
-|            | Batch standard    | Batch enhanced    |
-|------------| ------------------| ------------------|
-| Free Tier  | 10 hours/month    | 10 hours/month    |
-| Paid Tier  | 6,000 hours/month | 6,000 hours/month |
-| Enterprise | Custom            | Custom            |
-
-
-Please reach out to [Support](https://support.speechmatics.com) if you need to increase the above limits.
-
-
 ## File size limits
 
 If you submit your media file in the body of the `/jobs` <HTTPMethodBadge method="POST" /> request to Speechmatics Batch SaaS, the file must be less than 1 GB in size or the job will be rejected.
