@@ -37,7 +37,7 @@ Available English locales:
 - US English (`en-US`)
 - Australian English (`en-AU`)
 
-Available Chinese Mandarin locales:
+Available Mandarin locales:
 - Simplified Mandarin (`cmn-Hans`, default)
 - Traditional Mandarin (`cmn-Hant`)
 
@@ -78,7 +78,7 @@ For other languages, consider using [word replacement](#word-replacement) to ide
 
 ## Disfluencies
 
-Disfluencies are hesitation sounds like "um", "uh", and "hmm". In English, these are automatically tagged with `disfluency`:
+Disfluencies are hesitation sounds like "um", "uh", and "hmm". Speechmatics automatically tags them with `disfluency` in the transcript output:
 
 ```json
 "results": [
@@ -101,7 +101,7 @@ Disfluencies are hesitation sounds like "um", "uh", and "hmm". In English, these
 ```
 
 <details data-accent-color="gray">
-  <summary>Full list of tagged disfluencies</summary>
+  <summary>Full list of tagged English disfluencies</summary>
 <CodeBlock>
 {`huh
 aha
@@ -147,6 +147,33 @@ uum`}
 </CodeBlock>
 </details>
 
+### Supported languages for disfluencies
+
+Disfluency tagging and removal are available for the following languages. Each language has its own set of hesitation sounds; the expandable list at the start of this section covers English.
+
+- Arabic (`ar`)
+- Danish (`da`)
+- Dutch (`nl`)
+- English (`en`)
+- Finnish (`fi`)
+- French (`fr`)
+- German (`de`)
+- Greek (`el`)
+- Hebrew (`he`)
+- Hindi (`hi`)
+- Hungarian (`hu`)
+- Italian (`it`)
+- Japanese (`ja`)
+- Mandarin (`cmn`)
+- Norwegian (`no`)
+- Polish (`pl`)
+- Portuguese (`pt`)
+- Russian (`ru`)
+- Spanish (`es`)
+- Swedish (`sv`)
+
+Coverage of hesitation sounds varies by language. If you rely on disfluency removal for a specific language, test it with representative audio rather than assuming full coverage.
+
 ### Removing disfluencies
 
 You can automatically remove disfluencies from your transcript:
@@ -169,7 +196,7 @@ Without disfluency removal:
 With disfluency removal:
 > What would you like?
 
-This feature is available for English only. The default setting is `"remove_disfluencies": false`.
+This feature is available for the [supported languages](#supported-languages-for-disfluencies). The default setting is `"remove_disfluencies": false`.
 
 ## Word replacement
 
@@ -341,7 +368,7 @@ The system applies different formatting rules based on the type of entity detect
 The system chooses entity classes based on context, so occasionally a value might be classified differently than expected. For example, "2001" could be a "cardinal" number or a "date".
 :::
 
-### Languages
+### Languages for smart formatting
 
 Each language follows its own conventions for:
 
@@ -357,7 +384,6 @@ Examples:
 Smart formatting has had dedicated work for consistent results in these languages:
 
 - Cantonese
-- Chinese Mandarin (Simplified and Traditional)
 - Dutch
 - English
 - French
@@ -365,6 +391,7 @@ Smart formatting has had dedicated work for consistent results in these language
 - Hindi
 - Italian
 - Japanese
+- Mandarin (Simplified and Traditional)
 - Mandarin & English (bilingual)
 - Mandarin Malay Tamil & English (multilingual)
 - Norwegian
