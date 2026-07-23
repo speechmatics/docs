@@ -89,6 +89,7 @@ Speechmatics does not sell a "voice agent." A voice agent is a full conversation
 | SDK | sdk | All-caps. |
 | job | Job | Lowercase common noun. |
 | transcript | Transcript | Lowercase unless starting a sentence. |
+| Mandarin | Chinese Mandarin, Mandarin Chinese | Language name, matching the canonical row on the languages page (`cmn`). Locale names are "Simplified Mandarin" (`cmn-Hans`) and "Traditional Mandarin" (`cmn-Hant`). |
 
 ---
 
