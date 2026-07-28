@@ -21,6 +21,11 @@ export default {
     },
     {
       type: "doc",
+      id: "integrations-and-sdks/twilio",
+      label: "Twilio",
+    },
+    {
+      type: "doc",
       id: "integrations-and-sdks/sdks",
       label: "SDKs",
     },
