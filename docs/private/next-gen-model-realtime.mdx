@@ -22,8 +22,8 @@ The API schema is consistent with the [V2 Realtime WebSocket API](https://docs.s
 ### Supported endpoint
 The preview runs on a dedicated endpoint, separate from the production Realtime service:
 
-| Region | Endpoint |
-| ------ | -------- |
+| Region            | Endpoint                                 |
+|-------------------|------------------------------------------|
 | Preview (EU & US) | **wss://preview.rt.speechmatics.com/v2** |
 
 The preview is deployed in AWS France (EU) and Oregon (USA).
@@ -47,28 +47,6 @@ Example minimal `StartRecognition` message:
 There is no `max_delay` or `max_delay_mode` in the preview. Final transcript latency is governed by the model's internal chunk length; there is no client-side setting to trade latency for accuracy yet.
 :::
 
-### Partial transcripts
-[Partials](/speech-to-text/realtime/output#partial-transcripts) are supported. Enable them with `enable_partials` in the `StartRecognition` message:
-
-```json
-{
-  "message": "StartRecognition",
-  "transcription_config": {
-    "language": "multi",
-    "model": "melia-1",
-    // highlight-start
-    "enable_partials": true
-    // highlight-end
-  }
-}
-```
-
-### Channel diarization
-[Channel diarization](/speech-to-text/realtime/realtime-diarization) is supported for multi-channel audio. Speaker diarization is not yet supported.
-
-### Language labelling
-Each word in the transcript output carries a `language` property with the predicted language code. The model predicts the language being spoken at the word level.
-
 ### LanguageInfo message
 A new `LanguageInfo` message is sent from the transcriber to the client the first time a new language code is detected in the audio. It is emitted **once per language code**, immediately before that language first appears in an `AddTranscript` (Final) or `AddPartialTranscript` (Partial) message.
 
@@ -91,26 +69,24 @@ Use it to configure how you process and display the transcript — for example, 
 
 ## Capabilities
 
-| Feature | Current capability | Future plans |
-| ------- | ------------------ | ------------ |
-| Transcription | ✅ Basic Realtime transcription | Ongoing improvements |
-| Languages | ✅ All languages via `"language": "multi"` | |
-| Partials | ✅ Supported | |
-| Channel diarization | ✅ Supported | |
-| Punctuation | ✅ Supported | |
-| Output locale | ✅ Supported | |
-| Language labelling | ✅ Word-level | |
-| Speaker diarization | ⚠️ Not available | Prioritised according to customer need |
-| Speaker identification | ⚠️ Not available | Prioritised according to customer need |
-| Language hints | ⚠️ Not available | Prioritised according to customer need |
-| `max_delay` / `max_delay_mode` | ⚠️ Not available | Under consideration |
-| Mid-session config (`SetRecognitionConfig`) | ⚠️ Not available | Prioritised according to customer need |
-| End of Utterance (EOU / FEOU) | ⚠️ Not available | Prioritised according to customer need |
-| Custom dictionary | ⚠️ Not available | Prioritised according to customer need |
-| Alphanumerics | ⚠️ Verbalised form only | Prioritised according to customer need |
-| Entities / punctuation overrides | ⚠️ Not available | Prioritised according to customer need |
-| Disfluency removal | ⚠️ Not available | Prioritised according to customer need |
-| Profanity tagging | ⚠️ Not available | Prioritised according to customer need |
-| Audio volume filtering | ⚠️ Not available | Prioritised according to customer need |
-| Translation | ⚠️ Not available | Prioritised according to customer need |
-| Audio events | ⚠️ Not available | Prioritised according to customer need |
+| Feature                                     | Supported |
+|---------------------------------------------|-----------|
+| Languages (`"language": "multi"`)           | ✅        |
+| Partials                                    | ✅        |
+| Channel diarization                         | ✅        |
+| Output locale                               | ✅        |
+| Language labelling (word-level)             | ✅        |
+| Speaker diarization                         | ⚠️        |
+| Speaker identification                      | ⚠️        |
+| Language hints                              | ⚠️        |
+| `max_delay` / `max_delay_mode`              | ⚠️        |
+| Mid-session config (`SetRecognitionConfig`) | ⚠️        |
+| End of Utterance (EOU / FEOU)               | ⚠️        |
+| Custom dictionary                           | ⚠️        |
+| Alphanumerics (verbalised form only)        | ⚠️        |
+| Entities / punctuation overrides            | ⚠️        |
+| Disfluency removal                          | ⚠️        |
+| Profanity tagging                           | ⚠️        |
+| Audio volume filtering                      | ⚠️        |
+| Translation                                 | ⚠️        |
+| Audio events                                | ⚠️        |
