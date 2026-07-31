@@ -26,7 +26,7 @@ The preview runs on a dedicated endpoint, separate from the production Realtime 
 |-------------------|------------------------------------------|
 | Preview (EU & US) | **wss://preview.rt.speechmatics.com/v2** |
 
-The preview is deployed in AWS France (EU) and Oregon (USA).
+The preview is deployed in France (EU) and Oregon (USA).
 
 ### Minimal example
 Example minimal `StartRecognition` message:
@@ -42,10 +42,6 @@ Example minimal `StartRecognition` message:
   }
 }
 ```
-
-:::note
-There is no `max_delay` or `max_delay_mode` in the preview. Final transcript latency is governed by the model's internal chunk length; there is no client-side setting to trade latency for accuracy yet.
-:::
 
 ### LanguageInfo message
 A new `LanguageInfo` message is sent from the transcriber to the client the first time a new language code is detected in the audio. It is emitted **once per language code**, immediately before that language first appears in an `AddTranscript` (Final) or `AddPartialTranscript` (Partial) message.
@@ -69,24 +65,24 @@ Use it to configure how you process and display the transcript — for example, 
 
 ## Capabilities
 
-| Feature                                     | Current capability           | Future plans                           |
-|---------------------------------------------|------------------------------|----------------------------------------|
+| Feature                                     | Current capability          | Future plans                           |
+|---------------------------------------------|-----------------------------|----------------------------------------|
 | Partials                                    | ✅ Matches current behaviour |                                        |
 | Channel diarization                         | ✅ Matches current behaviour |                                        |
 | Output locale                               | ✅ Matches current behaviour |                                        |
 | Word timings                                | ✅ Matches current behaviour |                                        |
 | Language labelling                          | ✅ Word-level                |                                        |
-| Speaker diarization                         | ⚠️ Not yet                   | Prioritised according to customer need |
-| Speaker identification                      | ⚠️ Not yet                   | Prioritised according to customer need |
-| Language hints                              | ⚠️ Not yet                   | Prioritised according to customer need |
-| `max_delay` / `max_delay_mode`              | ⚠️ Not yet                   | Under consideration                    |
-| Mid-session config (`SetRecognitionConfig`) | ⚠️ Not yet                   | Prioritised according to customer need |
-| End of Utterance (EOU / FEOU)               | ⚠️ Not yet                   | Prioritised according to customer need |
-| Custom dictionary                           | ⚠️ Not yet                   | Prioritised according to customer need |
-| Alphanumerics                               | ⚠️ Verbalised form only      | Prioritised according to customer need |
-| Entities / punctuation overrides            | ⚠️ Not yet                   | Prioritised according to customer need |
-| Disfluency removal                          | ⚠️ Not yet                   | Prioritised according to customer need |
-| Profanity tagging                           | ⚠️ Not yet                   | Prioritised according to customer need |
-| Audio volume filtering                      | ⚠️ Not yet                   | Prioritised according to customer need |
-| Translation                                 | ⚠️ Not yet                   | Prioritised according to customer need |
-| Audio events                                | ⚠️ Not yet                   | Prioritised according to customer need |
+| Speaker diarization                         | ⚠️ Not yet                  | Prioritised according to customer need |
+| Speaker identification                      | ⚠️ Not yet                  | Prioritised according to customer need |
+| Language hints                              | ⚠️ Not yet                  | Prioritised according to customer need |
+| `max_delay` / `max_delay_mode`              | ⚠️ Not yet                  | Under consideration                    |
+| Mid-session config (`SetRecognitionConfig`) | ⚠️ Not yet                  | Prioritised according to customer need |
+| End of Utterance (EOU / FEOU)               | ⚠️ Not yet                  | Prioritised according to customer need |
+| Custom dictionary                           | ⚠️ Not yet                  | Prioritised according to customer need |
+| Alphanumerics                               | ⚠️ Not yet                  | Prioritised according to customer need |
+| Entities / punctuation overrides            | ⚠️ Not yet                  | Prioritised according to customer need |
+| Disfluency removal                          | ⚠️ Not yet                  | Prioritised according to customer need |
+| Profanity tagging                           | ⚠️ Not yet                  | Prioritised according to customer need |
+| Audio volume filtering                      | ⚠️ Not yet                  | Prioritised according to customer need |
+| Translation                                 | ⚠️ Not yet                  | Prioritised according to customer need |
+| Audio events                                | ⚠️ Not yet                  | Prioritised according to customer need |
