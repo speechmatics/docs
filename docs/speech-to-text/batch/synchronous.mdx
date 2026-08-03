@@ -13,6 +13,8 @@ The `wait` query parameter lets you block a request until the job reaches a term
 
 `wait` takes a number of seconds and is capped server-side. If the job has not finished when `wait` elapses, the request returns the current state and you retry to keep waiting.
 
+The job status and transcript endpoints apply a [default wait](#default-wait-on-the-get-endpoints) when you omit the parameter.
+
 ## Create a job and wait for the transcript
 
 Pass the `wait` query parameter to `POST /jobs` to block until the job finishes. Add `format` to choose the embedded transcript format (`json-v2`, `txt`, or `srt`; defaults to `json-v2`).
@@ -92,7 +94,7 @@ The embedded transcript is best-effort. If `status` is `done` but no transcript 
 
 ## Wait when checking job status
 
-Pass `wait` to `GET /jobs/{jobid}` to block until the job reaches a terminal state.
+Pass `wait` to `GET /jobs/{jobid}` to block until the job reaches a terminal state. An explicit value overrides the [default wait](#default-wait-on-the-get-endpoints).
 
 ```bash
 # Wait up to 30 seconds for the job to reach a terminal state
@@ -104,7 +106,7 @@ The response is always HTTP 200 with the job in its current state. If the job is
 
 ## Wait for the transcript
 
-Pass `wait` to `GET /jobs/{jobid}/transcript` to block until the transcript is ready.
+Pass `wait` to `GET /jobs/{jobid}/transcript` to block until the transcript is ready. An explicit value overrides the [default wait](#default-wait-on-the-get-endpoints).
 
 ```bash
 # Wait up to 30 seconds for the transcript, then return it as plain text
@@ -113,6 +115,22 @@ curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/${JOB_ID}/transcrip
 ```
 
 If the transcript becomes ready within `wait`, the response is HTTP 200 with the transcript. Otherwise it returns the usual HTTP 404, and you retry to keep waiting.
+
+## Default wait on the GET endpoints
+
+`GET /jobs/{jobid}` and `GET /jobs/{jobid}/transcript` apply a default wait when you omit the `wait` query parameter. Existing polling code gets the benefit without changes: each request returns as soon as the job reaches a terminal state, so you make fewer requests and get the transcript sooner.
+
+The default is currently 2 seconds and will increase. Treat it as an unspecified short interval and do not build logic around a specific duration. To control the duration, pass `wait` explicitly.
+
+To return immediately, pass `wait=0`.
+
+```bash
+# Return the current job state without waiting
+curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/${JOB_ID}?wait=0" \
+-H "Authorization: Bearer ${API_KEY}"
+```
+
+`POST /jobs` has no default wait: omit the parameter and the request returns as soon as the job is created.
 
 ## Next steps
 
