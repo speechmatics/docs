@@ -1,6 +1,6 @@
 ---
 title: Zapier integration
-description: Learn how to use Speechmatics to transcribe audio in your Zapier workflow — no code required.
+description: ranscribe audio in your Zapier workflow - no code required.
 ---
 
 # Zapier integration
@@ -9,9 +9,7 @@ description: Learn how to use Speechmatics to transcribe audio in your Zapier wo
 The Speechmatics Zapier integration is currently in beta. Features and behavior may change.
 :::
 
-[Zapier](https://zapier.com) is a no-code automation platform. You connect your apps to build workflows that run automatically when a chosen event happens — no coding required.
-
-Zapier lets you connect thousands of apps — including Speechmatics — into automated workflows.
+[Zapier](https://zapier.com) is a no-code automation platform that connects thousands of apps — including Speechmatics — into automated workflows. 
 
 This guide walks you through adding Speechmatics as an action in your Zaps.
 
@@ -28,25 +26,21 @@ Sign in to your [Zap dashboard](https://zapier.com/app/assets/zaps) and click **
 
 You should see something like this:
 
-<div style={{ textAlign: 'center' }}>
-  <img
-    src="/img/integrations/zapier-creating-zap.png"
-    alt="Zapier dashboard with the Create button highlighted, ready to open a new blank Zap in the editor"
-    style={{ width: '542px', maxWidth: '100%', height: 'auto' }}
-  />
-</div>
+<img
+  className="screenshot"
+  src="/img/integrations/zapier-creating-zap.png"
+  alt="Zapier dashboard with the Create button highlighted, ready to open a new blank Zap in the editor"
+/>
 
 ### Set up a trigger
 
 Zaps are made up of **triggers** and **actions**. The **trigger** is the event that starts your Zap. Pick the app you want to trigger from — this example trigger runs when a new file is shared in Slack.
 
-<div style={{ textAlign: 'center' }}>
-  <img
-    src="/img/integrations/zapier-example.png"
-    alt='Zapier editor showing a Slack "new file" trigger connected to the Speechmatics Get Transcript from Audio action'
-    style={{ width: '542px', maxWidth: '100%', height: 'auto' }}
-  />
-</div>
+<img
+  className="screenshot"
+  src="/img/integrations/zapier-example.png"
+  alt='Zapier editor showing a Slack "new file" trigger connected to the Speechmatics Get Transcript from Audio action'
+/>
 
 Zapier might prompt you to sign in when connecting certain apps. Some apps need additional account permissions before they can run in your Zap.
 
@@ -65,13 +59,11 @@ For simplicity, this example uses **Get Transcript from Audio**.
 
 Click the Action box and search for Speechmatics. You should see the following menu:
 
-<div style={{ textAlign: 'center' }}>
-  <img
-    src="/img/integrations/zapier-speechmatics-menu.png"
-    alt="Zapier editor showing the Speechmatics app menu with the two available actions"
-    style={{ width: '542px', maxWidth: '100%', height: 'auto' }}
-  />
-</div>
+<img
+  className="screenshot"
+  src="/img/integrations/zapier-speechmatics-menu.png"
+  alt="Zapier editor showing the Speechmatics app menu with the two available actions"
+/>
 
 Choose **Get Transcript from Audio** as the action, then connect your Speechmatics account by pasting your API key into the Account section.
 
@@ -79,13 +71,11 @@ Choose **Get Transcript from Audio** as the action, then connect your Speechmati
 
 Click on the **Configure** tab. You should see something like this:
 
-<div style={{ textAlign: 'center' }}>
-  <img
-    src="/img/integrations/zapier-configure.png"
-    alt="Zapier editor showing the Configure tab for the Speechmatics Get Transcript from Audio action"
-    style={{ width: '542px', maxWidth: '100%', height: 'auto' }}
-  />
-</div>
+<img
+  className="screenshot"
+  src="/img/integrations/zapier-configure.png"
+  alt="Zapier editor showing the Configure tab for the Speechmatics Get Transcript from Audio action"
+/>
 
 Each **trigger** has **fields** you can connect to your action. Connect the trigger's file URL to the **Audio URL** field on the Speechmatics action. Depending on the trigger app, that URL might be called something like `/file` or `/url` — you may need to experiment to find it.
 
@@ -100,13 +90,11 @@ Then configure your transcript output using these settings:
 
 Once you've configured your settings, click the **Test** tab, then click **Test Step**. Zapier validates your configuration and runs it.
 
-<div style={{ textAlign: 'center' }}>
-  <img
-    src="/img/integrations/zapier-test-complete.png"
-    alt="Zapier editor showing a successful Test Step result for the Speechmatics Get Transcript from Audio action"
-    style={{ width: '542px', maxWidth: '100%', height: 'auto' }}
-  />
-</div>
+<img
+  className="screenshot"
+  src="/img/integrations/zapier-test-complete.png"
+  alt="Zapier editor showing a successful Test Step result for the Speechmatics Get Transcript from Audio action"
+/>
 
 When test succeeds, click **Publish** — your Zap is now live.
 
