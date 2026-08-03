@@ -16,7 +16,7 @@ This is a **reference implementation** — you clone it, run it, and adapt it. I
 
 This guide walks you through a small proxy that takes that audio stream and feeds it into Speechmatics Realtime, printing per-caller transcripts to your console as the call unfolds. The [reference repo](https://github.com/speechmatics/speechmatics-twilio-integration) ships the same proxy in two languages — [Python](https://github.com/speechmatics/speechmatics-twilio-integration/tree/main/python) and [Node.js](https://github.com/speechmatics/speechmatics-twilio-integration/tree/main/js) — so pick whichever fits your team.
 
-## How it works
+## How the proxy works
 
 Here's what runs where before we get to the commands:
 
@@ -66,7 +66,7 @@ Copy the template:
 cp .env.example .env
 ```
 
-Open `.env` in your editor and the environment variables. The proxy won't run if any are missing.
+Open `.env` in your editor and set the environment variables. The proxy won't run if any are missing.
 
 | Variable | What to put here |
 |---|---|
