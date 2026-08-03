@@ -148,8 +148,8 @@ When you're done, press `Ctrl-C` in the terminal to stop the proxy. Your Twilio 
 
 Once a call arrives, the proxy has three jobs:
 
-1. **Receive Twilio's audio.** Twilio sends 20 ms of mulaw-encoded 8 kHz mono audio at a time — 160 bytes per frame. Each frame arrives on the WebSocket as a JSON `media` event with a base64 `payload` and a `track` label (`inbound` or `outbound`). The proxy uses that label to keep the two speakers apart.
-2. **Forward the audio to Speechmatics as-is.** Speechmatics Realtime accepts mulaw 8 kHz directly, so the proxy passes bytes straight through without re-encoding. That keeps latency down and avoids audio-quality loss.
+1. **Receive Twilio's audio.** Twilio sends 20 ms of μ-law-encoded 8 kHz mono audio at a time — 160 bytes per frame. Each frame arrives on the WebSocket as a JSON `media` event with a base64 `payload` and a `track` label (`inbound` or `outbound`). The proxy uses that label to keep the two speakers apart.
+2. **Forward the audio to Speechmatics as-is.** Speechmatics Realtime accepts μ-law 8 kHz directly, so the proxy passes bytes straight through without re-encoding. That keeps latency down and avoids audio-quality loss.
 3. **Ask Speechmatics for per-channel transcripts.** The session is configured with `diarization: "channel"` and channel labels `["inbound", "outbound"]`. Every transcript that comes back carries a `channel` field, and the proxy prints it under the matching label.
 
 ## Troubleshooting
