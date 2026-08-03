@@ -1,6 +1,6 @@
 ---
 title: Twilio integration
-description: Learn how to transcribe live Twilio Voice calls with Speechmatics Realtime using a small, forkable proxy server.
+description: Transcribe live Twilio Voice calls with Speechmatics Realtime using a small, forkable proxy server.
 ---
 
 import Tabs from '@theme/Tabs';
@@ -31,7 +31,7 @@ flowchart LR
 
 - **Caller A** dials your Twilio number which forwards to **Caller B** — the two talk like a direct call.
 - Twilio sends a **live copy of the audio** to your proxy over a WebSocket.
-- The proxy hands that audio to Speechmatics  with [channel diarization](/speech-to-text/features/diarization) turned on. 
+- The proxy hands that audio to Speechmatics with [channel diarization](/speech-to-text/features/diarization) turned on. 
 - Each speaker (`inbound` from Caller A, `outbound` from Caller B) gets its own transcript stream.
 - Speechmatics returns transcripts, and the proxy prints them under per-channel labels.
 
@@ -118,7 +118,7 @@ npm start
 
 You'll see a banner like this:
 
-```
+```text
 Listening on ws://localhost:5000/twilio
 Twilio number +XX... pointed at wss://abc123.../twilio. Call it now.
 ```
@@ -131,7 +131,7 @@ With the proxy running, dial your Twilio number from any phone.
 2. Answer the second phone. You're now on a normal two-way call.
 3. Speak into either handset. Transcripts appear in the console within seconds:
 
-```
+```text
 [twilio] incoming Media Streams connection
 [twilio] call started - stream=MZxxx... call=CAxxx... tracks=['inbound', 'outbound']
 [inbound ] Hello there. How are you doing today?
