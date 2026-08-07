@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+title: Output
 description: 'Learn about the supported output formats for the Speechmatics Batch API'
 ---
 
@@ -13,7 +14,7 @@ import checkJobStatusUnixSample from './assets/check-job-status.sh'
 import checkMultipleJobsStatusUnixSample from './assets/check-multiple-jobs-status.sh'
 import batchSchema from "!openapi-schema-loader!@site/spec/batch.yaml"
 import transcriptResponseExample from "./assets/transcript-response-example.json?raw"
-import { HelpCircle, BookOpen, FileAudio } from "lucide-react"
+import { HelpCircle, BookOpen, FileAudio, Clock } from "lucide-react"
 import { Card, Link, Text, Flex, Button, Box, Grid } from '@radix-ui/themes'
 import { LinkCard } from "@site/src/theme/LinkCard";
 
@@ -47,6 +48,8 @@ You can make a GET request to check the status of a job as follows:
 
   </TabItem>
 </Tabs>
+
+This endpoint applies a short default wait, returning as soon as the job reaches a terminal state. Pass the `wait` query parameter to control the duration, or `wait=0` to return immediately. See [Synchronous transcription](/speech-to-text/batch/synchronous#default-wait-on-the-get-endpoints).
 
 The response is a JSON object containing details of the job, with the `status` field showing whether the job is still processing or not. The possible values are:
 
@@ -102,11 +105,11 @@ curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" `
   </TabItem>
 </Tabs>
 
-Note that if a job has been deleted it will not be included in the list, unless specifically requested, as described in the [API Reference](/api-ref/batch/list-all-jobs).
+A deleted job is not included in the list unless you request it explicitly, as described in the [API reference](/api-ref/batch/list-all-jobs).
 
 ## Load and process the transcript
 
-Transcripts can be loaded in the following formats: Plain text, JSON or SRT. You can request the format using the `format` query parameter. See [API reference here](/api-ref/batch/get-the-transcript-for-a-transcription-job#request)
+The transcript endpoint returns plain text, JSON, or SRT. Request the format using the `format` query parameter. See the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#request).
 
 A few useful things to know about transcript formats:
 
@@ -115,11 +118,13 @@ A few useful things to know about transcript formats:
 - Use the `format=srt` query parameter to get the transcript in SRT format. Useful for displaying the transcript in a subtitle file.
 - To access other data, including word timestamps, translations, and speech intelligence features, use the default JSON format.
 
+Like the job status endpoint, this endpoint applies a short default wait. Pass the `wait` query parameter alongside `format` to block for the transcript instead of polling. See [Synchronous transcription](/speech-to-text/batch/synchronous#wait-for-the-transcript).
+
 ### Transcript response schema
 
 Below is the schema for the transcript response when using the default JSON format.
 
-Please refer to our [API Reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#responses) for further details.
+Refer to the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#responses) for further details.
 
 <SchemaNode schema={batchSchema.paths["/jobs/{jobid}/transcript"].get.responses["200"].schema} />
 
@@ -180,35 +185,6 @@ For multilingual transcripts, `language_pack_info` reports the word delimiter an
 ```
 
 `per_language_word_delimiters` gives the word delimiter for each language in the transcript, and `per_language_writing_direction` gives its writing direction.
-
-## Quicklinks
-
-<Grid columns={{initial: "1", md: "2"}} gap="3">
-  <LinkCard
-    title="Troubleshooting"
-    description="Resolve common issues with the Batch API"
-    href="/speech-to-text/batch/troubleshooting"
-    icon={<HelpCircle/>}
-  />
-  <LinkCard
-    title="API Reference"
-    description="Full details about the Batch API"
-    href="/api-ref/batch/create-a-new-job"
-    icon={<BookOpen/>}
-  />
-  <LinkCard
-    title="Inputs"
-    description="See which file types are supported"
-    href="/speech-to-text/batch/input"
-    icon={<FileAudio/>}
-  />
-  <LinkCard
-    title="Limits"
-    description="See the limits for the Batch API"
-    href="/speech-to-text/batch/limits"
-    icon={<FileAudio/>}
-  />
-</Grid>
 
 ## Tracking metadata
 
@@ -272,3 +248,38 @@ curl -L -X POST "https://eu1.asr.api.speechmatics.com/v2/jobs/?sm-app=${APP_ID}"
     -F data_file=@${PATH_TO_FILE} \
     -F config='{"type": "transcription","transcription_config": { "model": "enhanced","language": "en" }}'
 ```
+
+## Next steps
+
+<Grid columns={{initial: "1", md: "2"}} gap="3">
+  <LinkCard
+    title="Synchronous transcription"
+    description="Get a transcript in one call instead of polling"
+    href="/speech-to-text/batch/synchronous"
+    icon={<Clock/>}
+  />
+  <LinkCard
+    title="Troubleshooting"
+    description="Resolve common issues with the Batch API"
+    href="/speech-to-text/batch/troubleshooting"
+    icon={<HelpCircle/>}
+  />
+  <LinkCard
+    title="API Reference"
+    description="Full details about the Batch API"
+    href="/api-ref/batch/create-a-new-job"
+    icon={<BookOpen/>}
+  />
+  <LinkCard
+    title="Inputs"
+    description="See which file types are supported"
+    href="/speech-to-text/batch/input"
+    icon={<FileAudio/>}
+  />
+  <LinkCard
+    title="Limits"
+    description="See the limits for the Batch API"
+    href="/speech-to-text/batch/limits"
+    icon={<FileAudio/>}
+  />
+</Grid>
