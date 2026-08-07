@@ -187,6 +187,8 @@ paths:
             **Note**: Only available on SaaS on Cloud.
 
             Number of seconds to block until the job reaches a terminal state before responding. Capped server-side. The response is always returned with HTTP 200 in the job's current state; if the job is still running when `wait` elapses, retry to keep waiting.
+
+            When omitted, a short default wait applies: currently 2 seconds, and it will increase. Treat the default as an unspecified short interval rather than a fixed duration. Pass `wait=0` to respond immediately.
       responses:
         "200":
           description: OK
@@ -322,6 +324,8 @@ paths:
             **Note**: Only available on SaaS on Cloud.
 
             Number of seconds to block until the transcript is ready before responding. Capped server-side. Returns HTTP 200 with the transcript if it becomes ready within `wait`; otherwise returns the usual HTTP 404, and you can retry to keep waiting.
+
+            When omitted, a short default wait applies: currently 2 seconds, and it will increase. Treat the default as an unspecified short interval rather than a fixed duration. Pass `wait=0` to respond immediately.
       responses:
         "200":
           description: OK
