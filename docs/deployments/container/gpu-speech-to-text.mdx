@@ -117,6 +117,18 @@ To save GPU memory for throughput, you can run the server with only one model lo
 When running the all language standard model GPU inference server you must set the `SM_MODEL` environment variable to `standard`
 :::
 
+### Loading only selected languages
+
+Images that contain more than one language model, such as the [all language images](/deployments/container/accessing-images#enhanced-model), load every language at startup. To save GPU memory for throughput, pass the `SM_LANGUAGES` environment variable to the container and set it to a comma-separated list of language codes. Only those languages are loaded:
+
+```bash
+-e SM_LANGUAGES=en,de,fr
+```
+
+Codes must be languages the image contains. A code the image does not contain fails startup with an error.
+
+When `SM_LANGUAGES` is unset, all of the image's languages are loaded. `SM_LANGUAGES` is available from Container version 15.18.0.
+
 ### Monitoring the server
 
 The inference server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such

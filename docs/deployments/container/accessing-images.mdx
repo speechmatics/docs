@@ -78,7 +78,7 @@ docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-en:${smVariabl
 
 ### Enhanced model
 
-Depending on which Enhanced model languages are required, you can pull specific images.
+Depending on which Enhanced model languages are required, you can pull specific images, or a single image covering all languages.
 
 <details open>
   <summary>Language Pack 1</summary>
@@ -111,6 +111,16 @@ Depending on which Enhanced model languages are required, you can pull specific 
     {`docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-enhanced-recipe4:${smVariables.latestContainerVersion} `}
   </CodeBlock>
 </details>
+
+<details open>
+  <summary>All languages</summary>
+  <p>All Enhanced and Standard model languages</p>
+  <CodeBlock language="bash">
+    {`docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-all-lang:${smVariables.latestContainerVersion} `}
+  </CodeBlock>
+</details>
+
+To load only some of an image's languages at startup, see [Loading only selected languages](/deployments/container/gpu-speech-to-text#loading-only-selected-languages).
 
 See [how to run the Transcription GPU container here.](/deployments/container/gpu-speech-to-text)
 
