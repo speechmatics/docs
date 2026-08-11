@@ -32,10 +32,10 @@ Feature availability varies depending on the deployment method you choose. Below
 | Feature                                                                               | Modes           | Deployments   |
 | ------------------------------------------------------------------------------------- | --------------- | ------------- |
 | [Multilingual speech to text](/speech-to-text/languages#bilingual-and-multi-language-packs) | Batch, Realtime | SaaS, On-prem |
-| [Alignment](/speech-to-text/pre-recorded/alignment)                                          | Batch           | SaaS          |
+| [Alignment](/speech-to-text/add-ons/audio-alignment)                                          | Batch           | SaaS          |
 | [Audio events](/speech-to-text/features/audio-events)                                 | Batch, Realtime | SaaS, On-prem |
 | [Audio filtering](/speech-to-text/features/audio-filtering)                           | Batch, Realtime | SaaS, On-prem |
-| [Auto chapters](/speech-to-text/pre-recorded/speech-intelligence/auto-chapters)              | Batch           | SaaS          |
+| [Auto chapters](/speech-to-text/add-ons/chapters)              | Batch           | SaaS          |
 | [Custom dictionary](/speech-to-text/features/custom-dictionary)                       | Batch, Realtime | SaaS, On-prem |
 | [Diarization](/speech-to-text/features/speaker-diarization)                                   | Batch, Realtime | SaaS, On-prem |
 | [Disfluencies and word replacement](/speech-to-text/features/disfluencies-and-profanities#disfluencies)          | Batch, Realtime | SaaS, On-prem |
@@ -44,11 +44,11 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Language identification](/speech-to-text/pre-recorded/language-identification)              | Batch           | SaaS, On-prem |
 | [Notifications](/speech-to-text/pre-recorded/notifications)                               | Batch           | SaaS, On-prem |
 | [Punctuation settings](/speech-to-text/features/formatting#punctuation)                        | Batch, Realtime | SaaS, On-prem |
-| [Sentiment analysis](/speech-to-text/pre-recorded/speech-intelligence/sentiment-analysis)    | Batch           | SaaS, On-prem |
+| [Sentiment analysis](/speech-to-text/add-ons/sentiment)    | Batch           | SaaS, On-prem |
 | [Smart formatting](/speech-to-text/features/formatting#smart-formatting)                       | Batch, Realtime | SaaS, On-prem |
 | [Speaker identification](/speech-to-text/features/speaker-identification)             | Batch, Realtime | SaaS, On-prem |
-| [Summarization](/speech-to-text/pre-recorded/speech-intelligence/summarization)              | Batch           | SaaS          |
-| [Topic detection](/speech-to-text/pre-recorded/speech-intelligence/topic-detection)          | Batch           | SaaS          |
+| [Summarization](/speech-to-text/add-ons/summaries)              | Batch           | SaaS          |
+| [Topic detection](/speech-to-text/add-ons/topics)          | Batch           | SaaS          |
 | [Tracking](/speech-to-text/pre-recorded/output#tracking-metadata)                            | Batch, Realtime | SaaS, On-prem |
-| [Translation](/speech-to-text/features/translation)                                   | Batch, Realtime | SaaS, On-prem |
+| [Translation](/speech-to-text/add-ons/translation)                                   | Batch, Realtime | SaaS, On-prem |
 | [Turn detection](/speech-to-text/features/turn-detection)                             | Realtime        | SaaS, On-prem |

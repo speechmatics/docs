@@ -116,7 +116,7 @@ A few useful things to know about transcript formats:
 - The default format is JSON.
 - Use the `format=txt` query parameter to get the transcript in plain text. Useful for quick access to the transcript.
 - Use the `format=srt` query parameter to get the transcript in SRT format. Useful for displaying the transcript in a subtitle file.
-- To access other data, including word timestamps, translations, and speech intelligence features, use the default JSON format.
+- To access other data, including word timestamps, translations, and add-on outputs, use the default JSON format.
 
 Like the job status endpoint, this endpoint applies a short default wait. Pass the `wait` query parameter alongside `format` to block for the transcript instead of polling. See [Synchronous transcription](/speech-to-text/pre-recorded/synchronous#wait-for-the-transcript).
 

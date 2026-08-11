@@ -26,6 +26,12 @@ If you're new to Speechmatics, please see our guide on [Transcribing a File](/sp
 }
 ```
 
+## Availability
+
+Add-ons produce an output derived from a completed transcript, and are selected in addition to transcription.
+
+Sentiment is available with the Standard and Enhanced models for pre-recorded transcription, on SaaS on Cloud and on-prem. See [Feature availability](/speech-to-text/availability/).
+
 ## Example
 
 Python client example to return transcription with sentiment analysis for an audio file.
@@ -106,7 +112,7 @@ Segments of the transcript are labeled with either positive, negative or neutral
 - Speaker or channel labels will only be available if [Diarization](/speech-to-text/features/speaker-diarization) is enabled. By default when Diarization is not enabled "speaker":"UU" is returned to indicate that speakers of each segment are unknown
 - Speaker Change is not supported in combination with Sentiment
 
-# Error responses
+## Error responses
 
 ### Unsupported language
 

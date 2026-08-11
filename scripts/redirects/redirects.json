@@ -109,7 +109,7 @@
   },
   {
     "source": "/speech-to-text/batch/alignment",
-    "destination": "/speech-to-text/pre-recorded/alignment"
+    "destination": "/speech-to-text/add-ons/audio-alignment"
   },
   {
     "source": "/speech-to-text/batch/batch-diarization",
@@ -145,19 +145,19 @@
   },
   {
     "source": "/speech-to-text/batch/speech-intelligence/auto-chapters",
-    "destination": "/speech-to-text/pre-recorded/speech-intelligence/auto-chapters"
+    "destination": "/speech-to-text/add-ons/chapters"
   },
   {
     "source": "/speech-to-text/batch/speech-intelligence/sentiment-analysis",
-    "destination": "/speech-to-text/pre-recorded/speech-intelligence/sentiment-analysis"
+    "destination": "/speech-to-text/add-ons/sentiment"
   },
   {
     "source": "/speech-to-text/batch/speech-intelligence/summarization",
-    "destination": "/speech-to-text/pre-recorded/speech-intelligence/summarization"
+    "destination": "/speech-to-text/add-ons/summaries"
   },
   {
     "source": "/speech-to-text/batch/speech-intelligence/topic-detection",
-    "destination": "/speech-to-text/pre-recorded/speech-intelligence/topic-detection"
+    "destination": "/speech-to-text/add-ons/topics"
   },
   {
     "source": "/speech-to-text/batch/srt-format",
@@ -225,7 +225,7 @@
   },
   {
     "source": "/speech-to-text/batch/speech-intelligence/auto-chapters/",
-    "destination": "/speech-to-text/pre-recorded/speech-intelligence/auto-chapters"
+    "destination": "/speech-to-text/add-ons/chapters"
   },
   {
     "source": "/private/voice-agent-api",
@@ -286,5 +286,37 @@
   {
     "source": "/speech-to-text/streaming/turn-detection#configuration",
     "destination": "/speech-to-text/features/turn-detection#configuration"
+  },
+  {
+    "source": "/speech-to-text/pre-recorded/speech-intelligence/summarization",
+    "destination": "/speech-to-text/add-ons/summaries"
+  },
+  {
+    "source": "/speech-to-text/pre-recorded/speech-intelligence/topic-detection",
+    "destination": "/speech-to-text/add-ons/topics"
+  },
+  {
+    "source": "/speech-to-text/pre-recorded/speech-intelligence/auto-chapters",
+    "destination": "/speech-to-text/add-ons/chapters"
+  },
+  {
+    "source": "/speech-to-text/pre-recorded/speech-intelligence/sentiment-analysis",
+    "destination": "/speech-to-text/add-ons/sentiment"
+  },
+  {
+    "source": "/speech-to-text/features/translation",
+    "destination": "/speech-to-text/add-ons/translation"
+  },
+  {
+    "source": "/speech-to-text/pre-recorded/alignment",
+    "destination": "/speech-to-text/add-ons/audio-alignment"
+  },
+  {
+    "source": "/speech-to-text/pre-recorded/speech-intelligence",
+    "destination": "/speech-to-text/add-ons/summaries"
+  },
+  {
+    "source": "/speech-to-text/features/translation#languages",
+    "destination": "/speech-to-text/add-ons/translation#languages"
   }
 ]

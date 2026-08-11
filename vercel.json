@@ -138,7 +138,7 @@
     },
     {
       "source": "/speech-to-text/batch/alignment",
-      "destination": "/speech-to-text/pre-recorded/alignment",
+      "destination": "/speech-to-text/add-ons/audio-alignment",
       "permanent": true
     },
     {
@@ -183,22 +183,22 @@
     },
     {
       "source": "/speech-to-text/batch/speech-intelligence/auto-chapters",
-      "destination": "/speech-to-text/pre-recorded/speech-intelligence/auto-chapters",
+      "destination": "/speech-to-text/add-ons/chapters",
       "permanent": true
     },
     {
       "source": "/speech-to-text/batch/speech-intelligence/sentiment-analysis",
-      "destination": "/speech-to-text/pre-recorded/speech-intelligence/sentiment-analysis",
+      "destination": "/speech-to-text/add-ons/sentiment",
       "permanent": true
     },
     {
       "source": "/speech-to-text/batch/speech-intelligence/summarization",
-      "destination": "/speech-to-text/pre-recorded/speech-intelligence/summarization",
+      "destination": "/speech-to-text/add-ons/summaries",
       "permanent": true
     },
     {
       "source": "/speech-to-text/batch/speech-intelligence/topic-detection",
-      "destination": "/speech-to-text/pre-recorded/speech-intelligence/topic-detection",
+      "destination": "/speech-to-text/add-ons/topics",
       "permanent": true
     },
     {
@@ -283,7 +283,7 @@
     },
     {
       "source": "/speech-to-text/batch/speech-intelligence/auto-chapters",
-      "destination": "/speech-to-text/pre-recorded/speech-intelligence/auto-chapters",
+      "destination": "/speech-to-text/add-ons/chapters",
       "permanent": true
     },
     {
@@ -362,6 +362,46 @@
       "permanent": true
     },
     {
+      "source": "/speech-to-text/pre-recorded/speech-intelligence/summarization",
+      "destination": "/speech-to-text/add-ons/summaries",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/pre-recorded/speech-intelligence/topic-detection",
+      "destination": "/speech-to-text/add-ons/topics",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/pre-recorded/speech-intelligence/auto-chapters",
+      "destination": "/speech-to-text/add-ons/chapters",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/pre-recorded/speech-intelligence/sentiment-analysis",
+      "destination": "/speech-to-text/add-ons/sentiment",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/features/translation",
+      "destination": "/speech-to-text/add-ons/translation",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/pre-recorded/alignment",
+      "destination": "/speech-to-text/add-ons/audio-alignment",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/pre-recorded/speech-intelligence",
+      "destination": "/speech-to-text/add-ons/summaries",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/features/translation",
+      "destination": "/speech-to-text/add-ons/translation#languages",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true
@@ -378,7 +418,7 @@
     },
     {
       "source": "/features-other/auto-chapters",
-      "destination": "/speech-to-text/pre-recorded/speech-intelligence/auto-chapters",
+      "destination": "/speech-to-text/add-ons/chapters",
       "permanent": true
     },
     {
@@ -403,7 +443,7 @@
     },
     {
       "source": "/features-other/sentiment-analysis",
-      "destination": "/speech-to-text/pre-recorded/speech-intelligence/sentiment-analysis",
+      "destination": "/speech-to-text/add-ons/sentiment",
       "permanent": true
     },
     {
@@ -413,12 +453,12 @@
     },
     {
       "source": "/features-other/summarization",
-      "destination": "/speech-to-text/pre-recorded/speech-intelligence/summarization",
+      "destination": "/speech-to-text/add-ons/summaries",
       "permanent": true
     },
     {
       "source": "/features-other/topic-detection",
-      "destination": "/speech-to-text/pre-recorded/speech-intelligence/topic-detection",
+      "destination": "/speech-to-text/add-ons/topics",
       "permanent": true
     },
     {
@@ -428,12 +468,12 @@
     },
     {
       "source": "/features-other/translation",
-      "destination": "/speech-to-text/features/translation",
+      "destination": "/speech-to-text/add-ons/translation",
       "permanent": true
     },
     {
       "source": "/features-other/word-alignment",
-      "destination": "/speech-to-text/pre-recorded/alignment",
+      "destination": "/speech-to-text/add-ons/audio-alignment",
       "permanent": true
     },
     {
@@ -1033,7 +1073,7 @@
     },
     {
       "source": "/en/alignment-service",
-      "destination": "/speech-to-text/pre-recorded/alignment",
+      "destination": "/speech-to-text/add-ons/audio-alignment",
       "permanent": true
     },
     {
