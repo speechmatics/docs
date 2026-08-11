@@ -40,8 +40,8 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Diarization](/speech-to-text/features/diarization)                                   | Batch, Realtime | SaaS, On-prem |
 | [Disfluencies and word replacement](/speech-to-text/formatting#disfluencies)          | Batch, Realtime | SaaS, On-prem |
 | [Feature discovery](/speech-to-text/features/feature-discovery)                       | Batch, Realtime | SaaS          |
-| [Fetch URL](/speech-to-text/batch/input#fetch-url)                                    | Batch           | SaaS, On-Prem |
-| [Language identification](/speech-to-text/batch/language-identification)              | Batch           | SaaS          |
+| [Fetch URL](/speech-to-text/batch/input#fetch-url)                                    | Batch           | SaaS, On-prem |
+| [Language identification](/speech-to-text/batch/language-identification)              | Batch           | SaaS, On-prem |
 | [Notifications](/speech-to-text/batch/notifications.md)                               | Batch           | SaaS, On-prem |
 | [Punctuation settings](/speech-to-text/formatting#punctuation)                        | Batch, Realtime | SaaS, On-prem |
 | [Sentiment analysis](/speech-to-text/batch/speech-intelligence/sentiment-analysis)    | Batch           | SaaS, On-prem |

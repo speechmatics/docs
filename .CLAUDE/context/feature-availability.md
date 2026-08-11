@@ -232,7 +232,7 @@ Preview applies to SaaS on Cloud only, because on-prem ships as versioned contai
 | Audio events | Yes | Yes | No |
 | Audio filtering (volume filtering) | Yes | Yes | Not yet |
 | Fetch URL | Yes | Yes | Yes |
-| Notifications | No | No | No |
+| Notifications | Yes | Yes | Yes |
 | Translation | Yes | Yes | No |
 | Chapters | No | No | No |
 | Topics | No | No | No |
