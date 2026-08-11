@@ -122,14 +122,15 @@ When running the all language standard model GPU inference server you must set t
 Images that contain more than one language model load every language at startup. To save GPU memory for throughput, pass the `SM_LANGUAGES` environment variable to the container and set it to a comma-separated list of language codes. Only those languages are loaded:
 
 ```bash
+# load only English, German, and French
 -e SM_LANGUAGES=en,de,fr
 ```
 
-Codes must be languages the image contains. A code the image does not contain fails startup with an error.
+Codes must be languages the image contains. Any code the image does not contain causes startup to fail with an error.
 
-When `SM_LANGUAGES` is unset, all of the image's languages are loaded. `SM_LANGUAGES` is available from Container version 15.18.0.
+When `SM_LANGUAGES` is unset, all of the image's languages are loaded. `SM_LANGUAGES` is available from container version 15.18.0.
 
-`SM_LANGUAGES` and `SM_MODEL` can be combined to trim both axes of the startup load. For example, `SM_MODEL=standard` with `SM_LANGUAGES=en,de` loads the Standard model for English and German only.
+`SM_LANGUAGES` and `SM_MODEL` can be used together. For example, `SM_MODEL=standard` with `SM_LANGUAGES=en,de` loads the Standard model for English and German only.
 
 ### Monitoring the server
 
