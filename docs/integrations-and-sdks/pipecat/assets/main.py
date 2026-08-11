@@ -36,19 +36,19 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
     async with aiohttp.ClientSession() as session:
         stt = SpeechmaticsSTTService(
             api_key=os.getenv("SPEECHMATICS_API_KEY"),
-            params=SpeechmaticsSTTService.InputParams(
+            settings=SpeechmaticsSTTService.Settings(
                 turn_detection_mode=SpeechmaticsSTTService.TurnDetectionMode.EXTERNAL,
             ),
         )
 
         llm = OpenAILLMService(
             api_key=os.getenv("OPENAI_API_KEY"),
-            model="gpt-4o-mini",
+            settings=OpenAILLMService.Settings(model="gpt-4o-mini"),
         )
 
         tts = SpeechmaticsTTSService(
             api_key=os.getenv("SPEECHMATICS_API_KEY"),
-            voice_id="sarah",
+            settings=SpeechmaticsTTSService.Settings(voice="sarah"),
             aiohttp_session=session,
         )
 
