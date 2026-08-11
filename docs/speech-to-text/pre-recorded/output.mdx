@@ -20,15 +20,15 @@ import { LinkCard } from "@site/src/theme/LinkCard";
 
 # Output
 
-Transcription jobs are processed asynchronously by default: you submit a job, then check its status to see whether it has completed. To block for the result in a single request instead, use [Synchronous transcription](/speech-to-text/batch/synchronous).
+Transcription jobs are processed asynchronously by default: you submit a job, then check its status to see whether it has completed. To block for the result in a single request instead, use [Synchronous transcription](/speech-to-text/pre-recorded/synchronous).
 
 :::tip
-You can also configure notifications to be sent to a webhook when a job is completed. See [Notifications](/speech-to-text/batch/notifications) for more details.
+You can also configure notifications to be sent to a webhook when a job is completed. See [Notifications](/speech-to-text/pre-recorded/notifications) for more details.
 :::
 
 ## Check single job status
 
-If you wish to retrieve a particular job, you can do so using the job ID for up to 7 days, after which time it will be automatically deleted in accordance with our [Data Retention Policy](/speech-to-text/batch/limits#data-retention-limits).
+If you wish to retrieve a particular job, you can do so using the job ID for up to 7 days, after which time it will be automatically deleted in accordance with our [Data Retention Policy](/speech-to-text/pre-recorded/limits#data-retention-limits).
 
 You can make a GET request to check the status of a job as follows:
 
@@ -49,7 +49,7 @@ You can make a GET request to check the status of a job as follows:
   </TabItem>
 </Tabs>
 
-This endpoint applies a short default wait, returning as soon as the job reaches a terminal state. Pass the `wait` query parameter to control the duration, or `wait=0` to return immediately. See [Synchronous transcription](/speech-to-text/batch/synchronous#default-wait-on-the-get-endpoints).
+This endpoint applies a short default wait, returning as soon as the job reaches a terminal state. Pass the `wait` query parameter to control the duration, or `wait=0` to return immediately. See [Synchronous transcription](/speech-to-text/pre-recorded/synchronous#default-wait-on-the-get-endpoints).
 
 The response is a JSON object containing details of the job, with the `status` field showing whether the job is still processing or not. The possible values are:
 
@@ -118,7 +118,7 @@ A few useful things to know about transcript formats:
 - Use the `format=srt` query parameter to get the transcript in SRT format. Useful for displaying the transcript in a subtitle file.
 - To access other data, including word timestamps, translations, and speech intelligence features, use the default JSON format.
 
-Like the job status endpoint, this endpoint applies a short default wait. Pass the `wait` query parameter alongside `format` to block for the transcript instead of polling. See [Synchronous transcription](/speech-to-text/batch/synchronous#wait-for-the-transcript).
+Like the job status endpoint, this endpoint applies a short default wait. Pass the `wait` query parameter alongside `format` to block for the transcript instead of polling. See [Synchronous transcription](/speech-to-text/pre-recorded/synchronous#wait-for-the-transcript).
 
 ### Transcript response schema
 
@@ -130,7 +130,7 @@ Refer to the [API reference](/api-ref/batch/get-the-transcript-for-a-transcripti
 
 ### Example response
 
-The following is an example of a transcript response, which you should see as an output of the provided [example.wav](https://github.com/speechmatics/speechmatics-js-sdk/raw/7d219bfee9166736e6aa21598535a194387b84be/examples/nodejs/example.wav) file used in the [code samples in the quickstart](/speech-to-text/batch/quickstart).
+The following is an example of a transcript response, which you should see as an output of the provided [example.wav](https://github.com/speechmatics/speechmatics-js-sdk/raw/7d219bfee9166736e6aa21598535a194387b84be/examples/nodejs/example.wav) file used in the [code samples in the quickstart](/speech-to-text/pre-recorded/quickstart).
 
 <CodeBlock language="json">
   {JSON.stringify(transcriptResponseExample, null, 2)}
@@ -255,13 +255,13 @@ curl -L -X POST "https://eu1.asr.api.speechmatics.com/v2/jobs/?sm-app=${APP_ID}"
   <LinkCard
     title="Synchronous transcription"
     description="Get a transcript in one call instead of polling"
-    href="/speech-to-text/batch/synchronous"
+    href="/speech-to-text/pre-recorded/synchronous"
     icon={<Clock/>}
   />
   <LinkCard
     title="Troubleshooting"
     description="Resolve common issues with the Batch API"
-    href="/speech-to-text/batch/troubleshooting"
+    href="/speech-to-text/pre-recorded/troubleshooting"
     icon={<HelpCircle/>}
   />
   <LinkCard
@@ -273,13 +273,13 @@ curl -L -X POST "https://eu1.asr.api.speechmatics.com/v2/jobs/?sm-app=${APP_ID}"
   <LinkCard
     title="Inputs"
     description="See which file types are supported"
-    href="/speech-to-text/batch/input"
+    href="/speech-to-text/pre-recorded/input"
     icon={<FileAudio/>}
   />
   <LinkCard
     title="Limits"
     description="See the limits for the Batch API"
-    href="/speech-to-text/batch/limits"
+    href="/speech-to-text/pre-recorded/limits"
     icon={<FileAudio/>}
   />
 </Grid>

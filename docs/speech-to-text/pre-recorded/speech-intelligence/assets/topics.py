@@ -16,7 +16,8 @@ conf = {
     "type": "transcription",
     "transcription_config": {"language": LANGUAGE, "model": "enhanced"},
     # highlight-start
-    "summarization_config": {},  # You can also configure the summary. See below for more detail.
+    # You can also configure the list of topics you wish to detect. See below for more detail.
+    "topic_detection_config": {},
     # highlight-end
 }
 
@@ -30,11 +31,21 @@ with BatchClient(settings) as client:
         print(f"job {job_id} submitted successfully, waiting for transcript")
 
         # Note that in production, you should set up notifications instead of polling.
-        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/batch/notifications
+        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/pre-recorded/notifications
         transcript = client.wait_for_completion(job_id, transcription_format="json-v2")
         # highlight-start
-        summary = transcript["summary"]["content"]
-        print(summary)  # print the returned summary
+        topics_detected = transcript["topics"]
+        topic_segments = topics_detected["segments"]
+        topic_summary = topics_detected["summary"]["overall"]
+
+        # print the overall count for each topic
+        print(topic_summary)
+
+        # print the text and the corresponding topic(s) and timings for each segment
+        for segment in topic_segments:
+            print(
+                f"({segment['start_time']} - {segment['end_time']}): {segment['text']} ({[t['topic'] for t in segment['topics']]})"
+            )
         # highlight-end
     except HTTPStatusError as e:
         if e.response.status_code == 401:

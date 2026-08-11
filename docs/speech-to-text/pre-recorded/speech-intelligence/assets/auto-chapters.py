@@ -16,7 +16,7 @@ conf = {
     "type": "transcription",
     "transcription_config": {"language": LANGUAGE, "model": "enhanced"},
     # highlight-start
-    "sentiment_analysis_config": {},
+    "auto_chapters_config": {},
     # highlight-end
 }
 
@@ -30,21 +30,16 @@ with BatchClient(settings) as client:
         print(f"job {job_id} submitted successfully, waiting for transcript")
 
         # Note that in production, you should set up notifications instead of polling.
-        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/batch/notifications
+        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/pre-recorded/notifications
         transcript = client.wait_for_completion(job_id, transcription_format="json-v2")
         # highlight-start
-        sentiment = transcript["sentiment_analysis"]
-        sentiment_summary = sentiment["summary"]
-        sentiment_segments = sentiment["segments"]
+        chapters = transcript["chapters"]
+        for chapter in chapters:
+            print(
+                f"({chapter['start_time']} - {chapter['end_time']}) {chapter['title']}\n{chapter['summary']}\n\n"
+            )
         # highlight-end
 
-        print(sentiment_summary["overall"])
-        # highlight-start
-        for segment in sentiment_segments:
-            print(
-                f" {segment['text']} ({segment['sentiment']})"
-            )  # print the sentiment for each segment
-        # highlight-end
     except HTTPStatusError as e:
         if e.response.status_code == 401:
             print("Invalid API key - Check your API_KEY at the top of the code!")

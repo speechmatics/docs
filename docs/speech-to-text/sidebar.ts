@@ -1,5 +1,5 @@
-import batchSidebar from "./batch/sidebar";
-import realtimeSidebar from "./realtime/sidebar";
+import preRecordedSidebar from "./pre-recorded/sidebar";
+import streamingSidebar from "./streaming/sidebar";
 
 export default {
   type: "category",
@@ -16,8 +16,10 @@ export default {
       type: "doc",
       id: "speech-to-text/interaction-patterns",
     },
-    realtimeSidebar,
-    batchSidebar,
+    // Order follows the Level 1 sequence in product-architecture.md:
+    // pre-recorded, streaming, then agent STT.
+    preRecordedSidebar,
+    streamingSidebar,
     {
       type: "doc",
       id: "speech-to-text/models",

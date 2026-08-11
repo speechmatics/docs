@@ -37,13 +37,13 @@ Speechmatics takes a global-first approach to languages. A single language pack 
 
 ## Choose a language with Standard or Enhanced
 
-Set the `language` property to a language code. To detect the language automatically instead of setting it, use [language identification](/speech-to-text/batch/language-identification).
+Set the `language` property to a language code. To detect the language automatically instead of setting it, use [language identification](/speech-to-text/pre-recorded/language-identification).
 
 To standardize the spelling of the output for a region, set the [output locale](/speech-to-text/formatting#output-locale).
 
 ## Transcribe more than one language with Melia 1
 
-Melia 1 transcribes audio containing more than one language, including speakers who switch language mid-conversation, and returns a single continuous transcript. It requires `"language": "multi"` and has no language pack selection. You can list the languages you expect as [language hints](/speech-to-text/batch/input#language-hints) to improve accuracy, which does not restrict the model to those languages.
+Melia 1 transcribes audio containing more than one language, including speakers who switch language mid-conversation, and returns a single continuous transcript. It requires `"language": "multi"` and has no language pack selection. You can list the languages you expect as [language hints](/speech-to-text/pre-recorded/input#language-hints) to improve accuracy, which does not restrict the model to those languages.
 
 For the configuration, see [Models](/speech-to-text/models#melia-1).
 

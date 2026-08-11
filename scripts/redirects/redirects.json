@@ -1,27 +1,27 @@
 [
   {
     "source": "/speech-to-text/realtime/realtime_diarization",
-    "destination": "/speech-to-text/realtime/realtime-diarization"
+    "destination": "/speech-to-text/streaming/realtime-diarization"
   },
   {
     "source": "/speech-to-text/batch/batch_diarization",
-    "destination": "/speech-to-text/batch/batch-diarization"
+    "destination": "/speech-to-text/pre-recorded/batch-diarization"
   },
   {
     "source": "/speech-to-text/batch/tracking",
-    "destination": "/speech-to-text/batch/output#tracking-metadata"
+    "destination": "/speech-to-text/pre-recorded/output#tracking-metadata"
   },
   {
     "source": "/speech-to-text/realtime/end-of-turn",
-    "destination": "/speech-to-text/realtime/turn-detection"
+    "destination": "/speech-to-text/streaming/turn-detection"
   },
   {
     "source": "/speech-to-text/realtime/end-of-utterance",
-    "destination": "/speech-to-text/realtime/turn-detection"
+    "destination": "/speech-to-text/streaming/turn-detection"
   },
   {
     "source": "/speech-to-text/realtime/realtime-speaker-identification",
-    "destination": "/speech-to-text/realtime/speaker-identification"
+    "destination": "/speech-to-text/streaming/speaker-identification"
   },
   {
     "source": "/voice-agents-flow/features/application-inputs",
@@ -94,5 +94,133 @@
   {
     "source": "/guides/projects",
     "destination": "/administration/projects"
+  },
+  {
+    "source": "/speech-to-text/batch",
+    "destination": "/speech-to-text/pre-recorded/quickstart"
+  },
+  {
+    "source": "/speech-to-text/realtime",
+    "destination": "/speech-to-text/streaming/quickstart"
+  },
+  {
+    "source": "/speech-to-text/batch/alignment",
+    "destination": "/speech-to-text/pre-recorded/alignment"
+  },
+  {
+    "source": "/speech-to-text/batch/batch-diarization",
+    "destination": "/speech-to-text/pre-recorded/batch-diarization"
+  },
+  {
+    "source": "/speech-to-text/batch/input",
+    "destination": "/speech-to-text/pre-recorded/input"
+  },
+  {
+    "source": "/speech-to-text/batch/language-identification",
+    "destination": "/speech-to-text/pre-recorded/language-identification"
+  },
+  {
+    "source": "/speech-to-text/batch/limits",
+    "destination": "/speech-to-text/pre-recorded/limits"
+  },
+  {
+    "source": "/speech-to-text/batch/notifications",
+    "destination": "/speech-to-text/pre-recorded/notifications"
+  },
+  {
+    "source": "/speech-to-text/batch/output",
+    "destination": "/speech-to-text/pre-recorded/output"
+  },
+  {
+    "source": "/speech-to-text/batch/quickstart",
+    "destination": "/speech-to-text/pre-recorded/quickstart"
+  },
+  {
+    "source": "/speech-to-text/batch/speaker-identification",
+    "destination": "/speech-to-text/pre-recorded/speaker-identification"
+  },
+  {
+    "source": "/speech-to-text/batch/speech-intelligence/auto-chapters",
+    "destination": "/speech-to-text/pre-recorded/speech-intelligence/auto-chapters"
+  },
+  {
+    "source": "/speech-to-text/batch/speech-intelligence/sentiment-analysis",
+    "destination": "/speech-to-text/pre-recorded/speech-intelligence/sentiment-analysis"
+  },
+  {
+    "source": "/speech-to-text/batch/speech-intelligence/summarization",
+    "destination": "/speech-to-text/pre-recorded/speech-intelligence/summarization"
+  },
+  {
+    "source": "/speech-to-text/batch/speech-intelligence/topic-detection",
+    "destination": "/speech-to-text/pre-recorded/speech-intelligence/topic-detection"
+  },
+  {
+    "source": "/speech-to-text/batch/srt-format",
+    "destination": "/speech-to-text/pre-recorded/srt-format"
+  },
+  {
+    "source": "/speech-to-text/batch/synchronous",
+    "destination": "/speech-to-text/pre-recorded/synchronous"
+  },
+  {
+    "source": "/speech-to-text/batch/troubleshooting",
+    "destination": "/speech-to-text/pre-recorded/troubleshooting"
+  },
+  {
+    "source": "/speech-to-text/batch/usage",
+    "destination": "/speech-to-text/pre-recorded/usage"
+  },
+  {
+    "source": "/speech-to-text/realtime/guides/python-using-ffmpeg",
+    "destination": "/speech-to-text/streaming/guides/python-using-ffmpeg"
+  },
+  {
+    "source": "/speech-to-text/realtime/guides/python-using-microphone",
+    "destination": "/speech-to-text/streaming/guides/python-using-microphone"
+  },
+  {
+    "source": "/speech-to-text/realtime/input",
+    "destination": "/speech-to-text/streaming/input"
+  },
+  {
+    "source": "/speech-to-text/realtime/limits",
+    "destination": "/speech-to-text/streaming/limits"
+  },
+  {
+    "source": "/speech-to-text/realtime/output",
+    "destination": "/speech-to-text/streaming/output"
+  },
+  {
+    "source": "/speech-to-text/realtime/quickstart",
+    "destination": "/speech-to-text/streaming/quickstart"
+  },
+  {
+    "source": "/speech-to-text/realtime/realtime-diarization",
+    "destination": "/speech-to-text/streaming/realtime-diarization"
+  },
+  {
+    "source": "/speech-to-text/realtime/speaker-identification",
+    "destination": "/speech-to-text/streaming/speaker-identification"
+  },
+  {
+    "source": "/speech-to-text/realtime/turn-detection",
+    "destination": "/speech-to-text/streaming/turn-detection"
+  },
+  {
+    "source": "/speech-to-text/batch/input#fetch-url",
+    "destination": "/speech-to-text/pre-recorded/input#fetch-url"
+  },
+  {
+    "source": "/speech-to-text/batch/output#tracking-metadata",
+    "destination": "/speech-to-text/pre-recorded/output#tracking-metadata"
+  },
+  {
+    "source": "/speech-to-text/realtime/output#latency",
+    "destination": "/speech-to-text/streaming/output#latency"
+  },
+  {
+    "source": "/speech-to-text/batch/speech-intelligence/auto-chapters/",
+    "destination": "/speech-to-text/pre-recorded/speech-intelligence/auto-chapters"
   }
 ]

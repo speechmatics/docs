@@ -36,7 +36,7 @@ Translate your audio into multiple languages through a single API call, with ove
 
 Enable translation when processing a file or in real-time in SaaS and [on-prem deployment](/deployments/container/gpu-translation).
 
-New to Speechmatics? See our guides on [transcribing a file](/speech-to-text/batch/quickstart) or [transcribing in real-time](/speech-to-text/realtime/quickstart). Once set up, add the following configuration to enable translation:
+New to Speechmatics? See our guides on [transcribing a file](/speech-to-text/pre-recorded/quickstart) or [transcribing in real-time](/speech-to-text/streaming/quickstart). Once set up, add the following configuration to enable translation:
 
 ```json
 {
@@ -215,7 +215,7 @@ with BatchClient(settings) as client:
         print(f'job {job_id} submitted successfully, waiting for transcript')
 
         # Note that in production, you should set up notifications instead of polling.
-        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/batch/notifications
+        # Notifications are described here: https://docs.speechmatics.com/speech-to-text/pre-recorded/notifications
         transcript = client.wait_for_completion(job_id, transcription_format='json-v2')
         for language in TRANSLATION_LANGUAGES:
           # Print the translation for each language from the JSON
@@ -236,7 +236,7 @@ with BatchClient(settings) as client:
 </TabItem>
   <TabItem value="real-time" label="Realtime Translation">
 
-Python client example to translate a file in real-time, see [here](/speech-to-text/realtime/quickstart) for more examples of Realtime Transcription
+Python client example to translate a file in real-time, see [here](/speech-to-text/streaming/quickstart) for more examples of Realtime Transcription
 
 ```python showLineNumbers
 import speechmatics

@@ -14,7 +14,7 @@ Speechmatics Batch SaaS applies rate limiting and fair queueing to provide a con
 If you make a large number of requests in a short period of time, some of these requests may fail with the response `HTTP 429 - Rate Limited`. To minimize the possibility of encountering rate limiting errors, we recommend that you do not exceed the following rates:
 
 - 10 new jobs per second (<HTTPMethodBadge method="POST"/> API calls)
-- 50 job status requests per second (<HTTPMethodBadge method="GET"/> API calls). Note that Speechmatics recommends using [Notifications](/speech-to-text/batch/notifications) for job status updates in production
+- 50 job status requests per second (<HTTPMethodBadge method="GET"/> API calls). Note that Speechmatics recommends using [Notifications](/speech-to-text/pre-recorded/notifications) for job status updates in production
 
 If you have a large number of concurrent jobs, the most recently submitted jobs may take longer to complete.
 
@@ -27,7 +27,7 @@ This limit is intended as a safety mechanism and is unlikely to be reached durin
 ## File size limits
 
 If you submit your media file in the body of the `/jobs` <HTTPMethodBadge method="POST" /> request to Speechmatics Batch SaaS, the file must be less than 1 GB in size or the job will be rejected.
-To process files larger than 1 GB, you can provide the URL of the audio file in the job config as described in the [Fetch URL documentation](/speech-to-text/batch/input#fetch-url).
+To process files larger than 1 GB, you can provide the URL of the audio file in the job config as described in the [Fetch URL documentation](/speech-to-text/pre-recorded/input#fetch-url).
 
 ## Data retention limits
 
