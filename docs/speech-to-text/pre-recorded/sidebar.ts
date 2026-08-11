@@ -22,15 +22,7 @@ export default {
       type: "doc",
       id: "speech-to-text/pre-recorded/limits",
     },
-    {
-      type: "doc",
-      id: "speech-to-text/pre-recorded/batch-diarization",
-    },
-    {
-      type: "doc",
-      id: "speech-to-text/pre-recorded/speaker-identification",
-    },
-    {
+            {
       type: "category",
       label: "Speech intelligence",
       items: [

@@ -1,11 +1,15 @@
 [
   {
+    "source": "/features/accuracy-language-packs",
+    "destination": "/speech-to-text/languages/#bilingual-and-multi-language-packs"
+  },
+  {
     "source": "/speech-to-text/realtime/realtime_diarization",
-    "destination": "/speech-to-text/streaming/realtime-diarization"
+    "destination": "/speech-to-text/features/speaker-diarization"
   },
   {
     "source": "/speech-to-text/batch/batch_diarization",
-    "destination": "/speech-to-text/pre-recorded/batch-diarization"
+    "destination": "/speech-to-text/features/speaker-diarization"
   },
   {
     "source": "/speech-to-text/batch/tracking",
@@ -13,15 +17,15 @@
   },
   {
     "source": "/speech-to-text/realtime/end-of-turn",
-    "destination": "/speech-to-text/streaming/turn-detection"
+    "destination": "/speech-to-text/features/turn-detection"
   },
   {
     "source": "/speech-to-text/realtime/end-of-utterance",
-    "destination": "/speech-to-text/streaming/turn-detection"
+    "destination": "/speech-to-text/features/turn-detection"
   },
   {
     "source": "/speech-to-text/realtime/realtime-speaker-identification",
-    "destination": "/speech-to-text/streaming/speaker-identification"
+    "destination": "/speech-to-text/features/speaker-identification"
   },
   {
     "source": "/voice-agents-flow/features/application-inputs",
@@ -109,7 +113,7 @@
   },
   {
     "source": "/speech-to-text/batch/batch-diarization",
-    "destination": "/speech-to-text/pre-recorded/batch-diarization"
+    "destination": "/speech-to-text/features/speaker-diarization"
   },
   {
     "source": "/speech-to-text/batch/input",
@@ -137,7 +141,7 @@
   },
   {
     "source": "/speech-to-text/batch/speaker-identification",
-    "destination": "/speech-to-text/pre-recorded/speaker-identification"
+    "destination": "/speech-to-text/features/speaker-identification"
   },
   {
     "source": "/speech-to-text/batch/speech-intelligence/auto-chapters",
@@ -173,11 +177,11 @@
   },
   {
     "source": "/speech-to-text/realtime/guides/python-using-ffmpeg",
-    "destination": "/speech-to-text/streaming/guides/python-using-ffmpeg"
+    "destination": "/speech-to-text/streaming/ffmpeg-audio"
   },
   {
     "source": "/speech-to-text/realtime/guides/python-using-microphone",
-    "destination": "/speech-to-text/streaming/guides/python-using-microphone"
+    "destination": "/speech-to-text/streaming/quickstart"
   },
   {
     "source": "/speech-to-text/realtime/input",
@@ -197,15 +201,15 @@
   },
   {
     "source": "/speech-to-text/realtime/realtime-diarization",
-    "destination": "/speech-to-text/streaming/realtime-diarization"
+    "destination": "/speech-to-text/features/speaker-diarization"
   },
   {
     "source": "/speech-to-text/realtime/speaker-identification",
-    "destination": "/speech-to-text/streaming/speaker-identification"
+    "destination": "/speech-to-text/features/speaker-identification"
   },
   {
     "source": "/speech-to-text/realtime/turn-detection",
-    "destination": "/speech-to-text/streaming/turn-detection"
+    "destination": "/speech-to-text/features/turn-detection"
   },
   {
     "source": "/speech-to-text/batch/input#fetch-url",
@@ -244,7 +248,43 @@
     "destination": "/speech-to-text/features/disfluencies-and-profanities"
   },
   {
-    "source": "/speech-to-text/languages#multilingual-speech-to-text",
-    "destination": "/speech-to-text/languages/#bilingual-and-multi-language-packs"
+    "source": "/speech-to-text/features/diarization",
+    "destination": "/speech-to-text/features/speaker-diarization"
+  },
+  {
+    "source": "/speech-to-text/pre-recorded/batch-diarization",
+    "destination": "/speech-to-text/features/speaker-diarization"
+  },
+  {
+    "source": "/speech-to-text/streaming/realtime-diarization",
+    "destination": "/speech-to-text/features/speaker-diarization"
+  },
+  {
+    "source": "/speech-to-text/pre-recorded/speaker-identification",
+    "destination": "/speech-to-text/features/speaker-identification"
+  },
+  {
+    "source": "/speech-to-text/streaming/speaker-identification",
+    "destination": "/speech-to-text/features/speaker-identification"
+  },
+  {
+    "source": "/speech-to-text/streaming/turn-detection",
+    "destination": "/speech-to-text/features/turn-detection"
+  },
+  {
+    "source": "/speech-to-text/streaming/guides/python-using-ffmpeg",
+    "destination": "/speech-to-text/streaming/ffmpeg-audio"
+  },
+  {
+    "source": "/speech-to-text/streaming/guides/python-using-microphone",
+    "destination": "/speech-to-text/streaming/quickstart"
+  },
+  {
+    "source": "/speech-to-text/app-analytics",
+    "destination": "/speech-to-text/features/app-usage-tracking"
+  },
+  {
+    "source": "/speech-to-text/streaming/turn-detection#configuration",
+    "destination": "/speech-to-text/features/turn-detection#configuration"
   }
 ]

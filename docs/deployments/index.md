@@ -37,7 +37,7 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Audio filtering](/speech-to-text/features/audio-filtering)                           | Batch, Realtime | SaaS, On-prem |
 | [Auto chapters](/speech-to-text/pre-recorded/speech-intelligence/auto-chapters)              | Batch           | SaaS          |
 | [Custom dictionary](/speech-to-text/features/custom-dictionary)                       | Batch, Realtime | SaaS, On-prem |
-| [Diarization](/speech-to-text/features/diarization)                                   | Batch, Realtime | SaaS, On-prem |
+| [Diarization](/speech-to-text/features/speaker-diarization)                                   | Batch, Realtime | SaaS, On-prem |
 | [Disfluencies and word replacement](/speech-to-text/features/disfluencies-and-profanities#disfluencies)          | Batch, Realtime | SaaS, On-prem |
 | [Feature discovery](/speech-to-text/features/feature-discovery)                       | Batch, Realtime | SaaS          |
 | [Fetch URL](/speech-to-text/pre-recorded/input#fetch-url)                                    | Batch           | SaaS, On-prem |
@@ -51,4 +51,4 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Topic detection](/speech-to-text/pre-recorded/speech-intelligence/topic-detection)          | Batch           | SaaS          |
 | [Tracking](/speech-to-text/pre-recorded/output#tracking-metadata)                            | Batch, Realtime | SaaS, On-prem |
 | [Translation](/speech-to-text/features/translation)                                   | Batch, Realtime | SaaS, On-prem |
-| [Turn detection](/speech-to-text/streaming/turn-detection)                             | Realtime        | SaaS, On-prem |
+| [Turn detection](/speech-to-text/features/turn-detection)                             | Realtime        | SaaS, On-prem |

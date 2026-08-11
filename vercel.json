@@ -2,13 +2,18 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/features/accuracy-language-packs",
+      "destination": "/speech-to-text/languages/#bilingual-and-multi-language-packs",
+      "permanent": true
+    },
+    {
       "source": "/speech-to-text/realtime/realtime_diarization",
-      "destination": "/speech-to-text/streaming/realtime-diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
       "permanent": true
     },
     {
       "source": "/speech-to-text/batch/batch_diarization",
-      "destination": "/speech-to-text/pre-recorded/batch-diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
       "permanent": true
     },
     {
@@ -18,17 +23,17 @@
     },
     {
       "source": "/speech-to-text/realtime/end-of-turn",
-      "destination": "/speech-to-text/streaming/turn-detection",
+      "destination": "/speech-to-text/features/turn-detection",
       "permanent": true
     },
     {
       "source": "/speech-to-text/realtime/end-of-utterance",
-      "destination": "/speech-to-text/streaming/turn-detection",
+      "destination": "/speech-to-text/features/turn-detection",
       "permanent": true
     },
     {
       "source": "/speech-to-text/realtime/realtime-speaker-identification",
-      "destination": "/speech-to-text/streaming/speaker-identification",
+      "destination": "/speech-to-text/features/speaker-identification",
       "permanent": true
     },
     {
@@ -138,7 +143,7 @@
     },
     {
       "source": "/speech-to-text/batch/batch-diarization",
-      "destination": "/speech-to-text/pre-recorded/batch-diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
       "permanent": true
     },
     {
@@ -173,7 +178,7 @@
     },
     {
       "source": "/speech-to-text/batch/speaker-identification",
-      "destination": "/speech-to-text/pre-recorded/speaker-identification",
+      "destination": "/speech-to-text/features/speaker-identification",
       "permanent": true
     },
     {
@@ -218,12 +223,12 @@
     },
     {
       "source": "/speech-to-text/realtime/guides/python-using-ffmpeg",
-      "destination": "/speech-to-text/streaming/guides/python-using-ffmpeg",
+      "destination": "/speech-to-text/streaming/ffmpeg-audio",
       "permanent": true
     },
     {
       "source": "/speech-to-text/realtime/guides/python-using-microphone",
-      "destination": "/speech-to-text/streaming/guides/python-using-microphone",
+      "destination": "/speech-to-text/streaming/quickstart",
       "permanent": true
     },
     {
@@ -248,17 +253,17 @@
     },
     {
       "source": "/speech-to-text/realtime/realtime-diarization",
-      "destination": "/speech-to-text/streaming/realtime-diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
       "permanent": true
     },
     {
       "source": "/speech-to-text/realtime/speaker-identification",
-      "destination": "/speech-to-text/streaming/speaker-identification",
+      "destination": "/speech-to-text/features/speaker-identification",
       "permanent": true
     },
     {
       "source": "/speech-to-text/realtime/turn-detection",
-      "destination": "/speech-to-text/streaming/turn-detection",
+      "destination": "/speech-to-text/features/turn-detection",
       "permanent": true
     },
     {
@@ -307,8 +312,53 @@
       "permanent": true
     },
     {
-      "source": "/speech-to-text/languages",
-      "destination": "/speech-to-text/languages/#bilingual-and-multi-language-packs",
+      "source": "/speech-to-text/features/diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/pre-recorded/batch-diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/streaming/realtime-diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/pre-recorded/speaker-identification",
+      "destination": "/speech-to-text/features/speaker-identification",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/streaming/speaker-identification",
+      "destination": "/speech-to-text/features/speaker-identification",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/streaming/turn-detection",
+      "destination": "/speech-to-text/features/turn-detection",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/streaming/guides/python-using-ffmpeg",
+      "destination": "/speech-to-text/streaming/ffmpeg-audio",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/streaming/guides/python-using-microphone",
+      "destination": "/speech-to-text/streaming/quickstart",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/app-analytics",
+      "destination": "/speech-to-text/features/app-usage-tracking",
+      "permanent": true
+    },
+    {
+      "source": "/speech-to-text/streaming/turn-detection",
+      "destination": "/speech-to-text/features/turn-detection#configuration",
       "permanent": true
     },
     {
@@ -388,7 +438,7 @@
     },
     {
       "source": "/features/accuracy-language-packs",
-      "destination": "/speech-to-text/languages/#bilingual-and-multi-language-packs",
+      "destination": "/speech-to-text/languages#multilingual-speech-to-text",
       "permanent": true
     },
     {
@@ -408,12 +458,12 @@
     },
     {
       "source": "/features/diarization",
-      "destination": "/speech-to-text/features/diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
       "permanent": true
     },
     {
       "source": "/features/end-of-turn",
-      "destination": "/speech-to-text/streaming/turn-detection",
+      "destination": "/speech-to-text/features/turn-detection",
       "permanent": true
     },
     {
@@ -848,12 +898,12 @@
     },
     {
       "source": "/tutorials/using-ffmpeg",
-      "destination": "/speech-to-text/streaming/guides/python-using-ffmpeg",
+      "destination": "/speech-to-text/streaming/ffmpeg-audio",
       "permanent": true
     },
     {
       "source": "/tutorials/using-mic",
-      "destination": "/speech-to-text/streaming/guides/python-using-microphone",
+      "destination": "/speech-to-text/streaming/quickstart",
       "permanent": true
     },
     {
@@ -1113,27 +1163,27 @@
     },
     {
       "source": "/features/diarization/diarization/speaker-diarization",
-      "destination": "/speech-to-text/features/diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
       "permanent": true
     },
     {
       "source": "/features/diarization/speaker-diarization",
-      "destination": "/speech-to-text/features/diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
       "permanent": true
     },
     {
       "source": "/features/diarization/channel-diarization",
-      "destination": "/speech-to-text/features/diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
       "permanent": true
     },
     {
       "source": "/features/diarization/speaker-change",
-      "destination": "/speech-to-text/features/diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
       "permanent": true
     },
     {
       "source": "/features/diarization/speaker-change-channel",
-      "destination": "/speech-to-text/features/diarization",
+      "destination": "/speech-to-text/features/speaker-diarization",
       "permanent": true
     },
     {

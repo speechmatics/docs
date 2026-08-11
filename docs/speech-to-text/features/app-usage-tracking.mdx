@@ -1,0 +1,52 @@
+---
+title: App usage tracking
+description: Attribute usage across applications by adding an app ID to your requests.
+keywords: [app analytics, app usage, sm-app, usage tracking, attribution]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+If your application lets users enter their own Speechmatics API key, app usage tracking gives you aggregated analytics about your users' usage levels, including the number of unique users, hours processed, and languages used.
+
+You add an app ID to each request with the `sm-app` query parameter, and Speechmatics aggregates usage against it.
+
+:::tip
+Contact [Support](https://support.speechmatics.com) to enable this feature before using it.
+:::
+
+## Availability
+
+App usage tracking is available for pre-recorded and streaming transcription with the Standard, Enhanced, and Melia 1 models. See [Feature availability](/speech-to-text/availability/).
+
+## Add an app ID to a request
+
+<Tabs groupId="interaction-pattern">
+<TabItem value="pre-recorded" label="Pre-recorded">
+
+Add the `sm-app` query parameter when starting a job:
+
+```bash
+APP_ID="YourAppID"
+API_KEY="YOUR_API_KEY"
+PATH_TO_FILE="example.wav"
+
+# sm-app attributes this job's usage to your application
+curl -L -X POST "https://eu1.asr.api.speechmatics.com/v2/jobs/?sm-app=${APP_ID}" \
+    -H "Authorization: Bearer ${API_KEY}" \
+    -F data_file=@${PATH_TO_FILE} \
+    -F config='{"type": "transcription","transcription_config": { "model": "enhanced","language": "en" }}'
+```
+
+</TabItem>
+<TabItem value="streaming" label="Streaming">
+
+Add the `sm-app` query parameter to the connection string when starting a session:
+
+```bash
+# sm-app attributes this session's usage to your application
+wss://eu.rt.speechmatics.com/v2?sm-app=YourAppID
+```
+
+</TabItem>
+</Tabs>

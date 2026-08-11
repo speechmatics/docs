@@ -14,8 +14,8 @@ toc_max_heading_level: 3
 import CodeBlock from "@theme/CodeBlock";
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import eouStreamingPythonExample from "./assets/end-of-utterance-streaming-example.py"
-import eouFilePythonExample from "./assets/end-of-utterance-file-example.py"
+import eouStreamingPythonExample from "../streaming/assets/end-of-utterance-streaming-example.py"
+import eouFilePythonExample from "../streaming/assets/end-of-utterance-file-example.py"
 import SchemaNode from '@theme/Schema'
 import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml"
 
@@ -73,7 +73,7 @@ On detecting an end of utterance, the server sends an  `EndOfUtterance` message,
 - We recommend 0.5-0.8 seconds for most voice AI applications. Longer values (0.8-1.2s) may be better for dictation applications.
 - Keep the `end_of_utterance_silence_trigger` lower than the `max_delay` value.
 - `EndOfUtterance` messages are only sent after some speech is recognised and duplicate `EndOfUtterance` messages will never be sent for the same period of silence. 
-- The `EndOfUtterance` message is not related to any specific individual identified by [diarization](/speech-to-text/features/diarization) and will not contain speaker information.
+- The `EndOfUtterance` message is not related to any specific individual identified by [diarization](/speech-to-text/features/speaker-diarization) and will not contain speaker information.
 :::
 
 ### Code examples
