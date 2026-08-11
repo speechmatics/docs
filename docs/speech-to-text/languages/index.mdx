@@ -1,0 +1,103 @@
+---
+title: Languages
+description: Select a transcription language or a bilingual pack, or let the model handle more than one.
+sidebar_label: Languages
+keywords:
+  [
+    speechmatics,
+    languages,
+    transcription,
+    speech recognition,
+    asr,
+    en-us,
+    en-gb,
+    en-nz,
+    en-au,
+    fr-ca,
+    fr-be,
+    de-at,
+    de-ch,
+    es-mx,
+    es-cl,
+    es-ve,
+    es-pr,
+    es-ar,
+    pt-br,
+    model,
+    standard,
+    enhanced,
+  ]
+---
+
+How you select a language depends on the model. Standard and Enhanced transcribe one language that you choose, either a single-language pack or a bilingual pack. Melia 1 is multilingual and needs no language selection at all.
+
+For the code to use for a given language, see [Transcription languages](/speech-to-text/languages/transcription). To check which language features each model supports, see [Feature availability](/speech-to-text/availability/).
+
+Speechmatics takes a global-first approach to languages. A single language pack supports many accents and dialects, so you do not need to know which accent is in your audio before selecting a language. This approach achieves high accuracy compared to accent-specific language packs.
+
+## Choose a language with Standard or Enhanced
+
+Set the `language` property to a language code. To detect the language automatically instead of setting it, use [language identification](/speech-to-text/batch/language-identification).
+
+To standardize the spelling of the output for a region, set the [output locale](/speech-to-text/formatting#output-locale).
+
+## Transcribe more than one language with Melia 1
+
+Melia 1 transcribes audio containing more than one language, including speakers who switch language mid-conversation, and returns a single continuous transcript. It requires `"language": "multi"` and has no language pack selection. You can list the languages you expect as [language hints](/speech-to-text/batch/input#language-hints) to improve accuracy, which does not restrict the model to those languages.
+
+For the configuration, see [Models](/speech-to-text/models#melia-1).
+
+## Bilingual and multi-language packs
+
+Standard and Enhanced can transcribe a selected combination of languages in one media file or stream, including speakers who switch between the languages in that pack. Each pack covers a fixed set of languages that you select with the `language` property.
+
+:::note
+These packs handle a fixed set of languages that you choose in advance. To transcribe audio without selecting languages, including spontaneous switching across all supported languages, use Melia 1.
+:::
+
+Supported packs are:
+
+| Language pack | Transcription config |
+|---|---|
+| Arabic and English | `{"language": "ar_en"}` |
+| Malay and English | `{"language": "en_ms"}` |
+| Mandarin and English | `{"language": "cmn_en"}` |
+| Mandarin Malay Tamil and English | `{"language": "cmn_en_ms_ta"}` |
+| Spanish and English | `{"language": "es", "domain": "bilingual-en"}` |
+| Tamil and English | `{"language": "en_ta"}` |
+| Tagalog (Filipino) and English | `{"language": "tl"}` |
+
+This config selects the Mandarin and English pack:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "cmn_en"
+  }
+}
+```
+
+This config selects the Spanish and English pack, which requires the `domain` property:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "es",
+    "domain": "bilingual-en"
+  }
+}
+```
+
+## Translation languages
+
+Translation is supported for most Speechmatics languages, with the supported translation pairs listed below. For how to configure it, see [Translation](/speech-to-text/features/translation).
+
+| Audio language | Translation target language |
+|---|---|
+| English (en) | Bulgarian (bg), Catalan (ca), Mandarin (cmn), Czech (cs), Danish (da), German (de), Greek (el), Spanish (es), Estonian (et), Finnish (fi), French (fr), Galician (gl), Hindi (hi), Croatian (hr), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Korean (ko), Lithuanian (lt), Latvian (lv), Malay (ms), Dutch (nl), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Slovakian (sk), Slovenian (sl), Swedish (sv), Turkish (tr), Ukrainian (uk), Vietnamese (vi) |
+| Bulgarian (bg), Catalan (ca), Mandarin (cmn), Czech (cs), Danish (da), German (de), Greek (el), Spanish (es), Estonian (et), Finnish (fi), French (fr), Galician (gl), Hindi (hi), Croatian (hr), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Korean (ko), Lithuanian (lt), Latvian (lv), Malay (ms), Dutch (nl), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Slovakian (sk), Slovenian (sl), Swedish (sv), Turkish (tr), Ukrainian (uk), Vietnamese (vi) | English (en) |
+| Norwegian Bokmål (no) | Norwegian Nynorsk (nn) |

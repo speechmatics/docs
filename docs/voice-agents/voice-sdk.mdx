@@ -235,12 +235,12 @@ See [supported languages and locales](/speech-to-text/languages).
 ### Model selection
 
 `operating_point` (OperatingPoint, default: ENHANCED)  
-Select an accuracy level.
-Options: STANDARD or ENHANCED.
+Select the model. `STANDARD` selects the Standard model and `ENHANCED` selects the Enhanced model.
+In the API, [`model`](/speech-to-text/models#specify-a-model) replaces `operating_point`; the SDK still takes `operating_point`.
 
 `domain` (str, default: None)   
-Domain-specific model (e.g., "finance", "medical"). 
-See the [Enhanced Medical model](/speech-to-text/models#healthcare-domain).
+Tune recognition for a domain. `medical` is the only supported value.
+See the [medical domain](/speech-to-text/features/medical-domain).
 
 ### Vocabulary
 
