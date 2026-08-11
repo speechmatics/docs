@@ -7,14 +7,9 @@ export default {
     {
       type: "doc",
       id: "index",
-      label: "Introduction",
+      label: "Welcome",
     },
-    {
-      type: "doc",
-      id: "get-started/quickstart",
-      label: "Quickstart",
-    },
-    {
+        {
       type: "doc",
       id: "get-started/authentication",
     },

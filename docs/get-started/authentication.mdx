@@ -1,12 +1,13 @@
 ---
+title: Authentication
 toc_max_heading_level: 3
-description: 'Learn about how the Speechmatics API handles authentication'
+description: Authenticate requests to the Speechmatics APIs with an API key or a temporary key.
 keywords: [batch, file, transcription, speech recognition, asr, api, jwt]
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Authentication 
+# Authentication
 
 Your API key must be used with any interaction with the Speechmatics API to authenticate to the service. Any interaction without this key will receive a `HTTP 401 - Unauthorized` response.
 
@@ -24,7 +25,7 @@ Enter a name for your API key and then store it somewhere safe when you have gen
 <Tabs groupId="auth-by-transcription-type">
   <TabItem value="batch" label="Batch transcription" default>
 
-Your API key needs to be included in the header of all requests to the Speechmatics Jobs API. For example:
+Your API key needs to be included in the header of all requests to the Batch API. For example:
 
 ```bash
 curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
@@ -32,7 +33,7 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
 ```
 
   </TabItem>
-  <TabItem value="real-time" label="Realtime transcription" default>
+  <TabItem value="realtime" label="Realtime transcription">
 
 For server-side calls, your API key must be provided in the header of the [WebSocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses). For example:
 ```bash
@@ -55,16 +56,18 @@ wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
 
 ## Supported endpoints
 
-All production endpoints are active and highly available. You can use multiple regions to balance requests or provide a failover in the event of disruption to one region.
+The Batch and Realtime endpoints below are active and highly available. You can use multiple regions to balance requests or provide a failover in the event of disruption to one region. Agent STT uses a separate preview endpoint, listed in its own tab.
+
+The three tabs map to the three interaction patterns: Batch serves pre-recorded, Realtime serves streaming, and agent STT has its own host. See [Understanding interaction patterns](/speech-to-text/interaction-patterns).
 
 :::info
 If you are an enterprise customer and would like to use a different region than the one specified in your contract, please contact your account manager or [support](https://support.speechmatics.com).
 :::
 
-<Tabs groupId="Supported-endpoints">
-  <TabItem value="batch" label="Batch SaaS">
+<Tabs groupId="supported-endpoints">
+  <TabItem value="batch" label="Batch">
 
-Speechmatics Batch SaaS supports the following endpoints for production use:
+The Batch API on SaaS on Cloud supports the following endpoints for production use:
 
 | Customer type | Region          | Endpoint                         |
 | ------------- | --------------- | -------------------------------- |
@@ -79,13 +82,13 @@ Jobs are created in the region corresponding to the endpoint used. You must use 
 The Melia 1 model is available in the EU1 and US1 regions only. For details, refer to [Models](/speech-to-text/models#melia-1).
 
 :::warning
-The EU2 and US2 Batch SaaS endpoints are provided for enterprise customer high availability and failover purposes only. Jobs created in these environments will not be visible in the Portal.
+The EU2 and US2 Batch endpoints are provided for enterprise customer high availability and failover purposes only. Jobs created in these environments will not be visible in the Portal.
 :::
   </TabItem>
-  <TabItem value="realtime" label="Realtime SaaS">
+  <TabItem value="realtime" label="Realtime">
 
 
-Speechmatics Realtime SaaS supports the following endpoints for production use:
+The Realtime API on SaaS on Cloud supports the following endpoints for production use:
 
 | Region       | Endpoint                       |
 | ------------ | ------------------------------ |
@@ -95,9 +98,28 @@ Speechmatics Realtime SaaS supports the following endpoints for production use:
 
 `global.rt.speechmatics.com` automatically routes each connection to the nearest region for lowest latency, so you don't have to select one. The regional endpoints remain available if you want to pin to a specific region.
 
+Streaming transcription is not available in the AUS region.
+
 :::warning
 `global.rt.speechmatics.com` may route a connection to any region. If you have data residency or compliance requirements, use a regional endpoint (`eu.rt.speechmatics.com` or `us.rt.speechmatics.com`) instead.
 :::
+  </TabItem>
+  <TabItem value="agent-stt" label="Agent STT">
+
+Agent STT is in [Preview](/speech-to-text/agent-stt/#preview-limitations) and uses a separate preview endpoint. The production availability statement above does not apply to it.
+
+| Interaction pattern | Endpoint |
+| --- | --- |
+| agent STT | **preview.rt.speechmatics.com** |
+
+Select a [turn detection profile](/speech-to-text/agent-stt/profiles) in the connection path:
+
+```bash
+wss://preview.rt.speechmatics.com/v2/agent/<profile>
+```
+
+Audio is processed in the EU or the US. You cannot pin a region during Preview, and agent STT is not available in the AUS region.
+
   </TabItem>
 </Tabs>
 
@@ -151,6 +173,9 @@ For example, if you created a temporary key associated with a given `client_ref`
 curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   -H "Authorization: Bearer $TEMP_KEY"
 ```
+
+The same `type=rt` temporary key authenticates agent STT sessions.
+
   </TabItem>
   <TabItem value="realtime" label="Realtime transcription">
 
@@ -184,7 +209,7 @@ Note that when starting a Realtime transcription session in the browser, you mus
 
 | Request Body Parameters    | Required | Description                                                                                                                                                                                                                                                                                                                                                      |
 |--------------|-----------|-----------------------------------------------------------
-| `ttl`        | Yes            | Integer: 60-86400. The temporary key's time to live in seconds. **Note** We suggest using the shortest TTL possible to minimise security risks.
+| `ttl`        | Yes            | Integer: 60-86400. The temporary key's time to live in seconds. **Note** We suggest using the shortest TTL possible to minimize security risks.
 | `client_ref` | No             | String. When provided, `batch` tokens can only create and retrieve jobs with that reference; without it, they can access any job. **Must** be set when temporary keys are exposed to end-users to prevent accessing another user's data. `client_ref` is ignored when requesting `rt` tokens.
 | `region`     | No             | **Deprecated.** String: `eu` (default), `usa`, or `au` (Batch transcription only). Region is determined by the [endpoint you call](#supported-endpoints). Still accepted for backward compatibility, but it has no effect.
 

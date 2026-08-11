@@ -1,5 +1,6 @@
 ---
-description: Learn how to use the Voice SDK.
+title: Voice SDK
+description: Use the Voice SDK to segment transcripts and detect turns over the Realtime API.
 ---
 
 import CodeBlock from '@theme/CodeBlock';
@@ -21,11 +22,13 @@ import pythonAdvancedConfig from "./assets/advanced-config.py?raw"
 
 # Voice SDK
 
-## Overview
+## What the Voice SDK provides
 
 The Voice SDK is a Python library that provides additional features optimized for conversational AI, built on top of our Realtime API.
 
 We use it to build our integrations, and it is also available for you to use.
+
+The Voice SDK does its segmentation and turn detection SDK-side, over the [streaming](/speech-to-text/streaming/quickstart) interaction pattern. If you want turn detection to run server-side instead, with transcripts delivered as complete speaker turns, use [agent STT](/speech-to-text/agent-stt/).
 
 - **Intelligent segmentation**: groups words into meaningful speech segments per speaker.
 - **Turn detection**: automatically detects when speakers finish talking.
@@ -90,7 +93,7 @@ pip install speechmatics-voice[smart]
 
 ### Quickstart
 
-Here's how to stream microphone audio to the Voice Agent and transcribe finalized segments of speech, with speaker ID:
+Here's how to stream microphone audio to the Realtime API and transcribe finalized segments of speech, with speaker ID:
 
 <CodeBlock language="python">
     {pythonQuickstart}
@@ -201,7 +204,7 @@ To change the language (or any other preset setting), use a custom configuration
 
 ### Custom configuration
 
-For more control, you can also specify custom configurations or use presets as a starting point and customise with overlays:
+For more control, you can also specify custom configurations or use presets as a starting point and customize with overlays:
 
 <Tabs>
 <TabItem value='voice-custom-config' label='Custom configurations'>
@@ -211,7 +214,7 @@ Specify configurations in a `VoiceAgentConfig` object:
 </CodeBlock>
 </TabItem>
 <TabItem value='voice-custom-config-overlays' label='Preset with a custom overlay'>
-Use presets as a starting point and customise with overlays:
+Use presets as a starting point and customize with overlays:
 <CodeBlock language="python">
     {pythonVoiceConfigOverlays}
 </CodeBlock>
@@ -267,7 +270,7 @@ Audio encoding format.
 
 `max_delay` (float, default: 1.0)
 Maximum transcription delay in seconds for word emission.
-Turn detection ensures finalisation latency is not affected.
+Turn detection ensures finalization latency is not affected.
 
 ### Basic diarization
 

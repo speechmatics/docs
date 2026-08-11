@@ -47,7 +47,7 @@ We recommend experimenting with different settings for the `max_delay` to find t
 
 Based on our own testing and experience, we can offer a few guidelines on `max_delay` settings to get you started:
 
-- **0.7 - 1.5 seconds**: For use cases where an ultra-fast response is needed such as voice agents. This gives a minor accuracy degradation of less than 5% relative to the Batch transcription service.
+- **0.7 - 1.5 seconds**: For conversational applications that need a fast response. For turn-based transcripts instead of a word stream, see [agent STT](/speech-to-text/agent-stt/). This gives a minor accuracy degradation of less than 5% relative to the Batch transcription service.
 - **2.0 seconds**: Recommended for most use cases, needing the optimal trade-off between acccuracy and latency, such as captioning or contact centres. This gives a negligible degradation of around 1% relative to the Batch transcription service. 
 - **4.0 seconds**: For use cases where accuracy is more important than latency, such as legal transcription. This gives accuracy equivalent to our Batch transcription service. You can also use Partial transcripts to give users early feedback of the recognized text.
 

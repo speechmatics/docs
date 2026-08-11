@@ -4,7 +4,7 @@ from speechmatics.rt import Microphone
 from speechmatics.voice import VoiceAgentClient, AgentServerMessageType
 
 async def main():
-    """Stream microphone audio to Speechmatics Voice Agent using 'scribe' preset"""
+    """Stream microphone audio to the Realtime API using 'scribe' preset"""
 
     # Audio configuration
     SAMPLE_RATE = 16000         # Hz
@@ -31,7 +31,7 @@ async def main():
         print("Error: Microphone not available")
         return
 
-    # Connect to the Voice Agent
+    # Connect to the Realtime API
     await client.connect()
 
     # Stream microphone audio (interruptible using keyboard)
