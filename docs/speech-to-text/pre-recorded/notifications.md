@@ -84,7 +84,7 @@ Here is the relevant information you can pass in a Notification request:
 - Callbacks with a single attachment will send the content item as the HTTP request body, rather than using multipart mode. This allows writing an individual item to an object store like Amazon S3
 - `auth_headers` should be specified:
   - To satisfy authentication/authorization requirements for systems that do not support auth tokens in query parameters
-  - To control behaviour of an object store or another existing service endpoint
+  - To control behavior of an object store or another existing service endpoint
 - Multiple callbacks can be specified per job
   - This allows sending individual pieces of content to different URLs, e.g. to allow uploading the audio and transcript to an object store as distinct objects for a downstream workflow.
   - It allows sending arbitrary combinations of the inputs/outputs to multiple destinations, to support a fanout workflow

@@ -42,24 +42,7 @@ Below are the complete fields of the configuration object:
 
 ### Language hints
 
-The Melia 1 model detects every language it hears automatically, so language hints are optional. To select Melia 1, refer to [Models](/speech-to-text/models).
-
-Hints tell the model which languages to expect in the audio, biasing detection toward them. They are most useful for short clips, audio with heavy accents, or recordings where two languages sound similar, where they make language labeling more reliable.
-
-Provide hints as a list of [supported languages](/speech-to-text/languages/transcription) to guide detection without restricting it. This config hints that the audio contains English and Arabic:
-
-```json
-{
-  "type": "transcription",
-  "transcription_config": {
-    "model": "melia-1",
-    "language": "multi",
-    "language_hints": ["en", "ar"]
-  }
-}
-```
-
-The model can still detect and label a language you did not hint, and it labels only the languages it actually hears.
+The Melia 1 model detects every language it hears automatically. To bias detection toward languages you expect, see [Mixed-language transcription](/speech-to-text/features/mixed-language-transcription#language-hints).
 
 ## Fetch URL
 

@@ -6,7 +6,7 @@ sidebar_position: 3
 
 # Custom dictionary
 
-The Custom dictionary feature allows a list of custom words to be added for each transcription job. This helps when a specific word is not recognised during transcription. It could be that it's not in the vocabulary for that language, for example a company or person's name. Adding custom words can improve the likelihood they will be output.
+The Custom dictionary feature allows a list of custom words to be added for each transcription job. This helps when a specific word is not recognized during transcription. It could be that it's not in the vocabulary for that language, for example a company or person's name. Adding custom words can improve the likelihood they will be output.
 
 The `sounds_like` feature is an extension to this to allow alternative pronunciations to be specified to aid recognition when the pronunciation is not obvious.
 
@@ -46,6 +46,10 @@ Prior to using this feature, consider the following:
 ```
 
 In the above example, the words _gnocchi_ and _CEO_ have pronunciations applied to them; the phrase _financial crisis_ does not require a pronunciation. The `content` property represents how you want the word to be output in the transcript.
+
+## Availability
+
+The custom dictionary is available with the Standard and Enhanced models for pre-recorded and streaming transcription, and with Linden 1 for agent STT. See [Feature availability](/speech-to-text/availability/).
 
 ## Custom dictionary caching
 The Speechmatics Realtime SaaS caches custom dictionaries to reduce session initialisation times. 

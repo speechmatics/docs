@@ -1,0 +1,112 @@
+---
+title: Mixed-language transcription
+description: Transcribe audio that switches language mid-conversation, and read the per-word language labels.
+keywords: [multilingual, mixed language, code switching, melia, language hints, language labeling]
+---
+
+Mixed-language transcription uses one unified multilingual model to identify each language in the audio and switch between languages mid-sentence, returning a single continuous transcript. You do not select a language.
+
+This is a different capability from a [bilingual language pack](/speech-to-text/languages/#bilingual-and-multi-language-packs), where you choose a fixed set of languages in advance.
+
+## Availability
+
+Mixed-language transcription requires the Melia 1 model. It is available for pre-recorded transcription, and for streaming transcription in Preview. See [Feature availability](/speech-to-text/availability/).
+
+:::info Melia 1 for streaming is in Preview
+Streaming with Melia 1 is available on SaaS on Cloud for evaluation and feedback. It is not production-ready and not ready to scale.
+:::
+
+## Enable mixed-language transcription
+
+Set `model` to `melia-1` and `language` to `multi`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    // highlight-start
+    "model": "melia-1",
+    "language": "multi"
+    // highlight-end
+  }
+}
+```
+
+:::warning
+Melia 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
+:::
+
+Melia 1 has no language pack selection. For the model itself, see [Models](/speech-to-text/models#melia-1).
+
+## Language hints {#language-hints}
+
+Melia 1 detects every language it hears automatically, so language hints are optional. Hints tell the model which languages to expect in the audio, biasing detection toward them. They are most useful for short clips, audio with heavy accents, or recordings where two languages sound similar, where they make language labeling more reliable.
+
+Language hints are available for pre-recorded transcription.
+
+Provide hints as a list of [supported languages](/speech-to-text/languages/transcription) to guide detection without restricting it. This config hints that the audio contains English and Arabic:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "melia-1",
+    "language": "multi",
+    // highlight-start
+    "language_hints": ["en", "ar"]
+    // highlight-end
+  }
+}
+```
+
+The model can still detect and label a language you did not hint, and it labels only the languages it actually hears.
+
+## Per-word language labels {#multilingual-transcript-output}
+
+For a Melia 1 job, the `language` property on each word reflects the language detected for that word, so it can change across the transcript. For Enhanced and Standard jobs, which transcribe one selected language, the same language is reported for every word.
+
+This example shows two words in different languages within one transcript:
+
+```json
+{
+  "results": [
+    {
+      "alternatives": [
+        { "content": "Hello", "confidence": 0.98, "language": "en" }
+      ],
+      "start_time": 0.20,
+      "end_time": 0.52,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        { "content": "مرحبا", "confidence": 0.95, "language": "ar" }
+      ],
+      "start_time": 0.60,
+      "end_time": 1.04,
+      "type": "word"
+    }
+  ]
+}
+```
+
+For multilingual transcripts, `language_pack_info` reports the word delimiter and writing direction per language rather than for a single language pack:
+
+```json
+{
+  "metadata": {
+    "language_pack_info": {
+      "per_language_word_delimiters": {
+        "en": " ",
+        "ar": " "
+      },
+      "per_language_writing_direction": {
+        "en": "left-to-right",
+        "ar": "right-to-left"
+      }
+    }
+  }
+}
+```
+
+`per_language_word_delimiters` gives the word delimiter for each language in the transcript, and `per_language_writing_direction` gives its writing direction.
