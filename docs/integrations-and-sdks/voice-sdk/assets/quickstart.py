@@ -17,7 +17,7 @@ async def main():
         preset=PRESET
     )
 
-    # Print finalised segments of speech with speaker ID
+    # Print finalized segments of speech with speaker ID
     @client.on(AgentServerMessageType.ADD_SEGMENT)
     def on_segment(message):
         for segment in message["segments"]:

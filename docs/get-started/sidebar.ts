@@ -9,7 +9,7 @@ export default {
       id: "index",
       label: "Welcome",
     },
-        {
+    {
       type: "doc",
       id: "get-started/authentication",
     },

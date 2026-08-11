@@ -22,7 +22,7 @@ export default {
       type: "doc",
       id: "speech-to-text/pre-recorded/limits",
     },
-                {
+    {
       type: "doc",
       id: "speech-to-text/pre-recorded/notifications",
     },
