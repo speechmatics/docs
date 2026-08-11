@@ -64,6 +64,12 @@ See [how to run the Core Speech CPU container here.](/deployments/container/cpu-
 
 The Transcription GPU images are required to use the most accurate models.
 
+See [how to run the Transcription GPU container here.](/deployments/container/gpu-speech-to-text)
+
+:::info
+To access additional language configurations for containers, please [speak to our Support Team](https://support.speechmatics.com).
+:::
+
 ### Standard model
 
 There is a single image available that supports all languages for the Standard model. There are language specific images available that support the Enhanced and Standard models.
@@ -78,7 +84,7 @@ docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-en:${smVariabl
 
 ### Enhanced model
 
-Depending on which Enhanced model languages are required, you can pull specific images, or a single image covering all languages.
+Depending on which Enhanced model languages are required, you can pull specific images.
 
 <details open>
   <summary>Language Pack 1</summary>
@@ -112,21 +118,16 @@ Depending on which Enhanced model languages are required, you can pull specific 
   </CodeBlock>
 </details>
 
-<details open>
-  <summary>All languages</summary>
-  <p>All Enhanced and Standard model languages</p>
-  <CodeBlock language="bash">
-    {`docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-all-lang:${smVariables.latestContainerVersion} `}
-  </CodeBlock>
-</details>
+### Standard and Enhanced model
 
-To load only some of an image's languages at startup, see [Loading only selected languages](/deployments/container/gpu-speech-to-text#loading-only-selected-languages).
+A single image supports all languages for both the Standard and Enhanced models, so you do not need to pull individual language pack images.
 
-See [how to run the Transcription GPU container here.](/deployments/container/gpu-speech-to-text)
+<CodeBlock language="bash">
+  {`# pulling the Transcription GPU inference server supporting all languages for both Enhanced and Standard models with the ${smVariables.latestContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-all-lang:${smVariables.latestContainerVersion}`}
+</CodeBlock>
 
-:::info
-To access additional language configurations for containers, please [speak to our Support Team](https://support.speechmatics.com).
-:::
+This image contains both models. To load only one of them, see [Running only one model](/deployments/container/gpu-speech-to-text#running-only-one-model). To load only some of the image's languages, see [Loading only selected languages](/deployments/container/gpu-speech-to-text#loading-only-selected-languages).
 
 ### Melia 1 model
 
