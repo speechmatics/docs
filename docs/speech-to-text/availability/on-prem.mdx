@@ -1,0 +1,157 @@
+---
+title: On-prem availability
+description: Check which features each model supports on-prem for pre-recorded and streaming transcription.
+sidebar_label: On-prem
+toc_max_heading_level: 3
+---
+
+Pre-recorded and streaming transcription run on-prem, as a container deployment or a virtual appliance. This page covers on-prem availability. For Speechmatics-hosted deployments, see [Feature availability](/speech-to-text/availability/).
+
+A check mark marks an available combination. An em dash means the combination is either unavailable or not established, and carries no roadmap position either way.
+
+Region does not apply on-prem. Regions are an attribute of SaaS on Cloud, because on-prem deployments are customer-hosted.
+
+{/* Derived from .CLAUDE/context/feature-availability.md. Regenerate when the STT product
+    catalogue changes; do not hand-correct a value here. Rows where no model is available
+    are omitted entirely, per the authoring rules in that file. */}
+
+## Readiness on-prem
+
+On-prem ships as versioned containers, so the question is which release you need rather than whether a combination is production-ready.
+
+| Interaction pattern | Model | On-prem |
+|---|---|---|
+| pre-recorded | Standard | Released |
+| pre-recorded | Enhanced | Released |
+| pre-recorded | Melia 1 | Released |
+| streaming | Standard | Released |
+| streaming | Enhanced | Released |
+
+:::note
+Feature availability on-prem depends on the container release you are running. Check [Accessing images](/deployments/container/accessing-images) for the current releases, and the release notes for the change that introduced a given feature.
+:::
+
+## Pre-recorded transcription features on-prem
+
+Pre-recorded transcription runs on the Standard, Enhanced, and Melia 1 models on-prem.
+
+### Language coverage and selection
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| 56 languages | ✓ | ✓ | ✓ |
+| Mixed-language transcription | — | — | ✓ |
+| Language hints | — | — | ✓ |
+| Language labeling | — | — | ✓ |
+| Transcription language packs (including bilingual) | ✓ | ✓ | — |
+| Automatic language identification | ✓ | ✓ | — |
+
+### Output and formatting
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Output locale | ✓ | ✓ | ✓ |
+| Smart formatting | ✓ | ✓ | ✓ |
+| Punctuation and casing | ✓ | ✓ | ✓ |
+| Word-level timings | ✓ | ✓ | ✓ |
+| Segment-level timings | ✓ | ✓ | ✓ |
+| Confidence scores | ✓ | ✓ | — |
+
+### Transcript content and tagging
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Custom dictionary | ✓ | ✓ | — |
+| Medical domain | — | ✓ | — |
+| Entity detection (basic, legacy) | ✓ | ✓ | — |
+| Disfluency tagging | ✓ | ✓ | — |
+| Profanity tagging | ✓ | ✓ | — |
+| Text replacement (find and replace) | ✓ | ✓ | — |
+
+### Speakers and channels
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Speaker diarization | ✓ | ✓ | ✓ |
+| Channel diarization | ✓ | ✓ | ✓ |
+| Speaker identification | ✓ | ✓ | — |
+
+### Audio input
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Audio events | ✓ | ✓ | — |
+| Audio filtering (volume filtering) | ✓ | ✓ | — |
+| Fetch URL | ✓ | ✓ | ✓ |
+
+Audio events on-prem requires a GPU container.
+
+### Add-ons
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Translation | ✓ | ✓ | — |
+| Sentiment | ✓ | ✓ | — |
+
+Translation on-prem runs in a separate inference container. See [Translation GPU inference container](/deployments/container/gpu-translation).
+
+## Streaming transcription features on-prem
+
+Streaming transcription runs on the Standard and Enhanced models on-prem.
+
+### Streaming language coverage and selection
+
+| Item | Standard | Enhanced |
+|---|---|---|
+| 56 languages | ✓ | ✓ |
+| Transcription language packs (including bilingual) | ✓ | ✓ |
+
+### Streaming output and formatting
+
+| Item | Standard | Enhanced |
+|---|---|---|
+| Output locale | ✓ | ✓ |
+| Smart formatting | ✓ | ✓ |
+| Punctuation and casing | ✓ | ✓ |
+| Word-level timings | ✓ | ✓ |
+| Confidence scores | ✓ | ✓ |
+
+### Streaming transcript content and tagging
+
+| Item | Standard | Enhanced |
+|---|---|---|
+| Custom dictionary | ✓ | ✓ |
+| Medical domain | — | ✓ |
+| Entity detection (basic, legacy) | ✓ | ✓ |
+| Disfluency tagging | ✓ | ✓ |
+| Profanity tagging | ✓ | ✓ |
+| Text replacement (find and replace) | ✓ | ✓ |
+
+### Streaming speakers and channels
+
+| Item | Standard | Enhanced |
+|---|---|---|
+| Speaker diarization | ✓ | ✓ |
+| Channel diarization | ✓ | ✓ |
+| Speaker identification | ✓ | ✓ |
+
+### Streaming audio input
+
+| Item | Standard | Enhanced |
+|---|---|---|
+| Audio events | ✓ | ✓ |
+| Audio filtering (volume filtering) | ✓ | ✓ |
+
+### Responding
+
+| Item | Standard | Enhanced |
+|---|---|---|
+| Force end of utterance | ✓ | ✓ |
+| Turn detection | ✓ | ✓ |
+| Word-level partials | ✓ | ✓ |
+
+### Streaming add-ons
+
+| Item | Standard | Enhanced |
+|---|---|---|
+| Translation | ✓ | ✓ |

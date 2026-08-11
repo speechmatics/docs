@@ -1,0 +1,232 @@
+---
+title: Feature availability
+description: Check which features and add-ons each model supports on SaaS on Cloud, by interaction pattern.
+sidebar_label: SaaS on Cloud
+toc_max_heading_level: 3
+---
+
+Availability depends on the combination of interaction pattern, model, and deployment, so check the combination rather than the product name. This page covers SaaS on Cloud. For container and virtual appliance deployments, see [On-prem availability](/speech-to-text/availability/on-prem).
+
+A check mark marks an available combination. An em dash means the combination is either unavailable or not established, and carries no roadmap position either way.
+
+{/* Derived from .CLAUDE/context/feature-availability.md. Regenerate when the STT product
+    catalogue changes; do not hand-correct a value here. Rows where no model is available
+    are omitted entirely, per the authoring rules in that file. */}
+
+## Readiness by combination
+
+Readiness is a separate question from availability: availability says whether something exists for a combination, readiness says whether that combination is usable and documentable. Readiness is a property of the combination, so it is stated here once and not repeated on individual feature pages.
+
+| Interaction pattern | Model | SaaS on Cloud | On-prem |
+|---|---|---|---|
+| pre-recorded | Standard | GA | Released |
+| pre-recorded | Enhanced | GA | Released |
+| pre-recorded | Melia 1 | GA | Released |
+| streaming | Standard | GA | Released |
+| streaming | Enhanced | GA | Released |
+| streaming | Melia 1 | Preview | — |
+| agent STT | Linden 1 | Preview | — |
+
+Preview applies to SaaS on Cloud only, because on-prem ships as versioned containers: the question there is which release you need.
+
+:::info Preview combinations
+Streaming with Melia 1, and agent STT with Linden 1, are available for evaluation and feedback. They are not production-ready and not ready to scale.
+:::
+
+## Pre-recorded transcription features
+
+Pre-recorded transcription runs on the Standard, Enhanced, and Melia 1 models, in the EU, US, and AUS regions.
+
+### Language coverage and selection
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| 56 languages | ✓ | ✓ | ✓ |
+| Mixed-language transcription | — | — | ✓ |
+| Language hints | — | — | ✓ |
+| Language labeling | — | — | ✓ |
+| Transcription language packs (including bilingual) | ✓ | ✓ | — |
+| Automatic language identification | ✓ | ✓ | — |
+
+### Output and formatting
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Output locale | ✓ | ✓ | ✓ |
+| Smart formatting | ✓ | ✓ | ✓ |
+| Punctuation and casing | ✓ | ✓ | ✓ |
+| Word-level timings | ✓ | ✓ | ✓ |
+| Segment-level timings | ✓ | ✓ | ✓ |
+| Confidence scores | ✓ | ✓ | — |
+
+### Transcript content and tagging
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Custom dictionary | ✓ | ✓ | — |
+| Medical domain | — | ✓ | — |
+| Entity detection (basic, legacy) | ✓ | ✓ | — |
+| Disfluency tagging | ✓ | ✓ | — |
+| Profanity tagging | ✓ | ✓ | — |
+| Text replacement (find and replace) | ✓ | ✓ | — |
+
+### Speakers and channels
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Speaker diarization | ✓ | ✓ | ✓ |
+| Channel diarization | ✓ | ✓ | ✓ |
+| Speaker identification | ✓ | ✓ | — |
+
+### Audio input
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Audio events | ✓ | ✓ | — |
+| Audio filtering (volume filtering) | ✓ | ✓ | — |
+| Fetch URL | ✓ | ✓ | ✓ |
+
+### Operational
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| App usage tracking | ✓ | ✓ | ✓ |
+| Notifications | ✓ | ✓ | ✓ |
+
+### Add-ons
+
+Add-ons are separate products that produce an output derived from a completed transcript. They are selected in addition to transcription.
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Translation | ✓ | ✓ | — |
+| Chapters | ✓ | ✓ | — |
+| Topics | ✓ | ✓ | — |
+| Summaries | ✓ | ✓ | — |
+| Sentiment | ✓ | ✓ | — |
+| Audio alignment | ✓ | ✓ | — |
+
+Audio alignment is available to Enterprise customers only.
+
+### Pre-recorded regions
+
+| Region | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| EU | ✓ | ✓ | ✓ |
+| US | ✓ | ✓ | ✓ |
+| AUS | ✓ | ✓ | — |
+
+## Streaming transcription features
+
+Streaming transcription runs on the Standard, Enhanced, and Melia 1 models. Streaming is available in the EU and US regions, and is not available in the AUS region. Melia 1 for streaming is in Preview.
+
+### Streaming language coverage and selection
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| 56 languages | ✓ | ✓ | ✓ |
+| Mixed-language transcription | — | — | ✓ |
+| Language labeling | — | — | ✓ |
+| Transcription language packs (including bilingual) | ✓ | ✓ | — |
+
+### Streaming output and formatting
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Output locale | ✓ | ✓ | ✓ |
+| Smart formatting | ✓ | ✓ | ✓ |
+| Punctuation and casing | ✓ | ✓ | ✓ |
+| Word-level timings | ✓ | ✓ | ✓ |
+| Confidence scores | ✓ | ✓ | — |
+
+### Streaming transcript content and tagging
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Custom dictionary | ✓ | ✓ | — |
+| Medical domain | — | ✓ | — |
+| Entity detection (basic, legacy) | ✓ | ✓ | — |
+| Disfluency tagging | ✓ | ✓ | — |
+| Profanity tagging | ✓ | ✓ | — |
+| Text replacement (find and replace) | ✓ | ✓ | — |
+
+### Streaming speakers and channels
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Speaker diarization | ✓ | ✓ | — |
+| Channel diarization | ✓ | ✓ | ✓ |
+| Speaker identification | ✓ | ✓ | — |
+
+### Streaming audio input
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Audio events | ✓ | ✓ | — |
+| Audio filtering (volume filtering) | ✓ | ✓ | — |
+
+### Responding
+
+These features control when the Realtime API returns a result, and how much of the transcript each result contains.
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| Force end of utterance | ✓ | ✓ | — |
+| Turn detection | ✓ | ✓ | — |
+| Word-level partials | ✓ | ✓ | ✓ |
+
+{/* App usage tracking is absent from the streaming table in feature-availability.md,
+    which reads as n/a. It is documented and working via the sm-app query parameter on the
+    WebSocket URL, so it is published here and a catalogue correction has been raised. */}
+
+### Streaming operational and add-ons
+
+| Item | Standard | Enhanced | Melia 1 |
+|---|---|---|---|
+| App usage tracking | ✓ | ✓ | ✓ |
+| Translation | ✓ | ✓ | — |
+
+## Agent STT features
+
+Agent STT runs on the Linden 1 model in the EU and US regions, and is in Preview. Because agent STT offers a single model, the following lists name what Linden 1 supports rather than comparing columns.
+
+{/* Entity detection (basic, legacy), audio filtering, and force end of utterance are marked
+    No or Not yet for Linden 1 in feature-availability.md, but all three are documented,
+    shipped configuration on the /v2/agent endpoints. Published here; catalogue corrections
+    raised. */}
+
+**Language and output**
+
+- 56 languages
+- Transcription language packs (including bilingual)
+- Output locale
+- Smart formatting
+- Punctuation and casing
+- Segment-level timings
+
+**Transcript content and tagging**
+
+- Custom dictionary
+- Medical domain
+- Entity detection (basic, legacy)
+- Text replacement (find and replace)
+
+**Speakers**
+
+- Speaker diarization
+- Speaker identification
+
+**Responding**
+
+- Turn detection
+- Voice activity detection (VAD)
+- Force end of utterance
+- Segment-level partials
+
+**Audio input**
+
+- Audio filtering (volume filtering)
+
+### Agent STT regions
+
+Agent STT processes audio in the EU and US regions.
