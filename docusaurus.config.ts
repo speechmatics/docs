@@ -207,6 +207,19 @@ const config: Config = {
       id: "Cookiebot",
       "data-cbid": "d687cfe6-4b5a-43ff-8e0e-ae6a3a33aeee",
     },
+    {
+      src: "https://widget.kapa.ai/kapa-widget.bundle.js",
+      "data-website-id": "9d6b9fcb-ce70-4c31-a262-4c7bd548bbca",
+      "data-project-name": "Speechmatics",
+      "data-project-color": "#00a2c7",
+      "data-project-logo": "/img/logo.svg",
+      "data-color-scheme-selector": "[data-theme='dark']",
+      "data-view-mode": "sidebar",
+      "data-modal-title": "Speechmatics Docs Agent",
+      "data-mcp-enabled": "true",
+      "data-mcp-server-url": "https://speechmatics.mcp.kapa.ai",
+      async: true,
+    },
   ],
   stylesheets: [
     {
