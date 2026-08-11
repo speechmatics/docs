@@ -73,17 +73,7 @@
     },
     {
       "source": "/deployments/container",
-      "destination": "/deployements/container/accessing-images",
-      "permanent": true
-    },
-    {
-      "source": "/voice-agents-flow",
-      "destination": "/voice-agents/flow",
-      "permanent": true
-    },
-    {
-      "source": "/voice-agents-flow",
-      "destination": "/voice-agents/flow",
+      "destination": "/deployments/container/accessing-images",
       "permanent": true
     },
     {
@@ -348,7 +338,7 @@
     },
     {
       "source": "/on-prem/containers",
-      "destination": "/deployements/container/accessing-images",
+      "destination": "/deployments/container/accessing-images",
       "permanent": true
     },
     {

@@ -57,15 +57,7 @@
   },
   {
     "source": "/deployments/container",
-    "destination": "/deployements/container/accessing-images"
-  },
-  {
-    "source": "/voice-agents-flow",
-    "destination": "/voice-agents/flow"
-  },
-  {
-    "source": "/voice-agents-flow",
-    "destination": "/voice-agents/flow"
+    "destination": "/deployments/container/accessing-images"
   },
   {
     "source": "/voice-agents/flow",
