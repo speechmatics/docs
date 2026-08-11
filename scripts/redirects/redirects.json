@@ -226,5 +226,25 @@
   {
     "source": "/private/voice-agent-api",
     "destination": "/speech-to-text/agent-stt/"
+  },
+  {
+    "source": "/speech-to-text/formatting",
+    "destination": "/speech-to-text/features/formatting"
+  },
+  {
+    "source": "/speech-to-text/formatting#smart-formatting",
+    "destination": "/speech-to-text/features/formatting#smart-formatting"
+  },
+  {
+    "source": "/speech-to-text/formatting#punctuation",
+    "destination": "/speech-to-text/features/formatting#punctuation"
+  },
+  {
+    "source": "/speech-to-text/formatting#output-formatting-options",
+    "destination": "/speech-to-text/features/disfluencies-and-profanities"
+  },
+  {
+    "source": "/speech-to-text/languages#multilingual-speech-to-text",
+    "destination": "/speech-to-text/languages/#bilingual-and-multi-language-packs"
   }
 ]

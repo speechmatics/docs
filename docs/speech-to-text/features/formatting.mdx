@@ -1,0 +1,133 @@
+---
+title: Formatting and punctuation
+sidebar_label: Formatting
+description: Control output spelling, number and date formatting, and which punctuation marks appear.
+keywords:
+  [
+    numeral formatting,
+    output formatting,
+    punctuation,
+    smart formatting,
+    transcript format,
+    transcription
+  ]
+---
+
+Three features shape how the transcript text is written: the output locale standardizes regional spelling, smart formatting converts spoken values into their written form, and punctuation controls which marks appear.
+
+## Availability
+
+Output locale, smart formatting, and punctuation and casing are available for every interaction pattern and every model. See [Feature availability](/speech-to-text/availability/).
+
+## Output locale {#output-locale}
+
+Some languages have multiple spelling conventions that vary by region. To ensure consistent spelling throughout your transcript, specify an output locale:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    "output_locale": "en-GB"
+  }
+}
+```
+
+Available English locales:
+- British English (`en-GB`)
+- US English (`en-US`)
+- Australian English (`en-AU`)
+
+Available Mandarin locales:
+- Simplified Mandarin (`cmn-Hans`, default)
+- Traditional Mandarin (`cmn-Hant`)
+
+:::tip
+Recommended for English transcription. Without a specified locale, spelling may be inconsistent within the same transcript.
+:::
+
+## Smart formatting {#smart-formatting}
+
+Smart formatting converts spoken numbers, dates, currencies, and other entities into properly formatted text. This makes transcripts more readable without losing timing information.
+
+An *entity* is a spoken value that has a conventional written form, such as a number, date, currency, time, or measurement. Speechmatics detects each entity and converts it from the words as spoken into its written form. For example, the spoken words "nineteen ninety nine" become "1999" in the output.
+
+Smart formatting is applied by default. To also expose the structure of each entity in the JSON output — its class, and the individual spoken and written words it is made from — see [Entity detection](/speech-to-text/features/entity-detection).
+
+### Languages for smart formatting
+
+Each language follows its own conventions for thousand separators, decimal separators, and currency symbol position. For example:
+
+- **English**: commas for thousands (20,000), decimal points (10.5), currency symbols before values ($10)
+- **German**: periods for thousands (20.000), commas for decimals (10,5), currency symbols after values with a non-breaking space (10 $)
+- **French**: non-breaking spaces for thousands (20 000), commas for decimals (10,5), currency symbols after values with a non-breaking space (10 $)
+
+Smart formatting has had dedicated work for consistent results in these languages:
+
+- Cantonese
+- Dutch
+- English
+- French
+- German
+- Hindi
+- Italian
+- Japanese
+- Mandarin (Simplified and Traditional)
+- Mandarin & English (bilingual)
+- Mandarin Malay Tamil & English (multilingual)
+- Norwegian
+- Portuguese
+- Russian
+- Spanish
+- Swedish
+- Tamil & English (bilingual)
+
+Other languages still format numbers and entities on a best-effort basis through the model, with variable results. If you rely on formatting for a language that is not listed, test it with representative audio rather than assuming full coverage.
+
+Formatting coverage is not reported by [feature discovery](/speech-to-text/features/feature-discovery), which covers transcription, translation, and language identification. This page is the reference for formatting language support.
+
+## Punctuation {#punctuation}
+
+All Speechmatics language packs support punctuation to improve transcript readability. Each language supports specific punctuation marks:
+
+| Language | Supported marks | End-of-sentence marks | Notes |
+|---|---|---|---|
+| Cantonese, Mandarin | ， 。 ？ ！ 、 | 。 ？ ！ | Full-width punctuation |
+| Japanese | 。 、 | 。 | Full-width punctuation |
+| Hindi | । ? , ! | । ? ! | |
+| All other languages | . , ! ? | . ! ? | |
+
+### Configure punctuation marks
+
+Control which punctuation marks appear in your transcripts using the `punctuation_overrides` setting:
+
+```json
+"transcription_config": {
+   "model": "enhanced",
+   "language": "en",
+    // highlight-start
+   "punctuation_overrides": {
+      "permitted_marks": [".", ","],
+      "sensitivity": 0.4
+   }
+   // highlight-end
+}
+```
+
+This configuration allows only periods and commas, with no question or exclamation marks, and sets punctuation sensitivity to 0.4, lower than the default 0.5.
+
+To select all marks, set `"permitted_marks": ["all"]`. If you use an empty list, no punctuation marks appear in the output.
+
+The `sensitivity` parameter accepts values from 0 to 1. Higher values produce more punctuation in the output.
+
+:::warning
+Disabling punctuation may slightly reduce speaker diarization accuracy. See [speaker diarization](/speech-to-text/features/diarization) for details.
+:::
+
+## Next steps
+
+- [Entity detection](/speech-to-text/features/entity-detection): expose the class, spoken form, and written form of each entity.
+- [Disfluency and profanity tagging](/speech-to-text/features/disfluencies-and-profanities): tag or remove hesitations and profanity.
+- [Text replacement](/speech-to-text/features/text-replacement): substitute words or patterns in the transcript.
+- [Custom dictionary](/speech-to-text/features/custom-dictionary): improve recognition of specific words and phrases.

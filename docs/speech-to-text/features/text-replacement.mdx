@@ -1,0 +1,61 @@
+---
+title: Text replacement
+description: Replace matched words or phrases in the transcript with your own wording.
+keywords: [text replacement, find and replace, replacements, regex, transcript filtering]
+---
+
+Text replacement substitutes specific words or patterns in the transcript after transcription is complete.
+
+## Availability
+
+Text replacement is available with the Standard and Enhanced models for pre-recorded and streaming transcription, and with Linden 1 for agent STT. See [Feature availability](/speech-to-text/availability/).
+
+## Replace words and phrases
+
+Add `replacements` to `transcript_filtering_config`:
+
+```json
+"transcription_config": {
+  "model": "enhanced",
+  "language": "en",
+  "transcript_filtering_config": {
+    "replacements": [
+      {"from": "foo", "to": "bar"},
+      {"from": "heavy", "to": "light"}
+    ]
+  }
+}
+```
+
+Common uses for text replacement:
+
+- Censoring profanities in languages without built-in support
+- Masking sensitive information such as card numbers and personal data
+- Standardizing terminology or brand names
+- Fixing known issues with particular words
+
+Text replacement is case-sensitive and applied after transcription is complete. In the example above, "Foo" would not be replaced by "bar".
+
+:::tip
+To add new vocabulary rather than replace it, use the [custom dictionary](/speech-to-text/features/custom-dictionary) instead.
+:::
+
+## Match with a regular expression {#regex}
+
+You can use regular expressions in ECMAScript format in the `from` field by adding forward-slash delimiters:
+
+```javascript
+// Replace both "Hello" and "hello" with "goodbye"
+{"from": "/^[hH]ello$/", "to": "goodbye"}
+
+// Add brackets around "cheese" while preserving the original word
+{"from": "/(cheese)/", "to": "[$1]"}
+```
+
+Replacement rules are applied in this order:
+
+1. Plain word replacements are processed first.
+2. If no match is found, regex replacements are tried in the order listed.
+3. Once a word matches a replacement, no further replacements are applied to it.
+4. Regex replacements are global, so all matches are replaced.
+5. Malformed regex patterns cause the transcription to fail with an error.

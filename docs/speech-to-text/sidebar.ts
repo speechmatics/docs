@@ -62,11 +62,6 @@ export default {
     },
     {
       type: "doc",
-      label: "Formatting",
-      id: "speech-to-text/formatting",
-    },
-    {
-      type: "doc",
       label: "Accuracy benchmarking",
       id: "speech-to-text/accuracy-benchmarking",
     },
