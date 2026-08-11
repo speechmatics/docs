@@ -1,0 +1,78 @@
+---
+title: Turn detection profiles
+sidebar_label: Profiles
+description: Compare the four agent STT turn detection profiles and choose an endpoint.
+toc_max_heading_level: 3
+---
+
+A profile is a pre-configured turn detection mode. Each profile sets the defaults for a use case: you choose one when connecting by including it in the endpoint path, and the server handles the rest.
+
+Agent STT is in [Preview](/speech-to-text/agent-stt/#preview-limitations).
+
+## Compare the profiles
+
+| Profile | Turn detection | Best for |
+|---|---|---|
+| `adaptive` | Adapts to speaker pace and hesitation | General conversational agents |
+| `agile` | VAD-based silence detection | Speed-first use cases |
+| `smart` | `adaptive` plus ML acoustic turn prediction | High-stakes conversations |
+| `external` | Manual — you trigger turn end | Push-to-talk, custom VAD, LLM-driven |
+
+### adaptive
+
+**Endpoint:** `/v2/agent/adaptive`
+
+Adapts to each speaker's pace over the course of a conversation. It adjusts the turn-end threshold based on speech rate and disfluencies such as hesitations and filler words, waiting longer for speakers who tend to pause mid-thought.
+
+**Best for:** general conversational applications.
+
+**Languages:** all supported languages. Disfluency detection is available for the [supported languages](/speech-to-text/formatting#supported-languages-for-disfluencies); other languages fall back to speech-rate adaptation.
+
+**Trade-off:** latency varies by speaker.
+
+### agile
+
+**Endpoint:** `/v2/agent/agile`
+
+Uses voice activity detection (VAD) to detect silence and finalize turns as quickly as possible. This is the lowest-latency profile.
+
+**Best for:** use cases where response speed is the top priority and occasional mid-speech finalizations are acceptable.
+
+**Languages:** all supported languages.
+
+**Trade-off:** because it relies on silence, it may finalize a turn while the speaker is still mid-sentence, for example during a natural pause. This can result in additional downstream language model calls.
+
+### smart
+
+**Endpoint:** `/v2/agent/smart`
+
+Builds on `adaptive` with an additional ML model that analyzes acoustic cues to predict whether a speaker has genuinely finished their turn. This is the most conservative profile and the least likely to interrupt.
+
+**Best for:** high-stakes conversations where cutting off the user is costly, such as finance, healthcare, and legal.
+
+**Languages:** Arabic, Bengali, Chinese, Danish, Dutch, English, Finnish, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Marathi, Norwegian, Polish, Portuguese, Russian, Spanish, Turkish, Ukrainian, Vietnamese.
+
+**Trade-off:** higher latency than `adaptive`.
+
+### external
+
+**Endpoint:** `/v2/agent/external`
+
+Turn detection is fully manual. The server accumulates audio and transcript until you send a [`ForceEndOfUtterance`](/speech-to-text/agent-stt/messages#forceendofutterance) message, at which point it finalizes everything spoken up to that point and emits an `AddSegment`.
+
+**Best for:** push-to-talk interfaces, custom VAD pipelines, or setups where a language model decides when to respond.
+
+**Languages:** all supported languages.
+
+**Trade-off:** you are responsible for all turn detection logic.
+
+## Early turn signals
+
+Two profiles emit predictions before the turn actually ends, which you can use to start preparing a response and reduce perceived latency:
+
+- [`EndOfTurnPrediction`](/speech-to-text/agent-stt/messages#endofturnprediction) — emitted by `adaptive` and `smart`
+- [`SmartTurnResult`](/speech-to-text/agent-stt/messages#smartturnresult) — emitted by `smart` only, and higher-confidence
+
+## Turn detection in streaming
+
+Streaming transcription has its own turn detection, configured with a silence threshold rather than a profile. The two are separate mechanisms: see [Turn detection](/speech-to-text/streaming/turn-detection) for the streaming equivalent.

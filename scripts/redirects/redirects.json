@@ -222,5 +222,9 @@
   {
     "source": "/speech-to-text/batch/speech-intelligence/auto-chapters/",
     "destination": "/speech-to-text/pre-recorded/speech-intelligence/auto-chapters"
+  },
+  {
+    "source": "/private/voice-agent-api",
+    "destination": "/speech-to-text/agent-stt/"
   }
 ]

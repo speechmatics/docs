@@ -1,3 +1,4 @@
+import agentSttSidebar from "./agent-stt/sidebar";
 import preRecordedSidebar from "./pre-recorded/sidebar";
 import streamingSidebar from "./streaming/sidebar";
 
@@ -20,6 +21,7 @@ export default {
     // pre-recorded, streaming, then agent STT.
     preRecordedSidebar,
     streamingSidebar,
+    agentSttSidebar,
     {
       type: "doc",
       id: "speech-to-text/models",

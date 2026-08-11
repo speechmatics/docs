@@ -282,6 +282,11 @@
       "permanent": true
     },
     {
+      "source": "/private/voice-agent-api",
+      "destination": "/speech-to-text/agent-stt/",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true
