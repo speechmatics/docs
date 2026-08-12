@@ -5,6 +5,8 @@ description: Melia 1 delivers code-switching for 56 languages, in Realtime.
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import meliaRealtimePythonExample from "./assets/melia-1-rt-example.py?raw";
+import meliaRealtimeJsExample from "./assets/melia-1-rt-example.js?raw";
 
 # Melia 1 Realtime Preview - Multilingual transcription
 
@@ -17,7 +19,7 @@ This is an early preview for evaluation only, and is not intended for production
 ## Getting started
 You can start right away using your existing API keys using our Preview SaaS — no new credentials needed. If you don't have an API key, head to the [portal](https://portal.speechmatics.com) to get one.
 
-Want to try it without writing code? Try our [demo here](), just enter your API key and start transcribing.
+Want to try it without writing code? Try our [demo here](https://melia-rt-preview.speechmatics.cloud), just enter your API key and start transcribing.
 
 ## Try through the API & SDKs
 The API schema is consistent with the [V2 Realtime WebSocket API](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket) with some additions and limitations described below.
@@ -80,132 +82,11 @@ Use Melia 1:
 
 <Tabs groupId="language">
   <TabItem value="python" label="Python">
-    <CodeBlock language="python">
-{`#!/usr/bin/env python3
-import asyncio
-from speechmatics.rt import (
-    AudioEncoding, AudioFormat, AuthenticationError,
-    Microphone, ServerMessageType, TranscriptResult,
-    TranscriptionConfig, AsyncClient,
-)
-
-API_KEY = "YOUR_API_KEY_HERE"  # Replace with your actual API key
-
-# Set up config and format for transcription
-audio_format = AudioFormat(
-    encoding=AudioEncoding.PCM_S16LE,
-    sample_rate=16000,
-    chunk_size=4096,
-)
-config = TranscriptionConfig(
-    model="melia-1",
-    language="multi",
-)
-
-async def main():
-
-    # Set up microphone
-    mic = Microphone(
-        sample_rate=audio_format.sample_rate,
-        chunk_size=audio_format.chunk_size
-    )
-    if not mic.start():
-        print("Mic not started — please install PyAudio")
-
-    try:
-        async with AsyncClient(api_key=API_KEY, url="wss://preview.rt.speechmatics.com/v2") as client:
-            # Handle ADD_TRANSCRIPT message
-            @client.on(ServerMessageType.ADD_TRANSCRIPT)
-            def handle_finals(msg):
-                if final := TranscriptResult.from_message(msg).metadata.transcript:
-                    print(f"[Final]: {final}")
-
-            try:
-                # Begin transcribing
-                await client.start_session(
-                    transcription_config=config,
-                    audio_format=audio_format
-                )
-                while True:
-                    await client.send_audio(
-                        await mic.read(
-                            chunk_size=audio_format.chunk_size
-                        )
-                    )
-            except KeyboardInterrupt:
-                pass
-            finally:
-                mic.stop()
-
-    except AuthenticationError as e:
-        print(f"Auth error: {e}")
-
-if __name__ == "__main__":
-    asyncio.run(main())`}
-    </CodeBlock>
+    <CodeBlock language="python">{meliaRealtimePythonExample}</CodeBlock>
     Press `Ctrl+C` to stop.
   </TabItem>
   <TabItem value="javascript" label="NodeJS + Sox">
-    <CodeBlock language="javascript">
-{`      import { spawn } from "node:child_process";
-      import { createSpeechmaticsJWT } from "@speechmatics/auth";
-      import { RealtimeClient } from "@speechmatics/real-time-client";
-
-      const apiKey = API_KEY; // Set your Speechmatics API key here
-      const client = new RealtimeClient({ url: "wss://preview.rt.speechmatics.com/v2" });
-
-      const audio_format = {
-          type: "raw",
-          encoding: "pcm_s16le",
-          sample_rate: 44100,
-      };
-
-      async function transcribe() {
-          client.addEventListener("receiveMessage", ({ data }) => {
-              if (data.message === "AddTranscript") {
-                  const transcript = data.metadata?.transcript;
-                  if (transcript) console.log(\`[Final]: \${transcript}\`);
-              } else if (data.message === "Error") {
-                  console.error(\`Error [\${data.type}]: \${data.reason}\`);
-                  process.exit(1);
-              }
-          });
-
-          const jwt = await createSpeechmaticsJWT({ type: "rt", apiKey, ttl: 60 });
-
-          await client.start(jwt, {
-              transcription_config: {
-                  language: "multi",
-                  model: "melia-1",
-              },
-              audio_format,
-          });
-
-          const recorder = spawn("sox", [
-              "-d",                                   // default audio device (mic)
-              "-q",                                   // quiet
-              "-r", String(audio_format.sample_rate), // sample rate
-              "-e", "signed-integer",                 // match pcm_s16le
-              "-b", "16",                             // match pcm_s16le
-              "-c", "1",                              // mono
-              "-t", "raw",                            // raw PCM output
-              "-",                                    // pipe to stdout
-          ]);
-
-          recorder.stdout.on("data", (chunk) => client.sendAudio(chunk));
-          recorder.stderr.on("data", (d) => console.error(\`sox: \${d}\`));
-
-          process.on("SIGINT", () => {
-              recorder.kill();
-              client.stopRecognition({ noTimeout: true });
-          });
-      }
-
-      transcribe().catch((err) => {
-          console.error(err);
-          process.exit(1);
-      });`}
-    </CodeBlock>
+    <CodeBlock language="javascript">{meliaRealtimeJsExample}</CodeBlock>
   </TabItem>
 </Tabs>
 
