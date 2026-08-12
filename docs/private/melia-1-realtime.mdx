@@ -1,8 +1,12 @@
 ---
-description: Get started with Melia 1 for Realtime multilingual transcription.
+description: Melia 1 delivers code-switching for 56 languages, in Realtime.
 ---
 
-# Multilingual transcription – Realtime
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Melia 1 Realtime Preview - Multilingual transcription
 
 Melia 1 is available as an early preview for existing customers on the Realtime API. It detects the spoken language automatically from 56 languages, handles code-switching mid-sentence, and labels each word with the language it was spoken in. This is the Realtime companion to the [Batch Melia 1](../speech-to-text/models).
 
@@ -11,9 +15,11 @@ This is an early preview for evaluation only, and is not intended for production
 :::
 
 ## Getting started
-You can start right away using your existing API keys — no new credentials needed. If you don't have an API key, head to the [portal](https://portal.speechmatics.com) to get one.
+You can start right away using your existing API keys using our Preview SaaS — no new credentials needed. If you don't have an API key, head to the [portal](https://portal.speechmatics.com) to get one.
 
-## API reference
+Want to try it without writing code? Try our [demo here](), just enter your API key and start transcribing.
+
+## Try through the API & SDKs
 The API schema is consistent with the [V2 Realtime WebSocket API](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket) with some additions and limitations described below.
 
 The [Python and JavaScript SDKs](/integrations-and-sdks/sdks) work against the preview endpoint. Point the SDK at the preview URL below and set the model (`melia-1`) and language (`multi`) in your transcription config.
@@ -41,11 +47,176 @@ Example minimal `StartRecognition` message:
   }
 }
 ```
+:::warning
+Ensure you remove unsupported configuration, for example `max_delay`.
+:::
+
+### Using the SDK
+
+Install the SDK:
+
+<Tabs groupId="language">
+  <TabItem value="python" label="Python">
+  Install using pip:
+  ```
+  pip install speechmatics-rt pyaudio
+  ```
+  :::note
+  `pyaudio` is required for microphone input in this quickstart.
+  :::
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript">
+  Install using npm:
+  ```
+  npm install @speechmatics/real-time-client @speechmatics/auth
+  ```
+  :::note
+  This quickstart uses `sox` for microphone input. Install it with `brew install sox` (macOS) or `apt install sox` (Linux).
+  :::
+  </TabItem>
+</Tabs>
+
+Use Melia 1:
+
+<Tabs groupId="language">
+  <TabItem value="python" label="Python">
+    <CodeBlock language="python">
+{`#!/usr/bin/env python3
+import asyncio
+from speechmatics.rt import (
+    AudioEncoding, AudioFormat, AuthenticationError,
+    Microphone, ServerMessageType, TranscriptResult,
+    TranscriptionConfig, AsyncClient,
+)
+
+API_KEY = "YOUR_API_KEY_HERE"  # Replace with your actual API key
+
+# Set up config and format for transcription
+audio_format = AudioFormat(
+    encoding=AudioEncoding.PCM_S16LE,
+    sample_rate=16000,
+    chunk_size=4096,
+)
+config = TranscriptionConfig(
+    model="melia-1",
+    language="multi",
+)
+
+async def main():
+
+    # Set up microphone
+    mic = Microphone(
+        sample_rate=audio_format.sample_rate,
+        chunk_size=audio_format.chunk_size
+    )
+    if not mic.start():
+        print("Mic not started — please install PyAudio")
+
+    try:
+        async with AsyncClient(api_key=API_KEY, url="wss://preview.rt.speechmatics.com/v2") as client:
+            # Handle ADD_TRANSCRIPT message
+            @client.on(ServerMessageType.ADD_TRANSCRIPT)
+            def handle_finals(msg):
+                if final := TranscriptResult.from_message(msg).metadata.transcript:
+                    print(f"[Final]: {final}")
+
+            try:
+                # Begin transcribing
+                await client.start_session(
+                    transcription_config=config,
+                    audio_format=audio_format
+                )
+                while True:
+                    await client.send_audio(
+                        await mic.read(
+                            chunk_size=audio_format.chunk_size
+                        )
+                    )
+            except KeyboardInterrupt:
+                pass
+            finally:
+                mic.stop()
+
+    except AuthenticationError as e:
+        print(f"Auth error: {e}")
+
+if __name__ == "__main__":
+    asyncio.run(main())`}
+    </CodeBlock>
+    Press `Ctrl+C` to stop.
+  </TabItem>
+  <TabItem value="javascript" label="NodeJS + Sox">
+    <CodeBlock language="javascript">
+{`      import { spawn } from "node:child_process";
+      import { createSpeechmaticsJWT } from "@speechmatics/auth";
+      import { RealtimeClient } from "@speechmatics/real-time-client";
+
+      const apiKey = API_KEY; // Set your Speechmatics API key here
+      const client = new RealtimeClient({ url: "wss://preview.rt.speechmatics.com/v2" });
+
+      const audio_format = {
+          type: "raw",
+          encoding: "pcm_s16le",
+          sample_rate: 44100,
+      };
+
+      async function transcribe() {
+          client.addEventListener("receiveMessage", ({ data }) => {
+              if (data.message === "AddTranscript") {
+                  const transcript = data.metadata?.transcript;
+                  if (transcript) console.log(\`[Final]: \${transcript}\`);
+              } else if (data.message === "Error") {
+                  console.error(\`Error [\${data.type}]: \${data.reason}\`);
+                  process.exit(1);
+              }
+          });
+
+          const jwt = await createSpeechmaticsJWT({ type: "rt", apiKey, ttl: 60 });
+
+          await client.start(jwt, {
+              transcription_config: {
+                  language: "multi",
+                  model: "melia-1",
+              },
+              audio_format,
+          });
+
+          const recorder = spawn("sox", [
+              "-d",                                   // default audio device (mic)
+              "-q",                                   // quiet
+              "-r", String(audio_format.sample_rate), // sample rate
+              "-e", "signed-integer",                 // match pcm_s16le
+              "-b", "16",                             // match pcm_s16le
+              "-c", "1",                              // mono
+              "-t", "raw",                            // raw PCM output
+              "-",                                    // pipe to stdout
+          ]);
+
+          recorder.stdout.on("data", (chunk) => client.sendAudio(chunk));
+          recorder.stderr.on("data", (d) => console.error(\`sox: \${d}\`));
+
+          process.on("SIGINT", () => {
+              recorder.kill();
+              client.stopRecognition({ noTimeout: true });
+          });
+      }
+
+      transcribe().catch((err) => {
+          console.error(err);
+          process.exit(1);
+      });`}
+    </CodeBlock>
+  </TabItem>
+</Tabs>
 
 ### LanguageInfo message
-A new `LanguageInfo` message is sent from the transcriber to the client the first time a new language code is detected in the audio. It is emitted **once per language code**, immediately before that language first appears in an `AddPartialTranscript` (Partial) or `AddTranscript` (Final) message.
+A new (optional) `LanguageInfo` message is sent from the transcriber to the client the first time a new language code is detected in the audio. It is emitted **once per language code**, immediately before that language first appears in an `AddPartialTranscript` (Partial) or `AddTranscript` (Final) message.
 
 Use it to configure how you process and display the transcript — for example, word spacing and text direction for right-to-left scripts.
+
+Support for this message response is not currently available in the SDKs.
+
+Message format:
 
 ```json
 {
@@ -66,21 +237,20 @@ Use it to configure how you process and display the transcript — for example, 
 
 | Feature                                        | Current capability                                                        | Future plans                                 |
 |------------------------------------------------|---------------------------------------------------------------------------|----------------------------------------------|
-| Accuracy multilingual audio                    | Ahead of Enhanced                                                         | Improved accuracy Q3/Q4                      |
-| Accuracy monolingual audio                     | Ahead of Standard                                                         | Improved accuracy Q3/Q4                      |
-| Partials                                       | ✅                                                                         |                                              |
-| Partials                                       | ✅                                                                         |                                              |
-| Finals                                         | ✅                                                                         |                                              |
-| Channel diarization                            | ✅                                                                         |                                              |
-| Output locale                                  | ✅                                                                         |                                              |
-| Word timings                                   | ✅                                                                         |                                              |
-| Language labeling                              | ✅ Word-level                                                              |                                              |
-| Alphanumeric smart formatting                  | ✅ Improved, including email/web addresses                                 |                                              |
+| Accuracy multilingual audio                    | Ahead of Enhanced                                                         | Continued improvements Q3/Q4                 |
+| Accuracy monolingual audio                     | Ahead of Standard                                                         | Continued improvements Q3/Q4                 |
+| Partials                                       | ✅                                                                         |                                             |
+| Finals                                         | ✅                                                                         |                                             |
+| Channel diarization                            | ✅                                                                         |                                             |
+| Output locale                                  | ✅                                                                         |                                             |
+| Word timings                                   | ✅                                                                         |                                             |
+| Language labeling                              | ✅ Word-level                                                              |                                             |
+| Alphanumeric smart formatting                  | ✅ Improved accuracy, e.g. recognition of email/web addresses transcription |                                            |
 | Language hints (guide predicted languages)     | ⚠️ Not yet                                                                | Targeting August 2026                        |
-| End of Utterance (EOU / FEOU)                  | ⚠️ Not yet                                                                | August 2026                                  |
+| End of Utterance / Force end of Utterance      | ⚠️ Not yet                                                                | Targeting August 2026                        |
 | Speaker diarization                            | ⚠️ Not yet                                                                | Planned Q4 2026                              |
 | Speaker identification                         | ⚠️ Not yet                                                                | Prioritized according to customer need       |
-| `max_delay` / `max_delay_mode` latency control | ⚠️ Not yet. Latency averages around 4 seconds and varies between sessions | Lower latency and control planned Q3/Q4 2026 |
+| `max_delay` / `max_delay_mode` latency control | ⚠️ Not yet. Finals latency averages around 4 seconds and varies           | Lower latency and control planned Q3/Q4 2026 |
 | Custom dictionary                              | ⚠️ Not yet                                                                | Planned Q4 2026                              |
 | Entities / punctuation overrides               | ⚠️ Not yet                                                                | Prioritized according to customer need       |
 | Disfluency removal                             | ⚠️ Not yet                                                                | Prioritized according to customer need       |
