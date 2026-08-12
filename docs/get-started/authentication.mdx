@@ -56,7 +56,7 @@ wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
 
 ## Supported endpoints
 
-The Batch and Realtime endpoints below are active and highly available. You can use multiple regions to balance requests or provide a failover in the event of disruption to one region. Agent STT uses a separate preview endpoint, listed in its own tab.
+The Batch and Realtime endpoints below are active and highly available. You can use multiple regions to balance requests or provide a failover in the event of disruption to one region. Combinations in Preview are served from a separate host, `preview.rt.speechmatics.com`, and the production availability statement does not apply to them.
 
 The three tabs map to the three interaction patterns: Batch serves pre-recorded, Realtime serves streaming, and agent STT has its own host. See [Understanding interaction patterns](/speech-to-text/interaction-patterns).
 
@@ -99,6 +99,8 @@ The Realtime API on SaaS on Cloud supports the following endpoints for productio
 `global.rt.speechmatics.com` automatically routes each connection to the nearest region for lowest latency, so you don't have to select one. The regional endpoints remain available if you want to pin to a specific region.
 
 Streaming transcription is not available in the AUS region.
+
+Streaming with the Melia 1 model is in Preview on a separate endpoint, `wss://preview.rt.speechmatics.com/v2`, served from the EU and the US. Your existing API keys and `rt` temporary keys work against it. See [Mixed-language transcription](/speech-to-text/features/mixed-language-transcription).
 
 :::warning
 `global.rt.speechmatics.com` may route a connection to any region. If you have data residency or compliance requirements, use a regional endpoint (`eu.rt.speechmatics.com` or `us.rt.speechmatics.com`) instead.

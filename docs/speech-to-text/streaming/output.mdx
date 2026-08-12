@@ -77,6 +77,10 @@ Note that Partial transcripts have some limitations:
 - Accuracy is usually 10-25% lower than the Final transcript. This includes punctuation and capitalization of words.
 - The `confidence` field for Partial transcripts has no meaning and should not be relied on.
 
+## Mixed-language transcripts
+
+With the Melia 1 model, each word carries the language detected for it, and the server sends a `LanguageInfo` message the first time it detects a new language. See [Mixed-language transcription](/speech-to-text/features/mixed-language-transcription#language-info).
+
 ## Smart formatting
 
 [Smart formatting](/speech-to-text/features/formatting#smart-formatting) ensures readability of your transcripts by formatting numbers, dates, currencies and other important _entities_ into their written form.

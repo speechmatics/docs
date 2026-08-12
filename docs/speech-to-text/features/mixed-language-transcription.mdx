@@ -4,6 +4,13 @@ description: Transcribe audio that switches language mid-conversation, and read 
 keywords: [multilingual, mixed language, code switching, melia, language hints, language labeling]
 ---
 
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+import meliaStreamingPython from "./assets/melia-1-streaming-example.py?raw";
+import meliaStreamingJs from "./assets/melia-1-streaming-example.mjs?raw";
+
 Mixed-language transcription uses one unified multilingual model to identify each language in the audio and switch between languages mid-sentence, returning a single continuous transcript. You do not select a language.
 
 This is a different capability from a [bilingual language pack](/speech-to-text/languages/#bilingual-and-multi-language-packs), where you choose a fixed set of languages in advance.
@@ -18,7 +25,10 @@ Streaming with Melia 1 is available on SaaS on Cloud for evaluation and feedback
 
 ## Enable mixed-language transcription
 
-Set `model` to `melia-1` and `language` to `multi`:
+Set `model` to `melia-1` and `language` to `multi`.
+
+<Tabs groupId="interaction-pattern">
+  <TabItem value="pre-recorded" label="Pre-recorded" default>
 
 ```json
 {
@@ -31,6 +41,38 @@ Set `model` to `melia-1` and `language` to `multi`:
   }
 }
 ```
+
+  </TabItem>
+  <TabItem value="streaming" label="Streaming">
+
+Send the model and language in your `StartRecognition` message:
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    // highlight-start
+    "language": "multi",
+    "model": "melia-1"
+    // highlight-end
+  }
+}
+```
+
+Streaming with Melia 1 runs on a dedicated Preview endpoint, separate from the production Realtime endpoints:
+
+| Region | Endpoint |
+|---|---|
+| Preview (EU and US) | `wss://preview.rt.speechmatics.com/v2` |
+
+The Preview is served from France for the EU and Oregon for the US, on SaaS on Cloud. Your existing API keys work against it, and so do `rt` [temporary keys](/get-started/authentication#temporary-keys). The message schema matches the [Realtime WebSocket API](/api-ref/realtime-transcription-websocket), with the additions on this page.
+
+:::warning
+Send only the configuration that the Preview supports. Including other Realtime settings, such as `max_delay`, causes the session to fail. Final transcripts arrive in about four seconds on average, and the interval varies.
+:::
+
+  </TabItem>
+</Tabs>
 
 :::warning
 Melia 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
@@ -110,3 +152,65 @@ For multilingual transcripts, `language_pack_info` reports the word delimiter an
 ```
 
 `per_language_word_delimiters` gives the word delimiter for each language in the transcript, and `per_language_writing_direction` gives its writing direction.
+
+### The LanguageInfo message {#language-info}
+
+In a streaming session, the server sends a `LanguageInfo` message the first time it detects a new language code in the audio. It arrives once per language code, immediately before that language first appears in an `AddPartialTranscript` or `AddTranscript` message.
+
+Use it to set up how you process and display the transcript for that language, such as word spacing and text direction for right-to-left scripts.
+
+```json
+{
+  "message": "LanguageInfo",
+  "language": "ar",
+  "word_delimiter": " ",
+  "writing_direction": "right-to-left",
+  "partial": true
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `language` | String | The detected language code. |
+| `word_delimiter` | String | The delimiter to use between words when you reconstruct the transcript for this language. |
+| `writing_direction` | String | Either `left-to-right` or `right-to-left`. |
+| `partial` | Boolean | Optional. Present and `true` when a partial transcript triggered the message. |
+
+Handling `LanguageInfo` is not yet available in the SDKs. Read it from the WebSocket connection directly.
+
+## Transcribe live audio with Melia 1
+
+These examples transcribe your microphone against the Preview endpoint and print each final transcript. Replace `YOUR_API_KEY_HERE` with your API key.
+
+<Tabs groupId="language">
+  <TabItem value="python" label="Python" default>
+
+Install the SDK and an audio input library:
+
+```bash
+pip install speechmatics-rt pyaudio
+```
+
+<CodeBlock language="python">{meliaStreamingPython}</CodeBlock>
+
+Press `Ctrl+C` to stop.
+
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript">
+
+Install the SDK, and `sox` for microphone input:
+
+```bash
+npm install @speechmatics/real-time-client @speechmatics/auth
+```
+
+Install `sox` with `brew install sox` on macOS, or `apt install sox` on Linux.
+
+<CodeBlock language="javascript">{meliaStreamingJs}</CodeBlock>
+
+Press `Ctrl+C` to stop.
+
+  </TabItem>
+</Tabs>
+
+The JavaScript SDK does not list `melia-1` in its `Model` type, so the example suppresses the type error on that line.

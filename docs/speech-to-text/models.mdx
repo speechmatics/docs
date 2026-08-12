@@ -69,7 +69,7 @@ Set `"model": "melia-1"` and `"language": "multi"`:
 Melia 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
 :::
 
-Melia 1 has no language pack selection. On SaaS on Cloud it is served from the EU1 and US1 endpoints:
+Melia 1 has no language pack selection. For pre-recorded transcription on SaaS on Cloud it is served from the EU1 and US1 endpoints:
 
 | Region | Endpoint |
 |---|---|
@@ -77,6 +77,16 @@ Melia 1 has no language pack selection. On SaaS on Cloud it is served from the E
 | US1 (USA) | `us1.asr.api.speechmatics.com` |
 
 For the full list of endpoints, see [Authentication](/get-started/authentication#supported-endpoints). For the regions and features available with Melia 1, see [Feature availability](/speech-to-text/availability/).
+
+### Melia 1 for streaming {#melia-1-streaming}
+
+:::info Melia 1 for streaming is in Preview
+Streaming with Melia 1 is available on SaaS on Cloud for evaluation and feedback. It is not production-ready and not ready to scale.
+:::
+
+Streaming with Melia 1 runs on a dedicated Preview endpoint, `wss://preview.rt.speechmatics.com/v2`, and returns a language label on every word. On this endpoint Melia 1 transcribes multilingual audio more accurately than Enhanced, and monolingual audio more accurately than Standard.
+
+For the configuration, the supported settings and a runnable example, see [Mixed-language transcription](/speech-to-text/features/mixed-language-transcription).
 
 ## Linden 1
 
