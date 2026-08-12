@@ -128,6 +128,8 @@ values are wrong.
 | Pre-existing | postcss-calc parse warnings on the Radix CSS. Cosmetic. |
 | Pre-existing | Docusaurus 3.9.2, with 3.10.2 available. |
 | New | **Sidebar `type: "link"` hrefs bypass `onBrokenLinks`.** Two now carry fragments (`models#pre-recorded-models`, `models#streaming-models`). A checker exists but lives in a scratchpad; promote it into the repo as a real gate if the pattern stays. |
+| Pre-existing | **A stale redirect destination survives in `old-redirects.json`:** `/features/accuracy-language-packs` → `/speech-to-text/languages#multilingual-speech-to-text`, an anchor that no longer exists. Harmless at runtime — `redirects.json` supplies the same source with the correct `#bilingual-and-multi-language-packs` anchor and is emitted first, so Vercel's first-match-wins takes the good one. The stale entry is unreachable dead weight. Fixing it means editing a legacy historical file. |
+| Pre-existing | **Seven trailing-slash destinations remain in `vercel.json`**, all from the legacy files (`/features`, `/features-other`, `/speech-capabilities` → `/speech-to-text/`; `/on-prem/virtual-appliance`; `/on-prem/containers/usage/what-data`; plus two external pypi.org URLs where it does not matter). Each internal one costs one extra normalisation hop. |
 
 Baselines to hold rather than fix, all pre-existing: `npx tsc` 27 errors, `biome check` 5.
 Never run `biome --write` on `vercel.json` — `sync-redirects` writes it without a trailing
@@ -138,16 +140,34 @@ newline, so the two fight forever.
 ## 5. Verification that only a deployment can do
 
 `vercel.json` and `middleware.ts` are inert under `docusaurus start`, so redirect
-*behaviour* is unverified locally. On the preview, curl:
+*behaviour* cannot be tested locally. **Run on 12 Aug 2026 against the preview — all
+passed**, and it caught the trailing-slash extra hop that no local check could see:
 
-- the 20 legacy Flow sources
-- the heaviest legacy destinations: `/introduction/rt-guide`, `/features-other/tracking`,
-  `/features-other/auto-chapters`
-- `/on-prem/containers` — must finally resolve after the `/deployements/` typo fix
-- `/voice-agents-flow/setup` — must be **one** hop, not three
-- one `.md` mirror, to confirm whether wildcards are needed
+| Legacy URL | Result |
+|---|---|
+| `/voice-agents-flow/setup` | 1 hop → `/speech-to-text/agent-stt/quickstart` — was three hops |
+| `/on-prem/containers` | 1 hop → `/deployments/container/accessing-images` — was a production 404 |
+| `/introduction/rt-guide` | 1 hop → `/speech-to-text/streaming/quickstart` |
+| `/features-other/tracking` | 1 hop → `/speech-to-text/pre-recorded/output#tracking-metadata` |
+| `/features-other/auto-chapters` | 1 hop → `/speech-to-text/add-ons/chapters` |
+| `/get-started/quickstart` | 1 hop → `/` |
+| `/speech-to-text/batch/`, `/realtime/` | 2 hops, both to the right page — hop 1 is trailing-slash normalisation of the *visitor's* URL, which is unavoidable |
 
-Every line must be a 308 to a live URL. Algolia also needs reindexing after deploy.
+Still outstanding: the remaining legacy Flow sources, and one `.md` mirror URL to confirm
+whether wildcard entries are needed. **Algolia needs reindexing after deploy.**
+
+### Two things that are still measured wrong
+
+- **`check-redirects.ts` does not validate fragments** — it resolves the destination path
+  after normalisation, so a destination pointing at a non-existent anchor passes. The
+  fragment-aware sweep has to be run separately over all 890 entries.
+- **Duplicate normalized sources are 10, not the 4 recorded earlier.** Eight are benign by
+  design: `normalizePath` strips fragments from sources, so a plain entry and its fragment
+  variants collapse to one source and only the first can ever match. The plain entry is
+  correctly ordered first in every case. Fragment-specific server-side redirects remain
+  impossible; `src/theme/Root.tsx` is the client-side shim for the two that matter.
+- A fragment-aware destination checker must special-case **static assets** — `/batch.yaml`
+  and `/management.yaml` are real files, not pages with an `index.html`.
 
 ---
 
