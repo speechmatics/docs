@@ -3,7 +3,7 @@
   "redirects": [
     {
       "source": "/features/accuracy-language-packs",
-      "destination": "/speech-to-text/languages/#bilingual-and-multi-language-packs",
+      "destination": "/speech-to-text/languages#bilingual-and-multi-language-packs",
       "permanent": true
     },
     {
@@ -38,7 +38,7 @@
     },
     {
       "source": "/voice-agents-flow/features/application-inputs",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
@@ -48,17 +48,17 @@
     },
     {
       "source": "/voice-agents-flow/features/function-calling",
-      "destination": "/integrations-and-sdks/",
+      "destination": "/integrations-and-sdks",
       "permanent": true
     },
     {
       "source": "/voice-agents-flow",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents-flow/supported-languages",
-      "destination": "/speech-to-text/languages/",
+      "destination": "/speech-to-text/languages",
       "permanent": true
     },
     {
@@ -68,12 +68,12 @@
     },
     {
       "source": "/voice-agents-flow/guides/nextjs-guide",
-      "destination": "/integrations-and-sdks/",
+      "destination": "/integrations-and-sdks",
       "permanent": true
     },
     {
       "source": "/voice-agents-flow/guides/react-native",
-      "destination": "/integrations-and-sdks/",
+      "destination": "/integrations-and-sdks",
       "permanent": true
     },
     {
@@ -83,12 +83,12 @@
     },
     {
       "source": "/voice-agents/flow",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/features/application-inputs",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
@@ -103,22 +103,22 @@
     },
     {
       "source": "/voice-agents/flow/supported-languages",
-      "destination": "/speech-to-text/languages/",
+      "destination": "/speech-to-text/languages",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/features/function-calling",
-      "destination": "/integrations-and-sdks/",
+      "destination": "/integrations-and-sdks",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/guides/nextjs-guide",
-      "destination": "/integrations-and-sdks/",
+      "destination": "/integrations-and-sdks",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/guides/react-native",
-      "destination": "/integrations-and-sdks/",
+      "destination": "/integrations-and-sdks",
       "permanent": true
     },
     {
@@ -288,7 +288,7 @@
     },
     {
       "source": "/private/voice-agent-api",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
@@ -403,17 +403,17 @@
     },
     {
       "source": "/voice-agents/overview",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents/voice-sdk",
-      "destination": "/integrations-and-sdks/voice-sdk/",
+      "destination": "/integrations-and-sdks/voice-sdk",
       "permanent": true
     },
     {
@@ -553,12 +553,12 @@
     },
     {
       "source": "/flow-api-ref",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/application-inputs",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
@@ -568,17 +568,17 @@
     },
     {
       "source": "/flow/function-calling",
-      "destination": "/integrations-and-sdks/",
+      "destination": "/integrations-and-sdks",
       "permanent": true
     },
     {
       "source": "/flow/introduction",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/languages-supported",
-      "destination": "/speech-to-text/languages/",
+      "destination": "/speech-to-text/languages",
       "permanent": true
     },
     {
@@ -588,12 +588,12 @@
     },
     {
       "source": "/flow/nextjs-guide",
-      "destination": "/integrations-and-sdks/",
+      "destination": "/integrations-and-sdks",
       "permanent": true
     },
     {
       "source": "/flow/react-native-guide",
-      "destination": "/integrations-and-sdks/",
+      "destination": "/integrations-and-sdks",
       "permanent": true
     },
     {
@@ -1258,12 +1258,12 @@
     },
     {
       "source": "/flow",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/getting-started",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
@@ -1283,7 +1283,7 @@
     },
     {
       "source": "/flow/flow-api-ref",
-      "destination": "/speech-to-text/agent-stt/",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
