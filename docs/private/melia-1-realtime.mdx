@@ -1,0 +1,96 @@
+---
+description: Get started with Melia 1 for Realtime multilingual transcription.
+---
+
+# Multilingual transcription – Realtime
+
+Melia 1 is available as an early preview for existing customers on the Realtime API. It detects the spoken language automatically from 56 languages, handles code-switching mid-sentence, and labels each word with the language it was spoken in. This is the Realtime companion to the [Batch Melia 1](../speech-to-text/models).
+
+:::warning
+This is an early preview for evaluation only, and is not intended for production use. Only a subset of Realtime features is currently supported (see [Capabilities](#capabilities)). Remaining features will be added ahead of the production release in October 2026.
+:::
+
+## Getting started
+You can start right away using your existing API keys — no new credentials needed. If you don't have an API key, head to the [portal](https://portal.speechmatics.com) to get one.
+
+## API reference
+The API schema is consistent with the [V2 Realtime WebSocket API](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket) with some additions and limitations described below.
+
+The [Python and JavaScript SDKs](/integrations-and-sdks/sdks) work against the preview endpoint. Point the SDK at the preview URL below and set the model (`melia-1`) and language (`multi`) in your transcription config.
+
+### Supported endpoint
+The preview runs on a dedicated endpoint, separate from the production Realtime service:
+
+| Region            | Endpoint                                 |
+|-------------------|------------------------------------------|
+| Preview (EU & US) | **wss://preview.rt.speechmatics.com/v2** |
+
+The preview is deployed in France (EU) and Oregon (USA), and is available on SaaS only.
+
+### Minimal example
+Example minimal `StartRecognition` message:
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    // highlight-start
+    "language": "multi",
+    "model": "melia-1"
+    // highlight-end
+  }
+}
+```
+
+### LanguageInfo message
+A new `LanguageInfo` message is sent from the transcriber to the client the first time a new language code is detected in the audio. It is emitted **once per language code**, immediately before that language first appears in an `AddPartialTranscript` (Partial) or `AddTranscript` (Final) message.
+
+Use it to configure how you process and display the transcript — for example, word spacing and text direction for right-to-left scripts.
+
+```json
+{
+  "message": "LanguageInfo",
+  "language": "ar",
+  "word_delimiter": " ",
+  "writing_direction": "right-to-left",
+  "partial": true
+}
+```
+
+- `language` (String): The detected language code.
+- `word_delimiter` (String): The delimiter to use between words when reconstructing the transcript for this language.
+- `writing_direction` (String): Either `left-to-right` or `right-to-left`.
+- `partial` (Boolean): Optional. When present, this is `true`, indicating the message was triggered by a Partial transcript.
+
+## Capabilities
+
+| Feature                                        | Current capability                                                        | Future plans                                 |
+|------------------------------------------------|---------------------------------------------------------------------------|----------------------------------------------|
+| Accuracy multilingual audio                    | Ahead of Enhanced                                                         | Improved accuracy Q3/Q4                      |
+| Accuracy monolingual audio                     | Ahead of Standard                                                         | Improved accuracy Q3/Q4                      |
+| Partials                                       | ✅                                                                         |                                              |
+| Partials                                       | ✅                                                                         |                                              |
+| Finals                                         | ✅                                                                         |                                              |
+| Channel diarization                            | ✅                                                                         |                                              |
+| Output locale                                  | ✅                                                                         |                                              |
+| Word timings                                   | ✅                                                                         |                                              |
+| Language labeling                              | ✅ Word-level                                                              |                                              |
+| Alphanumeric smart formatting                  | ✅ Improved, including email/web addresses                                 |                                              |
+| Language hints (guide predicted languages)     | ⚠️ Not yet                                                                | Targeting August 2026                        |
+| End of Utterance (EOU / FEOU)                  | ⚠️ Not yet                                                                | August 2026                                  |
+| Speaker diarization                            | ⚠️ Not yet                                                                | Planned Q4 2026                              |
+| Speaker identification                         | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| `max_delay` / `max_delay_mode` latency control | ⚠️ Not yet. Latency averages around 4 seconds and varies between sessions | Lower latency and control planned Q3/Q4 2026 |
+| Custom dictionary                              | ⚠️ Not yet                                                                | Planned Q4 2026                              |
+| Entities / punctuation overrides               | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| Disfluency removal                             | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| Profanity tagging                              | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| Audio volume filtering                         | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| Translation                                    | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| Audio events                                   | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+
+## Next steps
+Feedback on this preview determines what ships in the production release. Send yours by 11 September 2026 through the {/* TODO: replace with the live feedback form URL before sending the customer email */}[feedback form](https://REPLACE-WITH-FEEDBACK-FORM-URL). For anything else, contact your Customer Success Manager.
+
+- Look up the full message schema in the [Realtime WebSocket API reference](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket).
+- Transcribe pre-recorded multilingual audio with [Batch Melia 1](../speech-to-text/models), generally available.
