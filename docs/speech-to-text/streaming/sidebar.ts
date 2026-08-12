@@ -7,6 +7,13 @@ export default {
       id: "speech-to-text/streaming/quickstart",
     },
     {
+      // Anchor link: sidebar hrefs are not checked by onBrokenLinks, so the
+      // target is verified against the built HTML instead.
+      type: "link",
+      href: "/speech-to-text/models#streaming-models",
+      label: "Choosing a model",
+    },
+    {
       type: "doc",
       id: "speech-to-text/streaming/input",
     },

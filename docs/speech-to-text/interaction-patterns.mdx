@@ -24,6 +24,8 @@ Pre-recorded transcription suits work where the audio already exists and accurac
 - Process customer service recordings for compliance or insights
 - Automate subtitles across large video libraries
 
+Available models: Standard, Enhanced, and Melia 1. See [models for pre-recorded transcription](/speech-to-text/models#pre-recorded-models).
+
 ### What is a job?
 
 Each pre-recorded transcription request is handled as a job, a self-contained unit representing a single transcription task.
@@ -48,6 +50,8 @@ Streaming transcription suits work where the audio is live and latency matters:
 - Monitor contact center calls in real time
 - Build accessibility features such as live captions
 
+Available models: Standard, Enhanced, and Melia 1, the last in Preview. See [models for streaming transcription](/speech-to-text/models#streaming-models).
+
 ## Agent STT
 
 You open a session and send live audio, as with streaming, but results arrive as complete speaker turns rather than as a word-by-word stream. Turn detection runs on the server, so the transcript you receive is already punctuated, speaker-labeled, and segmented at turn boundaries.
@@ -55,6 +59,8 @@ You open a session and send live audio, as with streaming, but results arrive as
 Agent STT suits conversational applications that hand each turn to a language model and need to know when a speaker has finished talking.
 
 Agent STT provides the speech-to-text layer only. It is not a conversational pipeline and does not include a language model or speech synthesis.
+
+Available model: Linden 1, in Preview. See [models for agent STT](/speech-to-text/models#agent-stt-models).
 
 ## How patterns map to the APIs
 
@@ -72,5 +78,5 @@ Processing mode, transport, and `session_type` are fixed by your choice of inter
 
 ## Next steps
 
-- [Models](/speech-to-text/models) — compare the four models and set one in your request
+- [Models](/speech-to-text/models#compare-the-models) — compare the models available for your pattern and set one in your request
 - [Feature availability](/speech-to-text/availability/) — check what each combination supports
