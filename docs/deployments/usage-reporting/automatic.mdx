@@ -17,7 +17,22 @@ We will **never** send customer audio data over the network. See [What Data Do W
 
 The Batch transcriber will report one `TRANSCRIBER_DONE` event at the event of transcription.
 
-The Realtime transcriber will report one `SESSION_ENDED` event at the end of each session. During a session, the Realtime transcriber also sends `SESSION_STATUS` every few minutes.
+The Realtime transcriber will report one `SESSION_ENDED` event at the end of each session. During a session, the Realtime transcriber also sends a `SESSION_STATUS` event roughly every five minutes. `SESSION_STATUS` carries the same duration fields as `SESSION_ENDED` (for example `session_speech_duration` and `session_transcribed_duration`), but reports them cumulatively for the session so far, rather than as a delta since the last event.
+
+Example `SESSION_STATUS` payload:
+
+```json
+{
+  "event": "SESSION_STATUS",
+  "session_speech_duration": 118.42,
+  "session_transcribed_duration": 300.0,
+  "engine_instance_id": "930ab901-c408-457d-9f6d-dee21ecaac7f",
+  "contract_id": "0",
+  "customer_id": "Speechmatics"
+}
+```
+
+If a session is terminated abnormally rather than closed in the usual way, the transcriber instead emits a `SESSION_FORCE_ENDED` event in place of `SESSION_ENDED`, carrying the same final cumulative duration fields.
 
 The payload size is only several KB, so it won’t have a meaningful impact on the duration of transcription or your bandwidth costs.
 
