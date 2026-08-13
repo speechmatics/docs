@@ -27,7 +27,9 @@ For on-prem deployments, usage reporting is required for accurate billing. There
 
 ## How the reporting mode is configured
 
-Both modes are controlled by the same two settings. `SM_EATS_URL` sets the destination for usage events; if it is not set, the transcriber falls back to `usage.speechmatics.com`. `SM_ENABLE_USAGE_REPORTING` sets whether the transcriber restricts events to the subset needed for billing (`true`, the default) or sends the full activity event stream (`false`).
+Both modes are controlled by the same two settings. `SM_EATS_URL` sets the destination for usage events. `SM_ENABLE_USAGE_REPORTING` sets whether the transcriber restricts events to the subset needed for billing (`true`, the default) or sends the full activity event stream (`false`).
+
+If `SM_EATS_URL` is not set, the destination depends on `SM_ENABLE_USAGE_REPORTING`: at its default of `true`, the transcriber falls back to `usage.speechmatics.com`; set to `false`, there is no destination and reporting is disabled entirely.
 
 Automatic reporting relies on the default destination, with `SM_ENABLE_USAGE_REPORTING` left at its default of `true`. Offline reporting sets `SM_EATS_URL` to your own [Usage Container](/deployments/usage-reporting/offline#container) instead, while `SM_ENABLE_USAGE_REPORTING` remains at its default — the same billing events are sent to your container rather than to Speechmatics.
 
