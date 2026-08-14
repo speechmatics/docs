@@ -1,5 +1,6 @@
 ---
-description: 'Keep a Realtime session open without holding compute capacity during long stretches of near-silent audio'
+title: Session parking
+description: 'Keep a Realtime session open without holding compute capacity during long stretches of silence'
 keywords:
   [
     speechmatics,
@@ -18,56 +19,61 @@ import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml";
 
 # Session parking
 
-Some integrations open a Realtime session and send only a trickle of audio — a small chunk every few seconds — for hours, just to keep the connection alive. Session parking frees the compute capacity allocated to a session like this without ending it: the WebSocket stays open and keeps accepting audio, and transcription resumes as soon as real audio arrives again.
+## How session parking works
 
-:::note
-Session parking must be enabled for your account. Contact your account manager or [support](https://support.speechmatics.com) to turn it on.
-:::
+Speechmatics detects when a session's audio rate has stayed significantly below real time, eg less than 50%, for a while and parks the session automatically.
 
-## How it works
+Speechmatics acknowledges audio sent while parked, so client-side flow control keeps working. When the audio stream returns to close to real time, the session resumes on its own.
 
-Once enabled, parking is automatic and transparent: Speechmatics detects when a session's audio rate has stayed below real time for a while and parks it, with no message sent to the client. Audio sent while parked is buffered and acknowledged as normal, so client-side flow control keeps working. When audio returns to real time, the session resumes on its own.
+A parked session's transcript timeline (timestamps and speaker labels) either continues across the pause or restarts, depending on `preserve_timeline`, covered in [Pausing and resuming explicitly](#pausing-and-resuming-explicitly).
 
-A parked session's transcript timeline (timestamps and speaker labels) either continues across the pause or restarts, depending on `preserve_timeline` — see [Manual parking](#manual-parking) below. Automatically detected parks default to preserving the timeline.
+## Pausing and resuming explicitly
 
-If a resume fails, the session is closed with an `Error` of type `park_resume_failed`.
+You can also pause and resume a session explicitly with `PauseRecognition` and `ResumeRecognition`. This is the best fix for an integration that needs connections prewarmed and ready: pause instead of holding the connection open at a low rate.
 
-## Manual parking
+Resuming a paused session is faster than closing the connection and opening a new one. A new session pays for a fresh WebSocket connection — DNS lookup, TCP handshake, TLS handshake — followed by a `StartRecognition` / `RecognitionStarted` round trip; a large custom dictionary in `StartRecognition` can add hundreds of milliseconds to that round trip on its own.
 
-Clients can also park and resume a session explicitly with `PauseRecognition` and `ResumeRecognition`. This is the cheapest fix for an integration that only trickles audio: pause instead of holding the connection open at a low rate.
+`ResumeRecognition` skips all of that: the connection is already open, so resuming is a single message on it. Depending on network distance and throughput, that can save on the order of 1.5 seconds compared to opening a new session.
 
-```json
-{"message": "PauseRecognition"}                             -> {"message": "RecognitionPaused"}
-{"message": "PauseRecognition", "preserve_timeline": true}  -> {"message": "RecognitionPaused"}
-{"message": "ResumeRecognition"}                            -> {"message": "RecognitionResumed"}
-```
+The following table shows messages involved in explict session parking:
+
+| Client sends | Server replies |
+|---|---|
+| `{"message": "PauseRecognition"}` | `{"message": "RecognitionPaused"}` |
+| `{"message": "PauseRecognition", "preserve_timeline": true}` | `{"message": "RecognitionPaused"}` |
+| `{"message": "ResumeRecognition"}` | `{"message": "RecognitionResumed"}` |
 
 <SchemaNode schema={realtimeSchema.components.schemas.PauseRecognition} />
 <br/>
 <SchemaNode schema={realtimeSchema.components.schemas.ResumeRecognition} />
 <br/>
 
-`RecognitionPaused` is sent once the transcript for any audio already sent has arrived and the session's compute has been released. `RecognitionResumed` is sent once the session is transcribing again. Audio sent right after `ResumeRecognition` doesn't need to wait for it — it's acknowledged in order once the resume completes.
+`RecognitionPaused` is sent once the transcript for any audio already sent has arrived and the session's compute has been released. `RecognitionResumed` is sent once the session is transcribing again.
 
 :::tip
-Send audio immediately after `ResumeRecognition`, without waiting for `RecognitionResumed`. Waiting for the acknowledgement adds a full round trip to time-to-first-final — typically 200-500ms, depending on network conditions — for no benefit, since the resumed session accepts and queues that audio correctly either way.
+Send audio immediately after `ResumeRecognition`, without waiting for `RecognitionResumed`. Waiting for the acknowledgement adds a full round trip to time-to-first-final, depending on network conditions even 200-500ms, resumed session accepts and queues that audio correctly.
 :::
 
 `preserve_timeline` is optional and applies to that pause only:
 
-- Omitted, or `false` — the session resumes as a new one. Timestamps restart from zero and speaker labels are not carried over. This is the default for a manual pause.
-- `true` — the transcript timeline continues: timestamps and speaker labels carry across the pause, and audio sent while parked is transcribed on resume.
+- Omitted, or `false` — the session resumes as a new one. Timestamps restart from zero and speaker labels are not carried over.
+- `true` — the transcript timeline continues: timestamps and speaker labels carry across the pause.
 
 A session that hasn't sent any audio yet, or that can't preserve its timeline at all, always resumes as a new session regardless of `preserve_timeline`.
 
-If `PauseRecognition` is sent on a session that can't be parked, the server replies with a `Warning` of type `not_allowed` and the session continues normally — pausing was simply refused, not the whole connection.
+If you send `PauseRecognition` on a session that can't be parked, the server replies with a `Warning` of type `not_allowed` and the session continues normally: pausing was refused, not the connection.
 
-## Limits
+## Session limits while parked
 
-A parked session holds no compute, so it has no idle deadline of its own — the account's usual [session limits](/speech-to-text/realtime/limits#session-limits) (idle timeout, max duration) still apply and can end it while parked. A session parked by its own `PauseRecognition` is exempt from the idle timeout for as long as it stays parked; the max-duration limit still applies.
+A parked session still counts toward your account's [concurrent session limit](/speech-to-text/realtime/limits) — parking releases compute, not the connection.
 
-Audio buffered while parked is capped. If the cap is reached, the oldest buffered audio is dropped to make room for new audio — this can only happen with `preserve_timeline: true`, since audio isn't buffered for replay otherwise.
+The account's [session limits](/speech-to-text/realtime/limits#session-limits) continue to apply, but which ones depends on how the session was parked:
 
-## Deployment
+- **Parked automatically**, because of extremely low audio rate — both the idle timeout and the max duration limit can end the session.
+- **Parked explicitly** with `PauseRecognition` — exempt from the idle timeout for as long as it stays parked. The max duration limit still applies.
 
-Session parking is available on SaaS on Cloud only.
+Speechmatics caps how much audio it buffers while a session is parked. If the cap is reached, Speechmatics drops the oldest buffered audio to make room for new audio — this can only happen with `preserve_timeline: true`, since audio isn't buffered for replay otherwise.
+
+## Where session parking is available
+
+Session parking is available on SaaS on Cloud and when RT SaaS helm chart is used for on Prem.
