@@ -1,0 +1,79 @@
+---
+title: Session parking
+description: 'Keep a Realtime session open without holding compute capacity during long stretches of silence'
+keywords:
+  [
+    speechmatics,
+    realtime,
+    session parking,
+    pause,
+    resume,
+    transcription,
+    speech recognition,
+    asr,
+  ]
+---
+
+import SchemaNode from '@theme/Schema';
+import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml";
+
+# Session parking
+
+## How session parking works
+
+Speechmatics detects when a session's audio rate has stayed significantly below real time, eg less than 50%, for a while and parks the session automatically.
+
+Speechmatics acknowledges audio sent while parked, so client-side flow control keeps working. When the audio stream returns to close to real time, the session resumes on its own.
+
+A parked session's transcript timeline (timestamps and speaker labels) either continues across the pause or restarts, depending on `preserve_timeline`, covered in [Pausing and resuming explicitly](#pausing-and-resuming-explicitly).
+
+## Pausing and resuming explicitly
+
+You can also pause and resume a session explicitly with `PauseRecognition` and `ResumeRecognition`. This is the best fix for an integration that needs connections prewarmed and ready: pause instead of holding the connection open at a low rate.
+
+Resuming a paused session is faster than closing the connection and opening a new one. A new session pays for a fresh WebSocket connection — DNS lookup, TCP handshake, TLS handshake — followed by a `StartRecognition` / `RecognitionStarted` round trip; a large custom dictionary in `StartRecognition` can add hundreds of milliseconds to that round trip on its own.
+
+`ResumeRecognition` skips all of that: the connection is already open, so resuming is a single message on it. Depending on network distance and throughput, that can save on the order of 1.5 seconds compared to opening a new session.
+
+The following table shows messages involved in explict session parking:
+
+| Client sends | Server replies |
+|---|---|
+| `{"message": "PauseRecognition"}` | `{"message": "RecognitionPaused"}` |
+| `{"message": "PauseRecognition", "preserve_timeline": true}` | `{"message": "RecognitionPaused"}` |
+| `{"message": "ResumeRecognition"}` | `{"message": "RecognitionResumed"}` |
+
+<SchemaNode schema={realtimeSchema.components.schemas.PauseRecognition} />
+<br/>
+<SchemaNode schema={realtimeSchema.components.schemas.ResumeRecognition} />
+<br/>
+
+`RecognitionPaused` is sent once the transcript for any audio already sent has arrived and the session's compute has been released. `RecognitionResumed` is sent once the session is transcribing again.
+
+:::tip
+Send audio immediately after `ResumeRecognition`, without waiting for `RecognitionResumed`. Waiting for the acknowledgement adds a full round trip to time-to-first-final, depending on network conditions even 200-500ms, resumed session accepts and queues that audio correctly.
+:::
+
+`preserve_timeline` is optional and applies to that pause only:
+
+- Omitted, or `false` — the session resumes as a new one. Timestamps restart from zero and speaker labels are not carried over.
+- `true` — the transcript timeline continues: timestamps and speaker labels carry across the pause.
+
+A session that hasn't sent any audio yet, or that can't preserve its timeline at all, always resumes as a new session regardless of `preserve_timeline`.
+
+If you send `PauseRecognition` on a session that can't be parked, the server replies with a `Warning` of type `not_allowed` and the session continues normally: pausing was refused, not the connection.
+
+## Session limits while parked
+
+A parked session still counts toward your account's [concurrent session limit](/speech-to-text/realtime/limits) — parking releases compute, not the connection.
+
+The account's [session limits](/speech-to-text/realtime/limits#session-limits) continue to apply, but which ones depends on how the session was parked:
+
+- **Parked automatically**, because of extremely low audio rate — both the idle timeout and the max duration limit can end the session.
+- **Parked explicitly** with `PauseRecognition` — exempt from the idle timeout for as long as it stays parked. The max duration limit still applies.
+
+Speechmatics caps how much audio it buffers while a session is parked. If the cap is reached, Speechmatics drops the oldest buffered audio to make room for new audio — this can only happen with `preserve_timeline: true`, since audio isn't buffered for replay otherwise.
+
+## Where session parking is available
+
+Session parking is available on SaaS on Cloud and when RT SaaS helm chart is used for on Prem.
