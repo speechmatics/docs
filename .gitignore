@@ -29,3 +29,6 @@ static/*.yaml
 .env*.local
 
 .venv
+
+# Temporary / local dev
+/tmp
