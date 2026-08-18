@@ -26,6 +26,11 @@ export default {
     },
     {
       type: "doc",
+      id: "integrations-and-sdks/voice-sdk/index",
+      label: "Voice SDK",
+    },
+    {
+      type: "doc",
       id: "integrations-and-sdks/sdks",
       label: "SDKs",
     },

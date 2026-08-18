@@ -1,5 +1,6 @@
 ---
-description: "Learn how Speechmatics identifies speakers in audio"
+title: Speaker identification
+description: Enroll speaker identifiers and label known speakers consistently across recordings.
 keywords:
   [
     speechmatics,
@@ -8,51 +9,322 @@ keywords:
     diarization,
     transcription,
     speech recognition,
-    automatic speech recognition,
     asr,
   ]
-sidebar_position: 2
 ---
 
-# Speaker identification
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import speakerIdEnrollmentPythonExample from '../streaming/assets/speaker-id-enrollment-file-example.py';
+import speakerIdIdentificationPythonExample from '../streaming/assets/speaker-id-identification-file-example.py';
 
-Speaker identification lets you tag speakers consistently across recordings with the help of speaker identifiers. You can generate these string-encoded voice representations using short audio samples of the target speakers.
+Speaker identification lets you tag speakers consistently across recordings using speaker identifiers, which are string-encoded voice representations generated from short audio samples of the target speakers.
 
-By tagging known speakers with consistent labels, speaker identification makes transcripts more accurate, searchable, and easier to analyze over time. Providing speaker identifiers can also increase the accuracy of our diarization system.
+By tagging known speakers with consistent labels, speaker identification makes transcripts more accurate, searchable, and easier to analyze over time. Providing speaker identifiers can also increase the accuracy of diarization.
 
 ## Use cases
 
-- **Contact centers** – Recognize and tag individual agents and returning customers by name for personalized service, training, and compliance tracking.
-- **Video conferences** – Automatically label participants across multiple meetings to know who said what and maintain consistent speaker records and analytics.
-- **Medical consultations** – Identify doctors and patients across sessions for accurate records and follow-up care.
-- **Media production** – Consistently label recurring speakers or public figures across episodes or segments, which is valuable in subtitling, media search and archiving.
+- **Contact centers** — recognize and tag individual agents and returning customers by name for personalized service, training, and compliance tracking.
+- **Video conferences** — automatically label participants across multiple meetings to know who said what and maintain consistent speaker records and analytics.
+- **Medical consultations** — identify doctors and patients across sessions for accurate records and follow-up care.
+- **Media production** — consistently label recurring speakers or public figures across episodes or segments, which is valuable in subtitling, media search, and archiving.
+
+## Availability
+
+Speaker identification is available with the Standard and Enhanced models for pre-recorded and streaming transcription, and with Linden 1 for agent STT. See [Feature availability](/speech-to-text/availability/).
+
+It requires [speaker diarization](/speech-to-text/features/speaker-diarization) to be enabled.
 
 ## How it works
 
-To use speaker identification you must enable diarization in the [speaker mode](/speech-to-text/features/diarization#diarization-modes) and then follow the two steps below:
+Speaker identification is a two-step process.
 
-- **Enrollment** - For each speaker you want to recognize, generate identifiers from short audio clips (5–30s) where they ideally speak alone.
-  To improve robustness, you can enroll the same speaker with multiple clips recorded under different acoustic conditions, selected to represent the degree of variety and quality that could be expected in the target audio.
-
-- **Identification** - Use the enrolled identifiers in transcription jobs to label known speakers with meaningful names (for example, `Alice` or `John`). The system matches voices to identifiers and tags the output with the desired labels.
+- **Enrollment** — for each speaker you want to recognize, generate identifiers from short audio clips of 5 to 30 seconds where they ideally speak alone. To improve robustness, you can enroll the same speaker with multiple clips recorded under different acoustic conditions, chosen to represent the variety and quality expected in the target audio.
+- **Identification** — use the enrolled identifiers in later requests to label known speakers with meaningful names such as `Alice` or `John`. The system matches voices to identifiers and tags the output with your labels.
 
 :::info
-It is recommended to minimize the number of speaker IDs to achieve optimal accuracy. A maximum of 50 speaker identifiers across all speakers can be configured per session. Additionally, labels for identified speakers must not use reserved internal labels (e.g., UU, S1, S2) and should not contain leading or trailing spaces.
+Minimize the number of speaker identifiers for optimal accuracy. A maximum of 50 speaker identifiers across all speakers can be configured per session. Labels for identified speakers must not use reserved internal labels such as `UU`, `S1`, or `S2`, and must not contain leading or trailing spaces.
 :::
+
+## Enroll speakers
+
+Run a transcription with speaker diarization enabled on an audio sample where the speaker ideally speaks alone, then request the identifiers back.
+
+<Tabs groupId="interaction-pattern">
+<TabItem value="pre-recorded" label="Pre-recorded">
+
+Set the `get_speakers` flag in the transcription config:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      // highlight-start
+      "get_speakers": true
+      // highlight-end
+    }
+  }
+}
+```
+
+When the transcription is done, the speaker identifiers are attached to the returned transcript:
+
+```json
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.93,
+          "content": "Hello",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      ...
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Hi",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      ...
+    }],
+  // highlight-start
+  "speakers": [
+    {
+      "label": "S1",
+      "speaker_identifiers": ["<id1>"]
+    },
+    {
+      "label": "S2",
+      "speaker_identifiers": ["<id2>"]
+    }]
+  // highlight-end
+}
+```
+
+</TabItem>
+<TabItem value="streaming" label="Streaming">
+
+Send a `GetSpeakers` request. By default the engine returns identifiers created up to the time of the request; set the optional `final` flag to wait until the end of the stream:
+
+```json
+{
+  "message": "GetSpeakers",
+  "final": true
+}
+```
+
+- `final: false` (default) — returns identifiers generated up to the point of the request. To avoid empty results, wait until the server has issued at least one `AddTranscript` message before sending the request.
+- `final: true` — waits until the end of the stream and returns identifiers based on all audio.
+
+Alternatively, enable automatic speaker retrieval by setting `get_speakers` to `true` in the diarization config. This is recommended for enrollment: it guarantees the engine provides identifiers once transcription is complete, equivalent to calling `GetSpeakers(final=true)`. If `get_speakers` is absent or `false`, you can still request speakers explicitly by sending `GetSpeakers(final=true)`; the request takes precedence and the engine returns identifiers at the end of transcription.
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      // highlight-start
+      "get_speakers": true
+      // highlight-end
+    }
+  }
+}
+```
+
+The server replies with a `SpeakersResult` message containing the identifiers for each diarized speaker:
+
+```json
+{
+  "message": "SpeakersResult",
+  "speakers": [
+    {"label": "S1", "speaker_identifiers": ["<id1>"]},
+    {"label": "S2", "speaker_identifiers": ["<id2>"]}
+  ]
+}
+```
+
+</TabItem>
+<TabItem value="agent-stt" label="Agent STT">
+
+Send a [`GetSpeakers`](/speech-to-text/agent-stt/messages#getspeakers) message at any point during the session. The server replies with [`SpeakersResult`](/speech-to-text/agent-stt/messages#speakersresult).
+
+```json
+{
+  "message": "GetSpeakers"
+}
+```
+
+See [Speaker focus and identification](/speech-to-text/agent-stt/speaker-focus) for the agent STT workflow in full.
+
+</TabItem>
+</Tabs>
+
+## Identify known speakers
+
+Provide your stored identifiers in a later request to tag known speakers.
+
+Note the field differs by interaction pattern: pre-recorded and streaming use `speaker_diarization_config.speakers`, while agent STT uses `transcription_config.known_speakers`. Both express the same concept.
+
+<Tabs groupId="interaction-pattern">
+<TabItem value="pre-recorded" label="Pre-recorded">
+
+All other [speaker diarization options](/speech-to-text/features/speaker-diarization) remain supported. The `speakers_sensitivity` parameter adjusts how strongly the system prefers enrolled speakers over detecting new generic ones; lower values make it more likely to match existing enrolled speakers.
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      // highlight-start
+      "speakers": [
+        {"label": "Alice", "speaker_identifiers": ["<alice_id1>", "<alice_id2>"]},
+        {"label": "Bob", "speaker_identifiers": ["<bob_id1>"]}
+      ]
+      // highlight-end
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="streaming" label="Streaming">
+
+All [speaker diarization options](/speech-to-text/features/speaker-diarization) work with speaker identification. The [`max_speakers`](/speech-to-text/features/speaker-diarization#max-speakers) parameter applies only to generic, non-enrolled speakers: if it is set to 10 and 10 speakers are enrolled, the system can still add up to 10 additional generic speakers. The `speakers_sensitivity` parameter adjusts how strongly the system prefers enrolled speakers over detecting new generic ones; lower values make it more likely to match existing enrolled speakers.
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      // highlight-start
+      "speakers": [
+        {"label": "Alice", "speaker_identifiers": ["<alice_id1>", "<alice_id2>"]},
+        {"label": "Bob", "speaker_identifiers": ["<bob_id1>"]}
+      ]
+      // highlight-end
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="agent-stt" label="Agent STT">
+
+Pass identifiers in `transcription_config.known_speakers`:
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    "language": "en",
+    // highlight-start
+    "known_speakers": [
+      { "label": "Alice", "speaker_identifiers": ["<alice_id>"] },
+      { "label": "Bob", "speaker_identifiers": ["<bob_id>"] }
+    ]
+    // highlight-end
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+With the config above, transcript segments are tagged with `"Alice"` and `"Bob"` whenever those speakers are detected. Any other speakers are tagged with the internal labels:
+
+```json
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.93,
+          "content": "Morning",
+          "language": "en",
+          // highlight-start
+          "speaker": "Alice"
+          // highlight-end
+        }
+      ],
+      ...
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 0.93,
+          "content": "Hi",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      ...
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Morning",
+          "language": "en",
+          // highlight-start
+          "speaker": "Bob"
+          // highlight-end
+        }
+      ],
+    }]
+}
+```
 
 ## Known caveats
 
 Speaker identifiers have the following limitations and scoping rules:
 
-- **Model-specific** — Identifiers are tied to the model used to generate them. Using identifiers across different models is not supported and any such identifiers will be ignored.
-  Whenever a model is updated, existing identifiers must always be regenerated.
+- **Model-specific** — identifiers are tied to the model used to generate them. Using identifiers across different models is not supported, and any such identifiers are ignored. Whenever a model is updated, existing identifiers must be regenerated.
+- **Encrypted and scoped** — identifiers are securely encrypted and scoped to your account context:
+  - **Per customer** — identifiers are unique to each customer and cannot be shared or reused across customers.
+  - **Per project** — if you use multiple [projects](/administration/projects) under the same customer, identifiers are isolated per project and cannot be used across them.
 
-- **Encrypted and scoped** — Identifiers are securely encrypted and scoped to your account context:
-  - **Per customer** — Identifiers are unique to each customer and cannot be shared or reused across customers.
-  - **Per project** — If you use multiple [projects](/administration/projects) under the same customer, identifiers are isolated per project and cannot be used across them.
+In all of these cases, including model mismatches and attempts to use identifiers across customers or projects, a warning is issued to alert you that the affected identifiers have been ignored.
 
-In all of the above cases — including model mismatches or attempts to use identifiers across customers or projects — a **warning will be issued** to alert you that the affected identifiers have been ignored.
+## Code examples
 
-## Supported modes
+<Tabs groupId="speaker-id-examples">
+  <TabItem value="enrollment" label="Python - enrollment">
 
-Speaker identification is supported in both **[Realtime speaker identification](/speech-to-text/realtime/speaker-identification)** and **[Batch speaker identification](/speech-to-text/batch/speaker-identification)** modes.
+Streaming speaker enrollment example.
+
+<CodeBlock language="python" showLineNumbers>
+{speakerIdEnrollmentPythonExample}
+</CodeBlock>
+
+  </TabItem>
+  <TabItem value="identification" label="Python - identification">
+
+Streaming speaker identification example.
+
+<CodeBlock language="python" showLineNumbers>
+{speakerIdIdentificationPythonExample}
+</CodeBlock>
+
+  </TabItem>
+</Tabs>

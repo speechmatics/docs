@@ -1,0 +1,70 @@
+---
+title: Speaker focus and identification
+sidebar_label: Speakers
+description: Choose which speakers your application acts on, and recognize the same speaker across sessions.
+---
+
+Agent STT assigns a speaker label to every segment when diarization is enabled. Two controls build on those labels: speaker focus decides whose speech your application acts on within a session, and speaker identification recognizes the same person across separate sessions.
+
+Agent STT is in [Preview](/speech-to-text/agent-stt/#preview-limitations).
+
+## Control which speakers your application acts on
+
+Speaker focus lets you control which speakers' output your application acts on. By default, all detected speakers are active and their transcripts are included in `AddSegment` output.
+
+Speaker IDs such as `S1` and `S2` are assigned automatically when diarization is enabled, and persist for the lifetime of the session. Send `UpdateSpeakerFocus` at any point during the session to change who is in focus. The new config takes effect immediately and replaces the previous one.
+
+```json
+{
+  "message": "UpdateSpeakerFocus",
+  "speaker_focus": {
+    "focus_speakers": ["S1"],
+    "ignore_speakers": ["S3"],
+    "focus_mode": "retain"
+  }
+}
+```
+
+- `focus_speakers` — speaker IDs to treat as active. Their segments appear with `is_active: true`.
+- `ignore_speakers` — speaker IDs to exclude entirely. Their speech is dropped and does not affect turn detection.
+- `focus_mode` — what happens to speakers who are in neither `focus_speakers` nor `ignore_speakers`:
+  - `retain` — they remain in the output as passive speakers, with `is_active: false`
+  - `ignore` — they are excluded from the output entirely
+
+## Recognize a speaker across sessions
+
+Speaker identification lets you recognize the same person across separate sessions. At the end of a session you retrieve voice identifiers for each speaker and store them. In later sessions you pass those identifiers into `StartRecognition`, and the system tags matching speakers with a consistent label rather than a generic `S1` or `S2`.
+
+### Get identifiers
+
+Send [`GetSpeakers`](/speech-to-text/agent-stt/messages#getspeakers) at any point during a session to retrieve identifiers for all speakers diarized so far. The server responds with [`SpeakersResult`](/speech-to-text/agent-stt/messages#speakersresult).
+
+Store the `speaker_identifiers` values from the response. These are opaque tokens tied to a speaker's voice profile.
+
+:::warning
+Treat speaker identifiers as credentials and store them securely.
+:::
+
+### Use identifiers in a later session
+
+Pass stored identifiers into `StartRecognition` using `transcription_config.known_speakers`. You can assign any label:
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    "language": "en",
+    "known_speakers": [
+      { "label": "Alice", "speaker_identifiers": ["<alice_id>"] },
+      { "label": "Bob", "speaker_identifiers": ["<bob_id>"] }
+    ]
+  }
+}
+```
+
+When those speakers are detected, their segments carry `"Alice"` or `"Bob"` as the `speaker_id` instead of a generic label. Any unrecognized speakers are still assigned generic labels such as `S1` and `S2`.
+
+## Next steps
+
+- [Speaker diarization](/speech-to-text/features/speaker-diarization) — how diarization separates speakers
+- [Speaker identification](/speech-to-text/features/speaker-identification) — the equivalent feature for pre-recorded and streaming transcription

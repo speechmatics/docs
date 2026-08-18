@@ -1,0 +1,81 @@
+---
+title: How agent STT works
+sidebar_label: Overview
+description: Understand how agent STT returns turn-based transcripts for conversational applications.
+pagination_prev: null
+---
+
+Agent STT is a WebSocket interaction pattern for conversational applications. You stream audio in and receive speaker-labeled, turn-based transcription back: clean, punctuated, and ready to pass directly to a language model.
+
+Turn detection runs on the server. You choose a [profile](/speech-to-text/agent-stt/profiles) based on your use case, and the server decides when to finalize each speaker's turn.
+
+:::info Agent STT is in Preview
+Agent STT is available on SaaS on Cloud for evaluation and feedback. It is not production-ready and not ready to scale. See [Preview limitations](#preview-limitations).
+:::
+
+## What agent STT provides
+
+Agent STT uses the Linden 1 model and gives you four things a raw transcript stream does not:
+
+- **Turn detection** — the server decides when a speaker has finished talking, so you know when to respond
+- **Segmentation** — transcripts arrive as complete speaker turns rather than as a word-by-word stream
+- **Diarization** — each segment carries a speaker label, and speakers persist for the session
+- **Speaker focus** — choose which speakers your application acts on and which it ignores
+
+## How agent STT differs from streaming
+
+Both agent STT and streaming send live audio over a WebSocket, and both use the Realtime processing mode. They differ in what comes back and in who decides when a turn has ended.
+
+| | Streaming | Agent STT |
+|---|---|---|
+| Transcript arrives as | words, refined by partials | complete speaker turns |
+| Timings and partials | word-level | segment-level |
+| Turn detection | you configure a silence trigger | the server runs a profile |
+| Model | Standard, Enhanced, Melia 1 | Linden 1 |
+
+Use streaming when you want the raw word-by-word stream and your own segmentation. Use agent STT when you want each finished turn handed to you ready for a language model.
+
+Agent STT provides the speech-to-text layer only. It is not a conversational pipeline: it does not include a language model or speech synthesis.
+
+Three separate things configure turn detection across Speechmatics surfaces, and they are not interchangeable:
+
+- **Agent STT profiles** (`adaptive`, `agile`, `smart`, `external`) — server-side, selected in the endpoint path
+- **Voice SDK presets** (`FAST`, `FIXED`, `ADAPTIVE`, `SMART_TURN`, `EXTERNAL`, `SCRIBE`, `CAPTIONS`) — client-side, over the Realtime API
+- **Realtime API `conversation_config`** — a silence threshold you set yourself
+
+The only genuine correspondence is between the agent STT `external` profile and the Voice SDK `EXTERNAL` preset: both hand the turn boundary to your application. Otherwise, do not map one name onto another.
+
+## Where agent STT runs
+
+Agent STT runs on SaaS on Cloud. Audio is processed in the EU or the US. You cannot select a region during Preview, and agent STT is not available in the AUS region.
+
+For the features Linden 1 supports, see [Feature availability](/speech-to-text/availability/#agent-stt-features).
+
+## Preview limitations
+
+Agent STT is a preview offering with the following limitations.
+
+- Do not send live production traffic. The service is less stable than production endpoints.
+- There are no uptime or performance SLAs.
+- There are no data residency guarantees. Audio may be processed in the EU or the US.
+- Features may change. Preview features may be withdrawn, or may never be released publicly.
+
+## Give feedback
+
+This is a preview, and your feedback shapes what goes to general availability. Tell us what works well, which features you use, whether something did not work as expected, a profile that behaved differently from what you anticipated, or a feature you would want before we ship more broadly.
+
+Specific areas of interest:
+
+- Integration experience, including documentation, SDKs, and API messages and metadata
+- Accuracy and latency, including data capture where relevant, such as phone numbers or spelled-out names and account numbers
+- Turn detection, and your experience with the different profiles
+- Any missing capabilities that would make your product better
+- What would stop you using this in production
+
+To talk to us in person, contact your Speechmatics contact or use the channel shared in your preview welcome email. You can also [fill in this form](https://docs.google.com/forms/d/e/1FAIpQLSc-6GQXYx_0M-X0Uu_uB_4XyDL009jMv3hBJAFw7kD98AILJg/viewform).
+
+## Next steps
+
+- [Quickstart](/speech-to-text/agent-stt/quickstart) — open a session and receive your first turn
+- [Turn detection profiles](/speech-to-text/agent-stt/profiles) — choose a profile
+- [Agent STT messages](/speech-to-text/agent-stt/messages) — every message in a session

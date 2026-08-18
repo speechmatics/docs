@@ -1,0 +1,223 @@
+---
+sidebar_position: 2
+title: Output
+description: 'Learn about the supported output formats for the Speechmatics Batch API'
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+import Admonition from '@theme/Admonition';
+import CodeBlock from '@theme/CodeBlock'
+import SchemaNode from '@theme/Schema'
+import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
+import checkJobStatusUnixSample from './assets/check-job-status.sh'
+import checkMultipleJobsStatusUnixSample from './assets/check-multiple-jobs-status.sh'
+import batchSchema from "!openapi-schema-loader!@site/spec/batch.yaml"
+import transcriptResponseExample from "./assets/transcript-response-example.json?raw"
+import { HelpCircle, BookOpen, FileAudio, Clock } from "lucide-react"
+import { Card, Link, Text, Flex, Button, Box, Grid } from '@radix-ui/themes'
+import { LinkCard } from "@site/src/theme/LinkCard";
+
+# Output
+
+Transcription jobs are processed asynchronously by default: you submit a job, then check its status to see whether it has completed. To block for the result in a single request instead, use [Synchronous transcription](/speech-to-text/pre-recorded/synchronous).
+
+:::tip
+You can also configure notifications to be sent to a webhook when a job is completed. See [Notifications](/speech-to-text/pre-recorded/notifications) for more details.
+:::
+
+## Check single job status
+
+If you wish to retrieve a particular job, you can do so using the job ID for up to 7 days, after which time it will be automatically deleted in accordance with our [Data Retention Policy](/speech-to-text/pre-recorded/limits#data-retention-limits).
+
+You can make a GET request to check the status of a job as follows:
+
+<Tabs>
+  <TabItem value='unix' label='Unix'>
+
+  <CodeBlock language="bash">
+    {checkJobStatusUnixSample}
+  </CodeBlock>
+
+  </TabItem>
+  <TabItem value='windows' label='Windows'>
+
+  <CodeBlock language="bash">
+    {checkMultipleJobsStatusUnixSample}
+  </CodeBlock>
+
+  </TabItem>
+</Tabs>
+
+This endpoint applies a short default wait, returning as soon as the job reaches a terminal state. Pass the `wait` query parameter to control the duration, or `wait=0` to return immediately. See [Synchronous transcription](/speech-to-text/pre-recorded/synchronous#default-wait-on-the-get-endpoints).
+
+The response is a JSON object containing details of the job, with the `status` field showing whether the job is still processing or not. The possible values are:
+
+- **`running`**: The job is still processing.
+- **`done`**: The job has been completed. The transcript is available for download at the [`/jobs/:jobid/transcript` endpoint](/api-ref/batch/get-the-transcript-for-a-transcription-job).
+- **`rejected`**: Transcription was not possible. This will be accompanied by an error message.
+
+An example response looks like this:
+
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+  "job": {
+    "config": {
+      "notification_config": null,
+      "transcription_config": {
+        "additional_vocab": null,
+        "channel_diarization_labels": null,
+        "language": "en"
+      },
+      "type": "transcription"
+    },
+    "created_at": "2019-01-17T17:50:54.113Z",
+    "data_name": "example.wav",
+    "duration": 275,
+    "id": "yjbmf9kqub",
+    "status": "running"
+  }
+}
+```
+
+## Check multiple job statuses
+
+You can retrieve the status of the 100 most recent jobs submitted in the past 7 days. This is done by making a <HTTPMethodBadge method="GET" /> request without a Job ID as follows:
+
+<Tabs>
+  <TabItem value='unix' label='Unix'>
+
+```bash
+curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
+     -H "Authorization: Bearer $API_KEY"
+```
+
+  </TabItem>
+  <TabItem value='windows' label='Windows'>
+
+```powershell
+curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" `
+     -H "Authorization: Bearer $API_KEY"
+```
+
+  </TabItem>
+</Tabs>
+
+A deleted job is not included in the list unless you request it explicitly, as described in the [API reference](/api-ref/batch/list-all-jobs).
+
+## Load and process the transcript
+
+The transcript endpoint returns plain text, JSON, or SRT. Request the format using the `format` query parameter. See the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#request).
+
+A few useful things to know about transcript formats:
+
+- The default format is JSON.
+- Use the `format=txt` query parameter to get the transcript in plain text. Useful for quick access to the transcript.
+- Use the `format=srt` query parameter to get the transcript in SRT format. Useful for displaying the transcript in a subtitle file.
+- To access other data, including word timestamps, translations, and add-on outputs, use the default JSON format.
+
+Like the job status endpoint, this endpoint applies a short default wait. Pass the `wait` query parameter alongside `format` to block for the transcript instead of polling. See [Synchronous transcription](/speech-to-text/pre-recorded/synchronous#wait-for-the-transcript).
+
+### Transcript response schema
+
+Below is the schema for the transcript response when using the default JSON format.
+
+Refer to the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#responses) for further details.
+
+<SchemaNode schema={batchSchema.paths["/jobs/{jobid}/transcript"].get.responses["200"].schema} />
+
+### Example response
+
+The following is an example of a transcript response, which you should see as an output of the provided [example.wav](https://github.com/speechmatics/speechmatics-js-sdk/raw/7d219bfee9166736e6aa21598535a194387b84be/examples/nodejs/example.wav) file used in the [code samples in the quickstart](/speech-to-text/pre-recorded/quickstart).
+
+<CodeBlock language="json">
+  {JSON.stringify(transcriptResponseExample, null, 2)}
+</CodeBlock>
+
+### Multilingual transcript output
+
+For a Melia 1 job, the `language` property on each word reflects the language detected for that word. See [Mixed-language transcription](/speech-to-text/features/mixed-language-transcription#multilingual-transcript-output).
+
+## Tracking metadata
+
+You can optionally add tracking metadata to a job when you create it. This can be used for tracking the job through your own management workflow.
+
+The metadata will be returned when you [check job status](#check-single-job-status), or [get the transcript](/api-ref/batch/get-the-transcript-for-a-transcription-job) for a transcription job.
+
+The metadata object can contain the following properties:
+
+### `tracking`
+
+<SchemaNode schema={batchSchema.definitions.TrackingData} />
+
+For example:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en"
+  },
+  // highlight-start
+  "tracking": {
+    "title": "ACME Q12018 Statement",
+    "reference": "/data/clients/ACME/statements/segs/2018Q1-seg8",
+    "tags": [
+      "quick-review",
+      "segment"
+    ],
+    "details": {
+      "user_type": "agent",
+      "client": {
+        "name": "ACME Corp",
+        "type": "enterprise"
+        },
+      "seg_start": 963.201,
+      "seg_end": 1091.481
+    }
+  }
+  // highlight-end
+}
+```
+
+## App usage tracking
+
+To attribute usage across applications, add an app ID to your requests. See [App usage tracking](/speech-to-text/features/app-usage-tracking).
+
+## Next steps
+
+<Grid columns={{initial: "1", md: "2"}} gap="3">
+  <LinkCard
+    title="Synchronous transcription"
+    description="Get a transcript in one call instead of polling"
+    href="/speech-to-text/pre-recorded/synchronous"
+    icon={<Clock/>}
+  />
+  <LinkCard
+    title="Troubleshooting"
+    description="Resolve common issues with the Batch API"
+    href="/speech-to-text/pre-recorded/troubleshooting"
+    icon={<HelpCircle/>}
+  />
+  <LinkCard
+    title="API Reference"
+    description="Full details about the Batch API"
+    href="/api-ref/batch/create-a-new-job"
+    icon={<BookOpen/>}
+  />
+  <LinkCard
+    title="Inputs"
+    description="See which file types are supported"
+    href="/speech-to-text/pre-recorded/input"
+    icon={<FileAudio/>}
+  />
+  <LinkCard
+    title="Limits"
+    description="See the limits for the Batch API"
+    href="/speech-to-text/pre-recorded/limits"
+    icon={<FileAudio/>}
+  />
+</Grid>

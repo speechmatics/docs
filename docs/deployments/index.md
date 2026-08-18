@@ -12,8 +12,8 @@ Leverage Speechmatics’ cloud services for easy, scalable, and fully managed sp
 The best way to get started using Speechmatics' cloud services is:
 
 - Create an account in our [Portal](https://portal.speechmatics.com/)
-- Check out our [Realtime transcription](/speech-to-text/realtime/quickstart.mdx)
-- Check out our [Batch transcription](/speech-to-text/batch/quickstart.mdx)
+- Check out our [Realtime transcription](/speech-to-text/streaming/quickstart)
+- Check out our [Batch transcription](/speech-to-text/pre-recorded/quickstart)
 
 ## On-prem
 
@@ -32,23 +32,23 @@ Feature availability varies depending on the deployment method you choose. Below
 | Feature                                                                               | Modes           | Deployments   |
 | ------------------------------------------------------------------------------------- | --------------- | ------------- |
 | [Multilingual speech to text](/speech-to-text/languages#bilingual-and-multi-language-packs) | Batch, Realtime | SaaS, On-prem |
-| [Alignment](/speech-to-text/batch/alignment)                                          | Batch           | SaaS          |
+| [Alignment](/speech-to-text/add-ons/audio-alignment)                                          | Batch           | SaaS          |
 | [Audio events](/speech-to-text/features/audio-events)                                 | Batch, Realtime | SaaS, On-prem |
 | [Audio filtering](/speech-to-text/features/audio-filtering)                           | Batch, Realtime | SaaS, On-prem |
-| [Auto chapters](/speech-to-text/batch/speech-intelligence/auto-chapters)              | Batch           | SaaS          |
+| [Auto chapters](/speech-to-text/add-ons/chapters)              | Batch           | SaaS          |
 | [Custom dictionary](/speech-to-text/features/custom-dictionary)                       | Batch, Realtime | SaaS, On-prem |
-| [Diarization](/speech-to-text/features/diarization)                                   | Batch, Realtime | SaaS, On-prem |
-| [Disfluencies and word replacement](/speech-to-text/formatting#disfluencies)          | Batch, Realtime | SaaS, On-prem |
+| [Diarization](/speech-to-text/features/speaker-diarization)                                   | Batch, Realtime | SaaS, On-prem |
+| [Disfluencies and word replacement](/speech-to-text/features/disfluencies-and-profanities#disfluencies)          | Batch, Realtime | SaaS, On-prem |
 | [Feature discovery](/speech-to-text/features/feature-discovery)                       | Batch, Realtime | SaaS          |
-| [Fetch URL](/speech-to-text/batch/input#fetch-url)                                    | Batch           | SaaS, On-Prem |
-| [Language identification](/speech-to-text/batch/language-identification)              | Batch           | SaaS          |
-| [Notifications](/speech-to-text/batch/notifications.md)                               | Batch           | SaaS, On-prem |
-| [Punctuation settings](/speech-to-text/formatting#punctuation)                        | Batch, Realtime | SaaS, On-prem |
-| [Sentiment analysis](/speech-to-text/batch/speech-intelligence/sentiment-analysis)    | Batch           | SaaS, On-prem |
-| [Smart formatting](/speech-to-text/formatting#smart-formatting)                       | Batch, Realtime | SaaS, On-prem |
+| [Fetch URL](/speech-to-text/pre-recorded/input#fetch-url)                                    | Batch           | SaaS, On-prem |
+| [Language identification](/speech-to-text/pre-recorded/language-identification)              | Batch           | SaaS, On-prem |
+| [Notifications](/speech-to-text/pre-recorded/notifications)                               | Batch           | SaaS, On-prem |
+| [Punctuation settings](/speech-to-text/features/formatting#punctuation)                        | Batch, Realtime | SaaS, On-prem |
+| [Sentiment analysis](/speech-to-text/add-ons/sentiment)    | Batch           | SaaS, On-prem |
+| [Smart formatting](/speech-to-text/features/formatting#smart-formatting)                       | Batch, Realtime | SaaS, On-prem |
 | [Speaker identification](/speech-to-text/features/speaker-identification)             | Batch, Realtime | SaaS, On-prem |
-| [Summarization](/speech-to-text/batch/speech-intelligence/summarization)              | Batch           | SaaS          |
-| [Topic detection](/speech-to-text/batch/speech-intelligence/topic-detection)          | Batch           | SaaS          |
-| [Tracking](/speech-to-text/batch/output#tracking-metadata)                            | Batch, Realtime | SaaS, On-prem |
-| [Translation](/speech-to-text/features/translation)                                   | Batch, Realtime | SaaS, On-prem |
-| [Turn detection](/speech-to-text/realtime/turn-detection)                             | Realtime        | SaaS, On-prem |
+| [Summarization](/speech-to-text/add-ons/summaries)              | Batch           | SaaS          |
+| [Topic detection](/speech-to-text/add-ons/topics)          | Batch           | SaaS          |
+| [Tracking](/speech-to-text/pre-recorded/output#tracking-metadata)                            | Batch, Realtime | SaaS, On-prem |
+| [Translation](/speech-to-text/add-ons/translation)                                   | Batch, Realtime | SaaS, On-prem |
+| [Turn detection](/speech-to-text/features/turn-detection)                             | Realtime        | SaaS, On-prem |

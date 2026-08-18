@@ -27,7 +27,7 @@ The Audio Events feature, available through our Automatic Speech Recognition (AS
 
 Enable Audio Events in your application for file processing scenarios by leveraging Speechmatics SaaS or On-Prem solutions.
 
-If you're new to Speechmatics, start by exploring our guides on [Processing a File](/speech-to-text/batch/quickstart) or [Analyzing in Realtime](/speech-to-text/realtime/quickstart). To activate Audio Events, include the following configuration:  
+If you're new to Speechmatics, start by exploring our guides on [Processing a File](/speech-to-text/pre-recorded/quickstart) or [Analyzing in Realtime](/speech-to-text/streaming/quickstart). To activate Audio Events, include the following configuration:  
 
 ```json 
 { 
@@ -41,6 +41,10 @@ If you're new to Speechmatics, start by exploring our guides on [Processing a Fi
   // highlight-end
 } 
 ``` 
+
+## Availability
+
+Audio events are available with the Standard and Enhanced models for pre-recorded and streaming transcription. They are not available for agent STT. On-prem requires a GPU container. See [Feature availability](/speech-to-text/availability/).
 
 ## Example 
 
@@ -79,7 +83,7 @@ with BatchClient(settings) as client:
 
 <TabItem value="real-time" label="Realtime Processing"> 
 
-Python client example for detecting Audio Events in real-time, see [here](/speech-to-text/realtime/quickstart) for more examples of Realtime Transcription 
+Python client example for detecting Audio Events in real-time, see [here](/speech-to-text/streaming/quickstart) for more examples of Realtime Transcription 
 
 ```python showLineNumbers 
 import speechmatics.client
@@ -142,7 +146,7 @@ The JSON output for batch processing will include the following information abou
 - `confidence`: A number indicating the confidence value of the event detected by the model.
 - `channel`: Only returned if Channel Diarization is enabled, this would indicate the channel in which the event was detected
 
-The JSON output will also contain an `audio_event_summary` which will summarise all detected Audio Events highlighting the number of times and the total duration for which each category of Audio Event occurred.
+The JSON output will also contain an `audio_event_summary` which will summarize all detected Audio Events highlighting the number of times and the total duration for which each category of Audio Event occurred.
 
 The Audio Event summary will also contain the summary of silence & speech events, with the total duration being calculated by adding duration of all the words spoken.
 
@@ -248,7 +252,7 @@ Ending message example for the music event:
 ``` 
 
 :::info
-The `channel` fields are only returned when [channel](../../speech-to-text/realtime/realtime-diarization#channel-diarization) or [`channel and speaker`](../../speech-to-text/realtime/realtime-diarization#channel-and-speaker-diarization) diarization is enabled.
+The `channel` fields are only returned when [channel](../../speech-to-text/features/channel-diarization) or [`channel and speaker`](../../speech-to-text/features/channel-diarization#channel-and-speaker-diarization) diarization is enabled.
 These fields indicate which channel the audio event comes from.  
 :::
 

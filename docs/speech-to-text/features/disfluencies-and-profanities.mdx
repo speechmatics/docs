@@ -1,0 +1,167 @@
+---
+title: Disfluency and profanity tagging
+sidebar_label: Disfluencies and profanities
+description: Tag hesitations and profanity in the transcript, or remove disfluencies automatically.
+keywords: [disfluency, disfluencies, profanity, profanities, hesitation, tags, transcript filtering]
+---
+
+import CodeBlock from '@theme/CodeBlock'
+
+Speechmatics tags hesitation sounds and profanity in the transcript so you can display, filter, or remove them. Both appear in the `tags` array on the word in the transcript output.
+
+## Availability
+
+Disfluency tagging and profanity tagging are available with the Standard and Enhanced models, for pre-recorded and streaming transcription. See [Feature availability](/speech-to-text/availability/).
+
+Language coverage differs between the two features and is listed in each section below.
+
+## Profanities {#profanities}
+
+You can tag profanities to identify or censor offensive language in your workflow. Profanity tagging is available for:
+
+- English (`en`)
+- Italian (`it`)
+- Spanish (`es`)
+
+Tagged profanities appear in the transcript with the `profanity` tag:
+
+```json
+"results": [
+  {
+    "alternatives": [
+      {
+        "confidence": 1.0,
+        "content": "$PROFANITY",
+        "language": "en",
+        "tags": [
+          "profanity"
+        ]
+      }
+    ],
+    "end_time": 18.03,
+    "start_time": 17.61,
+    "type": "word"
+  }
+]
+```
+
+For other languages, consider using [text replacement](/speech-to-text/features/text-replacement) to identify profanities.
+
+## Disfluencies {#disfluencies}
+
+Disfluencies are hesitation sounds like "um", "uh", and "hmm". Speechmatics automatically tags them with `disfluency` in the transcript output:
+
+```json
+"results": [
+  {
+    "alternatives": [
+      {
+        "confidence": 1.0,
+        "content": "hmm",
+        "language": "en",
+        "tags": [
+          "disfluency"
+        ]
+      }
+    ],
+    "end_time": 18.03,
+    "start_time": 17.61,
+    "type": "word"
+  }
+]
+```
+
+<details data-accent-color="gray">
+  <summary>Full list of tagged English disfluencies</summary>
+<CodeBlock>
+{`huh
+aha
+ah
+aw
+eh
+err
+hmm
+mm
+um
+uh
+uh-oh
+uh-huh
+uh-uh
+mhm
+a-ha
+aah
+aahh
+aaw
+ah-ha
+ahaa
+ahh
+ahha
+aww
+eeh
+erm
+hhm
+hhmm
+hm
+huh-uh
+m-hm
+uggh
+ugh
+ughh
+uhh
+uhhm
+uhm
+uhmm
+umm
+uuh
+uuhh
+uum`}
+</CodeBlock>
+</details>
+
+### Supported languages for disfluencies {#supported-languages-for-disfluencies}
+
+Disfluency tagging and removal are available for the following languages. Each language has its own set of hesitation sounds; the expandable list above covers English.
+
+- Arabic (`ar`)
+- Danish (`da`)
+- Dutch (`nl`)
+- English (`en`)
+- French (`fr`)
+- German (`de`)
+- Greek (`el`)
+- Hebrew (`he`)
+- Hindi (`hi`)
+- Hungarian (`hu`)
+- Italian (`it`)
+- Japanese (`ja`)
+- Mandarin (`cmn`)
+- Polish (`pl`)
+- Portuguese (`pt`)
+- Russian (`ru`)
+- Spanish (`es`)
+
+Coverage of hesitation sounds varies by language. If you rely on disfluency removal for a specific language, test it with representative audio rather than assuming full coverage.
+
+### Removing disfluencies {#removing-disfluencies}
+
+You can automatically remove disfluencies from your transcript:
+
+```json
+"transcription_config": {
+  "model": "enhanced",
+  "language": "en",
+  "transcript_filtering_config": {
+    "remove_disfluencies": true
+  }
+}
+```
+
+This simplifies client-side processing by removing hesitation sounds and properly adjusting capitalization and spacing. For example:
+
+Without disfluency removal:
+> Um, what would you like, hmm?
+
+With disfluency removal:
+> What would you like?
+
+This feature is available for the [supported languages](#supported-languages-for-disfluencies). The default setting is `"remove_disfluencies": false`.

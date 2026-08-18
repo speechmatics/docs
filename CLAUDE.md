@@ -1,14 +1,63 @@
 # Speechmatics docs
 
+Updated: 10 Aug 2026
+
 This repository contains the source code and content for the Speechmatics Docs site (docs.speechmatics.com). It documents integrations with Speechmatics APIs, libraries and SDKs, as well as short technical guides and API references. Use it both to work on the site and to create or review documentation content.
 
 To start (content tasks): paste your notes, rough draft, or brief. The assistant proposes a plan before writing unless you ask it to write immediately.
 
-## Project files
+---
 
-docs-style-guide.md — writing standards, content types, and governance
-.CLAUDE/context/terminology.md — canonical product names, preferred terms, and terms to avoid
-.CLAUDE/context/product-architecture.md — STT and TTS product structure for accuracy checks
+## Context files
+
+| File | Owns |
+|---|---|
+| docs-style-guide.md | Writing standards, content types, editorial governance |
+| .CLAUDE/context/terminology.md | Canonical names, casing, forbidden variants |
+| .CLAUDE/context/product-architecture.md | Product structure, levels, naming crosswalk |
+| .CLAUDE/context/feature-availability.md | Availability and readiness values, feature descriptions. Generated: do not edit by hand |
+
+Consult the file that owns a topic instead of copying its content elsewhere. If two files disagree, the owning file is correct and the other is a bug: fix it rather than working around it.
+
+**Atlassian (Confluence and Jira).** Use only when the context files do not cover the question, or when a contributor asks. Always state that the information comes from Confluence or Jira and may be outdated. Never present it as authoritative. If a release ticket contradicts a context file, stop and flag it. Do not publish either version.
+
+---
+
+## Ownership and review
+
+Every page is owned by whoever added it. The owner keeps it accurate when the product changes, and every change is reviewed before it goes live.
+
+When a feature ships, changes, or is deprecated, the responsible team identifies affected pages and updates them before or at release. Documentation updates are not a post-release task.
+
+Major changes and structural decisions (content location, categorization, information architecture, and the context files) are owned by Matt and Pete at DevX. If in doubt whether a change is structural, consult them before making it.
+
+Editorial governance for individual pages, including the pre-publication quality checklist, when not to create a page, and how to handle deprecated content, is in docs-style-guide.md.
+
+### Maintaining the context files
+
+`feature-availability.md` is generated from the STT product catalogue. Regenerate it rather than editing it, and do not hand-correct a value: fix the catalogue and regenerate.
+
+The other three files are hand-maintained. A change to any of them is a structural change.
+
+---
+
+## Behavioral rules
+
+**Apply the style guide automatically.** Every document produced follows [docs-style-guide.md](docs-style-guide.md): content type, structure, writing principles, content elements, and AI-readability standards. Do not wait to be asked. If source material conflicts with the style guide, flag it and apply the correct standard.
+
+**Check terminology.** Verify every product name, API name, model name, feature name, and technical term against terminology.md. Flag deviations in source material before producing output.
+
+**Verify product claims.** Check statements about structure against product-architecture.md. Before documenting any feature, add-on, or region, check its availability and readiness in feature-availability.md and follow the authoring rules stated there. Do not reproduce claims that conflict with either file.
+
+**Default mode is planning.** When given partial input, before writing: identify the Diátaxis content type, propose a structure (title, H2 sections, approximate scope), flag any terminology or style guide issues in the source material, then ask for confirmation before proceeding.
+
+**Auto mode.** If the contributor says "just write it", "go ahead", or provides a detailed structured brief, skip planning and produce the document directly.
+
+**Word count discipline.** Produce the minimum words the reader needs to act. Before presenting any output, remove: (1) sentences that restate a heading, (2) sentences that explain a self-evident example, (3) summary or closing lines that recap what was just said.
+
+**Flag violations.** Flag structural problems, wrong content types, terminology errors, and style guide violations. State the issue once clearly, then proceed with the contributor's preference if they choose to override.
+
+---
 
 ## Tech stack
 
@@ -50,14 +99,3 @@ The project uses cspell (`cspell.json`) for spell checking. Add new technical te
 ## API reference
 
 We generate API reference pages from the YAML files in the spec/ folder. There are scripts in package.json which handle this process. Check there if you need more information on their workings.
-
-## Behavioral rules
-
-**Apply the style guide automatically.** Every document produced follows [docs-style-guide.md](docs-style-guide.md): content type, structure, writing principles, content elements, and AI-readability standards. Do not wait to be asked. If source material conflicts with the style guide, flag it and apply the correct standard.
-**Check terminology.** Verify every product name, API name, model name, and technical term against terminology.md. Flag deviations in source material before producing output.
-**Verify product claims.** Check all statements about Speechmatics products, APIs, and models against product-architecture.md. Do not reproduce claims that conflict with it.
-**Atlassian (Confluence and Jira).** Use the Atlassian connection only when the project files do not cover the question, or when a contributor explicitly requests it. When used, always state that the information comes from Confluence or Jira and may be outdated or incorrect. Never present it as authoritative. Project files always take precedence over Atlassian content.
-**Default mode — planning.** When given partial input, before writing:1. Identify the Diátaxis content type.2. Propose a structure: title, H2 sections, approximate scope.3. Flag any terminology or style guide issues in the source material.4. Ask for confirmation before proceeding.
-**Auto mode.** If the contributor says "just write it", "go ahead", or provides a detailed structured brief, skip planning and produce the document directly.
-**Word count discipline.** Produce the minimum words the reader needs to act. Before presenting any output, remove: (1) sentences that restate a heading, (2) sentences that explain a self-evident example, (3) summary or closing lines that recap what was just said.
-**Flag violations.** Flag structural problems, wrong content types, terminology errors, and style guide violations. State the issue once clearly, then proceed with the contributor's preference if they choose to override.

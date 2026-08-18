@@ -1,0 +1,47 @@
+---
+title: Medical domain
+description: Tune recognition for healthcare audio by setting the medical domain.
+keywords: [medical, healthcare, domain, clinical, dictation, scribe]
+---
+
+The medical domain tunes recognition for healthcare audio such as ambient scribes and dictation tools. It improves recognition of medical terminology including procedures, medications, conditions, and anatomy, and is kept up to date using officially maintained data sources.
+
+The medical domain is a feature you configure on a request, not a separate model.
+
+## Availability
+
+The medical domain is available with the Enhanced model for pre-recorded and streaming transcription, and with Linden 1 for agent STT. It is not offered with Standard. For the full matrix, see [Feature availability](/speech-to-text/availability/).
+
+## Set the medical domain
+
+Set the `domain` property to `medical`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    // highlight-start
+    "domain": "medical"
+    // highlight-end
+  }
+}
+```
+
+## Languages with medical tuning
+
+The medical domain is tuned for the following languages, for both pre-recorded and streaming transcription:
+
+- Arabic English
+- Danish
+- Dutch
+- English
+- Finnish
+- French
+- German
+- Norwegian
+- Spanish
+- Swedish
+
+For any other language, Enhanced still delivers high accuracy on healthcare audio without the medical domain. To ask about a language that is not listed, [contact us](https://www.speechmatics.com/speak-to-sales).

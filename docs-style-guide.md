@@ -2,11 +2,13 @@
 
 # Speechmatics Docs Style Guide
  
+Updated: 10 Aug 2026
+ 
 Source of truth for writing, structuring, and maintaining content on docs.speechmatics.com.
  
-**Scope:** docs.speechmatics.com only. Does not govern speechmatics.com, portal.speechmatics.com, or Confluence.
+**Scope:** docs.speechmatics.com only.
  
-**Owners:** Matt and Pete at DevX. Flag gaps or propose changes in the shared Claude project.
+**Ownership:** Matt and Pete at DevX. See Ownership and review in CLAUDE.md.
  
 **Using this guide:** Start with Content types before writing anything. Use the quality checklist in Governance before publishing.
  
@@ -219,7 +221,7 @@ The page's main topic. Maximum 5 words. Sentence case only. Must make sense out 
  
 ## Description
  
-A single sentence summarizing what the reader will do or learn. Appears below the title. Also used as the frontmatter `description` field for search and AI retrieval.
+A single sentence summarizing what the reader will do or learn. Appears below the title.
  
 Second-person imperative, active voice, present tense, sentence case. Maximum 158 characters.
  
@@ -244,7 +246,7 @@ A concise label for a major section. Sentence case only. Must name the subject e
  
 ## Subheading (H3+)
  
-Use for finer distinctions within a section. Never immediately follow a heading — always insert at least one paragraph of prose between an H2 and an H3.
+Use for finer distinctions within a section. Never immediately follow a heading: always insert at least one paragraph of prose between an H2 and an H3.
  
 ---
  
@@ -291,6 +293,17 @@ Use for comparisons, structured properties, and listings where column relationsh
 - **Accessibility:** include a brief `aria-label` or caption.
 - **Size:** maximum 5 columns and 10 rows. Split larger datasets.
 - **Caption** (optional): one sentence, maximum 80 characters.
+
+### Catalogue tables
+
+A catalogue table lists every member of a set for lookup, not comparison. It may exceed 10 rows if it meets all three conditions:
+
+1. Maximum 3 columns.
+2. It is the only table on the page.
+3. Lookup is the page's entire purpose.
+
+Splitting a catalogue table fragments the lookup and makes it harder to scan, so the row cap does not apply. The 5-column cap still applies, and comparison tables never qualify.
+
 ---
  
 ## Card
@@ -345,16 +358,13 @@ AI-readability is not a separate concern from good writing. Both require clear s
  
 ## Frontmatter
  
-Every page requires `title` and `description` in frontmatter.
+Every page requires `title` in frontmatter.
  
 `title` must accurately reflect the page content.
- 
-`description` is a single benefit-led sentence. Same rules as the Description content element. Maximum 158 characters. Do not leave empty or auto-generated.
- 
+
 ```yaml
 ---
 title: Configure speaker diarization
-description: Enable the Speechmatics API to identify and label individual speakers in a transcript.
 ---
 ```
  
@@ -383,7 +393,7 @@ One concept per H2 section. Avoid forward and backward references ("as mentioned
  
 ## Terminology consistency
  
-Use one term per concept. Do not introduce a term by one name and later refer to it by another on the same page. Full rules are in the terminology file.
+Use one term per concept. Do not introduce a term by one name and later refer to it by another on the same page. Full rules are in `.CLAUDE/context/terminology.md`.
  
 ❌ "Speaker diarization separates a transcript... The diarisation feature can be enabled..." → ✅ "Speaker diarization (referred to as diarization throughout this page) separates a transcript into distinct speakers."
  
@@ -426,7 +436,6 @@ Every page must satisfy the following before going live.
 **Structure**
 - Content type is identifiable (the arbitration rule passes)
 - Page title follows naming conventions
-- Frontmatter `description` is present and complete
 - Content is not duplicated on another page
 **Content**
 - All code snippets have a context sentence
@@ -450,13 +459,9 @@ Every page must satisfy the following before going live.
  
 ---
  
-## Ownership
+## Unreleased work
  
-Every page has an owner responsible for keeping it accurate when the product changes.
- 
-When a feature ships, changes, or is deprecated, the responsible team identifies affected pages and updates them before or at release. Documentation updates are not a post-release task.
- 
-Structural decisions — content location, categorization, information architecture — are escalated to the docs platform owners: Matt and Pete at DevX. This responsibility will transfer to a Documentation Lead if that role is created.
+Never publish a date for unreleased work. This repository is public.
  
 ---
  
@@ -472,4 +477,4 @@ Structural decisions — content location, categorization, information architect
  
 ## Proposing changes
  
-Contact Matt or Pete at DevX directly with the proposed edit and a one-sentence rationale. Do not edit the project files or instructions before the proposal has been approved!
+Contact Matt or Pete at DevX directly with the proposed edit and a one-sentence rationale. Do not edit the context files or instructions before the proposal has been approved!

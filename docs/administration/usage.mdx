@@ -3,6 +3,9 @@ title: Usage
 description: Track transcription usage by processing mode and model in the portal and through the API.
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Usage
 
 :::info
@@ -24,13 +27,47 @@ The models shown depend on the processing mode:
 - **Realtime**: Standard and Enhanced.
 - **Batch**: Standard, Enhanced, and Melia 1.
 
-Medical and agent variants are reported under their underlying model, not as separate lines. For example, Batch usage on the medical variant appears under Enhanced.
+Usage on the medical domain and on agent STT is reported under the underlying model, not as a separate line. For example, Batch usage with the medical domain appears under Enhanced.
 
 ## Track usage with the API
 
-To retrieve usage data programmatically, use the Usage API. See [Get usage statistics](/api-ref/batch/get-usage-statistics) in the API reference for endpoint details.
+To retrieve usage data programmatically, use the Usage API. Usage is reported as the number of jobs successfully processed in a time period, along with the total duration of the corresponding audio files.
 
 The Usage API currently reports Batch usage only.
+
+Usage is queried with an API key, and is returned for the account associated with that key. All usage is reported on a Coordinated Universal Time (UTC) calendar day basis, and usage for the current UTC day is **not** included in the results. Deleting a completed job has no effect on reported usage.
+
+### Request usage
+
+This request retrieves usage for all jobs from the beginning of 1 January 2023 until the end of 31 December 2023. More precisely, it includes all jobs completed successfully at or after 2023-01-01T00:00Z and before 2024-01-01T00:00Z.
+
+The `since` and `until` parameters are both optional:
+
+- If `since` is omitted, usage is reported from the day on which the first job was successfully processed for the account.
+- If `until` is omitted, usage is reported until the end of the previous UTC day.
+
+<Tabs>
+<TabItem value='unix' label='Unix'>
+
+```bash
+curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/usage?since=2023-01-01&until=2023-12-31" \
+    -H "Authorization: Bearer $API_KEY"
+```
+
+</TabItem>
+<TabItem value='windows' label='Windows'>
+
+```powershell
+curl -L -X GET "https://eu1.asr.api.speechmatics.com/v2/usage?since=2023-01-01&until=2023-12-31" `
+    -H "Authorization: Bearer $API_KEY"
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+The response is a JSON object containing usage information. See [Get usage statistics](/api-ref/batch/get-usage-statistics) in the API reference for full details.
 
 ## Next steps
 
