@@ -1,0 +1,215 @@
+---
+title: Speaker diarization
+description: Separate and label speakers by voice, and tune sensitivity, speaker limits, and label stability.
+keywords:
+  [
+    speechmatics,
+    diarization,
+    speaker diarization,
+    speakers,
+    transcription,
+    speech recognition,
+    asr,
+  ]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Speaker diarization separates a transcript into distinct speakers, so you can see who said what. It picks out different speakers based on acoustic matching, aggregating all audio channels into a single stream for processing.
+
+It is especially useful in conversations, meetings, interviews, and recordings where keeping track of each voice matters. By labeling speakers, diarization makes transcripts easier to read, analyze, and share.
+
+## Use cases
+
+- **Call centers** — identify agents and customers for training, compliance, and quality assurance.
+- **Video conferences** — track who said what in multi-participant discussions.
+- **Medical consultations** — capture conversations between doctors and patients with clear speaker labels.
+- **Media production** — make multi-speaker audio easier to edit, search, and annotate.
+
+## Availability
+
+Speaker diarization is available for pre-recorded transcription with Standard, Enhanced, and Melia 1; for streaming with Standard and Enhanced; and for agent STT with Linden 1. See [Feature availability](/speech-to-text/availability/).
+
+To separate speakers by audio channel instead of by voice, see [Channel diarization](/speech-to-text/features/channel-diarization).
+
+## Enable speaker diarization
+
+Speaker diarization is disabled by default for pre-recorded and streaming transcription. Set `diarization` to `speaker` in the transcription config.
+
+<Tabs groupId="interaction-pattern">
+<TabItem value="pre-recorded" label="Pre-recorded">
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    // highlight-start
+    "diarization": "speaker"
+    // highlight-end
+  }
+}
+```
+
+</TabItem>
+<TabItem value="streaming" label="Streaming">
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    // highlight-start
+    "diarization": "speaker"
+    // highlight-end
+  }
+}
+```
+
+</TabItem>
+<TabItem value="agent-stt" label="Agent STT">
+
+Agent STT enables speaker diarization by default. Set `diarization` to `none` to disable it.
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    "language": "en",
+    // highlight-start
+    "diarization": "speaker"
+    // highlight-end
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Speaker labels
+
+For pre-recorded and streaming transcription, each `word` and `punctuation` object in the transcript includes a `speaker` property identifying who spoke it. There are two types of label:
+
+- `S#` — S stands for speaker, and `#` is a sequential number identifying each speaker. S1 appears first in the results, followed by S2, S3, and so on.
+- `UU` — used when the speaker cannot be identified or diarization is not applied, for example if background noise is transcribed as speech but no speaker can be determined.
+
+```json
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.93,
+          "content": "hello",
+          "language": "en",
+          // highlight-start
+          "speaker": "S1"
+          // highlight-end
+        }
+      ],
+      ...
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "hi",
+          "language": "en",
+          // highlight-start
+          "speaker": "S2"
+          // highlight-end
+        }
+      ],
+    }]
+```
+
+Agent STT returns the label as `speaker_id` on each segment rather than on each word. See [Agent STT messages](/speech-to-text/agent-stt/messages#addsegment).
+
+## Speaker sensitivity {#speaker-sensitivity}
+
+Configure the sensitivity of speaker detection with the `speaker_sensitivity` setting in `speaker_diarization_config`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    // highlight-start
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      "speaker_sensitivity": 0.6
+    }
+    // highlight-end
+  }
+}
+```
+
+This takes a value between 0 and 1, with a default of 0.5. A higher sensitivity increases the likelihood of more unique speakers being returned.
+
+## Prefer current speaker {#prefer-current-speaker}
+
+Reduce the likelihood of incorrectly switching between similar-sounding speakers by setting the `prefer_current_speaker` flag in `speaker_diarization_config`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    // highlight-start
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      "prefer_current_speaker": true
+    }
+    // highlight-end
+  }
+}
+```
+
+By default this flag is `false`. When set to `true`, the system stays with the speaker of the previous word if they closely match the speaker of the new word. This may result in some shorter speaker turn changes between similar speakers being missed.
+
+## Max speakers {#max-speakers}
+
+Prevent too many speakers from being detected with the `max_speakers` setting. This applies to streaming transcription and agent STT.
+
+```json
+{
+  "message": "StartRecognition",
+  "audio_format": {
+    "type": "raw",
+    "encoding": "pcm_f32le",
+    "sample_rate": 48000
+  },
+  "transcription_config": {
+    "language": "en",
+    "model": "enhanced",
+    // highlight-start
+    "diarization": "speaker",
+    "speaker_diarization_config": {
+      "max_speakers": 10
+    }
+    // highlight-end
+  }
+}
+```
+
+By default there is no limit on the number of speakers. When set explicitly, `max_speakers` accepts any integer greater than or equal to 2.
+
+## Speaker diarization and punctuation
+
+Speaker diarization uses punctuation to improve accuracy. Small corrections are applied to speaker labels based on sentence boundaries. For example, if the system initially assigns 9 words in a sentence to S1 and 1 word to S2, the lone S2 word may be corrected to S1.
+
+This adjustment only works when punctuation is enabled. Disabling punctuation with the `permitted_marks` setting in `punctuation_overrides` can reduce diarization accuracy, and adjusting punctuation sensitivity can also affect how accurately speakers are identified. See [Formatting and punctuation](/speech-to-text/features/formatting#punctuation).
+
+## Considerations
+
+Enabling diarization increases the time taken to transcribe a pre-recorded file. Expect diarization to increase overall processing time by 10 to 50 percent.
+
+## Deprecated: speaker change
+
+Speaker change detection was removed in July 2024. The `speaker_change` and `channel_and_speaker_change` parameters are no longer supported. Use speaker diarization for speaker labeling instead.
+
+For API-related questions, contact [Support](https://support.speechmatics.com).

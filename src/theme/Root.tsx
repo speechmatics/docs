@@ -3,16 +3,24 @@ import MixpanelProvider from "@site/src/components/MixpanelProvider";
 import React, { useEffect } from "react";
 
 // The medical/healthcare domain docs moved from the Languages page to the Models
-// page (DEL-33741). Server-side redirects can't match a URL hash, so redirect the
-// legacy anchor client-side, on load and on hash change.
+// page (DEL-33741), and then from the Models page to their own feature page.
+// Server-side redirects can't match a URL hash, so redirect the legacy anchors
+// client-side, on load and on hash change.
+const MEDICAL_DOMAIN_PAGE = "/speech-to-text/features/medical-domain";
+const LEGACY_HEALTHCARE_ANCHORS = [
+  "/speech-to-text/languages",
+  "/speech-to-text/models",
+];
+
 function useLegacyHealthcareAnchorRedirect() {
   useEffect(() => {
     function redirect() {
       const { pathname, hash } = window.location;
-      const onLanguagesPage =
-        pathname.replace(/\/$/, "") === "/speech-to-text/languages";
-      if (onLanguagesPage && hash === "#healthcare-domain") {
-        window.location.replace("/speech-to-text/models#healthcare-domain");
+      const onLegacyPage = LEGACY_HEALTHCARE_ANCHORS.includes(
+        pathname.replace(/\/$/, ""),
+      );
+      if (onLegacyPage && hash === "#healthcare-domain") {
+        window.location.replace(MEDICAL_DOMAIN_PAGE);
       }
     }
     redirect();

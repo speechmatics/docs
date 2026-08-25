@@ -1,11 +1,11 @@
 ---
-title: Speech to Text — Overview
+title: Speech to Text
 pagination_prev: null
 pagination_next: null
-description: Learn how to turn audio into text.
+description: Choose an interaction pattern, a model, and a deployment, then start transcribing audio.
 ---
 import { LinkCard } from "@site/src/theme/LinkCard";
-import { Flex, Grid } from "@radix-ui/themes";
+import { Grid } from "@radix-ui/themes";
 import {
   ChevronsRightIcon,
   FileAudio,
@@ -17,37 +17,43 @@ import {
   ChartLine,
 } from "lucide-react";
 
-# Speech to Text overview
+Speech to Text transcribes audio in three interaction patterns, which differ in how you present audio for processing:
 
+- **pre-recorded**: submit a file and receive a complete transcript
+- **streaming**: send live audio and receive transcripts as you speak
+- **agent STT**: send live audio and receive complete speaker turns
 
-Use Speech to Text to transcribe using one of the modes:
-- [Realtime processing](#realtime-processing): Stream audio from an input device or file and receive instant updates of the transcription as it happens
-- [Batch processing](#batch-processing): Submit an audio file and receive a complete text transcription once the processing is finished
+Your choice of pattern determines which models you can use, and which features those models support. To understand how the three patterns relate to the Batch and Realtime APIs, see [Understanding interaction patterns](/speech-to-text/interaction-patterns).
 
 ## Developer quickstart
 
 <Grid columns={{initial: "1", md: "2"}} gap="3" mb="5">
   <LinkCard
-    icon={<ChevronsRightIcon/>}
-    direction="column"
-    title="Transcribe in real time"
-    description="Instantly convert streaming audio to text with Realtime processing"
-    href="/speech-to-text/realtime/quickstart"
-  />
-
-  <LinkCard
     icon={<FileAudio/>}
     direction="column"
     title="Transcribe a file"
-    description="Submit an audio file and receive a complete text transcription once the processing is finished"
-    href="/speech-to-text/batch/quickstart"
+    description="Submit an audio file and get a complete transcript back."
+    href="/speech-to-text/pre-recorded/quickstart"
+  />
+
+  <LinkCard
+    icon={<ChevronsRightIcon/>}
+    direction="column"
+    title="Transcribe live audio"
+    description="Stream live audio and receive transcripts as you speak."
+    href="/speech-to-text/streaming/quickstart"
   />
 </Grid>
 
-
 :::tip
-The quickest way to transcribe voice from audio is in our [web portal](https://portal.speechmatics.com/jobs/create/batch).
+The quickest way to transcribe audio is in the [web portal](https://portal.speechmatics.com/jobs/create/batch).
 :::
+
+## Choose a model and check availability
+
+Pre-recorded and streaming transcription offer the Standard, Enhanced, and Melia 1 models. Agent STT offers Linden 1. See [Models](/speech-to-text/models) to compare them.
+
+Availability depends on the combination of pattern, model, and deployment, so check the combination rather than the product name. See [Feature availability](/speech-to-text/availability/).
 
 ## Deployments
 
@@ -55,56 +61,13 @@ Speechmatics provides flexible deployment options tailored to your requirements.
 
 For deploying our API in your environment, [contact sales](https://www.speechmatics.com/speak-to-sales), or see our [on-prem documentation](/deployments).
 
-## Realtime processing
-
-Turn live audio into accurate transcripts — instantly.
-
-The [Speechmatics Realtime Speech to Text API](/api-ref/realtime-transcription-websocket) converts spoken audio into text with low latency and high accuracy.
-
-:::info
-- Use when speed matters
-- Transcribe live broadcasts or events
-- Caption webinars, meetings, or podcasts in real time
-- Power voice assistants or AI agents with live input
-- Monitor contact center calls as they happen
-- Build accessibility features like live captions
-:::
-
-## Batch processing
-
-Create transcripts from pre-recorded audio or video.
-
-The [Speechmatics Batch Speech to Text API](/api-ref/batch/create-a-new-job) processes pre-recorded files asynchronously by default, returning highly accurate transcripts in a range of formats. To block for the result in a single request instead, use [synchronous transcription](/speech-to-text/batch/synchronous).
-
-:::info
-- Transcribe recorded meetings or interviews
-- Caption on-demand videos and podcasts
-- Generate searchable transcripts for media archives
-- Process customer service recordings for compliance or insights
-- Automate subtitles across large video libraries
-:::
-
-
-### What is a job?
-
-Each transcription request is handled as a job — a self-contained unit representing a single transcription task.
-
-A job includes:
-- The audio or video file to be transcribed
-- Configuration settings (e.g. language, formatting, diarization)
-- Metadata and status tracking
-- The resulting transcript(s)
-
-You submit a job to the API, monitor its progress, and retrieve results once it's complete. Jobs can be created via direct upload or by referencing a URL.
-
-
 ## Quicklinks
 
 <Grid columns={{initial: "1", md: "2"}} gap="3">
   <LinkCard
     title="Languages"
     icon={<Globe/>}
-    href="/speech-to-text/languages"
+    href="/speech-to-text/languages/"
     description="See the languages Speechmatics supports"
   />
   <LinkCard
@@ -117,7 +80,7 @@ You submit a job to the API, monitor its progress, and retrieve results once it'
     title="Translation"
     icon={<Languages/>}
     description="Translate your transcript to another language"
-    href="/speech-to-text/features/translation"
+    href="/speech-to-text/add-ons/translation"
   />
   <LinkCard
     title="Custom dictionary"
@@ -129,7 +92,7 @@ You submit a job to the API, monitor its progress, and retrieve results once it'
     title="Diarization"
     icon={<Speech/>}
     description="Identify speakers in your transcript"
-    href="/speech-to-text/features/diarization"
+    href="/speech-to-text/features/speaker-diarization"
   />
   <LinkCard
     title="Accuracy benchmarking"

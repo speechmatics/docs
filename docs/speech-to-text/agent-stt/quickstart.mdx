@@ -1,0 +1,89 @@
+---
+title: Quickstart
+description: Open an agent STT session, stream audio, and act on each finalized turn.
+pagination_prev: null
+---
+
+:::info Agent STT is in Preview
+Agent STT is available on SaaS on Cloud for evaluation and feedback. It is not production-ready and not ready to scale. See [Preview limitations](/speech-to-text/agent-stt/#preview-limitations).
+:::
+
+## Transcribe a conversation with agent STT
+
+### 1. Create an API key
+
+Create an API key in the [Speechmatics portal](https://portal.speechmatics.com/settings/api-keys), under **Settings > API Keys**. Store it as a managed secret rather than in source control.
+
+### 2. Choose a profile
+
+Agent STT decides when a turn has ended using a profile, which you select in the endpoint path. Start with `adaptive` for a general conversational application. See [Turn detection profiles](/speech-to-text/agent-stt/profiles) to compare all four.
+
+### 3. Connect
+
+Open a WebSocket connection to the preview endpoint, naming your chosen profile:
+
+```text
+wss://preview.rt.speechmatics.com/v2/agent/<profile>
+```
+
+### 4. Authenticate {#authenticate}
+
+Authenticate every connection using one of the following:
+
+| Method | Format |
+|---|---|
+| Header (API key) | `Authorization: Bearer <SPEECHMATICS_API_KEY>` |
+| Header (JWT) | `Authorization: Bearer <JWT_TEMPORARY_KEY>` |
+| Query parameter (API key) | `?api_key=<SPEECHMATICS_API_KEY>` |
+| Query parameter (JWT) | `?jwt=<JWT_TEMPORARY_KEY>` |
+
+For temporary keys, see [Authentication](/get-started/authentication#temporary-keys).
+
+### 5. Start the session
+
+Send `StartRecognition` as your first message. This config transcribes English audio:
+
+```json
+{
+  "message": "StartRecognition",
+  "audio_format": {
+    "type": "raw",
+    "encoding": "pcm_s16le",
+    "sample_rate": 16000
+  },
+  "transcription_config": {
+    "language": "en"
+  }
+}
+```
+
+The server responds with `RecognitionStarted` when the session is ready. Wait for that message before sending audio.
+
+For every option a session accepts, see [Agent STT configuration](/speech-to-text/agent-stt/configuration).
+
+### 6. Stream audio and handle turns
+
+Send audio as binary WebSocket frames. Turn events arrive as the API processes speech. Two messages carry the transcript:
+
+- `AddPartialSegment` — an interim update while the speaker is still talking. Each one replaces the previous; do not concatenate them.
+- `AddSegment` — the final, stable transcript for the turn, emitted just before `EndOfTurn`. **This is the message to pass to your language model.**
+
+`EndOfTurn` is your cue to respond. For the full sequence and every payload, see [Agent STT messages](/speech-to-text/agent-stt/messages).
+
+## Code examples
+
+For working examples in Python and JavaScript, see the [Speechmatics Academy](https://github.com/speechmatics/speechmatics-academy/tree/main/basics/11-voice-api-explorer).
+
+## Troubleshooting
+
+**No transcript arrives.** Check your audio format. Only `pcm_s16le` at 8000 Hz or 16000 Hz produces correct output, and other encodings may be accepted silently without working. See [audio format](/speech-to-text/agent-stt/configuration#audio-format).
+
+**Nothing happens after connecting.** Send `StartRecognition` first, and wait for `RecognitionStarted` before sending audio.
+
+**A config field is ignored or the session is rejected.** `translation_config` and `audio_events_config` are rejected on agent endpoints. See [unsupported fields](/speech-to-text/agent-stt/configuration#unsupported-fields).
+
+## Next steps
+
+- [Turn detection profiles](/speech-to-text/agent-stt/profiles) — pick the profile that matches your latency and interruption trade-offs
+- [Agent STT messages](/speech-to-text/agent-stt/messages) — every client and server message, with payloads
+- [Speaker focus and identification](/speech-to-text/agent-stt/speaker-focus) — choose which speakers to act on, and recognize them across sessions

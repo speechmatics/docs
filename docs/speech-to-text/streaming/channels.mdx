@@ -1,0 +1,69 @@
+---
+title: Audio channels
+sidebar_label: Channels
+description: Send audio per channel, close channels, and check the channel limits for your deployment.
+keywords: [channels, channel diarization, AddChannelAudio, EndOfChannel, streaming]
+---
+
+When you use [channel diarization](/speech-to-text/features/channel-diarization) with streaming transcription, you send audio for each channel separately and close each channel when you are finished with it. This page covers that protocol.
+
+Set up channel diarization first: see [Channel diarization](/speech-to-text/features/channel-diarization) for the `diarization` and `channel_diarization_labels` config.
+
+## Send audio to a channel
+
+To send audio for a specific channel, use the `AddChannelAudio` message. Encode the data in base64 format:
+
+```json
+{
+  "message": "AddChannelAudio",
+  "channel": "New_York",
+  "data": <base_64_encoded_data>
+}
+```
+
+The server acknowledges with a `ChannelAudioAdded` message carrying a sequence number for that channel:
+
+```json
+{
+  "message": "ChannelAudioAdded",
+  "channel": "New_York",
+  "seq_no": <10>
+}
+```
+
+## Close a channel
+
+When you are finished with a channel, signal that it is no longer in use by sending an [`EndOfChannel`](/api-ref/realtime-transcription-websocket#endofchannel) message:
+
+```json
+{
+  // highlight-start
+  "message": "EndOfChannel",
+  "channel": "New_York",
+  "last_seq_no": 2564
+  // highlight-end
+}
+```
+
+Once this happens, the channel stops accepting and processing additional data. When all channels are closed, the session ends. This is convenient when you do not want to track the number of open channels in a stream.
+
+You can also use [`EndOfStream`](/api-ref/realtime-transcription-websocket#endofstream) to close all channels simultaneously. This is convenient when you know you want to close every channel at the same time.
+
+:::info
+Closing an individual channel has no impact on pricing.
+:::
+
+## Channel limits
+
+For SaaS on Cloud, the maximum number of channels is 2.
+
+For on-prem container deployments, the maximum number of channels depends on your [multi-session container's](/deployments/container/cpu-speech-to-text#multi-session-containers) maximum number of connections.
+
+The Speechmatics Python client CLI is currently limited to transcribing multi-channel audio from files, not from a stream or raw audio.
+
+## Channels on-prem
+
+To run `channel` or `channel_and_speaker` diarization with an on-prem deployment, configure your environment as follows:
+
+- Use a [GPU Speech to Text container](/deployments/container/gpu-speech-to-text). Handling multiple audio streams is computationally intensive and benefits from GPU acceleration.
+- Set the `SM_MAX_CONCURRENT_CONNECTIONS` environment variable to match the number of channels you want to process.

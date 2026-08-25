@@ -23,7 +23,11 @@ Audio Filtering pre-processes input audio to remove low-volume background speech
 This can be useful, for example, in a call center to avoid transcribing other agents' speech from the background.
 :::
 
-If you're new to Speechmatics, start by exploring our guides on [Transcribing a File](/speech-to-text/batch/quickstart) or [Transcribing in Realtime](/speech-to-text/realtime/quickstart). 
+If you're new to Speechmatics, start by exploring our guides on [Transcribing a File](/speech-to-text/pre-recorded/quickstart) or [Transcribing in Realtime](/speech-to-text/streaming/quickstart). 
+
+## Availability
+
+Audio filtering is available with the Standard and Enhanced models for pre-recorded and streaming transcription, and with Linden 1 for agent STT. See [Feature availability](/speech-to-text/availability/).
 
 ## Example
 
@@ -47,7 +51,7 @@ This will avoid processing any audio which is below the `3.4` volume threshold. 
 
 ## Volume labelling
 
-If Audio Filtering is configured, words will be labelled with their volume like this (range for `volume_threshold` is `0-100`):
+If Audio Filtering is configured, words will be labeled with their volume like this (range for `volume_threshold` is `0-100`):
 
 ```json
     {

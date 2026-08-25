@@ -36,6 +36,9 @@ const config: Config = {
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
+  // Anchors default to "warn". The baseline is clean, so throwing keeps the
+  // ~21 anchors that inbound links and redirects depend on from breaking silently.
+  onBrokenAnchors: "throw",
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you

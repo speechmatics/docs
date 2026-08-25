@@ -1,50 +1,37 @@
 ---
 title: Models
-description: Compare the Enhanced, Standard, and Melia 1 models and choose the right one for your audio.
+description: Compare the Standard, Enhanced, Melia 1, and Linden 1 models, then set the model in your request.
 ---
 
-# Models
+Speechmatics offers four models for Speech to Text. All four use the same API. The model you choose determines accuracy, how the model handles more than one language, and which features you can configure.
 
-Speechmatics offers three models for Speech to Text: Enhanced, Standard, and Melia 1. All three use the same API. The model you choose determines accuracy, how multilingual audio is handled, and which processing modes and regions are available.
+## Choose a model {#compare-the-models}
 
-## Compare the models
+Your [interaction pattern](/speech-to-text/interaction-patterns) determines which models you can use, so start there.
 
-| Capability | Enhanced | Standard | Melia 1 |
-|---|---|---|---|
-| Model | `enhanced` | `standard` | `melia-1` |
-| Specialized variant | Medical | — | — |
-| Accuracy | Highest | High | High |
-| Turnaround | Fast | Fastest | Fastest |
-| Processing modes | Batch and Realtime | Batch and Realtime | Batch |
-| Regions | EU, US, AUS | EU, US, AUS | EU, US |
-| Language handling | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Automatic multilingual](#melia-1) |
-| Diarization | Speaker and channel | Speaker and channel | Speaker and channel |
-| Language labeling | — | — | Per word |
-| Custom dictionary | ✅ | ✅ | Not yet |
-| Confidence scores | ✅ | ✅ | Not yet |
-| Speaker identification | ✅ | ✅ | Not yet |
-| Speech intelligence | ✅ | ✅ | Not yet |
+### Models for pre-recorded transcription {#pre-recorded-models}
 
-Enhanced and Standard are feature-identical and differ only in accuracy and speed: Enhanced delivers the highest accuracy, and Standard prioritizes throughput. Melia 1 matches Standard for accuracy and adds automatic multilingual transcription, but it is available for Batch only and supports a reduced feature set. Speech intelligence covers translation, summarization, topic detection, chapters, sentiment, and audio events.
+Standard, Enhanced, and Melia 1, all generally available.
 
-Melia 1 matches the Enhanced and Standard models for core transcription features, including diarization, word timings, punctuation, notifications, and output locale. It does not yet support the following features, which are available with the Enhanced and Standard models:
+- **Enhanced** — the highest accuracy on single-language audio, such as medical, legal, or subtitling work. The only model offering the [medical domain](/speech-to-text/features/medical-domain).
+- **Standard** — when throughput or latency matter more than maximum accuracy, such as archival transcription, content indexing, or large-scale captioning.
+- **Melia 1** — audio that contains more than one language, including speakers who switch language mid-conversation.
 
-- Custom vocabulary and formatting: custom dictionary, find and replace, spoken form output, profanity tagging
-- Output detail: confidence scores, entity detection, audio filtering
-- Speaker identification
-- Speech intelligence: audio events, translation, summarization, chapters, topics, sentiment
+To compare them feature by feature, see [pre-recorded transcription features](/speech-to-text/availability/#pre-recorded-transcription-features).
 
-Melia 1 is an early-access model and its feature support is expanding. Check the [release notes](https://speechmatics.featurebase.app/en/changelog) for the latest.
+### Models for streaming transcription {#streaming-models}
 
-## Choose a model
+Standard, Enhanced, and Melia 1. Standard and Enhanced trade accuracy against throughput exactly as they do for pre-recorded audio, and both are generally available.
 
-Use Enhanced for the highest accuracy on single-language audio, such as medical, legal, or subtitling work.
+Melia 1 for streaming is in Preview, on a separate endpoint. See [Melia 1 for streaming](#melia-1-streaming).
 
-Use Standard when throughput or latency matter more than maximum accuracy, such as archival transcription, content indexing, or large-scale captioning.
+To compare them feature by feature, see [streaming transcription features](/speech-to-text/availability/#streaming-transcription-features).
 
-Use Melia 1 for audio that contains more than one language, including speakers who switch language mid-conversation.
+### Models for agent STT {#agent-stt-models}
 
-For healthcare use cases, use the [Enhanced Medical model](#healthcare-domain) which is tuned for medical terminology.
+Linden 1 only, in Preview. Use agent STT for conversational applications that need a turn-based transcript ready to pass to a language model.
+
+For what it supports, see [agent STT features](/speech-to-text/availability/#agent-stt-features).
 
 ## Specify a model
 
@@ -64,11 +51,21 @@ This config selects the `enhanced` model:
 }
 ```
 
-Enhanced and Standard are available for Realtime and Batch transcription. Melia 1 is currently available for Batch transcription.
+Linden 1 is the exception: you select it by connecting to an agent STT endpoint rather than by setting `model`.
+
+## Standard
+
+Standard prioritizes throughput. It transcribes a single language, selected with a [transcription language pack](/speech-to-text/languages), and it can detect the language automatically.
+
+## Enhanced
+
+Enhanced delivers the highest accuracy of the four models. Like Standard, it transcribes a single selected language and can detect the language automatically.
+
+Enhanced also offers the medical domain, which tunes recognition for healthcare audio. Standard does not.
 
 ## Melia 1
 
-Melia 1 is a multilingual model. It transcribes audio that contains more than one language, including speakers who switch language mid-conversation, and returns a single continuous transcript. It does not require you to select a language pack, and its accuracy is on par with the Standard model.
+Melia 1 is a multilingual model. It transcribes audio that contains more than one language, including speakers who switch language mid-conversation, and returns a single continuous transcript. It does not require you to select a language pack, and its accuracy is on par with Standard.
 
 Set `"model": "melia-1"` and `"language": "multi"`:
 
@@ -88,60 +85,39 @@ Set `"model": "melia-1"` and `"language": "multi"`:
 Melia 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
 :::
 
-Melia 1 is available for Batch transcription in the EU and US regions only. It is not available in the Australia (AU1) region.
+Melia 1 has no language pack selection. For pre-recorded transcription on SaaS on Cloud it is served from the EU1 and US1 endpoints:
 
 | Region | Endpoint |
 |---|---|
 | EU1 (Europe) | `eu1.asr.api.speechmatics.com` |
 | US1 (USA) | `us1.asr.api.speechmatics.com` |
 
-For the full list of Batch endpoints, refer to [Authentication](/get-started/authentication#supported-endpoints).
+For the full list of endpoints, see [Authentication](/get-started/authentication#supported-endpoints). For the regions and features available with Melia 1, see [Feature availability](/speech-to-text/availability/).
 
-For the features Melia 1 does not yet support, refer to [Compare the models](#compare-the-models).
+### Melia 1 for streaming {#melia-1-streaming}
 
-To configure language hints and read the per-language output metadata, refer to [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output).
+:::info Melia 1 for streaming is in Preview
+Streaming with Melia 1 is available on SaaS on Cloud for evaluation and feedback. It is not production-ready and not ready to scale.
+:::
 
-## Enhanced Medical model {#healthcare-domain}
+Streaming with Melia 1 runs on a dedicated Preview endpoint, `wss://preview.rt.speechmatics.com/v2`, and returns a language label on every word. On this endpoint Melia 1 transcribes multilingual audio more accurately than Enhanced, and monolingual audio more accurately than Standard.
 
-Speechmatics offers the Enhanced Medical model that delivers high accuracy on healthcare audio such as ambient scribes and dictation tools.
+For the configuration, the supported settings and a runnable example, see [Mixed-language transcription](/speech-to-text/features/mixed-language-transcription).
 
-The Enhanced Medical model is kept up to date using officially maintained data sources. This improves recognition of medical terminology such as procedures, medications, conditions, and anatomy.
+## Linden 1
 
-For languages not listed below, the Enhanced model still delivers high accuracy on healthcare audio without the medical domain.
+Linden 1 serves agent STT only. It returns transcripts as complete speaker turns rather than as a word-by-word stream, with turn detection running server-side, which suits applications that hand each turn to a language model.
 
-To use the Enhanced Medical model, set the `domain` property to `medical`:
+Linden 1 returns segment-level timings and segment-level partials rather than the word-level equivalents the other three models return.
 
-```json
-{
-  "type": "transcription",
-  "transcription_config": {
-    "model": "enhanced",
-    "language": "en",
-    // highlight-start
-    "domain": "medical"
-    // highlight-end
-  }
-}
-```
+:::info Linden 1 is in Preview
+Linden 1 is available on SaaS on Cloud for evaluation and feedback. It is not production-ready and not ready to scale.
+:::
 
-| Language | Realtime | Batch |
-|---|---|---|
-| Arabic English | Available | Available |
-| Danish | Available | Available |
-| Dutch | Available | Available |
-| English | Available | Available |
-| Finnish | Available | Available |
-| French | Available | Available |
-| German | Available | Available |
-| Norwegian | Available | Available |
-| Spanish | Available | Available |
-| Swedish | Available | Available |
-| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | |
-
-## Operating points
+## Deprecated: operating_point
 
 The `model` property replaces the `operating_point` property. Existing configs that use `operating_point` continue to transcribe without changes.
 
 :::note
-In SaaS (cloud) deployments, `operating_point` is deprecated. It maps to `model` and accepts the same `enhanced` and `standard` values. Use [`model`](#specify-a-model) going forward.
+On SaaS on Cloud, `operating_point` is deprecated. It maps to `model` and accepts the same `enhanced` and `standard` values. Use [`model`](#specify-a-model) going forward.
 :::

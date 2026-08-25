@@ -1768,7 +1768,7 @@ definitions:
     properties:
       text:
         type: string
-        description: Represents the transcript of the analysed segment
+        description: Represents the transcript of the analyzed segment
       sentiment:
         type: string
         description: The assigned sentiment to the segment, which can be positive, neutral or negative

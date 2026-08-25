@@ -1,114 +1,199 @@
 # Terminology and product naming
 
-Consistent terminology is the foundation of both human readability and AI retrieval. This file establishes the canonical form for every term that appears in the Speechmatics docs.
+Updated: 10 Aug 2026
 
-For product structure (processing modes, models, SKU primitives, SKU names), see `product-architecture.md`. That file is the single source for how the product is structured; this file governs only the words used to name and describe it.
+Canonical names, casing, and forbidden variants for every term in the Speechmatics docs.
+
+This file governs words only. Product structure is in `product-architecture.md`. Availability values and feature descriptions are in `feature-availability.md`. Do not restate either here.
 
 ---
 
 ## Capitalization
 
-Capitalize named products and APIs. Use lowercase for capabilities and deployment methods.
+Capitalize named services, APIs, models, and packaged products. Lowercase features, add-ons, capabilities, and deployment methods.
 
 | ✅ Do | ❌ Don't |
 |---|---|
 | Submit a job to the Batch API. | Submit a job to the batch API. |
-| Batch transcription processes pre-recorded audio. | Batch Transcription processes pre-recorded audio. |
 | The Standard model is recommended for most use cases. | The standard model is recommended for most use cases. |
+| Enable speaker diarization. | Enable Speaker Diarization. |
+| Set the medical domain. | Set the Medical Domain. |
 
-Deployment methods are common nouns: write "on-prem deployment", "on-device deployment", "container deployment", "virtual appliance" in lowercase. The named cloud surface "SaaS on Cloud" is the exception, capitalized as shown.
+"SaaS on Cloud" is the one capitalized deployment method.
 
 ---
 
-## Canonical product and API names
+## Canonical service, API, and product names
 
 | Canonical form | Do not use |
 |---|---|
-| Realtime API | Real-time API, Real Time API, RT API |
-| Batch API | batch API |
 | Speech to Text | Speech-to-Text, Speech-To-Text, STT (except after first-use definition) |
 | Text to Speech | Text-to-Speech, Text-To-Speech, TTS (except after first-use definition) |
-| Standard | standard (when referring to the model by name) |
-| Enhanced | enhanced (when referring to the model by name) |
+| Batch API | batch API |
+| Realtime API | Real-time API, Real Time API, RT API |
 | Speechmatics | SM, speechmatics |
 
+### Packaged products
+
+Canonical names are in `product-architecture.md`. Forbidden variants:
+
+| Do not use | Use instead |
+|---|---|
+| Agent Transcription API | Agent STT Linden 1 |
+
 ---
 
-## Speech to Text model and interaction terms
+## Structural level names
 
-These name the layers, model variants, and packaged products in the STT decision tree. See `product-architecture.md` for how the product is structured; this section governs only the words and their casing.
+| Level | Canonical name | Notes |
+|---|---|---|
+| L1 | interaction pattern | Lowercase. Values: pre-recorded, streaming, agent STT. |
+| L2 | model | Lowercase common noun. Named models are capitalized. |
+| L3 | add-on | Lowercase. |
 
-### Structural level names
+"Model variant" and "model sub-variant" are retired. Do not use either.
 
-| Level | Canonical name | Formerly | Notes |
-|---|---|---|---|
-| L2 | interaction pattern | — | Lowercase. Its values are lowercase: streaming, agent STT, pre-recorded. |
-| L3 | model variant | Model | Lowercase common noun. Named variants (Standard, Enhanced, Melia 1, Linden 1) are capitalized. |
-| L4 | model sub-variant | Modification | Lowercase common noun. A separately trained, sector-specific extension of a parent model variant, not a standalone model. |
+---
 
-### Model variants and packaged products
+## Models
 
 | Canonical form | Do not use | Notes |
 |---|---|---|
-| Melia 1 | Melia-1, melia 1, Melia | Model variant. Space, no hyphen. The `model` config/API value is `melia-1` (hyphenated, lowercase) — use that form only in code, config, and API references. Multilingual; Batch only today. |
-| Linden 1 | Linden-1, linden 1 | Model variant for the agent STT interaction pattern. Coming soon. |
-| Medical | medical domain, Medical domain | Model sub-variant of Enhanced. Capitalized when naming the sub-variant or a product (Batch Enhanced Medical); lowercase as an ordinary adjective ("medical transcription"). |
-| Agent STT Linden 1 | Agent Transcription API, Agent Transcription API v1 | Packaged product: agent STT on the Linden 1 model variant. Coming soon. |
+| Standard | standard (when naming the model) | |
+| Enhanced | enhanced (when naming the model) | |
+| Melia 1 | Melia-1, melia 1, Melia | Config value `melia-1`, used only in code and API references. Requires `"language": "multi"` and has no language pack selection. |
+| Linden 1 | Linden-1, linden 1 | Serves agent STT only. |
 
-Standard and Enhanced are also model variants; their casing is in Canonical product and API names above.
+---
 
-### Interaction patterns
+## Interaction patterns
 
 | Canonical form | Do not use | Notes |
 |---|---|---|
-| streaming | Streaming | Interaction pattern. Lowercase, except at the start of a sentence. |
-| pre-recorded | Pre-recorded, prerecorded | Interaction pattern. Lowercase, hyphenated. |
-| agent STT | Voice agent transcription, voice agent transcription, agent transcription | Interaction pattern on the Realtime API: the speech-to-text layer for building voice agents. Lowercase "agent", all-caps "STT". Capitalize "Agent" only at the start of a sentence or in the product name Agent STT Linden 1. Coming soon. |
+| pre-recorded | Pre-recorded, prerecorded | Lowercase, hyphenated. |
+| streaming | Streaming | Lowercase except at the start of a sentence. |
+| agent STT | agent transcription, voice agent transcription | Lowercase "agent", all-caps "STT". Capitalize "Agent" only at the start of a sentence or in the product name Agent STT Linden 1. |
 
-Speechmatics does not sell a "voice agent." A voice agent is a full conversational pipeline (STT + LLM + STT) and is a distinct concept Speechmatics does not offer. agent STT provides the STT layer only, for developers building voice agents. Never describe a Speechmatics product as a "voice agent."
-
----
-
-## Common terms and preferred forms
-
-| Preferred form | Do not use | Notes |
-|---|---|---|
-| on-prem | on-premise | Preferred short form. "On-premises" is acceptable only when the topic warrants an explicit description. Never "on-premise." |
-| on-device | On-device, on device | Deployment method. Lowercase, hyphenated. Coming soon; feature coverage is currently narrower than SaaS on Cloud and on-prem. |
-| SaaS on Cloud | SaaS on cloud, cloud SaaS | Named cloud deployment surface. "SaaS" all-caps, "Cloud" capitalized. The exception to the lowercase deployment-method rule. |
-| container deployment | Container deployment | Lowercase. A deployment method, not a product name. |
-| virtual appliance | Virtual Appliance | Lowercase. A deployment method, not a product name. |
-| portal | Portal | The self-service console at portal.speechmatics.com where users manage API keys, usage, and billing. Lowercase unless starting a sentence. |
-| diarization | diarisation | en-US spelling. Lowercase. |
-| speaker diarization | Speaker Diarization | Lowercase as a noun phrase. |
-| channel diarization | Channel Diarization | Lowercase as a noun phrase. |
-| WebSocket | Websocket, websocket, web socket | Capital W and S. |
-| API key | api key, API Key | Lowercase "key." |
-| JSON | json | All-caps. |
-| REST | rest | All-caps. |
-| SDK | sdk | All-caps. |
-| job | Job | Lowercase common noun. |
-| transcript | Transcript | Lowercase unless starting a sentence. |
-| Mandarin | Chinese Mandarin, Mandarin Chinese | Language name, matching the canonical row on the languages page (`cmn`). Locale names are "Simplified Mandarin" (`cmn-Hans`) and "Traditional Mandarin" (`cmn-Hant`). |
+Never write "voice agent" to describe a Speechmatics product. See `product-architecture.md` for why.
 
 ---
 
-## Feature and concept terms
+## `session_type`
 
-Customer-facing features and concepts that appear in the docs. Lowercase as common noun phrases unless starting a sentence. Each has a dedicated page or section; link on first use rather than redefining inline.
+A field on the usage endpoint. Values are lowercase code identifiers: `batch`, `realtime`, `agent`. The mapping to interaction patterns is in `product-architecture.md`.
+
+Do not describe `realtime` as covering all Realtime traffic: it means streaming only.
+
+---
+
+## Deployment terms
 
 | Preferred form | Do not use | Notes |
 |---|---|---|
-| translation | Translation | Lowercase. Converting transcript output into a target language. |
-| speaker identification | Speaker Identification | Lowercase. Distinct from speaker diarization: identification labels known speakers; diarization separates unknown ones. |
-| custom dictionary | Custom Dictionary | Lowercase. Adds words to the recognition vocabulary for a given input. |
-| audio events | Audio Events | Lowercase. Non-speech sounds (such as laughter or music) labeled in the transcript. |
-| audio filtering | Audio Filtering | Lowercase. |
-| language pack | Language Pack, languagepack | Lowercase. The model assets for a given language. |
-| language identification | Language Identification, LID | Lowercase. Define on first use if abbreviating; prefer the full form. |
-| feature discovery | Feature Discovery | Lowercase. The endpoint returning current capability metadata. |
-| smart formatting | numeral formatting, Smart Formatting | Lowercase. The feature that converts spoken entities (numbers, dates, currencies, times, measurements, and more) into their written form. Avoid "numeral formatting": it is too narrow, implying numbers only and excluding non-numeric entity classes such as dates, times, and email addresses. |
-| entity | Entity | Lowercase. A spoken value with a conventional written form (a number, date, currency, time, measurement, and so on) that smart formatting detects and converts. `enable_entities` exposes each entity's structure in the JSON output. |
+| SaaS on Cloud | SaaS on cloud, cloud SaaS | The exception to the lowercase rule. |
+| on-prem | on-premise | "On-premises" only where the topic warrants it. Never "on-premise". |
+| on-device | On-device, on device | Lowercase, hyphenated. |
+| container deployment | Container deployment | A deployment method, not a product name. |
+| virtual appliance | Virtual Appliance | A deployment method, not a product name. |
+| region | Region | Lowercase. |
+
+---
+
+## Feature and add-on names
+
+Lowercase as common noun phrases, sentence case in tables. Link on first use rather than redefining. Descriptions and availability are in `feature-availability.md`.
+
+### Language
+
+| Preferred form | Do not use |
+|---|---|
+| mixed-language transcription | multilingual transcription, code-switching transcription |
+| language hints | language hinting |
+| language labeling | language labelling |
+| transcription language packs (including bilingual) | bilingual packs, language pack combinations |
+| automatic language identification | LID, auto language detection |
+| language pack | Language Pack, languagepack |
+
+### Output, tuning, and formatting
+
+| Preferred form | Do not use |
+|---|---|
+| custom dictionary | Custom Dictionary |
+| user context | prompting, context prompting |
+| medical domain | Medical, Medical Domain, medical model |
+| output locale | Output Locale |
+| smart formatting | numeral formatting, Smart Formatting |
+| entity detection (basic, legacy) | legacy entities |
+| entity detection (advanced) | advanced entities |
+| PII redaction | pii redaction |
+| disfluency tagging | disfluency removal |
+| profanity tagging | profanity filtering |
+| text replacement (find and replace) | word replacement |
+| punctuation and casing | Punctuation and Casing |
+| word-level timings, segment-level timings | timings word-level, timings segment-level |
+| confidence scores | Confidence Scores |
+
+### Speakers and audio
+
+| Preferred form | Do not use |
+|---|---|
+| speaker diarization | Speaker Diarization, diarization per speaker |
+| channel diarization | Channel Diarization, diarization per channel |
+| speaker identification | Speaker Identification |
+| audio events | Audio Events |
+| audio filtering (volume filtering) | Audio Filtering |
+| fetch URL | Fetch Url, fetch-url |
+
+### Conversational
+
+| Preferred form | Do not use |
+|---|---|
+| turn detection | Turn Detection |
+| voice activity detection (VAD) | Voice Activity Detection (undefined) |
+| force end of utterance | FEOU, Force End of Utterance |
+| word-level partials, segment-level partials | partials word-level, partials segment-level |
+
+Define VAD on first use, then use the abbreviation. Do not use FEOU in user-facing content. API message names keep their exact casing in code font: `EndOfUtterance`, `StartOfTurn`, `EndOfTurn`, `AddPartialSegment`.
+
+### Operational and add-ons
+
+| Preferred form | Do not use |
+|---|---|
+| app usage tracking | App Usage Tracking |
+| notifications | Notifications, callbacks |
+| translation | Translation |
+| chapters | auto chapters, Auto Chapters |
+| topics | topic detection |
+| summaries | summarization |
+| sentiment | sentiment analysis |
+| audio alignment | alignment, forced alignment |
+
+---
+
+## Integrations and SDKs
+
+Third-party names keep their own casing. Do not normalize them.
+
+| Preferred form | Do not use |
+|---|---|
+| LiveKit | Livekit, Live Kit |
+| Pipecat | PipeCat, Pipe Cat |
+| Vapi | VAPI, vapi |
+| Zapier | zapier |
+| Voice SDK | voice sdk, VoiceSDK, Voice sdk |
+| .NET | dotnet, DotNet, .Net |
+
+Name an SDK by the surface it calls, then the language in parentheses: "Realtime (Python)", "Batch (JavaScript)". Do not invent a shorter form. Never state an SDK version in docs prose: versions belong in the repository.
+
+---
+
+## Platform organization terms
+
+| Preferred form | Do not use | Notes |
+|---|---|---|
+| workspace | Workspace | Lowercase. A container for organizing work in the portal. |
+| project | Project | Lowercase. A way of organizing work within a workspace, also exposed through the API. |
+| management token | Management Token | Lowercase. |
 
 ---
 
@@ -116,33 +201,54 @@ Customer-facing features and concepts that appear in the docs. Lowercase as comm
 
 | Preferred form | Do not use | Notes |
 |---|---|---|
-| ASR | asr | All-caps. Industry term for the underlying technology. In user-facing content, prefer "Speech to Text" when naming the Speechmatics product; use ASR only when referring to the general technology or matching an established external term. |
-| WER (Word Error Rate) | wer, word error rate (undefined) | All-caps abbreviation. Define on first use: full term followed by the abbreviation in parentheses. The standard accuracy metric; can exceed 100% because insertions are counted. |
-| accuracy | Accuracy | Lowercase common noun. A characteristic of a model, not a tier or product. Not a synonym for WER: accuracy reflects the reader's overall experience (recognition, punctuation, formatting, diarization), whereas WER measures recognition only. |
+| ASR | asr | Use only for the general technology or an established external term. Prefer "Speech to Text" when naming the Speechmatics product. |
+| WER (Word Error Rate) | wer, word error rate (undefined) | Define on first use. Can exceed 100% because insertions are counted. |
+| accuracy | Accuracy | A characteristic of a model, not a tier. Not a synonym for WER. |
+| diarization | diarisation | en-US spelling. |
+| Mandarin | Chinese Mandarin, Mandarin Chinese | Locale names: Simplified Mandarin (`cmn-Hans`), Traditional Mandarin (`cmn-Hant`). |
+
+---
+
+## Other common terms
+
+| Preferred form | Do not use |
+|---|---|
+| portal | Portal |
+| API key | api key, API Key |
+| WebSocket | Websocket, websocket, web socket |
+| JSON, REST, SDK | json, rest, sdk |
+| job | Job |
+| transcript | Transcript |
+| feature discovery | Feature Discovery |
+| entity | Entity |
 
 ---
 
 ## Abbreviations
 
-Define an abbreviation on first use: full term followed by the abbreviation in parentheses. Use only the abbreviation for all subsequent references on the same page.
+Define on first use: full term, then the abbreviation in parentheses. Use the abbreviation for all later references on the same page.
 
 ❌ Speech to Text converts audio to text. Speechmatics offers Speech to Text via the Realtime and Batch APIs.
 ✅ Speech to Text (STT) converts audio to text. Speechmatics offers STT via the Realtime and Batch APIs.
-
-Do not define abbreviations more recognizable than their expanded form: API, JSON, SDK, REST, WebSocket.
 
 ---
 
 ## Terms not used in user-facing content
 
-Do not use internal codenames, deprecated product names, or internal system names in user-facing content. If you are unsure whether a term is internal, check with the docs platform owners before using it.
+Internal codenames, model architecture names, deprecated product names, and marketing-only constructs must not appear in docs.
 
-Example: legacy platform names such as "V1 SaaS" or "AWS SaaS" must not appear. Use the current product surface name instead.
+| Do not use | Why | Use instead |
+|---|---|---|
+| Limina | Internal codename | entity detection (advanced) |
+| Ursa, Ursa 2, AED | Internal model architecture names | Name the model: Standard, Enhanced, Melia 1, Linden 1 |
+| Enhanced Medical, Batch Enhanced Medical, Realtime Enhanced Medical | Marketing constructs, not packaged products | Enhanced with the medical domain |
+| V1 SaaS, AWS SaaS | Legacy platform names | SaaS on Cloud |
+| Micro-Batch | Not a tracked interaction pattern | pre-recorded |
+
+If you are unsure whether a term is internal, ask before using it. Do not add any term in this table to `custom-words.txt`: a dictionary entry invites use.
 
 ### Deprecated: Flow
 
-"Flow" (and the lowercase "flow" when used as the product or feature name) referred to a standalone voice agent product and API that has been removed from the Speechmatics offering. It is deprecated and must not be documented, referenced, or reintroduced in any user-facing content.
+Flow referred to a standalone voice agent product that has been removed from the Speechmatics offering. It must not be documented, referenced, or reintroduced. Where content still needs a conversational speech-to-text reference, point to agent STT.
 
-If "Flow" appears in the codebase, existing docs, release notes, or source material, treat it as a deprecated reference: remove it rather than carrying it forward. Where the surrounding content still needs a conversational speech-to-text reference, point to agent STT — the interaction pattern on the Realtime API that provides the speech-to-text layer for building voice agents (see `product-architecture.md`). Do not carry Flow's framing forward: Speechmatics does not sell a "voice agent" (a full STT + LLM + STT pipeline), so never describe agent STT, or any Speechmatics product, as a voice agent.
-
-This rule targets the product/feature named Flow. It does not apply to ordinary uses of the word in phrases such as "authentication flow" or "data flow", which are unaffected.
+This rule targets the product named Flow. Ordinary uses such as "authentication flow" or "data flow" are unaffected.

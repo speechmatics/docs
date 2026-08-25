@@ -1,0 +1,82 @@
+---
+title: Understanding interaction patterns
+sidebar_label: Interaction patterns
+description: Understand how pre-recorded, streaming, and agent STT map to the Batch and Realtime APIs.
+---
+
+Speech to Text is described in two ways, for two different readers, and both are correct.
+
+An **interaction pattern** describes how you present audio for processing. There are three: pre-recorded, streaming, and agent STT. This is the vocabulary used for onboarding and explanation.
+
+A **processing mode** describes the transport you use to reach the service. There are two: Batch and Realtime. This is the vocabulary used in the API reference and the SDKs, including client names such as `BatchClient`.
+
+The two systems are not a subset of one another. Two interaction patterns share the Realtime processing mode, which is why "Realtime" alone does not tell you which pattern you are using.
+
+## Pre-recorded transcription
+
+You submit a complete audio file and receive a complete transcript. Processing is asynchronous by default: you submit a job, monitor its progress, and retrieve the result when it finishes. To block for the result in a single request instead, use [synchronous transcription](/speech-to-text/pre-recorded/synchronous).
+
+Pre-recorded transcription suits work where the audio already exists and accuracy matters more than latency:
+
+- Transcribe recorded meetings or interviews
+- Caption on-demand videos and podcasts
+- Generate searchable transcripts for media archives
+- Process customer service recordings for compliance or insights
+- Automate subtitles across large video libraries
+
+Available models: Standard, Enhanced, and Melia 1. See [models for pre-recorded transcription](/speech-to-text/models#pre-recorded-models).
+
+### What is a job?
+
+Each pre-recorded transcription request is handled as a job, a self-contained unit representing a single transcription task.
+
+A job includes:
+
+- The audio or video file to be transcribed
+- Configuration settings such as language, formatting, and diarization
+- Metadata and status tracking
+- The resulting transcript or transcripts
+
+You submit a job to the API, monitor its progress, and retrieve results once it is complete. You can create a job by uploading a file directly or by referencing a URL.
+
+## Streaming transcription
+
+You open a session, send audio as it is captured, and receive transcripts while the audio is still arriving. Results arrive word by word: interim partial transcripts are refined until a final transcript is emitted.
+
+Streaming transcription suits work where the audio is live and latency matters:
+
+- Transcribe live broadcasts or events
+- Caption webinars, meetings, or podcasts as they happen
+- Monitor contact center calls in real time
+- Build accessibility features such as live captions
+
+Available models: Standard, Enhanced, and Melia 1, the last in Preview. See [models for streaming transcription](/speech-to-text/models#streaming-models).
+
+## Agent STT
+
+You open a session and send live audio, as with streaming, but results arrive as complete speaker turns rather than as a word-by-word stream. Turn detection runs on the server, so the transcript you receive is already punctuated, speaker-labeled, and segmented at turn boundaries.
+
+Agent STT suits conversational applications that hand each turn to a language model and need to know when a speaker has finished talking.
+
+Agent STT provides the speech-to-text layer only. It is not a conversational pipeline and does not include a language model or speech synthesis.
+
+Available model: Linden 1, in Preview. See [models for agent STT](/speech-to-text/models#agent-stt-models).
+
+## How patterns map to the APIs
+
+This crosswalk is the authoritative mapping between the two naming systems.
+
+| Interaction pattern | Processing mode | Transport | `session_type` |
+|---|---|---|---|
+| pre-recorded | Batch | REST API | `batch` |
+| streaming | Realtime | WebSocket API | `realtime` |
+| agent STT | Realtime | WebSocket API | `agent` |
+
+Processing mode, transport, and `session_type` are fixed by your choice of interaction pattern rather than selected separately.
+
+`session_type` is a field on the usage endpoint. Its values name interaction patterns, not processing modes: `realtime` means streaming only, and agent STT reports as `agent`. Do not read `realtime` as covering all Realtime traffic.
+
+## Next steps
+
+- [Models](/speech-to-text/models#compare-the-models) — compare the models available for your pattern and set one in your request
+- [Feature availability](/speech-to-text/availability/) — check what each combination supports

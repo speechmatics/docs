@@ -1,0 +1,127 @@
+---
+title: Entity detection
+description: Expose the class, spoken form, and written form of each detected entity in JSON output.
+keywords: [entity formatting, entity detection, entity classes, spoken form, written form]
+---
+
+[Smart formatting](/speech-to-text/features/formatting#smart-formatting) converts spoken values into their written form by default. Entity detection additionally exposes the structure behind each conversion: which class of entity was detected, and the individual words it was made from as spoken and as written.
+
+## Availability
+
+Entity detection is available with the Standard and Enhanced models for pre-recorded and streaming transcription, and with Linden 1 for agent STT. See [Feature availability](/speech-to-text/availability/).
+
+Entity metadata appears in JSON output only. SRT and TXT output are unchanged.
+
+## Enable entity detection
+
+Add `enable_entities` to your configuration:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    "enable_entities": true
+  }
+}
+```
+
+By default, `enable_entities` is `false`. When it is `false`, the words appear individually in the output.
+
+## Entity output
+
+With `enable_entities` set to `true`, the JSON output includes:
+
+- A `type` field with the value `entity` for formatted numeric entities
+- The full written form in the `content` section, including any spaces or symbols
+- An `entity_class` field describing how the entity was formatted
+- Start and end times spanning all words in the entity
+- Two additional representations: `spoken_form`, the original words as spoken with individual timing and confidence, and `written_form`, the formatted words separated individually
+
+This is a transcript with `enable_entities` set to `true`:
+
+```json
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.99,
+          "content": "17th of January 2022",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 3.14,
+      "entity_class": "date",
+      "spoken_form": [
+        {
+          "alternatives": [
+            {
+              "confidence": 1.0,
+              "content": "seventeenth",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 1.41,
+          "start_time": 0.72,
+          "type": "word"
+        }
+        // Additional spoken words omitted for brevity
+      ],
+      "start_time": 0.72,
+      "type": "entity",
+      "written_form": [
+        {
+          "alternatives": [
+            {
+              "confidence": 0.99,
+              "content": "17th",
+              "language": "en",
+              "speaker": "UU"
+            }
+          ],
+          "end_time": 1.33,
+          "start_time": 0.72,
+          "type": "word"
+        }
+        // Additional written words omitted for brevity
+      ]
+    }
+  ]
+}
+```
+
+## Entity classes
+
+Formatting rules are applied based on the class of entity detected.
+
+Numbers and quantities:
+
+| Entity class | Description | Spoken example | Written example |
+|---|---|---|---|
+| cardinal | Whole numbers (in English, numbers ≤10 remain as words) | "nineteen" | 19 |
+| decimal | Numbers with decimal point | "eighteen point one two" | 18.12 |
+| fraction | Fractions (complex ones use n/d format) | "three sixteenths" | 3/16 |
+| ordinal | Position numbers with suffix | "forty second" | 42nd |
+| money | Currency values with symbol | "twenty dollars" | $20 |
+| percentage | Percentages with % symbol | "two hundred percent" | 200% |
+| measurement | Units with abbreviations | "ten kilometers per second" | 10 km/s |
+
+Dates, identifiers, and contact details:
+
+| Entity class | Description | Spoken example | Written example |
+|---|---|---|---|
+| date | Calendar dates and years | "fifteenth of January twenty twenty two" | 15th of January 2022 |
+| time | Clock times with separators | "eleven forty a m" | 11:40 a.m. |
+| span | Ranges (x to y format) | "one hundred to two hundred million pounds" | 100 to £200 million |
+| alphanum | Alphanumeric sequences (3+ characters) | "a z triple seven five four" | AZ77754 |
+| credit card | Payment card number sequences | "one one one one..." | 1111 2222 3333 4444 |
+| telephone | Phone number formatting | "five five five..." | (555) 429-2228 |
+| electronic | Email and web addresses | "bob at speechmatics dot com" | bob@speechmatics.com |
+
+:::warning
+Entity classes are chosen based on context, so occasionally a value might be classified differently than expected. For example, "2001" could be a `cardinal` number or a `date`.
+:::

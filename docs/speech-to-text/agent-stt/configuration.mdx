@@ -1,0 +1,68 @@
+---
+title: Agent STT configuration
+sidebar_label: Configuration
+description: Look up every audio format and transcription option an agent STT session accepts.
+toc_max_heading_level: 3
+---
+
+Configuration is passed in `StartRecognition` and is split across two levels of the payload: `audio_format` at the top level, and `transcription_config`.
+
+Agent STT is in [Preview](/speech-to-text/agent-stt/#preview-limitations).
+
+## Audio format {#audio-format}
+
+:::warning
+Only `pcm_s16le` at 8000 Hz or 16000 Hz is supported. Other encodings such as `pcm_f32le` and `mulaw`, and other sample rates such as 44100 Hz, may be silently accepted by the API but will not produce correct output.
+:::
+
+| Field | Notes |
+|---|---|
+| `type` | Must be `raw` |
+| `encoding` | Must be `pcm_s16le` (16-bit signed little-endian PCM) |
+| `sample_rate` | Must be `8000` or `16000` |
+
+For example:
+
+```json
+{ "type": "raw", "encoding": "pcm_s16le", "sample_rate": 16000 }
+```
+
+## Transcription config
+
+The `transcription_config` object accepts the following fields.
+
+| Field | Default | Notes |
+|---|---|---|
+| `language` | `en` | All supported languages |
+| `output_locale` | — | Output locale, for example `en-US` |
+| `additional_vocab` | — | Custom vocabulary entries |
+| `punctuation_overrides` | — | Custom punctuation rules |
+| `domain` | — | Domain-specific tuning, for example `medical` |
+| `enable_entities` | `false` | Entity detection |
+| `enable_partials` | `true` | Emit partial segments during speech |
+| `diarization` | `speaker` | Speaker diarization; set to `none` to disable |
+| `volume_threshold` | — | Minimum audio volume to process |
+
+For the languages available, see [Transcription languages](/speech-to-text/languages/transcription). For the medical domain, see [Medical domain](/speech-to-text/features/medical-domain).
+
+## Speaker diarization config
+
+The `transcription_config.speaker_diarization_config` object accepts the following fields. All of them require `diarization` to be set to `speaker`.
+
+| Field | Default | Notes |
+|---|---|---|
+| `max_speakers` | — | Maximum number of speakers to track |
+| `speaker_sensitivity` | — | Sensitivity of speaker separation |
+| `prefer_current_speaker` | — | Bias toward the most recently active speaker |
+| `known_speakers` | — | Pre-enrolled speaker identifiers for cross-session recognition |
+
+For how to obtain and use `known_speakers`, see [Speaker focus and identification](/speech-to-text/agent-stt/speaker-focus).
+
+## Unsupported fields {#unsupported-fields}
+
+The following fields are rejected if present in an agent STT request.
+
+| Field | Notes |
+|---|---|
+| `translation_config` | Not supported on agent endpoints |
+| `audio_events_config` | Not supported on agent endpoints |

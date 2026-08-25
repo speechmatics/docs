@@ -1,0 +1,176 @@
+---
+title: Channel diarization
+description: Transcribe each audio channel separately, with optional per-channel labels.
+keywords:
+  [
+    speechmatics,
+    diarization,
+    channel diarization,
+    channels,
+    transcription,
+    speech recognition,
+    asr,
+  ]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Channel diarization transcribes each channel in your audio separately and merges the results into a single transcript. This gives perfect speaker separation at the channel level and cleaner results when speakers overlap.
+
+Use it when each speaker is recorded on their own channel, such as a call recording with the agent and caller on separate channels. To separate speakers who share a channel, use [speaker diarization](/speech-to-text/features/speaker-diarization) instead.
+
+## Availability
+
+Channel diarization is available for pre-recorded and streaming transcription with the Standard, Enhanced, and Melia 1 models. It is not available for agent STT. See [Feature availability](/speech-to-text/availability/).
+
+## Enable channel diarization
+
+Set `diarization` to `channel`, and optionally name each channel with `channel_diarization_labels`.
+
+<Tabs groupId="interaction-pattern">
+<TabItem value="pre-recorded" label="Pre-recorded">
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    // highlight-start
+    "diarization": "channel",
+    "channel_diarization_labels": ["Agent", "Caller"]
+    // highlight-end
+  }
+}
+```
+
+If no labels are provided, default names such as `Channel 1` are used. The number of labels should match the number of channels in your audio; any extra labels are ignored.
+
+Pre-recorded channel diarization supports up to 100 separate input files.
+
+</TabItem>
+<TabItem value="streaming" label="Streaming">
+
+Provide labels for each channel in the transcription config of the `StartRecognition` message:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "enhanced",
+    "language": "en",
+    // highlight-start
+    "diarization": "channel",
+    "channel_diarization_labels": ["New_York", "Shanghai"]
+    // highlight-end
+  }
+}
+```
+
+The `RecognitionStarted` message lists all the channels you requested:
+
+```json
+{
+  "message": "RecognitionStarted",
+  ...
+  // highlight-start
+  "channels": ["New_York", "Shanghai"]
+  // highlight-end
+}
+```
+
+Streaming requires you to send audio per channel and to close channels explicitly. See [Audio channels](/speech-to-text/streaming/channels).
+
+</TabItem>
+</Tabs>
+
+## Transcript output
+
+For pre-recorded transcription, each word includes a `channel` property identifying which channel it came from:
+
+```json
+"results": [
+  {
+    "type": "word",
+    "end_time": 1.8,
+    "start_time": 1.45,
+    "channel": "Agent",
+    "alternatives": [
+      {
+        "language": "en",
+        "content": "Hello",
+        "confidence": 0.76
+      }
+    ]
+  }
+]
+```
+
+For streaming, transcripts are returned independently for each channel, with the `channel` property on the message:
+
+```json
+{
+  "message": "AddTranscript",
+  // highlight-start
+  "channel": "New_York",
+  // highlight-end
+  ...
+  "results": [
+    {
+      "type": "word",
+      "start_time": 1.45,
+      "end_time": 1.8,
+      "alternatives": [{
+        "language": "en",
+        "content": "Hello,",
+        "confidence": 0.98,
+      }]
+    },
+  ]
+}
+```
+
+:::warning
+In streaming, the `channel` property is returned for `AddTranscript` and `AddPartialTranscript` messages only. The [translation](/speech-to-text/add-ons/translation) add-on does not currently include this property. To request it, contact [Support](https://support.speechmatics.com).
+:::
+
+## Channel and speaker diarization {#channel-and-speaker-diarization}
+
+Channel and speaker diarization combines both modes, splitting transcripts per channel while also separating individual speakers within each channel. Use it when multiple speakers are present across multiple channels.
+
+This mode is available for streaming transcription only. Set `diarization` to `channel_and_speaker`, and send audio per channel as described in [Audio channels](/speech-to-text/streaming/channels).
+
+Transcripts are returned in the same way as channel diarization, but with individual speakers identified:
+
+```json
+{
+  "message": "AddTranscript",
+  // highlight-start
+  "channel": "New_York",
+  // highlight-end
+  "results": [
+    {
+      "alternatives": [{
+        "content": "Hello",
+        "confidence": 0.98,
+        // highlight-start
+        "speaker": "S1"
+        // highlight-end
+      }]
+    },
+    ...
+    {
+      "alternatives": [{
+        "content": "Hi",
+        "confidence": 0.98,
+        // highlight-start
+        "speaker": "S2"
+        // highlight-end
+      }]
+    },
+  ]
+}
+```
+
+With `channel_and_speaker` diarization, speaker labeling is specific to each channel even when the labels are the same. S1 on channel 1 is not necessarily the same person as S1 on channel 2.
