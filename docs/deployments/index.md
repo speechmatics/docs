@@ -46,9 +46,11 @@ Feature availability varies depending on the deployment method you choose. Below
 | [Punctuation settings](/speech-to-text/formatting#punctuation)                        | Batch, Realtime | SaaS, On-prem |
 | [Sentiment analysis](/speech-to-text/batch/speech-intelligence/sentiment-analysis)    | Batch           | SaaS, On-prem |
 | [Smart formatting](/speech-to-text/formatting#smart-formatting)                       | Batch, Realtime | SaaS, On-prem |
-| [Speaker identification](/speech-to-text/features/speaker-identification)             | Batch, Realtime | SaaS, On-prem |
+| [Speaker identification](/speech-to-text/features/speaker-identification)             | Batch, Realtime | SaaS, On-prem[^1] |
 | [Summarization](/speech-to-text/batch/speech-intelligence/summarization)              | Batch           | SaaS          |
 | [Topic detection](/speech-to-text/batch/speech-intelligence/topic-detection)          | Batch           | SaaS          |
 | [Tracking](/speech-to-text/batch/output#tracking-metadata)                            | Batch, Realtime | SaaS, On-prem |
 | [Translation](/speech-to-text/features/translation)                                   | Batch, Realtime | SaaS, On-prem |
 | [Turn detection](/speech-to-text/realtime/turn-detection)                             | Realtime        | SaaS, On-prem |
+
+[^1]: On an on-prem deployment, batch speaker identification requires the [GPU speech-to-text container](/deployments/container/gpu-speech-to-text). Realtime speaker identification is supported on both CPU and GPU containers. See [speaker identification secrets](/deployments/container/speaker-identification).
