@@ -29,3 +29,5 @@ static/*.yaml
 .env*.local
 
 .venv
+
+.idea

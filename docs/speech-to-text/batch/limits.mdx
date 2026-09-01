@@ -29,6 +29,10 @@ This limit is intended as a safety mechanism and is unlikely to be reached durin
 If you submit your media file in the body of the `/jobs` <HTTPMethodBadge method="POST" /> request to Speechmatics Batch SaaS, the file must be less than 1 GB in size or the job will be rejected.
 To process files larger than 1 GB, you can provide the URL of the audio file in the job config as described in the [Fetch URL documentation](/speech-to-text/batch/input#fetch-url).
 
+## Custom dictionary limits
+
+If a job's custom dictionary (`additional_vocab`) contains more than 20,000 items, the job is rejected with `HTTP 400 Bad Request` and error type `job_rejected`. See [Custom dictionary content limits](/speech-to-text/features/custom-dictionary#maximum-number-of-custom-dictionary-items) for details.
+
 ## Data retention limits
 
 Audio files, transcripts, and configuration data are stored in the Speechmatics Batch SaaS for 7 days. Any request to retrieve a transcript or file more than 7 days after it was processed will receive an HTTP 404 error message and a status of `expired`. You can delete audio or transcripts in advance of this 7 day period - see the [API Reference](/api-ref/batch/delete-a-job) for details.
