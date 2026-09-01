@@ -98,9 +98,13 @@ The following custom dictionary would not be affected - it contains 7 elements b
 SaaS on Cloud rejects a job if its custom dictionary (`additional_vocab`) contains more than 20,000 items.
 
 **Batch API**<br/>
-The request is rejected with `HTTP 400 Bad Request` and error type `job_rejected`:
-```
-Job config JSON is invalid. Error: additional_vocab contains 20001 items which exceeds the maximum allowed (20000)
+The request is rejected with an `HTTP 400 Bad Request` response:
+```json
+{
+  "code": 400,
+  "error": "Job rejected",
+  "detail": "Job config JSON is invalid. Error: additional_vocab contains 20001 items which exceeds the maximum allowed (20000)"
+}
 ```
 
 **Realtime API**<br/>
