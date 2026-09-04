@@ -64,6 +64,12 @@ See [how to run the Core Speech CPU container here.](/deployments/container/cpu-
 
 The Transcription GPU images are required to use the most accurate models.
 
+See [how to run the Transcription GPU container here.](/deployments/container/gpu-speech-to-text)
+
+:::info
+To access additional language configurations for containers, please [speak to our Support Team](https://support.speechmatics.com).
+:::
+
 ### Standard model
 
 There is a single image available that supports all languages for the Standard model. There are language specific images available that support the Enhanced and Standard models.
@@ -112,11 +118,16 @@ Depending on which Enhanced model languages are required, you can pull specific 
   </CodeBlock>
 </details>
 
-See [how to run the Transcription GPU container here.](/deployments/container/gpu-speech-to-text)
+### Standard and Enhanced model
 
-:::info
-To access additional language configurations for containers, please [speak to our Support Team](https://support.speechmatics.com).
-:::
+A single image supports all languages for both the Standard and Enhanced models, so you do not need to pull individual language pack images. The `sm-gpu-inference-server-standard-all` image above covers all languages for the Standard model only.
+
+<CodeBlock language="bash">
+  {`# pulling the Transcription GPU inference server supporting all languages for both Enhanced and Standard models with the ${smVariables.latestContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-all-lang:${smVariables.latestContainerVersion}`}
+</CodeBlock>
+
+This image contains both models. To load only one of them, see [Running only one model](/deployments/container/gpu-speech-to-text#running-only-one-model). To load only some of the image's languages, see [Loading only selected languages](/deployments/container/gpu-speech-to-text#loading-only-selected-languages).
 
 ### Melia 1 model
 
