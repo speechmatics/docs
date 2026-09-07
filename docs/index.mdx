@@ -8,8 +8,8 @@ pagination_next: null
 ---
 
 import { LinkCard } from "@site/src/theme/LinkCard";
-import { ChevronsRightIcon, FileAudio, BotMessageSquare, Speech, Package } from "lucide-react";
-import { Flex, Grid } from "@radix-ui/themes";
+import { ChevronsRightIcon, FileAudio, BotMessageSquare, MessagesSquare, Speech, Package } from "lucide-react";
+import { Grid } from "@radix-ui/themes";
 
 # Welcome to Speechmatics
 
@@ -19,7 +19,7 @@ Pick a starting point below.
 
 ## Developer quickstart
 
-<Flex width="100%" gap="3" justify="between" wrap={{initial: "wrap", md: "nowrap"}}>
+<Grid columns={{initial: "1", md: "2"}} gap="3">
   <LinkCard
     icon={<ChevronsRightIcon/>}
     title="Transcribe in real time"
@@ -35,13 +35,20 @@ Pick a starting point below.
     href="/speech-to-text/batch/quickstart"
   />
   <LinkCard
+    icon={<MessagesSquare/>}
+    title="Transcribe for a voice agent"
+    description="Use Agent STT to get turn-based transcription ready to pass to an LLM"
+    direction="column"
+    href="/speech-to-text/agent-stt/quickstart"
+  />
+  <LinkCard
     icon={<Speech/>}
     title="Generate speech from text"
     description="Use our Text to Speech API to generate speech from text"
     direction="column"
     href="/text-to-speech/quickstart"
   />
-</Flex>
+</Grid>
 
 ## Build with Speechmatics
 
