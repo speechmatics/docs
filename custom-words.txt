@@ -342,3 +342,5 @@ sessiongroups
 melia
 مرحبا
 Theo
+pipecat
+awaitable

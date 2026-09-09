@@ -1,0 +1,226 @@
+---
+title: "Speaker focus for voice agents"
+sidebar_label: "Speaker focus"
+description: "Direct a voice agent to respond to chosen speakers and treat others as background, and update the focus live mid-session."
+keywords:
+  [
+    speechmatics,
+    features,
+    speaker focus,
+    diarization,
+    voice agents,
+    realtime,
+    speech recognition,
+    automatic speech recognition,
+    asr,
+  ]
+sidebar_position: 5
+---
+
+# Speaker focus for voice agents
+
+Speaker focus lets a voice agent decide which speakers to respond to and how to treat everyone else, and update that choice live during a session.
+
+A voice agent in a room with more than one person faces an immediate problem: whose words should it act on? If two people are talking and a third asks a question, the agent should not reply to the crossfire. It should stay locked onto the person addressing it, with everyone else treated as background it can hear but should not answer. Speaker focus provides that control.
+
+:::info
+Speaker focus is a helper provided by the Speechmatics Python [Voice SDK](/voice-agents/voice-sdk), which applies the focus rules on top of speaker [diarization](/speech-to-text/features/diarization). The Realtime API does not expose speaker focus directly today, and the Voice SDK is Python only. Speechmatics provides the speech-to-text layer for voice agents, not the full pipeline.
+:::
+
+## Focus and focus mode
+
+There are two levers.
+
+**Focus** is the set of speakers you care about. When a focus is set, only those speakers produce active transcript. Everyone else becomes passive.
+
+**Focus mode** decides what passive means:
+
+- `RETAIN` keeps the other speakers audible but marks them as background. Their words are still transcribed and still appear, carrying a passive marker so your agent knows not to respond. This is the default and the right choice most of the time: a background speaker can still be pulled into the conversation when a focused speaker invites them in.
+- `IGNORE` drops the other speakers entirely. Their audio is not transcribed and does not trigger voice activity or end-of-utterance detection. Use it when you want the engine deaf to everyone else.
+
+A separate **ignore list** drops one specific speaker without touching the focus. It is useful for killing feedback when the agent's own audio output is picked up by the microphone, or for muting one person on request.
+
+Any speaker whose label starts and ends with double underscores (such as `__ASSISTANT__`) is excluded automatically, which keeps the agent's own voice out of the transcript.
+
+## Set and update focus
+
+You set an initial focus when you open the session, and you can update it at any point while the session runs. The two format strings decide how active and passive speakers are rendered into the transcript the LLM (large language model) reads.
+
+The following pseudocode configures focus at session start and updates it live:
+
+```python showLineNumbers
+# At session start, with diarization on. The format strings control how
+# active and passive speaker lines are rendered for the LLM.
+configure_stt(
+    enable_diarization      = true,
+    speaker_active_format   = "@{speaker_id}: {text}",
+    speaker_passive_format  = "@{speaker_id} [background]: {text}",
+)
+
+# Live, at any point during the session:
+set_speaker_focus(focus = ["S1"], mode = RETAIN)    # others kept as background
+set_speaker_focus(focus = ["S1"], mode = IGNORE)    # others dropped entirely
+ignore_speaker(add = "S2")                          # separate ignore list
+set_speaker_focus(focus = [], mode = RETAIN)        # reset, hear everyone
+```
+
+The format strings determine what the LLM sees. The active speaker's line arrives as `@S1: can you help me`, and a background speaker as `@S2 [background]: yeah but what about lunch`. That `[background]` tag is the signal your system prompt teaches the LLM to ignore.
+
+A live focus update replaces the previous focus, it does not merge. To build up a multi-speaker focus one speaker at a time, track the set yourself and send the full list each time.
+
+## Drive focus from the agent
+
+Rather than a human flipping switches, you hand the LLM a small set of function tools and let it change the focus in response to plain speech. "Focus on me" becomes a tool call.
+
+The following pseudocode defines a sensible tool set:
+
+```python showLineNumbers
+focus_on_speaker(speaker_ids: string[])
+    # Prioritize one or more speakers. Everyone else stays audible as
+    # background (RETAIN). Replaces any current focus.
+    "focus on me"         -> focus_on_speaker(["S1"])
+    "focus on me and her" -> focus_on_speaker(["S1", "S2"])
+
+listen_only_to_speaker(speaker_ids: string[])
+    # Listen ONLY to these speakers. Everyone else is dropped (IGNORE).
+    "only listen to me"   -> listen_only_to_speaker(["S1"])
+
+ignore_speaker(speaker_id: string)
+    # Add one speaker to the ignore list so their speech stops being
+    # transcribed. Good for killing echo or muting one person.
+    "ignore him"          -> ignore_speaker("S2")
+
+listen_to_all_speakers()
+    # Reset. Clear focus and ignore lists, hear everyone equally again.
+    "listen to everyone again" -> listen_to_all_speakers()
+```
+
+The handlers behind these are thin. They map the tool call onto a focus state and push it to the engine: `focus_on_speaker` sets `RETAIN`, `listen_only_to_speaker` sets `IGNORE`, and both call the same live `set_speaker_focus`. `listen_to_all_speakers` sends empty lists and resets the mode to `RETAIN`.
+
+:::tip
+Wire up the reset. If `listen_to_all_speakers` does not clear both the focus and the ignore list, the agent stays stuck on one person.
+:::
+
+## System prompt for speaker focus
+
+The tools do nothing without a system prompt that teaches the LLM how to read the transcript and when to use them. Three things have to be spelled out.
+
+First, the LLM must understand the speaker tags. Every incoming line is prefixed, either `@S1:` for a raw label or `@Sam:` once a speaker is recognized by name. Lines carrying `[background]` are passive and should be left alone unless an active speaker brings that person in.
+
+Second, the LLM has to resolve "me." When someone says "focus on me," the word "me" means whoever is speaking, which is the ID prefixing their own message. A "focus on me" arriving on a `@S1:` line resolves to `S1`. Without this rule the model has to guess, and often picks the wrong speaker.
+
+Third, the labels are internal. The agent must never read `S1` or `S2` aloud, and never echo a speaker tag into its reply. Real names are fine once known.
+
+The following prompt fragment covers the speaker rules:
+
+```text showLineNumbers
+# Speakers
+
+- Each message is prefixed with the speaker, like @S1: or, for a
+  recognized person, @Sam:.
+- Messages prefixed @speaker_id [background]: are passive. Never respond
+  to or acknowledge them unless an active speaker invites you to.
+- When a speaker says "me", "my" or "I", they mean the speaker ID
+  prefixing their own message. A request from @S1: refers to S1.
+- Generic labels like S1 are internal. Never say them aloud or include a
+  speaker tag in your replies. Real names like "Sam" are fine.
+
+# Speaker focus
+
+- "Focus on me" -> focus_on_speaker with the requesting ID.
+- "Only listen to me" -> listen_only_to_speaker with the ID(s).
+- "Ignore him/her" -> ignore_speaker with that speaker's ID.
+- "Listen to everyone" -> listen_to_all_speakers to reset.
+```
+
+## Example: switching to a single speaker
+
+This walks through "just listen to me" from a speaker labeled `S1`, with someone else talking as `S2`:
+
+1. The transcript line arrives as `@S1: just listen to me`, and `S2`'s chatter arrives as `@S2: ...`.
+2. The LLM applies the prompt rule, resolves "me" to `S1`, and calls `listen_only_to_speaker(["S1"])`.
+3. The handler sets focus to `["S1"]` with mode `IGNORE` and pushes it to the engine.
+4. From that point the engine transcribes only `S1`. `S2` is dropped entirely: no transcript, no turn detection off their voice.
+5. The agent confirms, something like "sure, just you now," and carries on.
+
+Saying "listen to everyone again" runs step 3 in reverse: empty focus, empty ignore list, mode back to `RETAIN`, everyone audible.
+
+## Speaker focus in the Voice SDK, Pipecat and LiveKit
+
+The concepts above map onto real integrations with little code. The Speechmatics Python [Voice SDK](/voice-agents/voice-sdk) exposes the two levers as `SpeakerFocusConfig` and `SpeakerFocusMode`; the Pipecat and LiveKit plugins wrap the same SDK under their own method names.
+
+For the Voice SDK, set the focus on the session config and update it live with `update_diarization_config`:
+
+```python showLineNumbers
+from speechmatics.voice import SpeakerFocusConfig, SpeakerFocusMode
+
+# Session setup: set focus on the transcription config's speaker_config
+speaker_config = SpeakerFocusConfig(
+    focus_speakers=["S1"],
+    focus_mode=SpeakerFocusMode.RETAIN,  # others kept as background
+)
+
+# Live update (inside a tool handler)
+client.update_diarization_config(
+    SpeakerFocusConfig(focus_speakers=["S1"], focus_mode=SpeakerFocusMode.IGNORE)
+)
+```
+
+For [Pipecat](https://github.com/pipecat-ai/pipecat), configure focus on the STT service and update it inside a tool handler:
+
+```python showLineNumbers
+# Session setup
+stt = SpeechmaticsSTTService(
+    params=SpeechmaticsSTTService.InputParams(
+        enable_diarization=True,
+        speaker_active_format="@{speaker_id}: {text}",
+        speaker_passive_format="@{speaker_id} [background]: {text}",
+    ),
+)
+
+# Live update (inside a tool handler)
+stt.update_params(
+    SpeechmaticsSTTService.UpdateParams(
+        focus_speakers=["S1"],
+        focus_mode=SpeechmaticsSTTService.SpeakerFocusMode.RETAIN,
+    )
+)
+```
+
+For the [LiveKit Speechmatics plugin](https://github.com/livekit/agents/tree/main/livekit-plugins/livekit-plugins-speechmatics), use `update_speakers`:
+
+```python showLineNumbers
+# Session setup
+stt = speechmatics.STT(
+    enable_diarization=True,
+    speaker_active_format="[Speaker {speaker_id}] {text}",
+    speaker_passive_format="[Speaker {speaker_id} *PASSIVE*] {text}",
+)
+
+# Live update (inside a tool handler)
+stt.update_speakers(
+    focus_speakers=["S1"],
+    focus_mode=SpeakerFocusMode.RETAIN,
+)
+```
+
+Pick format strings to suit your model, and teach the LLM whichever format you chose.
+
+## Best practices for speaker focus
+
+`RETAIN` is the safer default for a chatty agent, because a background speaker can be brought in without a config change. `IGNORE` is blunter. Reach for it when you truly want the engine to stop listening, not just stop responding.
+
+Keep the agent's own voice out of the loop, otherwise its audio output is transcribed straight back in and it starts talking to itself. Any speaker enrolled with a label wrapped in double underscores (such as `__ASSISTANT__`) is excluded automatically, so you never have to ignore it explicitly.
+
+To use this, pass the agent's voice as a [known speaker](/speech-to-text/features/speaker-memory-for-voice-agents) at session start, labeled `__ASSISTANT__`, with a speaker identifier captured from an earlier session or from enrollment. The engine recognizes the agent's own audio and drops it before it reaches the transcript. You can pass several identifiers under the one label to cover that voice across different output paths or capture devices.
+
+This is the clean option for complex speaker or microphone setups, where the agent's voice can leak back in through the mic. Adding the agent's speaker to the ignore list at runtime also works.
+
+Speaker focus pairs with [speaker memory](/speech-to-text/features/speaker-memory-for-voice-agents). Once a voice is recognized by name, every focus and ignore operation can target that name instead of a throwaway label.
+
+## Next steps
+
+- [Speaker memory for voice agents](/speech-to-text/features/speaker-memory-for-voice-agents) — recognize returning speakers by name across sessions.
+- [Diarization](/speech-to-text/features/diarization) — separate a transcript into distinct speakers.
+- [Voice agents overview](/voice-agents/overview) — ways to build a voice agent with Speechmatics.
+- [Voice SDK](/voice-agents/voice-sdk) — the Python SDK reference for `SpeakerFocusConfig` and speaker management.

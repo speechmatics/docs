@@ -58,6 +58,8 @@ You can also:
 - Ignore specific speakers
 - Provide known speakers for speaker identification
 
+For voice-agent patterns built on these, see [Speaker focus for voice agents](/speech-to-text/features/speaker-focus-for-voice-agents) and [Speaker memory for voice agents](/speech-to-text/features/speaker-memory-for-voice-agents).
+
 ### Voice SDK vs Realtime SDK
 
 - Use the Voice SDK when:
@@ -400,6 +402,8 @@ In your event handler, you can use `is_active` to decide how to route segments:
     {pythonSpeakerFocusHandler}
 </CodeBlock>
 
+For the agent-driven pattern, where the LLM changes focus in response to speech using function tools and a system prompt, see [Speaker focus for voice agents](/speech-to-text/features/speaker-focus-for-voice-agents).
+
 #### Known speakers (speaker identification)
 
 `known_speakers` (list[SpeakerIdentifier], default: [])   
@@ -408,6 +412,8 @@ Pre-enrolled speaker identifiers for speaker identification.
 <CodeBlock language="python">
     {pythonKnownSpeakers}
 </CodeBlock>
+
+To capture identifiers live and reuse them across sessions so an agent recognizes returning speakers by name, see [Speaker memory for voice agents](/speech-to-text/features/speaker-memory-for-voice-agents).
 
 ### Advanced configuration example
 

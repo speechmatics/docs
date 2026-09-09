@@ -1,0 +1,205 @@
+---
+title: Speaker memory for voice agents
+sidebar_label: Speaker memory
+description: Persist speaker identifiers so a voice agent recognizes returning speakers by name across sessions.
+keywords:
+  [
+    speechmatics,
+    speaker identification,
+    speaker identifiers,
+    diarization,
+    voice agents,
+    realtime,
+  ]
+sidebar_position: 6
+---
+
+# Speaker memory for voice agents
+
+Persist speaker identifiers so a voice agent recognizes a returning speaker by name across sessions.
+
+Speaker memory is an application of [speaker identification](/speech-to-text/features/speaker-identification), a standard capability of the Realtime and Batch APIs, not a voice-specific feature. This page covers the voice-agent pattern: capturing identifiers live and reusing them across sessions with [diarization](/speech-to-text/features/diarization) enabled. For how identifiers are produced and scoped, see [How speaker identifiers work](/speech-to-text/features/how-speaker-identifiers-work).
+
+:::warning
+Speechmatics does not store speaker identifiers. Save them yourself and supply them again in every future session. Identifiers are derived from a person's voice and may qualify as biometric data under data-protection law such as GDPR. Obtain consent, store them securely, and support deletion.
+:::
+
+## Get identifiers from a live session
+
+While a session is running, you request the current speakers. The engine returns every speaker it has tracked, each with its label and identifiers.
+
+The following pseudocode requests identifiers and persists the ones you want:
+
+```python showLineNumbers
+# Request the fingerprints of every speaker heard so far
+speakers = request_speakers()
+
+# speakers looks like:
+# [
+#   { label: "S1", speaker_identifiers: ["XX...XX"] },
+#   { label: "S2", speaker_identifiers: ["YY...YY"] },
+# ]
+
+# Filter to the speakers you want, then persist to your storage
+for s in speakers:
+    if s.label in wanted:
+        save_profile(name = wanted[s.label], identifiers = s.speaker_identifiers)
+```
+
+The engine returns everyone, so filter to the speakers you want on your side. Recognition quality improves once each speaker has said around five words, so do not request identifiers the instant someone starts talking.
+
+Some integrations let you flag the request as final, returning the definitive fingerprints computed over the whole session. This gives the best quality and suits the end of a call. A mid-session request without the flag returns whatever the engine has so far, which is sufficient for an interim save.
+
+## Reuse identifiers in a later session
+
+Storage is your responsibility. A local file, a database, or a user record all work.
+
+To reuse identifiers, pass them as known speakers when you open the next session. Each entry pairs a label, now a real name, with a list of identifiers. Passing several identifiers under one label covers the same voice heard through different devices, so recognition holds up wherever the person speaks from.
+
+The following pseudocode configures known speakers at session start:
+
+```python showLineNumbers
+configure_stt(
+    enable_diarization = true,
+    known_speakers = [
+        # One label, several identifiers for the same voice across devices
+        { label: "Sam",   speaker_identifiers: ["XX...XX", "ZZ...ZZ"] },
+        { label: "Alice", speaker_identifiers: ["YY...YY"] },
+    ],
+)
+```
+
+The engine attributes matching voices to `Sam` and `Alice` instead of `S1` and `S2`. Anyone it does not recognize gets a fresh generic label, so known and unknown speakers coexist.
+
+## Drive voice memory from the agent
+
+As with [speaker focus](/speech-to-text/features/speaker-focus-for-voice-agents), you can give the LLM tools and let it manage voice memory through conversation.
+
+The following pseudocode defines the tools:
+
+```python showLineNumbers
+# Save one or more speakers for recognition in future sessions
+remember_voices(speakers: { speaker_id: string, name: string }[])
+    "remember me, I'm Sam" -> remember_voices([{ speaker_id: "S1", name: "Sam" }])
+
+# Wipe every saved profile
+forget_all_voices()
+    "clear voice memory" -> forget_all_voices()
+```
+
+The `remember_voices` handler needs care, because fetching fingerprints is asynchronous. Do not block the agent's reply waiting for them. Stash the name mappings, fire the request, reply immediately, and save when the result arrives.
+
+The following pseudocode shows the non-blocking handler:
+
+```python showLineNumbers
+pending = {}   # label -> real name, awaiting the speakers result
+
+on remember_voices(speakers):
+    # Record the name mappings and request fingerprints without blocking
+    for entry in speakers:
+        pending[entry.speaker_id] = entry.name
+    request_speakers()
+    reply("Voice profile saved.")
+
+on speakers_result(speakers):
+    # Match returned identifiers to pending names and save
+    for s in speakers:
+        name = pending.pop(s.label, none)
+        if name:
+            save_profile(name, s.speaker_identifiers)   # merge, don't overwrite
+```
+
+Merge new identifiers into an existing profile of the same name rather than overwriting, so recognition improves each time. Snapshot and clear the pending map before working through the result, so overlapping requests do not double-process.
+
+## Write the system prompt
+
+The tools need guardrails in the prompt. Do not save people because they mention their name: someone saying "I'm Sam, anyway" is not asking to be remembered. Call `remember_voices` only on an explicit request such as "remember me" or "save my voice."
+
+The name must be a real name. `S1` is a label, not a name. If the agent does not know someone's name, it should ask before saving.
+
+The following prompt fragment covers the memory rules:
+
+```text showLineNumbers
+# Speaker memory
+
+- Only call remember_voices when a speaker explicitly asks to be saved,
+  such as "remember me", "save my voice" or "save our names". Do NOT
+  call just because someone says their name.
+- The name must be the speaker's real name (e.g. "Sam"), never a generic
+  label like S1. If you don't know their name, ask for it first.
+- Pass everyone to save in a single remember_voices call.
+- "Forget all voices" or "clear voice memory" -> forget_all_voices.
+```
+
+## Remember a speaker across sessions
+
+This example walks through two sessions.
+
+1. Sam chats to the agent as `S1` and says "remember me, I'm Sam."
+2. The LLM calls `remember_voices([{ speaker_id: "S1", name: "Sam" }])`.
+3. The handler stashes `S1 -> Sam`, requests the speakers, and replies.
+4. The result returns, the handler finds `S1`'s identifiers, and saves the profile `{ "label": "Sam", "speaker_identifiers": ["XX...XX"] }`.
+
+On the next session startup, you load that profile and pass it as a known speaker. Sam speaks, the engine matches his voice, and his transcript arrives as `@Sam: hello again`. Because he is now a named speaker, you can point [speaker focus](/speech-to-text/features/speaker-focus-for-voice-agents) at `Sam` directly.
+
+## Use speaker memory in the Voice SDK, Pipecat, and LiveKit
+
+The pattern maps onto real integrations with little code: get identifiers out of one session, feed them back into the next as known speakers. `known_speakers` is available across the Realtime and Batch clients; the [Voice SDK](/voice-agents/voice-sdk), Pipecat, and LiveKit expose it for the agent use case, with method names differing per client.
+
+For [Pipecat](https://github.com/pipecat-ai/pipecat), the result arrives on an event:
+
+```python showLineNumbers
+# Request fingerprints, then save them when the event fires
+await stt.send_message("GetSpeakers")
+
+@stt.event_handler("on_speakers_result")
+async def on_speakers_result(service, speakers):
+    for s in speakers["speakers"]:
+        save_profile(s["label"], s["speaker_identifiers"])
+
+# Reuse in a later session
+stt = SpeechmaticsSTTService(
+    params=SpeechmaticsSTTService.InputParams(
+        enable_diarization=True,
+        known_speakers=[
+            SpeechmaticsSTTService.SpeakerIdentifier(
+                label="Sam", speaker_identifiers=["XX...XX"]
+            )
+        ],
+    ),
+)
+```
+
+For the [LiveKit Speechmatics plugin](https://github.com/livekit/agents/tree/main/livekit-plugins/livekit-plugins-speechmatics), the request is a single awaitable:
+
+```python showLineNumbers
+# Request fingerprints, waiting for the result with a short timeout
+speakers = await stt.get_speaker_ids()
+for s in speakers:
+    save_profile(s.label, s.speaker_identifiers)
+
+# Reuse in a later session
+stt = speechmatics.STT(
+    enable_diarization=True,
+    known_speakers=[
+        SpeakerIdentifier(label="Sam", speaker_identifiers=["XX...XX"]),
+    ],
+)
+```
+
+## Best practices
+
+Identifiers are per account. You cannot use a fingerprint from one Speechmatics account on another, so voice profiles belong to the account that created them.
+
+Append new identifiers each time you save a returning speaker rather than treating a profile as fixed. More identifiers improve recognition.
+
+Request fingerprints once there are a few words to work with, and request them again at the end of a call with the final flag if the integration offers it. This returns identifiers computed over everything the engine heard.
+
+Speaker memory pairs with [speaker focus](/speech-to-text/features/speaker-focus-for-voice-agents). Once a voice is recognized as `Sam`, every focus and ignore operation can target `Sam` by name.
+
+## Next steps
+
+- [Speaker focus for voice agents](/speech-to-text/features/speaker-focus-for-voice-agents) — direct the agent to specific speakers.
+- [How speaker identifiers work](/speech-to-text/features/how-speaker-identifiers-work) — how identifiers are generated and scoped.
+- [Voice agents overview](/voice-agents/overview) — ways to build a voice agent.
+- [Voice SDK](/voice-agents/voice-sdk) — Python SDK reference for `known_speakers`.
