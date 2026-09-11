@@ -10,7 +10,7 @@ import melia1GpuSttDockerCompose from './assets/gpu-stt-melia-1-docker-compose.y
 
 # GPU Speech to text container (Melia 1)
 
-Melia 1 is a multilingual, GPU-only model, currently available in Batch. For an overview of the model, see [Models](/speech-to-text/models#melia-1).
+Melia 1 is a multilingual, GPU-only model, generally available in Batch. For an overview of the model, see [Models](/speech-to-text/models#melia-1). Real-time (streaming) inference is available as an early preview — see [Real-time inference](#real-time-inference).
 
 ## Prerequisites
 
@@ -85,19 +85,74 @@ I0705 08:12:55.598672 1 http_server.cc:400] "Started Metrics Service at 0.0.0.0:
 
 ### Batch inference
 
-The Melia 1 inference server currently runs in _batch_ mode only, processing whole files and returning the transcript at the end.
+The Melia 1 inference server processes whole files and returns the transcript at the end. For streaming, see [Real-time inference](#real-time-inference) below.
 
-Once the inference server is running, run the Melia 1 transcriber with the `SM_INFERENCE_ENDPOINT` environment variable set to the gRPC endpoint of the inference server. The transcriber offloads inference to the server, so it does not require a GPU:
+Once the inference server is running, run the Melia 1 transcriber with the `SM_INFERENCE_ENDPOINT` environment variable set to the gRPC endpoint of the inference server. The transcriber offloads inference to the server, so it does not require a GPU. The transcriber is a single unified image for both batch and real-time, so the `SM_ASR_MODE` environment variable must also be set, to `batch` or `rt`:
 
 ```bash
 docker run --rm -it \
   -e SM_INFERENCE_ENDPOINT=<server>:<port> \
+  -e SM_ASR_MODE=batch \
   -v $PWD/license.json:/license.json \
   -v $PWD/example.wav:/input.audio \
-  <speech_container_image_name>
+  speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion}
 ```
 
 To accept multiple jobs over an HTTP API without restarting the container between jobs, run the transcriber as a [batch persistent worker](/deployments/container/batch-persistent-worker).
+
+### Real-time inference
+
+:::warning
+Real-time (streaming) inference for Melia 1 is an early preview for evaluation only, and is not intended for production use. Feature coverage matches the [Melia 1 Realtime Preview](/private/melia-1-realtime).
+:::
+
+The Melia 1 inference server can run in two modes: _batch_ or _real-time_. The default mode is batch. To configure the server for real-time, set the `SM_STREAMING` environment variable to `true` when starting the inference server:
+
+<CodeBlock language="bash">
+  {`docker run --rm -it \\
+    -v $PWD/license.json:/license.json \\
+    --gpus '"device=0"' \\
+    -e CUDA_VISIBLE_DEVICES \\
+    -e SM_STREAMING=true \\
+    -p 8001:8001 \\
+    speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:${smVariables.latestMelia1ContainerVersion}
+`}
+</CodeBlock>
+
+When the Container starts you should see output similar to this,
+indicating that the server has started and is ready to serve requests.
+
+```
+I0911 11:04:02.321449 1 server.cc:709] 
++--------------------+---------+--------+
+| Model              | Version | Status |
++--------------------+---------+--------+
+| aed                | 1       | READY  |
+| body               | 1       | READY  |
+| preprocessor       | 1       | READY  |
+| streaming          | 1       | READY  |
+| streaming_ensemble | 1       | READY  |
++--------------------+---------+--------+
+...
+I0911 11:04:02.449550 1 grpc_server.cc:2579] "Started GRPCInferenceService at 0.0.0.0:8001"
+I0911 11:04:02.449744 1 http_server.cc:4961] "Started HTTPService at 0.0.0.0:8000"
+I0911 11:04:02.491582 1 http_server.cc:400] "Started Metrics Service at 0.0.0.0:8002"
+```
+
+The server can only support one of these modes at once.
+
+Once the inference server is running in real-time mode, run the Melia 1 transcriber as normal, with the `SM_INFERENCE_ENDPOINT` environment variable set to the gRPC endpoint of the inference server. Unlike the [Standard and Enhanced GPU container](/deployments/container/gpu-speech-to-text#batch-and-realtime-inference), Melia 1 uses the same transcriber image for both batch and real-time — there are no separate `rt-` and `batch-` prefixed images. Set `SM_ASR_MODE=rt` to run the transcriber in real-time mode:
+
+```bash
+docker run --rm -it \
+  -e SM_INFERENCE_ENDPOINT=<server>:<port> \
+  -e SM_ASR_MODE=rt \
+  -v $PWD/license.json:/license.json \
+  -p 9000:9000 \
+  speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion}
+```
+
+Connect over WebSocket as described in [Realtime transcription](/deployments/container/cpu-speech-to-text#realtime-transcription).
 
 ### Monitoring the server
 
