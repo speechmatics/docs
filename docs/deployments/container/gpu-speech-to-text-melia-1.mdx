@@ -98,7 +98,9 @@ docker run --rm -it \
   speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion}
 ```
 
-To accept multiple jobs over an HTTP API without restarting the container between jobs, run the transcriber as a [batch persistent worker](/deployments/container/batch-persistent-worker).### Monitoring the server
+To accept multiple jobs over an HTTP API without restarting the container between jobs, run the transcriber as a [batch persistent worker](/deployments/container/batch-persistent-worker).
+
+### Monitoring the server
 
 The inference server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such
 can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP APIs. To expose these, configure an external mapping for port
