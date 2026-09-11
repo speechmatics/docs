@@ -2,11 +2,13 @@
 description: Melia 1 delivers code-switching for 56 languages, in Realtime.
 ---
 
+import { smVariables } from '/sm-variables';
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import meliaRealtimePythonExample from "./assets/melia-1-rt-example.py?raw";
 import meliaRealtimeJsExample from "./assets/melia-1-rt-example.js?raw";
+import melia1GpuSttDockerCompose from '../deployments/container/assets/gpu-stt-melia-1-docker-compose.yml?raw';
 
 # Melia 1 Realtime Preview - Multilingual transcription
 
@@ -91,7 +93,7 @@ Connect over WebSocket as described in [Realtime transcription](/deployments/con
 
 ### Multi-session containers
 
-By default the real-time container will accept only one websocket connection at a time. To enable multiple connections, set the environment variable `SM_MAX_CONCURRENT_CONNECTIONS` to the maximum number of sessions to allow. When this is set, the `/ready` [health check endpoint](#health-service) will return true if there is a free connection available.
+By default the real-time container will accept only one websocket connection at a time. To enable multiple connections, set the environment variable `SM_MAX_CONCURRENT_CONNECTIONS` to the maximum number of sessions to allow. When this is set, the `/ready` [health check endpoint](/deployments/container/cpu-speech-to-text#health-service) will return true if there is a free connection available.
 
 CPU usage scales with the number of active sessions, whereas most memory usage is shared between connections.
 
