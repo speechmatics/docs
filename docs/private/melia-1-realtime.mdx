@@ -8,7 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import meliaRealtimePythonExample from "./assets/melia-1-rt-example.py?raw";
 import meliaRealtimeJsExample from "./assets/melia-1-rt-example.js?raw";
-import melia1GpuSttDockerCompose from '../deployments/container/assets/gpu-stt-melia-1-docker-compose.yml?raw';
+import melia1GpuSttRtDockerCompose from './assets/gpu-stt-melia-1-rt-docker-compose.yml?raw';
 
 # Melia 1 Realtime Preview - Multilingual transcription
 
@@ -52,7 +52,7 @@ The Melia 1 inference server can run in two modes: _batch_ or _real-time_. The d
     -e CUDA_VISIBLE_DEVICES \\
     -e SM_STREAMING=true \\
     -p 8001:8001 \\
-    speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:${smVariables.latestMelia1ContainerVersion}
+    speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:1.7.0
 `}
 </CodeBlock>
 
@@ -86,7 +86,7 @@ docker run --rm -it \
   -e SM_ASR_MODE=rt \
   -v $PWD/license.json:/license.json \
   -p 9000:9000 \
-  speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion}
+  speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:1.7.0
 ```
 
 Connect over WebSocket as described in [Realtime transcription](/deployments/container/cpu-speech-to-text#realtime-transcription).
@@ -110,7 +110,7 @@ This Docker Compose file will create a Speechmatics Melia 1 GPU Inference Server
 (assumes your `license.json` file is in the current working directory)
 
 <CodeBlock language="yaml" title="docker-compose.yml">
-{melia1GpuSttDockerCompose.replace('{{ CONTAINER_VERSION }}', 1.7.0)}
+{melia1GpuSttRtDockerCompose.replace('{{ CONTAINER_VERSION }}', '1.7.0')}
 </CodeBlock>
 
 ### Minimal example
