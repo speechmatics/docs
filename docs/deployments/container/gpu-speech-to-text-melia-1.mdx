@@ -154,6 +154,12 @@ docker run --rm -it \
 
 Connect over WebSocket as described in [Realtime transcription](/deployments/container/cpu-speech-to-text#realtime-transcription).
 
+### Multi-session containers
+
+By default the real-time container will accept only one websocket connection at a time. To enable multiple connections, set the environment variable `SM_MAX_CONCURRENT_CONNECTIONS` to the maximum number of sessions to allow. When this is set, the `/ready` [health check endpoint](#health-service) will return true if there is a free connection available.
+
+CPU usage scales with the number of active sessions, whereas most memory usage is shared between connections.
+
 ### Monitoring the server
 
 The inference server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such
