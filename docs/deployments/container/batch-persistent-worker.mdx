@@ -191,7 +191,7 @@ HTTP 503: {"detail": "Server busy: 8 engines not available (2 engines in use, 5 
 
 ## Speaker identification
 
-To enable the Speaker identification feature you can use the same logic used for the one shot [batch container](/speech-to-text/features/speaker-identification).
+To enable the speaker identification feature you can use the same logic used for the one shot [batch container](/speech-to-text/features/speaker-identification). Speaker identification requires the [GPU speech-to-text container](/deployments/container/gpu-speech-to-text) — it is not supported in batch mode on CPU.
 To enable per-customer encrypted identifiers (as used in our SaaS offering), pass a `user_id` in the `X-SM-Processing-Data` header.
 
 ```bash
