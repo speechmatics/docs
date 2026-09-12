@@ -40,6 +40,10 @@ channels:
         $ref: "#/components/messages/SetRecognitionConfig"
       GetSpeakers:
         $ref: "#/components/messages/GetSpeakers"
+      PauseRecognition:
+        $ref: "#/components/messages/PauseRecognition"
+      ResumeRecognition:
+        $ref: "#/components/messages/ResumeRecognition"
   subscribe:
     address: /
     messages:
@@ -73,6 +77,10 @@ channels:
         $ref: "#/components/messages/Error"
       SpeakersResult:
         $ref: "#/components/messages/SpeakersResult"
+      RecognitionPaused:
+        $ref: "#/components/messages/RecognitionPaused"
+      RecognitionResumed:
+        $ref: "#/components/messages/RecognitionResumed"
 operations:
   publish:
     action: send
@@ -87,6 +95,8 @@ operations:
       - $ref: "#/channels/publish/messages/ForceEndOfUtterance"
       - $ref: "#/channels/publish/messages/SetRecognitionConfig"
       - $ref: "#/channels/publish/messages/GetSpeakers"
+      - $ref: "#/channels/publish/messages/PauseRecognition"
+      - $ref: "#/channels/publish/messages/ResumeRecognition"
   subscribe:
     action: receive
     channel:
@@ -107,6 +117,8 @@ operations:
       - $ref: "#/channels/subscribe/messages/Warning"
       - $ref: "#/channels/subscribe/messages/Error"
       - $ref: "#/channels/subscribe/messages/SpeakersResult"
+      - $ref: "#/channels/subscribe/messages/RecognitionPaused"
+      - $ref: "#/channels/subscribe/messages/RecognitionResumed"
 components:
   messages:
     GetSpeakers:
@@ -142,6 +154,16 @@ components:
       summary: Requests a finalized transcript.
       payload:
         $ref: "#/components/schemas/ForceEndOfUtterance"
+    PauseRecognition:
+      summary: |
+        Requests that the session be parked: the transcriber is released while the WebSocket
+        connection stays open and continues to accept audio. See [Session parking](https://docs.speechmatics.com/speech-to-text/realtime/session-parking).
+      payload:
+        $ref: "#/components/schemas/PauseRecognition"
+    ResumeRecognition:
+      summary: Requests that a parked session resume transcription.
+      payload:
+        $ref: "#/components/schemas/ResumeRecognition"
     SetRecognitionConfig:
       summary: |
         Allows the client to re-configure the recognition session.
@@ -224,6 +246,14 @@ components:
       summary: Additional information sent from the server to the client.
       payload:
         $ref: "#/components/schemas/Info"
+    RecognitionPaused:
+      summary: Server response to `PauseRecognition`, confirming the session has parked and the transcriber has been released.
+      payload:
+        $ref: "#/components/schemas/RecognitionPaused"
+    RecognitionResumed:
+      summary: Server response to `ResumeRecognition`, confirming the session is running on a worker again.
+      payload:
+        $ref: "#/components/schemas/RecognitionResumed"
     Warning:
       summary: Warning messages sent from the server to the client.
       payload:
@@ -400,6 +430,26 @@ components:
           description: "Timestamp of the audio data that corresponds to the force end of utterance request. It's the number of seconds since the beginning of the audio."
       required:
         - message
+    PauseRecognition:
+      type: object
+      properties:
+        message:
+          const: PauseRecognition
+        preserve_timeline:
+          type: boolean
+          description: >-
+            Keep the transcript timeline (timestamps, speaker labels) continuous across this
+            pause. Optional; without it, the session resumes as a new one when it comes back:
+            timestamps restart from zero and speaker labels are not carried over.
+      required:
+        - message
+    ResumeRecognition:
+      type: object
+      properties:
+        message:
+          const: ResumeRecognition
+      required:
+        - message
     SetRecognitionConfig:
       type: object
       properties:
@@ -546,6 +596,20 @@ components:
           type: number
           description: The time (in seconds) that the end of utterance was detected.
           format: float
+    RecognitionPaused:
+      type: object
+      properties:
+        message:
+          const: RecognitionPaused
+      required:
+        - message
+    RecognitionResumed:
+      type: object
+      properties:
+        message:
+          const: RecognitionResumed
+      required:
+        - message
     AddPartialTranslation:
       type: object
       properties:
@@ -1254,9 +1318,13 @@ components:
         | --- | --- |
         | `recognition_quality` | Informs the client what particular quality-based model is used to handle the recognition. Sent to the client immediately after the WebSocket handshake is completed.|
         | `concurrent_session_usage` | Informs the client of their quota for concurrent sessions and how much of it they are using. Sent to the client immediately after the WebSocket handshake is completed.|
+        | `session_parked` | The session has been parked. See [Session parking](https://docs.speechmatics.com/speech-to-text/realtime/session-parking). Sent only if your account is configured to notify on parking events; parking is otherwise silent. |
+        | `session_resumed` | A parked session has resumed. Sent only if your account is configured to notify on parking events. |
       enum:
         - recognition_quality
         - concurrent_session_usage
+        - session_parked
+        - session_resumed
     WarningTypeEnum:
       type: string
       description: |
@@ -1271,6 +1339,7 @@ components:
         | `empty_translation_target_list` | No supported translation target languages specified. Translation will not run.
         | `add_audio_after_eos` | Protocol specification doesn't allow adding audio after `EndOfStream` has been received. Any `AddAudio messages after this, will be ignored.
         | `speaker_id` | Informs the client about any speaker ID related issues. |
+        | `not_allowed` | A `PauseRecognition` was requested on a session that cannot be parked. The session continues normally; this is distinct from the `Error` type of the same name, which closes the connection. |
       enum:
         - duration_limit_exceeded
         - unsupported_translation_pair
@@ -1279,6 +1348,7 @@ components:
         - empty_translation_target_list
         - add_audio_after_eos
         - speaker_id
+        - not_allowed
     ErrorTypeEnum:
       type: string
       # TODO if OpenAPI/AsyncAPI ever adds enum descriptors, we can move this description there
@@ -1303,6 +1373,7 @@ components:
         | `timelimit_exceeded` | Usage quota for the contract has been reached |
         | `idle_timeout` | Idle duration limit was reached (no audio data sent within the last hour), a closing handshake with code 1008 follows this in-band error. |
         | `session_timeout` | Max session duration was reached (maximum session duration of 48 hours), a closing handshake with code 1008 follows this in-band error. |
+        | `park_resume_failed` | A parked session (see [Session parking](https://docs.speechmatics.com/speech-to-text/realtime/session-parking)) failed to resume. The session is closed. |
         | `unknown_error` | An error that did not fit any of the types above. |
 
         :::info
@@ -1325,6 +1396,7 @@ components:
         - timelimit_exceeded
         - idle_timeout
         - session_timeout
+        - park_resume_failed
         - unknown_error
     AudioEventStartData:
       type: object
