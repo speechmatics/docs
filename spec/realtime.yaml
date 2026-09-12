@@ -448,6 +448,13 @@ components:
       properties:
         message:
           const: ResumeRecognition
+        transcribe_accumulated_buffer:
+          type: boolean
+          description: >-
+            Transcribe audio sent while parked instead of discarding it on resume. Optional;
+            defaults to false. Only has an effect when the resume preserves the timeline (see
+            preserve_timeline on PauseRecognition) - a resume that can't already discards the
+            buffer either way.
       required:
         - message
     SetRecognitionConfig:

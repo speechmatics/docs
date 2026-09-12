@@ -42,6 +42,7 @@ The following table shows messages involved in explict session parking:
 | `{"message": "PauseRecognition"}` | `{"message": "RecognitionPaused"}` |
 | `{"message": "PauseRecognition", "preserve_timeline": true}` | `{"message": "RecognitionPaused"}` |
 | `{"message": "ResumeRecognition"}` | `{"message": "RecognitionResumed"}` |
+| `{"message": "ResumeRecognition", "transcribe_accumulated_buffer": true}` | `{"message": "RecognitionResumed"}` |
 
 <SchemaNode schema={realtimeSchema.components.schemas.PauseRecognition} />
 <br/>
@@ -62,6 +63,14 @@ Send audio immediately after `ResumeRecognition`, without waiting for `Recogniti
 A session that hasn't sent any audio yet, or that can't preserve its timeline at all, always resumes as a new session regardless of `preserve_timeline`.
 
 If you send `PauseRecognition` on a session that can't be parked, the server replies with a `Warning` of type `not_allowed` and the session continues normally: pausing was refused, not the connection.
+
+`transcribe_accumulated_buffer` is optional on `ResumeRecognition` and defaults to `false`: audio sent while parked is acknowledged but discarded rather than transcribed on resume. Set it to `true` to transcribe that audio instead. It only has an effect when the resume preserves the timeline - a resume that can't (see above) discards the buffer either way.
+
+## Other messages while parked
+
+- **`EndOfStream`** ends a parked session immediately: Speechmatics replies with `EndOfTranscript` without resuming the session, and any audio buffered since the pause is discarded rather than transcribed. For a multichannel session, the same applies to `EndOfChannel`, per channel - the session only ends once every channel has been closed this way.
+- **`GetSpeakers`** and **`ForceEndOfUtterance`** need a live transcriber to answer, so sending either one resumes the session first - with the normal resume delay - before replying.
+- **Exception:** if you send `ForceEndOfUtterance` while parked and almost no audio has arrived since the pause, Speechmatics replies immediately with an empty final transcript and `EndOfUtterance` instead of resuming the session for essentially nothing.
 
 ## Session limits while parked
 
