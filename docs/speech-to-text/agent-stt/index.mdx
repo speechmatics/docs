@@ -6,6 +6,7 @@ description: Turn-based transcription for building voice agents.
 ---
 import { LinkCard } from "@site/src/theme/LinkCard";
 import { Grid } from "@radix-ui/themes";
+import { Blocks, Code2, Braces } from "lucide-react";
 
 # Overview
 
@@ -13,9 +14,29 @@ Agent STT is transcription designed for building voice agents. Stream audio in a
 
 There are three ways to use it:
 
-- Integration partners (LiveKit, Pipecat and VAPI): the fastest path to a production voice agent.
-- Agent STT SDK: a Python client that handles the connection, audio streaming and message handling.
-- Agent STT API directly: connect over WebSocket from any language, for custom pipelines or working outside of supported integration platforms.
+<Grid columns={{initial: "1", md: "3"}} gap="3" mb="5">
+  <LinkCard
+    direction="column"
+    title="Integrations"
+    description="The fastest path to a production voice agent, on LiveKit, Pipecat or Vapi"
+    href="/integrations-and-sdks"
+    icon={<Blocks/>}
+  />
+  <LinkCard
+    direction="column"
+    title="Agent STT SDK"
+    description="A Python client that handles the connection, audio streaming and message handling"
+    href="/speech-to-text/agent-stt/quickstart"
+    icon={<Code2/>}
+  />
+  <LinkCard
+    direction="column"
+    title="Agent STT API"
+    description="Connect over WebSocket from any language, for custom pipelines or unsupported platforms"
+    href="/api-ref/agent-stt-websocket"
+    icon={<Braces/>}
+  />
+</Grid>
 
 ## Features
 

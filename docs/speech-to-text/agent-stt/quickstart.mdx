@@ -8,7 +8,7 @@ description: Transcribe a conversation with Agent STT.
 import CodeBlock from '@theme/CodeBlock';
 import { Grid } from '@radix-ui/themes';
 import { LinkCard } from "@site/src/theme/LinkCard";
-import { Languages, Braces, Blocks } from 'lucide-react';
+import { Languages, Braces } from 'lucide-react';
 
 import pythonAgentSttExample from "./assets/quickstart.py?raw"
 
@@ -113,11 +113,5 @@ Either call is stamped with the audio position at the moment it was made, so the
     description="Every WebSocket message, handshake response and error code"
     href="/api-ref/agent-stt-websocket"
     icon={<Braces/>}
-  />
-  <LinkCard
-    title="Integrations"
-    description="Run Agent STT inside LiveKit, Pipecat or Vapi"
-    href="/integrations-and-sdks"
-    icon={<Blocks/>}
   />
 </Grid>
