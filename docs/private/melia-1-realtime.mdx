@@ -42,6 +42,8 @@ The preview is deployed in France (EU) and Oregon (USA), and is available on Saa
 Real-time (streaming) inference on prem for Melia 1 is an early preview for evaluation only, and is not intended for production use.
 :::
 
+GPU requirements are the same as for [Batch inference](/deployments/container/gpu-speech-to-text-melia-1#system-requirements).
+
 The Melia 1 inference server can run in two modes: _batch_ or _real-time_. The default mode is batch. To configure the server for real-time, set the `SM_STREAMING` environment variable to `true` when starting the inference server:
 
 <CodeBlock language="bash">
