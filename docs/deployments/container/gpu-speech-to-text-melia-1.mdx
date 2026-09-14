@@ -10,7 +10,9 @@ import melia1GpuSttDockerCompose from './assets/gpu-stt-melia-1-docker-compose.y
 
 # GPU Speech to text container (Melia 1)
 
-Melia 1 is a multilingual, GPU-only model, currently available in Batch. For an overview, see [Models](/speech-to-text/models#melia-1).
+Melia 1 is a multilingual, GPU-only model. For an overview, see [Models](/speech-to-text/models#melia-1).
+Real-time mode is currently in preview, see preview docs
+
 ## Prerequisites
 
 - [A license file or a license token](/deployments/container/licensing)
@@ -86,7 +88,9 @@ I0705 08:12:55.598672 1 http_server.cc:400] "Started Metrics Service at 0.0.0.0:
 
 The Melia 1 inference server currently runs in _batch_ mode only, processing whole files and returning the transcript at the end.
 
-Once the inference server is running, run the Melia 1 transcriber with the `SM_INFERENCE_ENDPOINT` environment variable set to the gRPC endpoint of the inference server. The transcriber offloads inference to the server, so it does not require a GPU. The transcriber is a single unified image for both batch and real-time, so the `SM_ASR_MODE` environment variable must also be set, to `batch` or `rt`:
+Once the inference server is running, run the Melia 1 transcriber with the `SM_INFERENCE_ENDPOINT` environment variable set to the gRPC endpoint of the inference server. The transcriber offloads inference to the server, so it does not require a GPU.
+
+The transcriber is a single unified image for both batch and real-time, so the SM_ASR_MODE environment variable must also be set, to batch or rt.
 
 ```bash
 docker run --rm -it \
