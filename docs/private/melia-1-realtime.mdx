@@ -36,7 +36,7 @@ The preview runs on a dedicated endpoint, separate from the production Realtime 
 
 The preview is deployed in France (EU) and Oregon (USA), and is available on SaaS only.
 
-### Real-time inference on prem
+## Real-time inference on prem
 
 :::warning
 Real-time (streaming) inference on prem for Melia 1 is an early preview for evaluation only, and is not intended for production use.
@@ -104,7 +104,7 @@ The inference server is based on [Nvidia's Triton architecture](https://develope
 can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP APIs. To expose these, configure an external mapping for port
 8002(Prometheus) or 8000(HTTP).
 
-## Docker compose example
+### Docker compose example
 
 This Docker Compose file will create a Speechmatics Melia 1 GPU Inference Server:
 
