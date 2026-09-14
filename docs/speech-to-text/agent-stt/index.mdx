@@ -14,8 +14,8 @@ Agent STT is transcription designed for building voice agents. Stream audio in a
 There are three ways to use it:
 
 - Integration partners (LiveKit, Pipecat and VAPI): the fastest path to a production voice agent.
-- Agent STT SDK: segmentation, turn detection and speaker management handled for you in Python.
-- Agent STT API directly: full control for custom pipelines or working outside of supported integration platforms.
+- Agent STT SDK: a Python client that handles the connection, audio streaming and message handling.
+- Agent STT API directly: connect over WebSocket from any language, for custom pipelines or working outside of supported integration platforms.
 
 ## Features
 
@@ -51,9 +51,19 @@ Use an integration to handle audio transport and wiring, so you can focus on you
 
 ## Agent STT SDK
 
-...
+The Agent STT SDK is a Python client for the Agent STT service. It manages the WebSocket session, streams your audio, and delivers segments and turn events to your callbacks.
+
+See the [Quickstart](/speech-to-text/agent-stt/quickstart) to get started.
 
 
 ## Using the API directly
 
-...
+Connect to the WebSocket endpoint from any language when there's no SDK for your stack, or when you need control over the session that a client library doesn't expose.
+
+```
+wss://eu.rt.speechmatics.com/v2/agent
+```
+
+Open the connection with your API key, send `StartRecognition` with your audio format and transcription config, then stream binary audio in `AddAudio` messages. Segments and turn events arrive as JSON while you send.
+
+See the [Agent STT Reference](/api-ref/agent-stt-websocket) for the session flow, every message schema and the error codes.

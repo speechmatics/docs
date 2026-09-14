@@ -6,6 +6,9 @@ description: Transcribe a conversation with Agent STT.
 ---
 
 import CodeBlock from '@theme/CodeBlock';
+import { Grid } from '@radix-ui/themes';
+import { LinkCard } from "@site/src/theme/LinkCard";
+import { Languages, Braces, Blocks } from 'lucide-react';
 
 import pythonAgentSttExample from "./assets/quickstart.py?raw"
 
@@ -19,7 +22,7 @@ The Agent STT SDK is a Python client for the Agent STT service. It runs no VAD o
 
 ### 1. Create an API key
 
-[Create an API key in the portal](https://portal.speechmatics.com/settings/api-keys), which you'll use to securely access the API. Store the key as a managed secret.
+[Create an API key in the portal](https://portal.speechmatics.com/settings/api-keys), which you'll use to securely access the API. Store the key as a managed secret. See [Authentication](/get-started/authentication) for temporary keys and other options.
 
 :::info
 Enterprise customers may need to speak to [Support](https://support.speechmatics.com) to get your API keys.
@@ -98,5 +101,23 @@ Either call is stamped with the audio position at the moment it was made, so the
 
 ## Next steps
 
-- [Authentication](/get-started/authentication) — API keys and temporary keys for browser clients.
-- [Speech to Text languages](/speech-to-text/languages) — the languages you can pass as `language`.
+<Grid columns={{initial: "1", md: "2"}} gap="3">
+  <LinkCard
+    title="Speech to Text languages"
+    description="The languages you can pass as language"
+    href="/speech-to-text/languages"
+    icon={<Languages/>}
+  />
+  <LinkCard
+    title="Agent STT Reference"
+    description="Every WebSocket message, handshake response and error code"
+    href="/api-ref/agent-stt-websocket"
+    icon={<Braces/>}
+  />
+  <LinkCard
+    title="Integrations"
+    description="Run Agent STT inside LiveKit, Pipecat or Vapi"
+    href="/integrations-and-sdks"
+    icon={<Blocks/>}
+  />
+</Grid>
