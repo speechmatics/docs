@@ -14,6 +14,7 @@ The best way to get started using Speechmatics' cloud services is:
 - Create an account in our [Portal](https://portal.speechmatics.com/)
 - Check out our [Realtime transcription](/speech-to-text/realtime/quickstart.mdx)
 - Check out our [Batch transcription](/speech-to-text/batch/quickstart.mdx)
+- Check out our [Agent STT](/speech-to-text/agent-stt/quickstart.mdx)
 
 ## On-prem
 

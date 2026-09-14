@@ -1,0 +1,79 @@
+---
+title: Segmentation
+pagination_prev: null
+pagination_next: null
+description: How Agent STT groups transcription into speaker-attributed segments, and what closes one.
+---
+
+# Segmentation
+
+The Realtime API returns transcription word by word, leaving you to decide where one piece of speech ends and the next begins. Agent STT does that grouping for you and returns whole segments: punctuated, attributed to a speaker, and ready to pass to an LLM.
+
+## Partial and final segments
+
+Two messages carry the transcript:
+
+- **`AddPartialSegment`** — an interim preview of the segment being built. Each one replaces the previous one, so display the latest and discard the rest. Never concatenate them.
+- **`AddSegment`** — the finalized segment. It will not change, and it is the message to act on.
+
+Partials arrive only when `transcription_config.enable_partials` is `true`.
+
+## What closes a segment
+
+A segment ends at the first boundary it reaches:
+
+| Boundary | When it applies |
+| --- | --- |
+| End of turn | Always |
+| Speaker change | When diarization is enabled |
+| End of sentence | When `emit_sentences` is `true` |
+| Duration cap | Always, as a safeguard against an unbounded segment |
+
+Because of this, a single turn often produces several `AddSegment` messages. To reconstruct everything one speaker said, join the segments between `StartOfTurn` and `EndOfTurn`. See [Turn detection](/speech-to-text/agent-stt/turn-detection) for the turn boundary itself.
+
+## Segment payload
+
+Every `AddSegment` and `AddPartialSegment` has the same shape:
+
+```json
+{
+  "message": "AddSegment",
+  "segment": {
+    "transcript": "Hello, I'd like to check on my order.",
+    "speaker": "S1"
+  },
+  "metadata": {
+    "start_time": 1.02,
+    "end_time": 3.24
+  }
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `segment.transcript` | The segment text, punctuated. |
+| `segment.speaker` | The speaker label. Present only when diarization attributed one. |
+| `metadata.start_time` | Segment start, in seconds from the start of the session. |
+| `metadata.end_time` | Segment end, in seconds from the start of the session. |
+
+## Speaker labels
+
+Set `transcription_config.diarization` to `speaker` to attribute each segment acoustically. Labels are `S1`, `S2` and so on, in the order each speaker is first heard. A segment never spans two speakers, because a speaker change is itself a boundary.
+
+Tune attribution with `transcription_config.speaker_diarization_config`:
+
+| Field | Description |
+| --- | --- |
+| `speaker_sensitivity` | How readily a new speaker is identified, between `0` and `1`. The default is `0.5`. Raise it if you see fewer speakers than expected. |
+| `max_speakers` | The maximum number of speakers to identify in the stream. Minimum `2`. Unrestricted when omitted. |
+| `prefer_current_speaker` | Keeps the active speaker when the match is good enough, rather than switching to a marginally better one. Reduces flipping between similar voices. |
+
+### Recognizing the same speaker again
+
+Labels such as `S1` are per-session: the same person is not `S1` in the next call. To carry a speaker across sessions, send `GetSpeakers` before the session ends. The server replies with `SpeakersResult`, holding a `speaker_identifiers` value for each label.
+
+Store those identifiers, then pass them back in a later session as `speaker_diarization_config.speakers`, each with a `label` of your own. That speaker is then labelled with your name rather than `S1`. Your labels must not look like the internal format, so `S1`, `S2` and `UU` are rejected.
+
+## Sentence-level segments
+
+Set `emit_sentences` to `true` to add a boundary at every sentence, so each segment holds one sentence. Leave it off when you want the largest coherent chunk per speaker, which is usually what an LLM should receive.

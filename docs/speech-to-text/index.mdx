@@ -15,6 +15,7 @@ import {
   BookPlus,
   Speech,
   ChartLine,
+  MessagesSquare,
 } from "lucide-react";
 
 # Speech to Text overview
@@ -23,10 +24,11 @@ import {
 Use Speech to Text to transcribe using one of the modes:
 - [Realtime processing](#realtime-processing): Stream audio from an input device or file and receive instant updates of the transcription as it happens
 - [Batch processing](#batch-processing): Submit an audio file and receive a complete text transcription once the processing is finished
+- [Agent STT](#agent-stt): Stream audio from a conversation and receive speaker-labelled, turn-based transcription for a voice agent
 
 ## Developer quickstart
 
-<Grid columns={{initial: "1", md: "2"}} gap="3" mb="5">
+<Grid columns={{initial: "1", md: "3"}} gap="3" mb="5">
   <LinkCard
     icon={<ChevronsRightIcon/>}
     direction="column"
@@ -41,6 +43,14 @@ Use Speech to Text to transcribe using one of the modes:
     title="Transcribe a file"
     description="Submit an audio file and receive a complete text transcription once the processing is finished"
     href="/speech-to-text/batch/quickstart"
+  />
+
+  <LinkCard
+    icon={<MessagesSquare/>}
+    direction="column"
+    title="Transcribe for voice agents"
+    description="Stream audio and receive speaker-labelled, turn-based transcription ready to pass to an LLM"
+    href="/speech-to-text/agent-stt/quickstart"
   />
 </Grid>
 
@@ -84,7 +94,6 @@ The [Speechmatics Batch Speech to Text API](/api-ref/batch/create-a-new-job) pro
 - Automate subtitles across large video libraries
 :::
 
-
 ### What is a job?
 
 Each transcription request is handled as a job — a self-contained unit representing a single transcription task.
@@ -96,6 +105,19 @@ A job includes:
 - The resulting transcript(s)
 
 You submit a job to the API, monitor its progress, and retrieve results once it's complete. Jobs can be created via direct upload or by referencing a URL.
+
+## Agent STT
+
+Transcription built for voice agents and conversational applications.
+
+[Agent STT](/speech-to-text/agent-stt) groups the transcript into [segments](/speech-to-text/agent-stt/segmentation): punctuated, attributed to a speaker, and ready to pass to an LLM. It also marks where each speaker's [turn](/speech-to-text/agent-stt/turn-detection) starts and ends, so your agent knows when to respond.
+
+:::info
+- Build a voice agent on LiveKit, Pipecat or Vapi
+- Respond as soon as a caller stops speaking
+- Feed clean, speaker-labelled turns to an LLM
+- Handle multi-speaker calls without stitching words together
+:::
 
 
 ## Quicklinks

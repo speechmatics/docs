@@ -8,7 +8,7 @@ description: Transcribe a conversation with Agent STT.
 import CodeBlock from '@theme/CodeBlock';
 import { Grid } from '@radix-ui/themes';
 import { LinkCard } from "@site/src/theme/LinkCard";
-import { Languages, Braces } from 'lucide-react';
+import { Languages, Braces, Split } from 'lucide-react';
 
 import pythonAgentSttExample from "./assets/quickstart.py?raw"
 
@@ -62,24 +62,17 @@ Press `Ctrl+C` to stop.
 
 ## Understanding the output
 
-Agent STT works in segments rather than word groups. A segment is closed at a turn or content boundary, and each one arrives as a single message:
+Read the text from `message["segment"]["transcript"]`, and the speaker label from `message["segment"]["speaker"]`.
 
-- **`AddPartialSegment`** — an interim preview of the segment being built. Each one replaces the previous, so don't concatenate them.
-- **`AddSegment`** — the finalized segment. This is the stable output to pass to your LLM.
+- **`AddPartialSegment`** — an interim preview. Each one replaces the previous, so don't concatenate them.
+- **`AddSegment`** — the finalized segment, and the stable output to pass to your LLM. Expect several per turn.
+- **`EndOfTurn`** — the speaker has finished and your agent can respond.
 
-Read the text from `message["segment"]["transcript"]`. When diarization is enabled, `message["segment"]["speaker"]` carries the speaker label (`S1`, `S2`, and so on).
-
-`StartOfTurn` and `EndOfTurn` bound a turn; `EndOfTurn` is the signal that the speaker has finished and your agent can respond.
-
-:::note
-`SpeechStarted` and `SpeechEnded` report voice activity, which is not the same as a turn boundary — a pause mid-sentence produces `SpeechEnded` without ending the turn.
-:::
+See [Segmentation](/speech-to-text/agent-stt/segmentation) for what closes a segment and how speaker labels work.
 
 ## Choosing who closes the turn
 
-The service needs a boundary to close a segment on. By default its own VAD provides one, and it emits the speech and turn events above.
-
-If your application already does its own endpointing — Pipecat, LiveKit, a push-to-talk button — turn the service's VAD off and close each turn yourself:
+By default the service detects turn ends from voice activity. If your application already does its own endpointing — Pipecat, LiveKit, a push-to-talk button — close each turn yourself instead:
 
 ```python
 from speechmatics.agent_stt import TurnConfig, TurnDetectionMode
@@ -97,11 +90,17 @@ client.finalize()                        # from a sync callback
 await client.force_end_of_utterance()    # from async code
 ```
 
-Either call is stamped with the audio position at the moment it was made, so the service cuts the turn where you heard the end of speech rather than wherever the message lands. The flushed segment comes back as a normal `AddSegment`.
+Either call is stamped with the audio position at the moment it was made, so the service cuts the turn where you heard the end of speech rather than wherever the message lands. In this mode nothing else closes a turn — see [Turn detection](/speech-to-text/agent-stt/turn-detection).
 
 ## Next steps
 
-<Grid columns={{initial: "1", md: "2"}} gap="3">
+<Grid columns={{initial: "1", md: "3"}} gap="3">
+  <LinkCard
+    title="Turn detection"
+    description="Choose which side decides that a speaker has finished"
+    href="/speech-to-text/agent-stt/turn-detection"
+    icon={<Split/>}
+  />
   <LinkCard
     title="Speech to Text languages"
     description="The languages you can pass as language"

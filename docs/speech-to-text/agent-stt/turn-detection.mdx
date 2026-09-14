@@ -1,0 +1,60 @@
+---
+title: Turn detection
+pagination_prev: null
+pagination_next: null
+description: How Agent STT decides when a speaker has finished, and how to close turns yourself.
+---
+
+# Turn detection
+
+A turn is one speaker's contribution to a conversation. Knowing it has ended is what tells your agent to stop listening and respond, so the decision sits on the critical path for latency: close too early and you interrupt, close too late and the conversation drags.
+
+## Turn messages
+
+`StartOfTurn` and `EndOfTurn` bound each turn.
+
+`StartOfTurn` is emitted on the first word of transcript rather than the first sound, so a cough or a door closing does not open a turn. `EndOfTurn` is always the turn's last message, arriving after the final `AddSegment`, so nothing further is coming for that speaker and your agent can respond.
+
+Between the two, segments carry the transcript. See [Segmentation](/speech-to-text/agent-stt/segmentation).
+
+## Speech signals are not turn boundaries
+
+`SpeechStarted` and `SpeechEnded` report voice activity only, and are sent in `vad` mode. They tell you the microphone has picked up speech, not that a thought is finished — a pause mid-sentence produces `SpeechEnded` while the turn stays open.
+
+Use them for interruption handling and UI feedback. Use `EndOfTurn` to decide when to respond.
+
+## Choosing who ends a turn
+
+`turn_config.turn_detection_mode` decides which side closes turns:
+
+| Mode | Who decides | Use it when |
+| --- | --- | --- |
+| `vad` (default) | The service, from voice activity | Your application streams audio and has no endpointing of its own |
+| `external` | Your application, with `ForceEndOfUtterance` | Something upstream already detects turn ends — Pipecat, LiveKit, or a push-to-talk control |
+
+Running two detectors against the same audio produces conflicting boundaries, so pick the one that owns the decision.
+
+### vad mode
+
+The service runs voice activity detection over the audio and closes the turn when speech stops. Nothing is required from your application beyond streaming audio, and `ForceEndOfUtterance` is ignored.
+
+Voice activity detection is not currently configurable.
+
+### external mode
+
+No voice activity detection runs, no `SpeechStarted` or `SpeechEnded` is sent, and no turn ends on its own. Your application closes each turn by sending `ForceEndOfUtterance` with the audio timestamp to cut at:
+
+```json
+{
+  "message": "ForceEndOfUtterance",
+  "timestamp": 3.24
+}
+```
+
+The timestamp is the point in the audio where the turn should end, in seconds from the start of the session, so the cut lands where you heard speech stop rather than wherever the message arrives. Each one must be later than the last, or the message is rejected with a `Warning`.
+
+:::warning
+In `external` mode nothing else closes a turn. An application that stops sending `ForceEndOfUtterance` receives segments but no `EndOfTurn`, and your agent never learns that the speaker has finished.
+:::
+
+The flushed text arrives as a normal `AddSegment`, followed by `EndOfTurn`.
