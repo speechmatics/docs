@@ -102,5 +102,9 @@
   {
     "source": "/guides/projects",
     "destination": "/administration/projects"
+  },
+  {
+    "source": "/voice-agents/voice-sdk",
+    "destination": "/integrations-and-sdks/voice-sdk"
   }
 ]

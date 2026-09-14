@@ -147,6 +147,11 @@
       "permanent": true
     },
     {
+      "source": "/voice-agents/voice-sdk",
+      "destination": "/integrations-and-sdks/voice-sdk",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true
