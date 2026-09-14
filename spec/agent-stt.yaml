@@ -11,14 +11,14 @@ asyncapi: 3.0.0
 id: urn:com:speechmatics:agent-stt-api
 defaultContentType: application/json
 info:
-  title: Speechmatics Agent STT API
+  title: Speechmatics Agent STT
   version: 2.0.0
   contact:
     name: Speechmatics Support
     url: https://www.speechmatics.com/product/support/
     email: support@speechmatics.com
   externalDocs:
-    description: Agent STT API Reference
+    description: Agent STT Reference
     url: https://docs.speechmatics.com/api-ref/agent-stt-websocket
 servers:
   default:
