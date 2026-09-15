@@ -89,7 +89,7 @@ The Melia 1 inference server currently runs in _batch_ mode only, processing who
 
 Once the inference server is running, run the Melia 1 transcriber with the `SM_INFERENCE_ENDPOINT` environment variable set to the gRPC endpoint of the inference server. The transcriber offloads inference to the server, so it does not require a GPU.
 
-The transcriber is a single unified image for both batch and real-time, so the SM_ASR_MODE environment variable must also be set, to batch or rt.
+The transcriber is a single unified image for both batch and real-time, so the `SM_ASR_MODE` environment variable must also be set, to batch or rt.
 
 <CodeBlock language="bash">
   {`docker run --rm -it \
