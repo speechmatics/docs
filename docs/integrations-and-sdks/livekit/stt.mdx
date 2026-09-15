@@ -1,5 +1,6 @@
 ---
-description: Transcribe live audio in your LiveKit voice agents with Speechmatics STT.
+title: LiveKit speech to text
+description: Transcribe live audio in your LiveKit voice agents with the Speechmatics agent STT plugin.
 ---
 
 import CodeBlock from '@theme/CodeBlock'
@@ -7,257 +8,239 @@ import sttFullExample from "./assets/stt-full-example.py?raw"
 
 # LiveKit speech to text
 
-Use the Speechmatics STT plugin to transcribe live audio in your LiveKit voice agents.
+The Speechmatics plugin for LiveKit Agents transcribes live audio using agent STT, the turn-based interaction pattern on the Realtime API built for applications that hold a conversation. It runs on the [Linden 1](/speech-to-text/models) model.
+
+The plugin connects directly to Speechmatics with your own API key. If you would rather run transcription on LiveKit's infrastructure without a Speechmatics key, use [LiveKit Inference](https://docs.livekit.io/agents/models/inference/) instead.
 
 ## Features
 
-- **Real-time transcription** — Low-latency streaming with partial (interim) results
-- **Turn detection** — Adaptive, fixed, ML-based, or external control modes
-- **Speaker diarization** — Identify and attribute speech to different speakers
-- **Speaker filtering** — Focus on specific speakers or ignore others (like the assistant)
-- **Custom vocabulary** — Boost recognition for domain-specific terms and proper nouns
-- **Output formatting** — Configurable templates for multi-speaker transcripts
+- **Real-time transcription** — transcript segments stream as the speaker talks, with optional partial results
+- **Turn detection** — a voice activity detector (VAD) in your agent closes each turn, or Speechmatics closes it server-side
+- **Speaker diarization** — attribute each segment to a speaker
+- **Stable speaker labels** — carry the same labels across sessions
+- **Custom vocabulary** — bias recognition towards domain-specific words
+- **Speaker formatting** — template speaker labels for your language model
 
 ## Installation
 
+Install LiveKit Agents with the Speechmatics and Silero extras:
+
 ```bash
-uv add "livekit-agents[speechmatics]~=1.4"
+uv add "livekit-agents[speechmatics,silero]"
 ```
 
-## Basic configuration
+The default turn detection mode needs a VAD running in your agent, and the plugin loads [Silero](https://docs.livekit.io/agents/build/turns/vad/) when you don't supply one. That is why this command includes the `silero` extra. See [Turn detection modes](#turn-detection-modes).
 
-### Authentication
+## Authentication
 
-By default, the plugin reads your API key from `SPEECHMATICS_API_KEY`.
+The plugin reads your [API key](/get-started/authentication) from the `SPEECHMATICS_API_KEY` environment variable.
 
-### Service options
+```bash title=".env.local"
+# Or pass api_key= to speechmatics.STT() directly
+SPEECHMATICS_API_KEY=your_speechmatics_key
+```
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `language` | string | `"en"` | Language code for transcription |
-| `output_locale` | string \| null | `null` | Output locale (for example `"en-GB"`) |
-| `domain` | string \| null | `null` | Domain-specific model (for example `"finance"`) |
-| `operating_point` | OperatingPoint \| null | `null` | Transcription accuracy. Use `OperatingPoint.ENHANCED` (higher accuracy) or `OperatingPoint.STANDARD` (lower latency) |
-| `base_url` | string | env var | Realtime base URL (defaults to `SPEECHMATICS_RT_URL`, or `wss://eu2.rt.speechmatics.com/v2`) |
-| `api_key` | string | env var | Speechmatics API key (defaults to `SPEECHMATICS_API_KEY`) |
-| `sample_rate` | number | `16000` | Audio sample rate in Hz. Valid values: `8000` or `16000` |
-| `audio_encoding` | AudioEncoding | `PCM_S16LE` | Audio encoding format: `AudioEncoding.PCM_S16LE`, `AudioEncoding.PCM_F32LE`, or `AudioEncoding.MULAW` |
-| `punctuation_overrides` | object \| null | `null` | Custom punctuation rules |
+## Endpoint
 
-#### Example
+The plugin connects to `wss://eu2.rt.speechmatics.com/v2/agent`. Set `base_url` to reach a different region or a self-hosted deployment. Agent STT sessions are served on the `/v2/agent` path. A URL ending in `/v2` reaches the streaming endpoint instead, which does not accept the Linden 1 model and fails the session with a protocol error.
+
+```python
+stt = speechmatics.STT(
+    # The /v2/agent path is required; /v2 is the streaming endpoint
+    base_url="wss://eu2.rt.speechmatics.com/v2/agent",
+)
+```
+
+## Basic usage
+
+Pass the plugin as the `stt` of an `AgentSession`. The defaults transcribe English on Linden 1 with diarization and partial results enabled.
 
 ```python
 from livekit.agents import AgentSession
 from livekit.plugins import speechmatics
 
 session = AgentSession(
-    stt=speechmatics.STT(
-        language="en",
-        output_locale="en-GB",
-    ),
-    # ... llm, tts, vad, etc.
+    # Silero VAD is loaded automatically to close each turn
+    stt=speechmatics.STT(language="en"),
+    # ... llm, tts, etc.
 )
 ```
 
-## Advanced configuration
+## Transcription parameters
 
-### Turn detection
-
-The Speechmatics STT plugin uses the Speechmatics Voice SDK for endpointing and turn detection.
-Turn detection determines when a user has finished their complete thought, while the Realtime API's `EndOfUtterance` message indicates a pause in speech. The plugin handles this distinction automatically.
-
-#### Modes
-
-Set `turn_detection_mode` to control how end of speech is detected:
-
-| Mode | When to use |
-|------|-------------|
-| `TurnDetectionMode.ADAPTIVE` | Default. Adjusts silence threshold based on speech rate, pauses, and disfluencies. Requires `speechmatics-voice[smart]` |
-| `TurnDetectionMode.FIXED` | Fixed silence threshold using `end_of_utterance_silence_trigger` |
-| `TurnDetectionMode.SMART_TURN` | ML-based endpointing using acoustic cues for more natural turn-taking. Requires `speechmatics-voice[smart]` |
-| `TurnDetectionMode.EXTERNAL` | You control turn boundaries manually (for example using your own VAD and calling `finalize()`) |
-
-```python
-from livekit.plugins import speechmatics
-from livekit.plugins.speechmatics import TurnDetectionMode
-
-# Adaptive mode (default) - adjusts to speech patterns
-# Requires: pip install speechmatics-voice[smart]
-stt = speechmatics.STT(
-    turn_detection_mode=TurnDetectionMode.ADAPTIVE,
-)
-
-# Fixed mode - consistent silence threshold
-stt = speechmatics.STT(
-    turn_detection_mode=TurnDetectionMode.FIXED,
-    end_of_utterance_silence_trigger=0.8,  # 800ms of silence
-    end_of_utterance_max_delay=5.0,        # Force end after 5s
-)
-
-# Smart turn mode - ML-based natural turn-taking
-# Requires: pip install speechmatics-voice[smart]
-stt = speechmatics.STT(
-    turn_detection_mode=TurnDetectionMode.SMART_TURN,
-)
-
-# External mode - manual control via finalize()
-stt = speechmatics.STT(
-    turn_detection_mode=TurnDetectionMode.EXTERNAL,
-)
-```
-
-#### Manual turn finalization
-
-When using `TurnDetectionMode.EXTERNAL`, you control when a turn ends by calling `finalize()` on the STT instance. This is useful when you have your own VAD or want to integrate with external signals.
-
-```python
-from livekit.plugins import speechmatics
-from livekit.plugins.speechmatics import TurnDetectionMode
-
-stt = speechmatics.STT(
-    turn_detection_mode=TurnDetectionMode.EXTERNAL,
-)
-
-# Later, when you detect the user has finished speaking:
-stt.finalize()
-```
-
-#### Configuration
+The `speechmatics.STT` constructor accepts the following transcription parameters.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `end_of_utterance_silence_trigger` | number \| null | `null` | Silence duration (seconds) that triggers end of utterance. Used primarily in `FIXED` mode. Valid range: &gt;0 to &lt;2 seconds (exclusive) |
-| `end_of_utterance_max_delay` | number \| null | `null` | Maximum delay (seconds) before forcing an end of utterance. Must be greater than `end_of_utterance_silence_trigger` |
-| `max_delay` | number \| null | `null` | Maximum transcription delay (seconds). Lower values reduce latency at the cost of accuracy. Valid range: 0.7–4.0 seconds |
-| `include_partials` | boolean \| null | `null` | Enable partial (interim) transcription results. When `null`, defaults to `true` |
+| `api_key` | string | env var | Speechmatics API key. Falls back to `SPEECHMATICS_API_KEY` |
+| `base_url` | string | `wss://eu2.rt.speechmatics.com/v2/agent` | Endpoint to connect to |
+| `model` | Model \| string | `linden-1` | Transcription model. `linden-1` is the only model agent STT accepts |
+| `language` | string | `"en"` | Language code for the input audio. See [Languages](/speech-to-text/languages) |
+| `output_locale` | string \| null | `null` | BCP-47 locale controlling spelling and number formats, for example `"en-GB"` |
+| `domain` | string \| null | `null` | Domain-specific language pack, for example `"finance"` |
+| `include_partials` | boolean | `true` | Emit interim segments that update until the final segment arrives |
+| `additional_vocab` | array \| null | `null` | `AdditionalVocabEntry` objects biasing recognition towards specific words |
+| `sample_rate` | number | `16000` | Audio sample rate in Hz. Agent STT accepts `16000` only; any other value raises a `ValueError` |
+| `audio_encoding` | AudioEncoding | `PCM_S16LE` | LiveKit frames are 16-bit PCM and are forwarded unconverted, so any other value raises a `ValueError` |
 
-### Advanced diarization
+Every language is global: whichever you select, the model recognizes a range of accents and dialects.
 
-The plugin can attribute words to speakers and lets you decide which speakers are treated as **active** (foreground) vs **passive** (background).
+A parameter you leave unset is not sent, and agent STT applies its own default rather than the one in the Realtime API schema. Partials and diarization are both on unless you turn them off.
 
-#### Configuration
+### Custom vocabulary
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `enable_diarization` | boolean \| null | `null` | Enable speaker diarization |
-| `speaker_sensitivity` | number \| null | `null` | Speaker detection sensitivity. Valid range: &gt;0.0 to &lt;1.0 (exclusive) |
-| `max_speakers` | number \| null | `null` | Maximum number of speakers to detect. Valid range: 2–100 |
-| `prefer_current_speaker` | boolean \| null | `null` | Reduce speaker switching for similar voices |
-| `known_speakers` | array \| null | `null` | Pre-define speaker identifiers with labels (`SpeakerIdentifier` objects) |
-| `additional_vocab` | array \| null | `null` | Custom vocabulary entries (`AdditionalVocabEntry` objects) for improved recognition |
+Pass `additional_vocab` entries to boost recognition of names and domain terms. Each entry takes a `content` value and optional `sounds_like` pronunciation variants.
 
 ```python
-from livekit.plugins import speechmatics
 from livekit.plugins.speechmatics import AdditionalVocabEntry
 
 stt = speechmatics.STT(
-    enable_diarization=True,
-    speaker_sensitivity=0.7,
-    max_speakers=3,
-    prefer_current_speaker=True,
     additional_vocab=[
-        AdditionalVocabEntry(content="Speechmatics"),
-        AdditionalVocabEntry(content="API", sounds_like=["A P I"]),
+        # sounds_like helps when the spelling is unusual
+        AdditionalVocabEntry(content="LiveKit", sounds_like=["live kit"]),
     ],
 )
 ```
 
-#### Known speakers
+## Turn detection
 
-Use `known_speakers` to attribute words to specific speakers across sessions. This is useful when you want consistent speaker identification for known participants.
+Agent STT reports turn boundaries as `StartOfTurn` and `EndOfTurn` events. The `turn_detection_mode` parameter sets which component decides where those boundaries fall.
+
+### Turn detection modes
+
+Two modes are available.
+
+| Mode | Detection method |
+|------|------------------|
+| `TurnDetectionMode.EXTERNAL` | Default. A VAD running in your agent closes the turn. Works with LiveKit's own [turn detection](https://docs.livekit.io/agents/build/turns/) |
+| `TurnDetectionMode.VAD` | Speechmatics closes the turn server-side using its own voice activity detection |
+
+The two modes fail in opposite directions. `EXTERNAL` returns the final transcript sooner and with a tighter tail, but can clip a word at a turn boundary and drops short backchannels such as "mm-hmm" that never cross your VAD's speech threshold. `VAD` is slightly more accurate and keeps backchannels, because Speechmatics applies its own, more patient endpointing.
+
+### External turn detection
+
+`EXTERNAL` is the default and needs no configuration. The plugin loads Silero VAD when you don't pass a `vad`. Pass your own VAD to tune it, or reuse the one already on your session so a second model isn't loaded:
 
 ```python
-from livekit.plugins import speechmatics
-from livekit.plugins.speechmatics import SpeakerIdentifier
+from livekit.plugins import silero, speechmatics
 
-stt = speechmatics.STT(
-    enable_diarization=True,
-    known_speakers=[
-        SpeakerIdentifier(label="Alice", speaker_identifiers=["speaker_abc123"]),
-        SpeakerIdentifier(label="Bob", speaker_identifiers=["speaker_def456"]),
-    ],
-)
+vad = silero.VAD.load()
+
+# Share one VAD between the session and the plugin
+stt = speechmatics.STT(vad=vad)
 ```
 
-Speaker identifiers are unique to each Speechmatics account and can be obtained from a previous transcription session.
+To signal turn ends from your own logic instead, pass `vad=None` and call `finalize()` on the STT when the speaker stops.
 
-#### Speaker focus
-
-Control which speakers are treated as **active** (foreground) vs **passive** (background):
-
-- **Active speakers** are the speakers you care about in your application. They generate `FINAL_TRANSCRIPT` events.
-- **Passive speakers** are still transcribed, but their words are buffered and only included in the output alongside new words from active speakers.
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `focus_speakers` | array | `[]` | Speaker IDs to treat as active |
-| `ignore_speakers` | array | `[]` | Speaker IDs to exclude entirely |
-| `focus_mode` | SpeakerFocusMode | `RETAIN` | How to handle non-focused speakers |
-
-##### Focus modes
-
-- `SpeakerFocusMode.RETAIN` keeps non-focused speakers as passive.
-- `SpeakerFocusMode.IGNORE` discards non-focused speaker words entirely.
-
-`ignore_speakers` always excludes those speakers from transcription and their speech will not trigger VAD or end of utterance detection.
-
-:::tip
-By default, any speaker label wrapped in double underscores (for example `__ASSISTANT__`) is automatically excluded. This convention lets you filter out assistant audio without explicitly adding it to `ignore_speakers`.
+:::warning
+In `EXTERNAL` mode something must close each turn. If Silero isn't installed and you pass no `vad`, the plugin logs a warning, nothing closes a turn, and the session produces no transcripts at all rather than failing.
 :::
 
-```python
-from livekit.plugins import speechmatics
-from livekit.plugins.speechmatics import SpeakerFocusMode
+### Server-side turn detection
 
-stt = speechmatics.STT(
-    focus_speakers=["S1"],
-    focus_mode=SpeakerFocusMode.RETAIN,
-    ignore_speakers=["S3"],
+Setting `turn_detection_mode` to `VAD` hands endpointing to Speechmatics. You must also set `turn_detection="stt"` in the session's turn handling options — without it the session ignores the end-of-speech events the plugin emits.
+
+```python
+from livekit.agents import AgentSession, TurnHandlingOptions
+from livekit.plugins import speechmatics
+
+session = AgentSession(
+    stt=speechmatics.STT(
+        turn_detection_mode=speechmatics.TurnDetectionMode.VAD,
+    ),
+    # Required, or the plugin's end-of-speech events are discarded
+    turn_handling=TurnHandlingOptions(turn_detection="stt"),
 )
 ```
 
-#### Speaker formatting
-
-Use `speaker_active_format` and `speaker_passive_format` to format transcripts for your LLM.
-The templates support `{speaker_id}` and `{text}`.
+### Turn detection parameters
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `speaker_active_format` | string \| null | `null` | Format template for active speaker output |
-| `speaker_passive_format` | string \| null | `null` | Format template for passive speaker output |
+| `turn_detection_mode` | TurnDetectionMode | `EXTERNAL` | Which component closes a turn |
+| `vad` | VAD \| null | Silero | VAD that signals the end of a turn. Applies to `EXTERNAL` mode only; ignored in `VAD` mode |
+
+End-of-utterance timing in `VAD` mode belongs to the service and is not configurable.
+
+## Speaker diarization
+
+[Diarization](/speech-to-text/features/diarization) (attributing speech to individual speakers) is enabled by default. Each transcript segment carries one speaker label, such as `S1`. Segments the model cannot attribute are labelled `UU`, and with diarization disabled every segment is labelled `UU`.
+
+Agent STT reports one speaker per segment rather than per word, so there is no per-word speaker data.
+
+### Diarization parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `enable_diarization` | boolean | `true` | Attribute each segment to a speaker |
+| `speaker_sensitivity` | number \| null | `null` | Speaker detection sensitivity, between `0` and `1`. Higher values help separate similar voices |
+| `max_speakers` | number \| null | `null` | Maximum speakers to detect, between `2` and `100`. Unrestricted when unset |
+| `prefer_current_speaker` | boolean | `false` | Reduce switching between similar-sounding speakers |
+| `known_speakers` | array \| null | `null` | `SpeakerIdentifier` objects from an earlier session |
+| `speaker_format` | string \| null | `null` | Template for speaker output |
+
+All of these apply only while `enable_diarization` is `true`.
+
+### Format speaker labels
+
+Set `speaker_format` to fold the speaker label into the transcript text your language model receives. The template accepts `{speaker_id}` and `{text}`.
 
 ```python
-from livekit.plugins import speechmatics
-
 stt = speechmatics.STT(
-    speaker_active_format="<{speaker_id}>{text}</{speaker_id}>",
-    speaker_passive_format="<{speaker_id} background>{text}</{speaker_id}>",
+    # Renders as <S1>Good morning.</S1>
+    speaker_format="<{speaker_id}>{text}</{speaker_id}>",
 )
 ```
 
-When you use a custom format, include it in your agent instructions so the LLM can interpret speaker tags consistently.
+Include the format in your agent instructions so the model interprets the labels consistently. To detect the primary speaker and format transcripts by speaker across providers, wrap the plugin with LiveKit's [`MultiSpeakerAdapter`](https://docs.livekit.io/agents/models/stt/#speaker-diarization).
 
-#### Updating speakers during transcription
+### Reuse speaker labels across sessions
 
-You can dynamically change which speakers to focus on or ignore during an active transcription session using the `update_speakers()` method.
+Speechmatics assigns speaker labels per session, so the same person is `S1` in one session and something else in the next. Call `get_speaker_ids()` once each speaker has said at least five words, then pass the result as `known_speakers` when you build the STT for the next session.
 
 ```python
-from livekit.plugins import speechmatics
-from livekit.plugins.speechmatics import SpeakerFocusMode
+# Returns one list per open stream, or a list of lists if several are open
+speakers = await stt.get_speaker_ids()
 
-stt = speechmatics.STT(enable_diarization=True)
-
-# Later, during transcription:
-stt.update_speakers(
-    focus_speakers=["S1", "S2"],
-    ignore_speakers=["S3"],
-    focus_mode=SpeakerFocusMode.RETAIN,
-)
+stt = speechmatics.STT(known_speakers=speakers)
 ```
 
-This is useful when you need to adjust speaker filtering based on runtime conditions, such as when a new participant joins or leaves a conversation.
+Speaker identifiers are unique to your Speechmatics account.
 
-#### Example
+## Deprecated parameters
+
+Parameters from plugin versions that predate agent STT are still accepted and each logs a warning. Unrecognized parameters are logged too, so a misspelled name isn't discarded silently.
+
+:::note
+The parameters below, along with the `ADAPTIVE`, `FIXED`, and `SMART_TURN` turn detection modes, are removed after October 5, 2026. Each of those three modes selected a server-side endpointing strategy that agent STT does not expose, so all three resolve to `EXTERNAL` with a warning. The `enhanced` and `standard` operating points resolve to `linden-1` the same way.
+:::
+
+Renamed parameters still apply their value to the parameter that replaced them.
+
+| Parameter | Replacement |
+|-----------|-------------|
+| `operating_point` | `model` |
+| `enable_partials` | `include_partials` |
+| `diarization_sensitivity` | `speaker_sensitivity` |
+| `speaker_active_format` | `speaker_format` |
+
+The rest are accepted and ignored.
+
+| Parameter | Reason |
+|-----------|--------|
+| `max_delay` | Agent STT rejects it |
+| `punctuation_overrides` | Agent STT rejects it |
+| `end_of_utterance_silence_trigger`, `end_of_utterance_max_delay`, `end_of_utterance_mode`, `end_of_turn_config` | End-of-utterance timing is the service's own |
+| `focus_speakers`, `ignore_speakers`, `focus_mode` | Agent STT does not support speaker focus |
+| `speaker_passive_format` | A segment has no passive case to format |
+| `vad_config` | Turn detection is set with `turn_detection_mode` |
+| `audio_settings`, `chunk_size`, `http_session`, `transcription_config` | Unused before agent STT |
+
+The `update_speakers()` method is deprecated and does nothing, for the same reason as the speaker focus parameters.
+
+## Full example
+
+This example combines transcription, turn detection, diarization, and speaker formatting in one STT instance.
 
 <CodeBlock language="python">
   {sttFullExample}
@@ -265,5 +248,7 @@ This is useful when you need to adjust speaker filtering based on runtime condit
 
 ## Next steps
 
-- [Quickstart](/integrations-and-sdks/livekit) — Build a complete voice agent
-- [Text to speech](/integrations-and-sdks/livekit/tts) — Use Speechmatics voices in your agent
+- [Quickstart](/integrations-and-sdks/livekit) — build a complete agent with LiveKit
+- [Text to speech](/integrations-and-sdks/livekit/tts) — add Speechmatics voices
+- [Diarization](/speech-to-text/features/diarization) — tune speaker separation
+- [Models](/speech-to-text/models) — compare Linden 1 with the other models

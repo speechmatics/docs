@@ -1,5 +1,6 @@
 ---
-description: Transcribe live audio in your Pipecat voice bots with Speechmatics STT.
+title: Pipecat speech to text
+description: Transcribe live audio in your Pipecat voice bots with the Speechmatics agent STT service.
 ---
 
 import CodeBlock from '@theme/CodeBlock'
@@ -7,264 +8,244 @@ import sttFullExample from "./assets/stt-full-example.py?raw"
 
 # Pipecat speech to text
 
-Use the Speechmatics STT service to transcribe live audio in your Pipecat voice bots.
+`SpeechmaticsSTTService` transcribes live audio using agent STT, the turn-based interaction pattern on the Realtime API built for applications that hold a conversation. It runs on the [Linden 1](/speech-to-text/models) model.
 
 ## Features
 
-- **Real-time transcription** — Low-latency streaming with partial (interim) results
-- **Turn detection** — Adaptive, fixed, ML-based, or external control modes
-- **Speaker diarization** — Identify and attribute speech to different speakers
-- **Speaker filtering** — Focus on specific speakers or ignore others (like the assistant)
-- **Custom vocabulary** — Boost recognition for domain-specific terms and proper nouns
-- **Output formatting** — Configurable templates for multi-speaker transcripts
+- **Real-time transcription** — transcript segments stream as the speaker talks, with optional partial results
+- **Turn detection** — Pipecat's own voice activity detector (VAD) closes each turn, or Speechmatics closes it server-side
+- **Speaker diarization** — attribute each segment to a speaker
+- **Stable speaker labels** — carry the same labels across sessions
+- **Custom vocabulary** — bias recognition towards domain-specific words
+- **Speaker formatting** — template speaker labels for your language model
+- **Runtime updates** — change most settings mid-conversation
 
 ## Installation
 
+Install Pipecat with the Speechmatics extra:
+
 ```bash
-pip install "pipecat-ai[speechmatics]"
+uv add "pipecat-ai[speechmatics]"
 ```
 
-## Basic configuration
+## Authentication
 
-### Authentication
+The service reads your [API key](/get-started/authentication) from the `SPEECHMATICS_API_KEY` environment variable.
 
-By default, the service reads your API key from the `SPEECHMATICS_API_KEY` environment variable.
+```bash title=".env"
+# Or pass api_key= to SpeechmaticsSTTService() directly
+SPEECHMATICS_API_KEY=your_speechmatics_key
+```
 
-### Service options
+## Endpoint
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `api_key` | string | env var | Speechmatics API key (defaults to `SPEECHMATICS_API_KEY`) |
-| `base_url` | string | env var | Realtime base URL (defaults to `SPEECHMATICS_RT_URL`, or `wss://eu2.rt.speechmatics.com/v2`) |
-| `sample_rate` | number | pipeline default | Audio sample rate in Hz |
-| `should_interrupt` | boolean | `true` | Enable interruption on detected speech |
+The service connects to `wss://eu2.rt.speechmatics.com/v2/agent`. Set `base_url`, or the `SPEECHMATICS_RT_URL` environment variable, to reach a different region or a self-hosted deployment. Agent STT sessions are served on the `/v2/agent` path. A URL ending in `/v2` reaches the streaming endpoint instead, which does not accept the Linden 1 model and fails the session with a protocol error.
 
-### Input parameters
+```python
+stt = SpeechmaticsSTTService(
+    # The /v2/agent path is required; /v2 is the streaming endpoint
+    base_url="wss://eu2.rt.speechmatics.com/v2/agent",
+)
+```
 
-These are passed via `params=SpeechmaticsSTTService.InputParams(...)`:
+For the hostname of each region, see [supported endpoints](/get-started/authentication#supported-endpoints).
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `language` | Language \| string | `Language.EN` | Language code for transcription |
-| `domain` | string \| null | `null` | Domain-specific model (for example `"finance"`) |
-| `operating_point` | OperatingPoint \| null | `null` | Transcription accuracy. Use `OperatingPoint.ENHANCED` (higher accuracy) or `OperatingPoint.STANDARD` (lower latency) |
-| `audio_encoding` | AudioEncoding | `PCM_S16LE` | Audio encoding format: `AudioEncoding.PCM_S16LE`, `AudioEncoding.PCM_F32LE`, or `AudioEncoding.MULAW` |
-| `punctuation_overrides` | object \| null | `null` | Custom punctuation rules |
-| `extra_params` | object \| null | `null` | Additional parameters to pass to the API |
+## Basic usage
 
-#### Example
+Place the service after `transport.input()` in your pipeline. The defaults transcribe English on Linden 1.
 
 ```python
 from pipecat.services.speechmatics.stt import SpeechmaticsSTTService
+from pipecat.transcriptions.language import Language
 
 stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(
-        language="en",
-        operating_point=SpeechmaticsSTTService.OperatingPoint.ENHANCED,
+    settings=SpeechmaticsSTTService.Settings(language=Language.EN),
+)
+
+# The service belongs directly after the transport input
+pipeline = Pipeline([transport.input(), stt, user_aggregator, llm, tts, transport.output()])
+```
+
+## Constructor parameters
+
+`SpeechmaticsSTTService` accepts the following parameters. Everything else is a [setting](#transcription-settings).
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `api_key` | string | env var | Speechmatics API key. Falls back to `SPEECHMATICS_API_KEY` |
+| `base_url` | string | `wss://eu2.rt.speechmatics.com/v2/agent` | Endpoint to connect to. Falls back to `SPEECHMATICS_RT_URL` |
+| `sample_rate` | number \| null | pipeline default | Audio sample rate in Hz. Agent STT requires `16000` |
+| `encoding` | AudioEncoding | `PCM_S16LE` | Audio encoding. Set at construction only, not a runtime setting |
+| `settings` | Settings \| null | `null` | Runtime-configurable settings |
+| `should_interrupt` | boolean | `true` | Interrupt bot output when Speechmatics detects user speech. Applies to `VAD` turn detection only |
+| `ttfs_p99_latency` | number | `0.74` | P99 latency in seconds from speech end to final transcript. Override for your deployment |
+
+## Transcription settings
+
+Settings are passed as `settings=SpeechmaticsSTTService.Settings(...)` and can be changed mid-conversation with an `STTUpdateSettingsFrame`.
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `model` | string | `"linden-1"` | Transcription model. `linden-1` is the only model agent STT accepts |
+| `language` | Language \| string | `Language.EN` | Language code for the input audio. See [Languages](/speech-to-text/languages) |
+| `domain` | string \| null | `null` | Domain-specific language pack, for example `"finance"`, or a bilingual pack such as `"bilingual-en"` |
+| `enable_partials` | boolean \| null | `true` | Emit interim segments that update until the final segment arrives |
+| `additional_vocab` | array | `[]` | `AdditionalVocabEntry` objects biasing recognition towards specific words |
+
+Every language is global: whichever you select, the model recognizes a range of accents and dialects.
+
+A setting you leave unset is not sent, and agent STT applies its own default rather than the one in the Realtime API schema. Partials and diarization are both on unless you turn them off.
+
+### Custom vocabulary
+
+Pass `additional_vocab` entries to boost recognition of names and domain terms. Each entry takes a `content` value and optional `sounds_like` pronunciation variants.
+
+```python
+stt = SpeechmaticsSTTService(
+    settings=SpeechmaticsSTTService.Settings(
+        additional_vocab=[
+            # sounds_like helps when the spelling is unusual
+            SpeechmaticsSTTService.AdditionalVocabEntry(
+                content="Pipecat", sounds_like=["pipe cat"]
+            ),
+        ],
     ),
 )
 ```
 
-## Advanced configuration
+## Turn detection
 
-### Turn detection
+Agent STT reports turn boundaries as `StartOfTurn` and `EndOfTurn` events. The `turn_detection_mode` setting sets which component decides where those boundaries fall.
 
-Turn detection determines when a user has finished their complete thought, while the Realtime API's `EndOfUtterance` message indicates a pause in speech. The service handles this distinction automatically.
+### Turn detection modes
 
-#### Modes
+Two modes are available.
 
-Set `turn_detection_mode` to control how end of speech is detected:
+| Mode | Detection method |
+|------|------------------|
+| `TurnDetectionMode.EXTERNAL` | Default. Pipecat closes the turn. A `VADUserStoppedSpeakingFrame` calls `finalize()` on the service |
+| `TurnDetectionMode.VAD` | Speechmatics closes the turn server-side using its own voice activity detection |
 
-| Mode | When to use |
-|------|-------------|
-| `TurnDetectionMode.EXTERNAL` | Default and recommended. Delegates turn detection to Pipecat's pipeline (VAD, Smart Turn, etc.). Try this first |
-| `TurnDetectionMode.ADAPTIVE` | Speechmatics analyzes speech content and acoustic patterns for end-of-turn detection |
-| `TurnDetectionMode.FIXED` | Fixed silence threshold using `end_of_utterance_silence_trigger` |
-| `TurnDetectionMode.SMART_TURN` | Speechmatics Smart Turn for ML-based turn detection |
+The two modes fail in opposite directions. `EXTERNAL` returns the final transcript sooner and with a tighter tail, but can clip a word at a turn boundary and drops short backchannels such as "mm-hmm" that never cross your VAD's speech threshold. `VAD` is slightly more accurate and keeps backchannels, because Speechmatics applies its own, more patient endpointing.
 
-:::tip
-Start with `EXTERNAL` mode. This lets you use Pipecat's turn detection features (like `LocalSmartTurnAnalyzerV3`) which are well-integrated with the pipeline. Only switch to other modes if you need Speechmatics to handle turn detection directly.
+### External turn detection
+
+`EXTERNAL` is the default. Pipecat's VAD drives it, so put a `vad_analyzer` on the transport, or a `vad_analyzer` on the user aggregator. Either position works: the `VADUserStoppedSpeakingFrame` is broadcast both upstream and downstream, so it reaches the service even from a VAD that sits after it in the pipeline.
+
+```python
+transport_params = TransportParams(
+    audio_in_enabled=True,
+    audio_out_enabled=True,
+    # Signals the end of each turn to the STT service
+    vad_analyzer=SileroVADAnalyzer(),
+)
+```
+
+:::warning
+In `EXTERNAL` mode something must close each turn. With no VAD anywhere in the pipeline, nothing calls `finalize()` and the service produces no transcripts at all rather than failing.
 :::
 
+### Server-side turn detection
+
+Setting `turn_detection_mode` to `VAD` hands endpointing to Speechmatics. The service requests `ExternalUserTurnStrategies` when it starts, proposes each turn boundary, and lets those strategies resolve it, so `should_interrupt` becomes the control for barge-in.
+
 ```python
-from pipecat.services.speechmatics.stt import SpeechmaticsSTTService
-
-# External mode (default, recommended) - use Pipecat's turn detection
 stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(
-        turn_detection_mode=SpeechmaticsSTTService.TurnDetectionMode.EXTERNAL,
-    ),
-)
-
-# Adaptive mode - Speechmatics determines end-of-turn
-stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(
-        turn_detection_mode=SpeechmaticsSTTService.TurnDetectionMode.ADAPTIVE,
-    ),
-)
-
-# Fixed mode - consistent silence threshold
-stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(
-        turn_detection_mode=SpeechmaticsSTTService.TurnDetectionMode.FIXED,
-        end_of_utterance_silence_trigger=0.8,  # 800ms of silence
-        end_of_utterance_max_delay=5.0,        # Force end after 5s
-    ),
-)
-
-# Smart turn mode - Speechmatics ML-based turn detection
-stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(
-        turn_detection_mode=SpeechmaticsSTTService.TurnDetectionMode.SMART_TURN,
+    settings=SpeechmaticsSTTService.Settings(
+        # Speechmatics endpoints server-side; no Pipecat VAD needed
+        turn_detection_mode=SpeechmaticsSTTService.TurnDetectionMode.VAD,
     ),
 )
 ```
 
 :::note
-When using `ADAPTIVE` or `SMART_TURN` modes, remove any competing VAD or turn-detection features from your pipeline to avoid conflicts.
+In `VAD` mode, remove any competing `vad_analyzer` or `turn_analyzer` from your transport. A transport VAD is still useful if you want STT metrics, but it must not drive turns.
 :::
 
-#### Configuration
+End-of-utterance timing in `VAD` mode belongs to the service and is not configurable.
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `end_of_utterance_silence_trigger` | number \| null | `null` | Silence duration (seconds) that triggers end of utterance. Used primarily in `FIXED` mode. Valid range: &gt;0 to &lt;2 seconds (exclusive) |
-| `end_of_utterance_max_delay` | number \| null | `null` | Maximum delay (seconds) before forcing an end of utterance. Must be greater than `end_of_utterance_silence_trigger` |
-| `max_delay` | number \| null | `null` | Maximum transcription delay (seconds). Lower values reduce latency at the cost of accuracy. Valid range: 0.7–4.0 seconds |
-| `include_partials` | boolean \| null | `null` | Enable partial (interim) transcription results |
-| `split_sentences` | boolean \| null | `null` | Split transcription into sentences |
+## Speaker diarization
 
-### Advanced diarization
+[Diarization](/speech-to-text/features/diarization) (attributing speech to individual speakers) is enabled by default. It labels each transcript segment with one speaker, such as `S1`. The label arrives on the `TranscriptionFrame` as `user_id`. Segments the model cannot attribute are labelled `UU`, and with diarization disabled every segment is labelled `UU`.
 
-The service can attribute words to speakers and lets you decide which speakers are treated as **active** (foreground) vs **passive** (background).
+Agent STT reports one speaker per segment rather than per word, so there is no per-word speaker data.
 
-#### Configuration
+### Diarization settings
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `enable_diarization` | boolean \| null | `null` | Enable speaker diarization |
-| `speaker_sensitivity` | number \| null | `null` | Speaker detection sensitivity. Valid range: &gt;0.0 to &lt;1.0 (exclusive) |
-| `max_speakers` | number \| null | `null` | Maximum number of speakers to detect. Valid range: 2–100 |
-| `prefer_current_speaker` | boolean \| null | `null` | Reduce speaker switching for similar voices |
-| `known_speakers` | array \| null | `null` | Pre-define speaker identifiers with labels (`SpeakerIdentifier` objects) |
-| `additional_vocab` | array \| null | `null` | Custom vocabulary entries (`AdditionalVocabEntry` objects) for improved recognition |
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `enable_diarization` | boolean \| null | `true` | Attribute each segment to a speaker |
+| `speaker_sensitivity` | number \| null | `null` | Speaker detection sensitivity, between `0` and `1`. Higher values help separate similar voices |
+| `max_speakers` | number \| null | `null` | Maximum speakers to detect, between `2` and `100`. Unrestricted when unset |
+| `prefer_current_speaker` | boolean \| null | `null` | Reduce switching between similar-sounding speakers |
+| `known_speakers` | array | `[]` | `SpeakerIdentifier` objects from an earlier session |
+| `speaker_active_format` | string | `"{text}"` | Template for speaker output |
+
+### Format speaker labels
+
+Set `speaker_active_format` to fold the speaker label into the transcript text your language model receives.
 
 ```python
-from pipecat.services.speechmatics.stt import SpeechmaticsSTTService
-
 stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(
+    settings=SpeechmaticsSTTService.Settings(
         enable_diarization=True,
-        speaker_sensitivity=0.7,
-        max_speakers=3,
-        prefer_current_speaker=True,
-        additional_vocab=[
-            SpeechmaticsSTTService.AdditionalVocabEntry(content="Speechmatics"),
-            SpeechmaticsSTTService.AdditionalVocabEntry(content="API", sounds_like=["A P I"]),
-        ],
-    ),
-)
-```
-
-#### Known speakers
-
-Use `known_speakers` to attribute words to specific speakers across sessions. This is useful when you want consistent speaker identification for known participants.
-
-```python
-from pipecat.services.speechmatics.stt import SpeechmaticsSTTService
-
-stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(
-        enable_diarization=True,
-        known_speakers=[
-            SpeechmaticsSTTService.SpeakerIdentifier(label="Alice", speaker_identifiers=["speaker_abc123"]),
-            SpeechmaticsSTTService.SpeakerIdentifier(label="Bob", speaker_identifiers=["speaker_def456"]),
-        ],
-    ),
-)
-```
-
-Speaker identifiers are unique to each Speechmatics account and can be obtained from a previous transcription session.
-
-#### Speaker focus
-
-Control which speakers are treated as **active** (foreground) vs **passive** (background):
-
-- **Active speakers** are the speakers you care about in your application. They generate `FINAL_TRANSCRIPT` events.
-- **Passive speakers** are still transcribed, but their words are buffered and only included in the output alongside new words from active speakers.
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `focus_speakers` | array | `[]` | Speaker IDs to treat as active |
-| `ignore_speakers` | array | `[]` | Speaker IDs to exclude entirely |
-| `focus_mode` | SpeakerFocusMode | `RETAIN` | How to handle non-focused speakers |
-
-##### Focus modes
-
-- `SpeakerFocusMode.RETAIN` keeps non-focused speakers as passive.
-- `SpeakerFocusMode.IGNORE` discards non-focused speaker words entirely.
-
-`ignore_speakers` always excludes those speakers from transcription and their speech will not trigger VAD or end of utterance detection.
-
-```python
-from pipecat.services.speechmatics.stt import SpeechmaticsSTTService
-
-stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(
-        focus_speakers=["S1"],
-        focus_mode=SpeechmaticsSTTService.SpeakerFocusMode.RETAIN,
-        ignore_speakers=["S3"],
-    ),
-)
-```
-
-#### Speaker formatting
-
-Use `speaker_active_format` and `speaker_passive_format` to format transcripts for your LLM.
-The templates support `{speaker_id}`, `{text}`, `{ts}`, `{start_time}`, `{end_time}`, and `{lang}`.
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `speaker_active_format` | string \| null | `null` | Format template for active speaker output |
-| `speaker_passive_format` | string \| null | `null` | Format template for passive speaker output |
-
-```python
-from pipecat.services.speechmatics.stt import SpeechmaticsSTTService
-
-stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(
+        # Renders as <S1>Good morning.</S1>
         speaker_active_format="<{speaker_id}>{text}</{speaker_id}>",
-        speaker_passive_format="<{speaker_id} background>{text}</{speaker_id}>",
     ),
 )
 ```
 
-When you use a custom format, include it in your bot's system prompt so the LLM can interpret speaker tags consistently.
+Include the format in your bot's system prompt so the model interprets the labels consistently. The template accepts the following attributes.
 
-#### Updating speakers during transcription
+| Attribute | Type | Description | Example |
+|-----------|------|-------------|---------|
+| `{speaker_id}` | string | Label of the speaker | `S1` |
+| `{text}` | string | Transcribed text | `Good morning.` |
+| `{ts}` | float | Start time of the segment, in seconds from the start of the session | `12.34` |
+| `{lang}` | string | Language of the transcription | `en` |
 
-You can dynamically change which speakers to focus on or ignore during an active transcription session using the `update_params()` method.
+### Reuse speaker labels across sessions
+
+Speechmatics assigns speaker labels per session, so the same person is `S1` in one session and something else in the next. Handle the `on_speakers_result` event to collect identifiers, then pass them as `known_speakers` when you build the service for the next session.
 
 ```python
-from pipecat.services.speechmatics.stt import SpeechmaticsSTTService
-
-stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(enable_diarization=True),
-)
-
-# Later, during transcription:
-stt.update_params(
-    SpeechmaticsSTTService.UpdateParams(
-        focus_speakers=["S1", "S2"],
-        ignore_speakers=["S3"],
-        focus_mode=SpeechmaticsSTTService.SpeakerFocusMode.RETAIN,
-    )
-)
+@stt.event_handler("on_speakers_result")
+async def on_speakers_result(service, speakers):
+    # Persist these to reuse the same labels next session
+    print(f"Speaker result: {speakers}")
 ```
 
-This is useful when you need to adjust speaker filtering based on runtime conditions, such as when a new participant joins or leaves a conversation.
+Speaker identifiers are unique to your Speechmatics account.
 
-#### Example
+## Connection handling
+
+The service manages its own WebSocket connection. Transient failures trigger reconnection with exponential backoff while audio is buffered. Permanent errors, such as a rejected API key or a configuration agent STT refuses, mark the service unusable rather than retrying.
+
+## Deprecated and unsupported parameters
+
+The `params=SpeechmaticsSTTService.InputParams(...)` pattern is deprecated as of Pipecat 0.0.105. Use `settings=SpeechmaticsSTTService.Settings(...)` instead, which is also what `STTUpdateSettingsFrame` updates at runtime.
+
+`operating_point` is a deprecated alias for `model` and is removed in Pipecat 2.0.0. Passing both raises a `ValueError` unless they name the same value.
+
+The following are no longer settings. Passing any of them to `Settings(...)` raises a `TypeError`. Passing them as a constructor argument is silently ignored, except where noted.
+
+| Parameter | Reason |
+|-----------|--------|
+| `max_delay` | Transcript timing is the service's own. Warns as a constructor argument |
+| `end_of_utterance_silence_trigger` | End-of-utterance timing is the service's own. Warns as a constructor argument |
+| `end_of_utterance_max_delay` | End-of-utterance timing is the service's own |
+| `split_sentences` | Not exposed by agent STT |
+| `focus_speakers`, `ignore_speakers`, `focus_mode` | Agent STT does not support speaker focus |
+| `speaker_passive_format` | A segment has no passive case to format |
+| `extra_params` | Agent STT rejects configuration fields outside its fixed schema |
+
+The `ADAPTIVE`, `FIXED`, and `SMART_TURN` turn detection modes are gone. Each selected a server-side endpointing strategy that agent STT does not expose. Use `EXTERNAL` or `VAD`, as described in [Turn detection modes](#turn-detection-modes).
+
+The `update_params()` method no longer changes speaker focus. Use an `STTUpdateSettingsFrame` to change settings at runtime.
+
+## Full example
+
+This example combines transcription, turn detection, diarization, and speaker formatting in one service.
 
 <CodeBlock language="python">
   {sttFullExample}
@@ -272,6 +253,7 @@ This is useful when you need to adjust speaker filtering based on runtime condit
 
 ## Next steps
 
-- [Quickstart](/integrations-and-sdks/pipecat) — Build a complete voice bot
-- [Text to speech](/integrations-and-sdks/pipecat/tts) — Use Speechmatics voices in your bot
-- [Pipecat documentation](https://docs.pipecat.ai/server/services/stt/speechmatics) — Full Speechmatics STT reference
+- [Quickstart](/integrations-and-sdks/pipecat) — build a complete bot with Pipecat
+- [Text to speech](/integrations-and-sdks/pipecat/tts) — add Speechmatics voices
+- [Diarization](/speech-to-text/features/diarization) — tune speaker separation
+- [Pipecat documentation](https://docs.pipecat.ai/server/services/stt/speechmatics) — full Speechmatics STT reference
