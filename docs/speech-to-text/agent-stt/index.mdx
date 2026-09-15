@@ -1,0 +1,92 @@
+---
+title: Overview
+pagination_prev: null
+pagination_next: null
+description: Turn-based transcription for building voice agents.
+---
+import { LinkCard } from "@site/src/theme/LinkCard";
+import { Grid } from "@radix-ui/themes";
+import { Blocks, Code2, Braces } from "lucide-react";
+
+# Overview
+
+Agent STT is transcription designed for building voice agents. Stream audio in and receive speaker-labelled, turn-based transcription back — punctuated and ready to pass to an LLM.
+
+Agent STT is available on SaaS only.
+
+There are three ways to use it:
+
+<Grid columns={{initial: "1", md: "3"}} gap="3" mb="5">
+  <LinkCard
+    direction="column"
+    title="Integrations"
+    description="The fastest path to a production voice agent, on LiveKit, Pipecat or Vapi"
+    href="/integrations-and-sdks"
+    icon={<Blocks/>}
+  />
+  <LinkCard
+    direction="column"
+    title="Agent STT SDK"
+    description="A Python client that handles the connection, audio streaming and message handling"
+    href="/speech-to-text/agent-stt/quickstart"
+    icon={<Code2/>}
+  />
+  <LinkCard
+    direction="column"
+    title="Agent STT API"
+    description="Connect over WebSocket from any language, for custom pipelines or unsupported platforms"
+    href="/api-ref/agent-stt-websocket"
+    icon={<Braces/>}
+  />
+</Grid>
+
+## Features
+
+- **Turn detection**: detect when a speaker has finished talking. See [Turn detection](/speech-to-text/agent-stt/turn-detection).
+- **Intelligent segmentation**: group partial transcripts into clean, speaker-attributed segments. See [Segmentation](/speech-to-text/agent-stt/segmentation).
+- **Diarization**: identify and label different speakers.
+- **Speech signals**: receive signals for start and end of speech.
+
+## Integrations
+
+Use an integration to handle audio transport and wiring, so you can focus on your agent logic:
+
+<Grid columns="3" gap="3">
+  <LinkCard
+    title="Vapi"
+    description="Turnkey voice agent platform. Deploy fast with no code."
+    icon={<img src="/img/integration-logos/vapi.png" alt="Vapi logo" width="28px" height="28px" />}
+    href="/integrations-and-sdks/vapi"
+  />
+  <LinkCard
+    title="LiveKit"
+    description="Open-source framework for building agents with WebRTC infrastructure."
+    icon={<img src="/img/integration-logos/livekit.png" alt="LiveKit logo" width="28px" height="28px" />}
+    href="/integrations-and-sdks/livekit"
+  />
+  <LinkCard
+    title="Pipecat"
+    description="Open-source framework with full control of the voice pipeline in code."
+    icon={<img src="/img/integration-logos/pipecat.png" alt="Pipecat logo" width="28px" height="28px" />}
+    href="/integrations-and-sdks/pipecat"
+  />
+</Grid>
+
+## Agent STT SDK
+
+The Agent STT SDK is a Python client for the Agent STT service. It manages the WebSocket session, streams your audio, and delivers segments and turn events to your callbacks.
+
+See the [Quickstart](/speech-to-text/agent-stt/quickstart) to get started.
+
+
+## Using the API directly
+
+Connect to the WebSocket endpoint from any language when there's no SDK for your stack, or when you need control over the session that a client library doesn't expose.
+
+```
+wss://eu.rt.speechmatics.com/v2/agent
+```
+
+Open the connection with your API key, send `StartRecognition` with your audio format and transcription config, then stream binary audio in `AddAudio` messages. Segments and turn events arrive as JSON while you send.
+
+See the [Agent STT Reference](/api-ref/agent-stt-websocket) for the session flow, every message schema and the error codes.

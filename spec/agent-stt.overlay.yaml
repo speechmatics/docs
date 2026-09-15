@@ -1,0 +1,74 @@
+# Hand-written parts of the Agent STT AsyncAPI spec.
+#
+# spec/agent-stt.yaml is generated from the JSON Schema files in the
+# openapi-specifications repo. Those carry field definitions but no document
+# metadata, no message summaries, and no binary AddAudio message. Everything
+# the generator cannot derive lives here and is merged in on each run, so
+# regenerating never overwrites prose.
+#
+# Run `npm run build:agent-stt-spec` after editing this file.
+
+# Copied verbatim into the generated document.
+info:
+  title: Speechmatics Agent STT
+  version: 2.0.0
+  contact:
+    name: Speechmatics Support
+    url: "https://www.speechmatics.com/product/support/"
+    email: support@speechmatics.com
+  externalDocs:
+    description: Agent STT Reference
+    url: "https://docs.speechmatics.com/api-ref/agent-stt-websocket"
+
+servers:
+  default:
+    host: eu.rt.speechmatics.com/v2/agent
+    protocol: wss
+    protocolVersion: v13 (RFC 6455)
+    description: Agent STT server
+
+# Messages absent from the source JSON Schema, because they are not JSON.
+# `after` places the message in the channel, following the named message.
+extraMessages:
+  publish:
+    AddAudio:
+      after: StartRecognition
+      summary: A binary chunk of audio. The server confirms receipt by sending an AudioAdded message.
+      contentType: application/octet-stream
+      schema:
+        type: string
+        format: binary
+
+# Message summaries, rendered above each schema on the API reference page.
+# A message with no entry here falls back to the `description` on its source
+# schema; the generator warns for any message left with neither.
+summaries:
+  # Sent messages
+  StartRecognition: Initiates a new recognition session.
+  EndOfStream: Declares that the client has no more audio to send.
+  SetRecognitionConfig: |
+    Allows the client to re-configure the recognition session.
+
+    :::note
+
+    The `language` field can be included in SetRecognitionConfig, but its value must match the language specified in the initial StartRecognition message.
+    Attempting to change the language or any other transcription configuration parameter not listed below will result in an error.
+
+    :::
+  GetSpeakers: Requests any detected speaker identifiers to be returned.
+
+  # Received messages
+  RecognitionStarted: Server response to StartRecognition, acknowledging that a recognition session has started.
+  AudioAdded: |
+    Server response to AddAudio, indicating that audio has been added successfully.
+
+    :::info
+
+    When clients send audio faster than real-time, the server may read data slower than it's sent. If binary `AddAudio` messages exceed the server's internal buffer, the server will process other WebSocket messages until buffer space is available. Clients receive `AudioAdded` responses only after binary data is read. This can fill TCP buffers, potentially causing WebSocket write failures and connection closure [with prejudice](https://websockets.spec.whatwg.org#the-closeevent-interface). Clients can monitor the WebSocket's [`bufferedAmount`](https://www.w3.org/TR/websockets#dom-websocket-bufferedamount) attribute to prevent this.
+
+    :::
+  EndOfTranscript: Server response to EndOfStream, sent after the server has finished sending all segment messages.
+  SpeakersResult: Server response to GetSpeakers, returning any detected speaker identifiers.
+  Info: Additional information sent from the server to the client.
+  Warning: Warning messages sent from the server to the client.
+  Error: Error messages sent from the server to the client. After any error, transcription is terminated and the connection is closed.
