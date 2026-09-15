@@ -34,7 +34,7 @@ Use them for interruption handling and UI feedback. Use `EndOfTurn` to decide wh
 
 Running two detectors against the same audio produces conflicting boundaries, so pick the one that owns the decision.
 
-### vad mode
+### `vad` mode
 
 The service runs voice activity detection over the audio and closes the turn when speech stops. Nothing is required from your application beyond streaming audio, and `ForceEndOfUtterance` is ignored.
 
