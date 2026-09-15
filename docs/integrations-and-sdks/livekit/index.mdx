@@ -1,5 +1,6 @@
 ---
-description: Build a voice AI agent with Speechmatics STT and TTS using LiveKit Agents.
+title: LiveKit quickstart
+description: Build a voice AI agent with Speechmatics Speech to Text and Text to Speech using LiveKit Agents.
 ---
 
 import CodeBlock from '@theme/CodeBlock'
@@ -9,16 +10,16 @@ import livekitQuickstartMainPy from "./assets/main.py?raw"
 
 Build a real-time voice AI agent with Speechmatics and LiveKit in minutes.
 
-[LiveKit Agents](https://docs.livekit.io/agents/) is a framework for building voice AI applications using WebRTC. With the Speechmatics plugin, you get accurate speech recognition and natural text-to-speech for your voice agents.
+[LiveKit Agents](https://docs.livekit.io/agents/) is a framework for building voice AI applications using WebRTC. The Speechmatics plugin adds Speech to Text (STT) through agent STT and Text to Speech (TTS) to your agent.
 
 ## Features
 
-- **Real-time transcription** — Low-latency speech-to-text as users speak
-- **Speaker diarization** — Identify and track multiple speakers
-- **Smart turn detection** — Know when the user has finished speaking
-- **Natural TTS voices** — Choose from multiple voice options
-- **Noise robustness** — Accurate recognition in challenging audio environments
-- **Global language support** — Works with diverse accents and dialects
+- **Real-time transcription** — low-latency segments as users speak
+- **Speaker diarization** — identify and track multiple speakers
+- **Turn detection** — a VAD in your agent, or Speechmatics server-side
+- **Natural TTS voices** — choose from multiple voice options
+- **Noise robustness** — accurate recognition in challenging audio environments
+- **Global language support** — works with diverse accents and dialects
 
 ## Prerequisites
 
@@ -41,8 +42,10 @@ mkdir voice-agent && cd voice-agent
 
 ```bash
 uv init
-uv add "livekit-agents[speechmatics,openai,silero]==1.4.2" python-dotenv
+uv add "livekit-agents[speechmatics,openai,silero]" python-dotenv
 ```
+
+The `silero` extra supplies the VAD that closes each turn. See [Turn detection modes](/integrations-and-sdks/livekit/stt#turn-detection-modes).
 
 ### 3. Install and authenticate the LiveKit CLI
 
