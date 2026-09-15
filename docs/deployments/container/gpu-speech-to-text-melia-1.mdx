@@ -97,7 +97,7 @@ The transcriber is a single unified image for both batch and real-time, so the `
   -e SM_ASR_MODE=batch \
   -v $PWD/license.json:/license.json \
   -v $PWD/example.wav:/input.audio \
-  speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion
+  speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion}
 `}
 </CodeBlock>
 To accept multiple jobs over an HTTP API without restarting the container between jobs, run the transcriber as a [batch persistent worker](/deployments/container/batch-persistent-worker).
