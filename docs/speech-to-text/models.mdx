@@ -1,13 +1,19 @@
 ---
 title: Models
-description: Compare the Enhanced, Standard, and Melia 1 models and choose the right one for your audio.
+description: Compare the Enhanced, Standard, Melia 1, and Linden 1 models and choose the right one for your audio.
 ---
 
 # Models
 
-Speechmatics offers three models for Speech to Text: Enhanced, Standard, and Melia 1. All three use the same API. The model you choose determines accuracy, how multilingual audio is handled, and which processing modes and regions are available.
+Speechmatics offers four models for Speech to Text. Which ones you can choose from depends on the API you are using.
+
+On the Batch and Realtime APIs, choose between Enhanced, Standard, and Melia 1 with the `model` property. The one you choose determines accuracy, how multilingual audio is handled, and which processing modes and regions are available.
+
+On the [Agent STT API](/speech-to-text/agent-stt), the model is Linden 1. It is the only model that API accepts, and it is not available on Batch or Realtime.
 
 ## Compare the models
+
+These are the models for the Batch and Realtime APIs. For the Agent STT API, refer to [Linden 1](#linden-1).
 
 | Capability | Enhanced | Standard | Melia 1 |
 |---|---|---|---|
@@ -46,9 +52,11 @@ Use Melia 1 for audio that contains more than one language, including speakers w
 
 For healthcare use cases, use the [Enhanced Medical model](#healthcare-domain) which is tuned for medical terminology.
 
+Use Linden 1 for voice agents, where you need speaker-attributed turns rather than a running word stream. You set it with the `model` property in the same way, but only the [Agent STT API](/speech-to-text/agent-stt) accepts it.
+
 ## Specify a model
 
-Set the `model` property in your transcription config. If you do not set it, the `standard` model is used.
+Set the `model` property in your transcription config. On the Batch and Realtime APIs, if you do not set it, the `standard` model is used. On the Agent STT API the property is required, and `linden-1` is the only accepted value.
 
 This config selects the `enhanced` model:
 
@@ -64,7 +72,7 @@ This config selects the `enhanced` model:
 }
 ```
 
-Enhanced and Standard are available for Realtime and Batch transcription. Melia 1 is currently available for Batch transcription.
+Enhanced and Standard are available for Realtime and Batch transcription. Melia 1 is currently available for Batch transcription. Linden 1 is available on the Agent STT API only.
 
 ## Melia 1
 
@@ -100,6 +108,28 @@ For the full list of Batch endpoints, refer to [Authentication](/get-started/aut
 For the features Melia 1 does not yet support, refer to [Compare the models](#compare-the-models).
 
 To configure language hints and read the per-language output metadata, refer to [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output).
+
+## Linden 1
+
+Linden 1 is the model behind [Agent STT](/speech-to-text/agent-stt). It returns transcription as speaker-attributed turns rather than a running word stream, so the output is ready to pass to an LLM.
+
+Set `"model": "linden-1"` in the `transcription_config` of your `StartRecognition` message:
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    // highlight-start
+    "model": "linden-1",
+    // highlight-end
+    "language": "en"
+  }
+}
+```
+
+Linden 1 supports speaker diarization, speaker identification, custom dictionary, transcript filtering, and partials. It is not available on the Batch or Realtime APIs, and the Batch and Realtime models cannot be used with Agent STT.
+
+For the full configuration, refer to the [Agent STT Reference](/api-ref/agent-stt-websocket).
 
 ## Enhanced Medical model {#healthcare-domain}
 

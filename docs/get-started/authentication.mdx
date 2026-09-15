@@ -50,6 +50,20 @@ wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
 ```
 
   </TabItem>
+  <TabItem value="agent-stt" label="Agent STT">
+
+Your API key must be provided in the header of the [WebSocket connection request](/api-ref/agent-stt-websocket#handshake-responses) to the `/v2/agent` path. For example:
+
+```bash
+GET /v2/agent HTTP/1.1
+Host: eu.rt.speechmatics.com
+Upgrade: websocket
+Connection: Upgrade
+Authorization: Bearer YOUR_API_KEY
+User-Agent: Python/3.12 websockets/15.0
+```
+
+  </TabItem>
 </Tabs>
 
 
