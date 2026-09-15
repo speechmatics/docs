@@ -2,6 +2,7 @@ import asyncio
 
 from speechmatics.agent_stt import AgentSttAsyncClient
 from speechmatics.agent_stt import Microphone
+from speechmatics.agent_stt import Model
 from speechmatics.agent_stt import ServerMessageType
 from speechmatics.agent_stt import TranscriptionConfig
 
@@ -18,6 +19,7 @@ async def main() -> None:
     # Uses SPEECHMATICS_API_KEY from the environment
     client = AgentSttAsyncClient(
         transcription_config=TranscriptionConfig(
+            model=Model.LINDEN_1,
             language="en",
             enable_partials=True,
             diarization="speaker",
