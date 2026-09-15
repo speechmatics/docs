@@ -93,7 +93,7 @@ The following custom dictionary would not be affected - it contains 7 elements b
 ["apple", "orange", "banana", "lemon", "lime", "melon", "pear"]
 ```
 
-### Maximum number of custom dictionary items
+## Maximum number of custom dictionary items
 
 SaaS on Cloud rejects a job if its custom dictionary (`additional_vocab`) contains more than 20,000 items.
 
@@ -109,5 +109,6 @@ The request is rejected with an `HTTP 400 Bad Request` response:
 
 **Realtime API**<br/>
 The server sends an in-band error message of type [`protocol_error`](/api-ref/realtime-transcription-websocket#error) and closes the WebSocket connection with code `1003`:
+```text
 additional_vocab has more items (20001) than allowed (20000)
 ```
