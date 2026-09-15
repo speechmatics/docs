@@ -158,9 +158,9 @@ In SaaS (cloud) deployments, `operating_point` is deprecated. It maps to `model`
 
 ### Linden 1
 
-Linden 1 is the first model for [Agent STT](/speech-to-text/agent-stt). It returns transcription as speaker-attributed turns rather than a running word stream, so the output is ready to pass to an LLM.
+Linden 1 is the model powering [Agent STT](/speech-to-text/agent-stt). It returns transcription as speaker-attributed segments, with turn messages, rather than a running word stream, so the output is ready to pass to an LLM.
 
-Linden 1 is not a drop-in replacement for the Batch and Realtime models. To use it, connect to the Agent STT endpoint at `/v2/agent` rather than the Realtime `/v2` path, and set `"model": "linden-1"` in the `transcription_config` of your `StartRecognition` message:
+To use it, connect to the Agent STT endpoint at `/v2/agent` rather than the Realtime `/v2` path, and set `"model": "linden-1"` in the `transcription_config` of your `StartRecognition` message:
 
 ```json
 {
@@ -174,8 +174,6 @@ Linden 1 is not a drop-in replacement for the Batch and Realtime models. To use 
 }
 ```
 
-The Agent STT SDK sets the model for you if you do not, but setting it explicitly makes your config clear.
-
-Linden 1 supports speaker diarization, speaker identification, custom dictionary, transcript filtering, and partials. It is available on SaaS only.
+If using the Agent STT SDK, it sets the model for you if you do not.
 
 For the full configuration, refer to the [Agent STT Reference](/api-ref/agent-stt-websocket).
