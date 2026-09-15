@@ -36,7 +36,7 @@ Since unpredictable network issues can cause WebSocket connections to be dropped
 
 ## Custom dictionary limits
 
-If a session's custom dictionary (`additional_vocab`) contains more than 20,000 items, the Realtime SaaS service sends an in-band error message of type `protocol_error` and closes the WebSocket connection with code `1003`. See [Custom dictionary content limits](/speech-to-text/features/custom-dictionary#maximum-number-of-custom-dictionary-items) for details.
+If a session's custom dictionary (`additional_vocab`) contains more than 20,000 items, the Realtime SaaS service sends an in-band error message of type [`protocol_error`](/api-ref/realtime-transcription-websocket#error) and closes the WebSocket connection with code `1003`. See [Custom dictionary content limits](/speech-to-text/features/custom-dictionary#maximum-number-of-custom-dictionary-items) for details.
 
 ## Data retention limits
 
