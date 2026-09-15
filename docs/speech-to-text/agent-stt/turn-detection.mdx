@@ -40,7 +40,7 @@ The service runs voice activity detection over the audio and closes the turn whe
 
 Voice activity detection is not currently configurable.
 
-### external mode
+### `external` mode
 
 No voice activity detection runs, no `SpeechStarted` or `SpeechEnded` is sent, and no turn ends on its own. Your application closes each turn by sending `ForceEndOfUtterance` with the audio timestamp to cut at:
 
