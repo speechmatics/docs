@@ -60,7 +60,7 @@ sequenceDiagram
   API-->>Client: EndOfTranscript
 ```
 
-The messages you receive during a turn fall into three groups:
+Three groups of received messages carry the conversation itself, and are the ones your agent logic acts on:
 
 | Group | Messages | What they mean |
 | --- | --- | --- |
@@ -69,6 +69,8 @@ The messages you receive during a turn fall into three groups:
 | Turn signals | `StartOfTurn`, `EndOfTurn` | Where a speaker's turn starts and ends. `EndOfTurn` is the turn's last message, and the cue for your agent to respond. |
 
 Pass `AddSegment` downstream to your LLM, and use `AddPartialSegment` only for display.
+
+The remaining received messages manage the session rather than the conversation: `RecognitionStarted`, `AudioAdded`, `SpeakersResult`, `EndOfTranscript`, `Info`, `Warning` and `Error`. See [Received messages](#received-messages).
 
 ## Handshake responses
 
