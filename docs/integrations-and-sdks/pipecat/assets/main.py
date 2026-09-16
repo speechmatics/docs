@@ -36,7 +36,8 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
     async with aiohttp.ClientSession() as session:
         stt = SpeechmaticsSTTService(
             api_key=os.getenv("SPEECHMATICS_API_KEY"),
-            params=SpeechmaticsSTTService.InputParams(
+            settings=SpeechmaticsSTTService.Settings(
+                # Default mode: the VAD on the user aggregator closes each turn
                 turn_detection_mode=SpeechmaticsSTTService.TurnDetectionMode.EXTERNAL,
             ),
         )
@@ -63,6 +64,8 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
         user_aggregator, assistant_aggregator = LLMContextAggregatorPair(
             context,
             user_params=LLMUserAggregatorParams(
+                # VADUserStoppedSpeakingFrame is broadcast upstream, so this
+                # VAD still reaches the STT service placed before it
                 vad_analyzer=SileroVADAnalyzer(params=VADParams(stop_secs=0.2)),
                 user_turn_strategies=UserTurnStrategies(
                     stop=[
