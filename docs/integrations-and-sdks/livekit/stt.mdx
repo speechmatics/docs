@@ -42,7 +42,7 @@ SPEECHMATICS_API_KEY=your_speechmatics_key
 
 ## Endpoint
 
-The plugin connects to `wss://eu2.rt.speechmatics.com/v2/agent`. Set `base_url` to reach a different region or a self-hosted deployment. Agent STT sessions are served on the `/v2/agent` path, and the SDK appends `/agent` when your URL omits it. A streaming URL ending in `/v2` therefore resolves to the same agent STT endpoint rather than failing, so an existing `SPEECHMATICS_RT_URL` keeps working.
+The plugin connects to `wss://eu2.rt.speechmatics.com/v2/agent`. Set `base_url` to reach a different region or a self-hosted deployment. Agent STT sessions are served on the `/v2/agent` path, and the SDK appends `/agent` when your URL omits it.
 
 ```python
 stt = speechmatics.STT(
