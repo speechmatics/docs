@@ -742,6 +742,7 @@ definitions:
           **Deprecated**: Use `model` instead. `operating_point` is left only for backward compatibility.
       additional_vocab:
         type: array
+        maxItems: 20000
         x-omitempty: true
         items:
           type: object
