@@ -42,7 +42,7 @@ mkdir voice-agent && cd voice-agent
 
 ```bash
 uv init
-uv add "livekit-agents[speechmatics,openai,silero]" python-dotenv
+uv add "livekit-agents[speechmatics,openai,silero]~=1.8.2" python-dotenv
 ```
 
 The `silero` extra supplies the VAD that closes each turn. See [Turn detection modes](/integrations-and-sdks/livekit/stt#turn-detection-modes).

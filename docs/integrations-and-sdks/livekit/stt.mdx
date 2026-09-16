@@ -26,7 +26,7 @@ The plugin connects directly to Speechmatics with your own API key. If you would
 Install LiveKit Agents with the Speechmatics and Silero extras:
 
 ```bash
-uv add "livekit-agents[speechmatics,silero]"
+uv add "livekit-agents[speechmatics,silero]~=1.8.2"
 ```
 
 The default turn detection mode needs a VAD running in your agent, and the plugin loads [Silero](https://docs.livekit.io/agents/build/turns/vad/) when you don't supply one. That is why this command includes the `silero` extra. See [Turn detection modes](#turn-detection-modes).
@@ -42,7 +42,7 @@ SPEECHMATICS_API_KEY=your_speechmatics_key
 
 ## Endpoint
 
-The plugin connects to `wss://eu2.rt.speechmatics.com/v2/agent`. Set `base_url` to reach a different region or a self-hosted deployment. Agent STT sessions are served on the `/v2/agent` path. A URL ending in `/v2` reaches the streaming endpoint instead, which does not accept the Linden 1 model and fails the session with a protocol error.
+The plugin connects to `wss://eu2.rt.speechmatics.com/v2/agent`. Set `base_url` to reach a different region or a self-hosted deployment. Agent STT sessions are served on the `/v2/agent` path, and the SDK appends `/agent` when your URL omits it. A streaming URL ending in `/v2` therefore resolves to the same agent STT endpoint rather than failing, so an existing `SPEECHMATICS_RT_URL` keeps working.
 
 ```python
 stt = speechmatics.STT(
