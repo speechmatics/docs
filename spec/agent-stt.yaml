@@ -22,7 +22,7 @@ info:
     url: https://docs.speechmatics.com/api-ref/agent-stt-websocket
 servers:
   default:
-    host: eu.rt.speechmatics.com/v2/agent
+    host: global.rt.speechmatics.com/v2/agent
     protocol: wss
     protocolVersion: v13 (RFC 6455)
     description: Agent STT server
@@ -133,7 +133,15 @@ components:
       payload:
         $ref: "#/components/schemas/GetSpeakers"
     ForceEndOfUtterance:
-      summary: "Signals the end of a speaker turn. Intended for `turn_config.turn_detection_mode: external`, where the client detects turn ends itself; with the default `vad` mode turn ends are detected automatically."
+      summary: |
+        Closes the current speaker turn. The transcript up to `timestamp` is flushed as an `AddSegment`, followed by `EndOfTurn`.
+
+        :::note
+
+        Supported only with `turn_config.turn_detection_mode: external`, where the client detects turn ends itself.
+        In the default `vad` mode the service closes turns from voice activity.
+
+        :::
       payload:
         $ref: "#/components/schemas/ForceEndOfUtterance"
     RecognitionStarted:
@@ -705,22 +713,6 @@ components:
       additionalProperties: false
       allOf:
         - $ref: "#/components/schemas/SpeakerDiarizationConfigRule"
-        - if:
-            properties:
-              operating_point:
-                const: linden-1
-            required:
-              - model
-              - operating_point
-          then:
-            properties:
-              model:
-                const: linden-1
-      anyOf:
-        - required:
-            - model
-        - required:
-            - operating_point
       properties:
         additional_vocab:
           $ref: "#/components/schemas/WordList"
@@ -754,14 +746,7 @@ components:
           minLength: 1
           type: string
         model:
-          description: Alias for operating_point. If both model and operating_point are provided, they must have the same value.
-          enum:
-            - linden-1
-          type: string
-        operating_point:
-          description: |-
-            Specify an operating point to use. Operating points change the transcription process in a high level way, such as altering the acoustic model.
-            The default is 'standard'.
+          description: The model to use for transcription. Agent STT is powered by `linden-1`.
           enum:
             - linden-1
           type: string
@@ -821,6 +806,7 @@ components:
             - "null"
       required:
         - language
+        - model
       type: object
     TurnConfig:
       additionalProperties: false

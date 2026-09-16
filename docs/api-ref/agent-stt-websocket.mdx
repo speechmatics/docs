@@ -27,7 +27,7 @@ import agentSttSchema from "!asyncapi-schema-loader!@site/spec/agent-stt.yaml";
 </pre>
 
 :::info
-You can either pin to a specific region for data residency or connect to `wss://global.rt.speechmatics.com/v2/agent`, which automatically routes each connection to the nearest region for lowest latency. See [Supported endpoints](/get-started/authentication#supported-endpoints).
+The global endpoint automatically routes each connection to the nearest region. You can also pin to a specific region for data residency, for example `wss://eu.rt.speechmatics.com/v2/agent`. See [Supported endpoints](/get-started/authentication#supported-endpoints).
 :::
 
 
@@ -71,6 +71,18 @@ Three groups of received messages carry the conversation itself, and are the one
 Pass `AddSegment` downstream to your LLM, and use `AddPartialSegment` only for display.
 
 The remaining received messages manage the session rather than the conversation: `RecognitionStarted`, `AudioAdded`, `SpeakersResult`, `EndOfTranscript`, `Info`, `Warning` and `Error`. See [Received messages](#received-messages).
+
+:::warning
+#### Browser based transcription
+
+When starting an Agent STT session **in the browser**, [temporary keys](/get-started/authentication#temporary-keys) should be used to avoid exposing your long-lived API key. Agent STT uses Realtime (`type=rt`) temporary keys.
+
+To do so, you must provide the temporary key as a part of a query parameter. This is due to a browser limitation. For example:
+
+```url
+wss://global.rt.speechmatics.com/v2/agent?jwt=<temporary-key>
+```
+:::
 
 ## Handshake responses
 
@@ -177,6 +189,7 @@ An in-band `Error` message can be followed by a WebSocket close message. The tab
 {/* Manually generated TOC, since we're using JSX sections */}
 export const toc = [
   { value: "Session Flow", id: "session-flow", level: 2 },
+  { value: "Browser based transcription", id: "browser-based-transcription", level: 3 },
   { value: "Handshake responses", id: "handshake-responses", level: 2 },
   { value: "Message handling", id: "message-handling", level: 2 },
   { value: "Sent messages", id: "sent-messages", level: 2 },

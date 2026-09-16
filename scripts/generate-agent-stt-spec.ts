@@ -32,6 +32,8 @@ interface SourceSpec {
 interface Overlay {
   info: Record<string, unknown>;
   servers: Record<string, unknown>;
+  omitProperties?: Record<string, string[]>;
+  descriptions?: Record<string, Record<string, string>>;
   summaries?: Record<string, string>;
   extraMessages?: Record<
     "publish" | "subscribe",
@@ -73,6 +75,8 @@ for (const [source, { definitions }] of [
     schemas[name] = converted;
   }
 }
+
+applyOverlayToSchemas();
 
 const messages: Record<string, JsonSchema> = {};
 const channels = {
@@ -157,6 +161,117 @@ function readSource(path: string): SourceSpec {
     );
   }
   return spec;
+}
+
+/**
+ * Applies the overlay's `omitProperties` and `descriptions` to the schemas
+ * collected from the source spec. Both exist because the source is shared with
+ * other products: it carries fields we do not expose in the published API
+ * reference, and prose that refers to them.
+ */
+function applyOverlayToSchemas() {
+  for (const [name, properties] of Object.entries(
+    overlay.omitProperties ?? {},
+  )) {
+    for (const property of properties) {
+      omitProperty(schemaFor(name, "omitProperties"), name, property);
+    }
+  }
+
+  for (const [name, descriptions] of Object.entries(
+    overlay.descriptions ?? {},
+  )) {
+    const schema = schemaFor(name, "descriptions");
+    const properties = (schema.properties ?? {}) as Record<string, JsonSchema>;
+    for (const [property, description] of Object.entries(descriptions)) {
+      if (!properties[property]) {
+        throw new Error(
+          `Overlay descriptions entry "${name}.${property}" does not match a property in the source schema.`,
+        );
+      }
+      properties[property].description = description;
+    }
+  }
+}
+
+function schemaFor(name: string, section: string): JsonSchema {
+  const schema = schemas[name];
+  if (!schema) {
+    throw new Error(
+      `Overlay ${section} names schema "${name}", which the source spec does not define.`,
+    );
+  }
+  return schema;
+}
+
+/**
+ * Removes a property from a schema, along with the constraints that reference
+ * it: `required` entries, and `allOf` / `anyOf` / `oneOf` branches. An `anyOf`
+ * or `oneOf` left with a single `required` branch is folded into the schema's
+ * own `required`, since a one-branch choice is no choice at all.
+ */
+function omitProperty(schema: JsonSchema, name: string, property: string) {
+  const properties = (schema.properties ?? {}) as Record<string, JsonSchema>;
+  if (!properties[property]) {
+    throw new Error(
+      `Overlay omitProperties entry "${name}.${property}" does not match a property in the source schema — has it already been removed upstream?`,
+    );
+  }
+  delete properties[property];
+  setRequired(
+    schema,
+    required(schema).filter((item) => item !== property),
+  );
+
+  for (const keyword of ["allOf", "anyOf", "oneOf"] as const) {
+    const branches = schema[keyword] as JsonSchema[] | undefined;
+    if (!branches) continue;
+
+    const kept = branches.filter((branch) => !references(branch, property));
+    if (kept.length === branches.length) continue;
+
+    if (keyword !== "allOf" && kept.length === 1) {
+      const [branch] = kept;
+      if (Object.keys(branch).join() !== "required") {
+        throw new Error(
+          `Omitting "${name}.${property}" leaves a single ${keyword} branch that is not a plain "required" list. Fold it into ${name} by hand.`,
+        );
+      }
+      setRequired(schema, [
+        ...new Set([...required(schema), ...required(branch)]),
+      ]);
+      delete schema[keyword];
+      continue;
+    }
+
+    if (kept.length === 0) delete schema[keyword];
+    else schema[keyword] = kept;
+  }
+}
+
+function required(schema: JsonSchema): string[] {
+  return (schema.required as string[] | undefined) ?? [];
+}
+
+function setRequired(schema: JsonSchema, names: string[]) {
+  if (names.length > 0) schema.required = names;
+  else Reflect.deleteProperty(schema, "required");
+}
+
+/** True if `property` appears anywhere in a schema branch, as a key or a `required` entry. */
+function references(node: unknown, property: string): boolean {
+  if (Array.isArray(node))
+    return node.some((item) => references(item, property));
+  if (node === null || typeof node !== "object") return false;
+
+  return Object.entries(node).some(
+    ([key, value]) =>
+      key === property ||
+      (key === "required" &&
+        Array.isArray(value) &&
+        value.includes(property)) ||
+      references(value, property),
+  );
 }
 
 /** The top-level `oneOf` lists every message the channel carries, in order. */

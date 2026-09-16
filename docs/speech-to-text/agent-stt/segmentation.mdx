@@ -27,9 +27,11 @@ A segment ends at the first boundary it reaches:
 | End of turn | Always |
 | Speaker change | When diarization is enabled |
 | End of sentence | When `emit_sentences` is `true` |
-| Duration cap | Always, as a safeguard against an unbounded segment |
+| Duration cap | Always. A segment never covers more than two minutes of audio |
 
-Because of this, a single turn often produces several `AddSegment` messages. To reconstruct everything one speaker said, join the segments between `StartOfTurn` and `EndOfTurn`. See [Turn detection](/speech-to-text/agent-stt/turn-detection) for the turn boundary itself.
+Because of this, a single turn often produces several `AddSegment` messages. To reconstruct everything one speaker said, join the segments for that speaker between `StartOfTurn` and `EndOfTurn`. See [Turn detection](/speech-to-text/agent-stt/turn-detection) for the turn boundary itself.
+
+Reaching the duration cap is a sign that turn detection is not closing turns, rather than an ordinary boundary.
 
 ## Segment payload
 
@@ -67,12 +69,30 @@ Tune attribution with `transcription_config.speaker_diarization_config`:
 | `speaker_sensitivity` | How readily a new speaker is identified, between `0` and `1`. The default is `0.5`. Raise it if you see fewer speakers than expected. |
 | `max_speakers` | The maximum number of speakers to identify in the stream. Minimum `2`. Unrestricted when omitted. |
 | `prefer_current_speaker` | Keeps the active speaker when the match is good enough, rather than switching to a marginally better one. Reduces flipping between similar voices. |
+| `get_speakers` | Returns speaker identifiers at the end of the transcript. See [Speaker identification](#speaker-identification). |
 
-### Recognizing the same speaker again
+### Speaker identification
 
-Labels such as `S1` are per-session: the same person is not `S1` in the next call. To carry a speaker across sessions, send `GetSpeakers` before the session ends. The server replies with `SpeakersResult`, holding a `speaker_identifiers` value for each label.
+Labels such as `S1` are per-session: the same person is not `S1` in the next call. Speaker identification carries a speaker across sessions, under a label you choose.
 
-Store those identifiers, then pass them back in a later session as `speaker_diarization_config.speakers`, each with a `label` of your own. That speaker is then labelled with your name rather than `S1`. Your labels must not look like the internal format, so `S1`, `S2` and `UU` are rejected.
+**Enrol.** Set `get_speakers` to `true` to receive identifiers at the end of the transcript, or send `GetSpeakers` mid-session with `final` set to `true` to wait for the end of the stream. Either way the server replies with `SpeakersResult`, holding a `speaker_identifiers` value for each label.
+
+**Identify.** Store those identifiers and pass them back in a later session as `speaker_diarization_config.speakers`, each with a `label` of your own:
+
+```json
+{
+  "diarization": "speaker",
+  "speaker_diarization_config": {
+    "speakers": [
+      { "label": "Alice", "speaker_identifiers": ["<alice_id>"] }
+    ]
+  }
+}
+```
+
+Alice's segments are then labelled `Alice` rather than `S1`, and anyone unenrolled keeps an `S1`-style label. Your labels must not look like the internal format, so `S1`, `S2` and `UU` are rejected.
+
+Identifiers are tied to the model that generated them and are scoped to your project, and there is a limit on how many you can send in one session. See [Speaker identification](/speech-to-text/features/speaker-identification) for enrollment guidance and the full caveats.
 
 ## Sentence-level segments
 

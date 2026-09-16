@@ -43,7 +43,7 @@ There are three ways to use it:
 ## Features
 
 - **Turn detection**: detect when a speaker has finished talking. See [Turn detection](/speech-to-text/agent-stt/turn-detection).
-- **Intelligent segmentation**: group partial transcripts into clean, speaker-attributed segments. See [Segmentation](/speech-to-text/agent-stt/segmentation).
+- **Intelligent segmentation**: group words into clean, speaker-attributed segments. See [Segmentation](/speech-to-text/agent-stt/segmentation).
 - **Diarization**: identify and label different speakers.
 - **Speech signals**: receive signals for start and end of speech.
 
@@ -81,11 +81,13 @@ See the [Quickstart](/speech-to-text/agent-stt/quickstart) to get started.
 
 ## Using the API directly
 
-Connect to the WebSocket endpoint from any language when there's no SDK for your stack, or when you need control over the session that a client library doesn't expose.
+Connect to the WebSocket directly from any language when there's no SDK for your stack, or when you need control over the session that a client library doesn't expose.
 
 ```
-wss://eu.rt.speechmatics.com/v2/agent
+wss://global.rt.speechmatics.com/v2/agent
 ```
+
+Use the global endpoint to route to the nearest region, or pin to a region for data residency. See [Supported endpoints](/get-started/authentication#supported-endpoints) for regional endpoints.
 
 Open the connection with your API key, send `StartRecognition` with your audio format and transcription config, then stream binary audio in `AddAudio` messages. Segments and turn events arrive as JSON while you send.
 

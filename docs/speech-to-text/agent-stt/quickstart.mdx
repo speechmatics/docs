@@ -72,7 +72,7 @@ See [Segmentation](/speech-to-text/agent-stt/segmentation) for what closes a seg
 
 ## Choosing who closes the turn
 
-By default the service detects turn ends from voice activity. If your application already does its own endpointing — Pipecat, LiveKit, a push-to-talk button — close each turn yourself instead:
+By default the service closes turns itself, from voice activity. If something upstream already detects that a speaker has finished — Pipecat, LiveKit, a push-to-talk button — start the session in `external` mode and close each turn yourself:
 
 ```python
 from speechmatics.agent_stt import TurnConfig, TurnDetectionMode
@@ -83,14 +83,13 @@ client = AgentSttAsyncClient(
 )
 ```
 
-Then close the turn when your side decides speech has ended:
+Then close each turn when your side decides speech has ended:
 
 ```python
-client.finalize()                        # from a sync callback
-await client.force_end_of_utterance()    # from async code
+client.finalize()
 ```
 
-Either call is stamped with the audio position at the moment it was made, so the service cuts the turn where you heard the end of speech rather than wherever the message lands. In this mode nothing else closes a turn — see [Turn detection](/speech-to-text/agent-stt/turn-detection).
+The call is stamped with the audio position at the moment it was made, so the service cuts the turn where you heard speech stop rather than wherever the message lands. In this mode nothing else closes a turn — an application that stops calling `finalize()` never sees another `EndOfTurn`. See [Turn detection](/speech-to-text/agent-stt/turn-detection).
 
 ## Next steps
 

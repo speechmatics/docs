@@ -22,10 +22,23 @@ info:
 
 servers:
   default:
-    host: eu.rt.speechmatics.com/v2/agent
+    host: global.rt.speechmatics.com/v2/agent
     protocol: wss
     protocolVersion: v13 (RFC 6455)
     description: Agent STT server
+
+# Fields the source JSON Schema carries that we do not want to document. They
+# are dropped from the generated document, along with any `anyOf` branch or
+# `allOf` rule that references them.
+omitProperties:
+  TranscriptionConfig:
+    - operating_point
+
+# Overrides for source descriptions that are wrong for Agent STT — usually
+# because the upstream text refers to an omitted field.
+descriptions:
+  TranscriptionConfig:
+    model: The model to use for transcription. Agent STT is powered by `linden-1`.
 
 # Messages absent from the source JSON Schema, because they are not JSON.
 # `after` places the message in the channel, following the named message.
@@ -56,6 +69,15 @@ summaries:
 
     :::
   GetSpeakers: Requests any detected speaker identifiers to be returned.
+  ForceEndOfUtterance: |
+    Closes the current speaker turn. The transcript up to `timestamp` is flushed as an `AddSegment`, followed by `EndOfTurn`.
+
+    :::note
+
+    Supported only with `turn_config.turn_detection_mode: external`, where the client detects turn ends itself.
+    In the default `vad` mode the service closes turns from voice activity.
+
+    :::
 
   # Received messages
   RecognitionStarted: Server response to StartRecognition, acknowledging that a recognition session has started.
