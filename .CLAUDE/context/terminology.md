@@ -51,9 +51,9 @@ These name the layers, model variants, and packaged products in the STT decision
 | Canonical form | Do not use | Notes |
 |---|---|---|
 | Melia 1 | Melia-1, melia 1, Melia | Model variant. Space, no hyphen. The `model` config/API value is `melia-1` (hyphenated, lowercase) — use that form only in code, config, and API references. Multilingual; Batch only today. |
-| Linden 1 | Linden-1, linden 1 | Model variant for the agent STT interaction pattern. Coming soon. |
+| Linden 1 | Linden-1, linden 1 | Model variant for the agent STT interaction pattern. The `model` config/API value is `linden-1` (hyphenated, lowercase). Agent STT only; SaaS only. |
 | Medical | medical domain, Medical domain | Model sub-variant of Enhanced. Capitalized when naming the sub-variant or a product (Batch Enhanced Medical); lowercase as an ordinary adjective ("medical transcription"). |
-| Agent STT Linden 1 | Agent Transcription API, Agent Transcription API v1 | Packaged product: agent STT on the Linden 1 model variant. Coming soon. |
+| Agent STT Linden 1 | Agent Transcription API, Agent Transcription API v1 | Packaged product: agent STT on the Linden 1 model variant. |
 
 Standard and Enhanced are also model variants; their casing is in Canonical product and API names above.
 
@@ -63,7 +63,7 @@ Standard and Enhanced are also model variants; their casing is in Canonical prod
 |---|---|---|
 | streaming | Streaming | Interaction pattern. Lowercase, except at the start of a sentence. |
 | pre-recorded | Pre-recorded, prerecorded | Interaction pattern. Lowercase, hyphenated. |
-| agent STT | Voice agent transcription, voice agent transcription, agent transcription | Interaction pattern on the Realtime API: the speech-to-text layer for building voice agents. Lowercase "agent", all-caps "STT". Capitalize "Agent" only at the start of a sentence or in the product name Agent STT Linden 1. Coming soon. |
+| agent STT | Voice agent transcription, voice agent transcription, agent transcription | Interaction pattern on the Realtime API: the speech-to-text layer for building voice agents. Lowercase "agent", all-caps "STT". Capitalize "Agent" only at the start of a sentence or in the product name Agent STT Linden 1. |
 
 Speechmatics does not sell a "voice agent." A voice agent is a full conversational pipeline (STT + LLM + STT) and is a distinct concept Speechmatics does not offer. agent STT provides the STT layer only, for developers building voice agents. Never describe a Speechmatics product as a "voice agent."
 
