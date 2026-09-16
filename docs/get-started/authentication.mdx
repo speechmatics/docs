@@ -50,6 +50,26 @@ wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
 ```
 
   </TabItem>
+  <TabItem value="agent-stt" label="Agent STT">
+
+For server-side calls, your API key must be provided in the header of the [WebSocket connection request](/api-ref/agent-stt-websocket#handshake-responses) to the `/v2/agent` path. For example:
+
+```bash
+GET /v2/agent HTTP/1.1
+Host: eu.rt.speechmatics.com
+Upgrade: websocket
+Connection: Upgrade
+Authorization: Bearer YOUR_API_KEY
+User-Agent: Python/3.12 websockets/15.0
+```
+
+For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. Agent STT uses Realtime (`type=rt`) temporary keys. These can be passed as a query param to the [WebSocket connection request](/api-ref/agent-stt-websocket#handshake-responses) URL. For example:
+
+```bash
+wss://global.rt.speechmatics.com/v2/agent?jwt=$TEMP_KEY
+```
+
+  </TabItem>
 </Tabs>
 
 
@@ -98,6 +118,25 @@ Speechmatics Realtime SaaS supports the following endpoints for production use:
 
 :::warning
 `global.rt.speechmatics.com` may route a connection to any region. If you have data residency or compliance requirements, use a regional endpoint (`eu.rt.speechmatics.com`, `us.rt.speechmatics.com`, or `au.rt.speechmatics.com`) instead.
+:::
+  </TabItem>
+  <TabItem value="agent-stt" label="Agent STT">
+
+
+Speechmatics Agent STT supports the following endpoints for production use:
+
+| Region       | Endpoint                       |
+| ------------ | ------------------------------ |
+| All regions  | **global.rt.speechmatics.com** |
+| EU1 (Europe) | **eu.rt.speechmatics.com**     |
+| US1 (USA)    | **us.rt.speechmatics.com**     |
+
+Connect to the `/v2/agent` path, for example `wss://eu.rt.speechmatics.com/v2/agent`. See the [Agent STT Reference](/api-ref/agent-stt-websocket).
+
+`global.rt.speechmatics.com` automatically routes each connection to the nearest region for lowest latency, so you don't have to select one. The regional endpoints remain available if you want to pin to a specific region.
+
+:::warning
+`global.rt.speechmatics.com` may route a connection to any region. If you have data residency or compliance requirements, use a regional endpoint (`eu.rt.speechmatics.com` or `us.rt.speechmatics.com`) instead.
 :::
   </TabItem>
 </Tabs>
@@ -172,6 +211,27 @@ curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
 Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
 ::: 
 </TabItem>
+  <TabItem value="agent-stt" label="Agent STT">
+
+Agent STT uses Realtime temporary keys. Request a key with `type=rt` and use it on the `/v2/agent` path — there is no separate Agent STT key type.
+
+Temporary keys allow the end-user to start a WebSocket connection with Speechmatics directly, without exposing your long-lived API key. This reduces the latency of transcription, as well as development effort.
+
+An Agent STT temporary key is not tied to a region. The same key works with any Agent STT endpoint, including `global.rt.speechmatics.com`.
+
+The example request below will create a temporary key which can be used to start any number of Agent STT sessions for 60 seconds:
+
+```bash
+curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $API_KEY" \
+     -d '{"ttl": 60 }'
+```
+
+:::info
+Note that when starting an Agent STT session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/agent-stt-websocket#browser-based-transcription).
+:::
+</TabItem>
 </Tabs>
 
 ### Temporary key configuration
@@ -179,7 +239,7 @@ Note that when starting a Realtime transcription session in the browser, you mus
 
 | URL query parameter    | Required | Description                                                                                                                                                                                                                                                                                                                                                      |
 |------------------------|----------|-----------------------------------------------------------
-| `type`                 | No       | String: `batch` (default), `rt`. Whether the token should be able to use the Batch or Realtime API.                                                                                                                                                                                                                                                                                                     |
+| `type`                 | No       | String: `batch` (default), `rt`. Whether the token should be able to use the Batch API, or the Realtime and Agent STT APIs.                                                                                                                                                                                                                                                                                                     |
 
 
 

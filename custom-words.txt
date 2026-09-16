@@ -342,3 +342,6 @@ sessiongroups
 melia
 مرحبا
 Theo
+pipecat
+vapi
+endpointing
