@@ -45,6 +45,25 @@ Available Mandarin locales:
 **Recommended for English transcription**. Without a specified locale, spelling may be inconsistent within the same transcript.
 :::
 
+### Output locale for multilingual transcription
+
+[Melia 1](/speech-to-text/models#melia-1) can transcribe more than one language in the same job, so `output_locale` also accepts an array of locales, one per language present in the audio:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "melia-1",
+    "language": "multi",
+    // highlight-start
+    "output_locale": ["en-GB", "cmn-Hans"]
+    // highlight-end
+  }
+}
+```
+
+Each locale in the array must belong to a different language. Passing two locales for the same language, for example `en-GB` and `en-US` together, is rejected.
+
 ## Profanities
 
 You can tag profanities to identify or censor offensive language in your workflow. Profanity tagging is available for:
