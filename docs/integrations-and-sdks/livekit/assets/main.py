@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 from livekit import agents
 from livekit.agents import AgentSession, Agent, RoomInputOptions
 from livekit.plugins import openai, silero, speechmatics
-from livekit.plugins.speechmatics import TurnDetectionMode
 
 load_dotenv(".env.local")
 
@@ -17,19 +16,17 @@ class VoiceAssistant(Agent):
 async def entrypoint(ctx: agents.JobContext):
     await ctx.connect()
 
-    # Speech-to-Text: Speechmatics
-    stt = speechmatics.STT(
-        turn_detection_mode=TurnDetectionMode.SMART_TURN,
-    )
+    # Voice Activity Detection: Silero, shared with the STT plugin below
+    vad = silero.VAD.load()
+
+    # Speech to Text: Speechmatics agent STT. The VAD closes each turn.
+    stt = speechmatics.STT(vad=vad)
 
     # Language Model: OpenAI
     llm = openai.LLM(model="gpt-4o-mini")
 
-    # Text-to-Speech: Speechmatics
+    # Text to Speech: Speechmatics
     tts = speechmatics.TTS()
-
-    # Voice Activity Detection: Silero
-    vad = silero.VAD.load()
 
     # Create and start session
     session = AgentSession(
