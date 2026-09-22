@@ -7,16 +7,28 @@ import HTTPMethodBadge from '@theme/HTTPMethodBadge'
 
 # Limits – Realtime
 
-Speechmatics limits the number of concurrent Realtime sessions by account type. The current limits are listed in the table below:
+Speechmatics doesn't cap the total number of Realtime sessions you can have running at once. Instead, we limit how fast you can **open new sessions**, so we have time to scale capacity to meet your traffic.
 
-|            | Max. concurrent sessions |
-| ---------- | ------------------------ |
-| Free       | 2                        |
-| Pro        | 50                       |
-| Enterprise | Custom                   |
+Two numbers define this:
 
+- **Rate limit** – how many new sessions you can start per minute, on average.
+- **Burst allowance** – how many you can start in a single minute if traffic arrives unevenly.
 
-Please reach out to [Support](https://support.speechmatics.com) if you need to increase the above limits.
+|            | Rate limit (new sessions/min) | Burst allowance (new sessions/min) |
+| ---------- | ------------------------------ | ----------------------------------- |
+| Free       | 2                               | 2                                    |
+| Pro        | 40                              | 200                                  |
+| Enterprise | Custom                          | Custom                               |
+
+As long as you stay within these limits, you can keep opening sessions and scale to any volume over time — there's no separate cap on how many sessions you can have open at once.
+
+:::note
+Need a higher rate limit? Reach out to [Support](https://support.speechmatics.com).
+:::
+
+### What happens if you exceed your limit
+
+If you try to open sessions faster than your rate limit and burst allowance allow, the new session is rejected: the server sends an in-band error followed by a WebSocket close with code `4005` (`quota_exceeded`). See the [Realtime API Reference](/api-ref/realtime-transcription-websocket#error) for details.
 
 ### Session limits
 
