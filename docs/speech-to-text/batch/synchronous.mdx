@@ -120,7 +120,7 @@ If the transcript becomes ready within `wait`, the response is HTTP 200 with the
 
 `GET /jobs/{jobid}` and `GET /jobs/{jobid}/transcript` apply a default wait when you omit the `wait` query parameter. Existing polling code gets the benefit without changes: each request returns as soon as the job reaches a terminal state, so you make fewer requests and get the transcript sooner.
 
-The default is currently 2 seconds and will increase. Treat it as an unspecified short interval and do not build logic around a specific duration. To control the duration, pass `wait` explicitly.
+The default is currently 5 seconds and will increase. Treat it as an unspecified short interval and do not build logic around a specific duration. To control the duration, pass `wait` explicitly.
 
 To return immediately, pass `wait=0`.
 
