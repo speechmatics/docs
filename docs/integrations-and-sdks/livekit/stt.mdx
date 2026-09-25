@@ -18,7 +18,7 @@ The plugin connects directly to Speechmatics with your own API key. If you would
 - **Turn detection** — a voice activity detector (VAD) in your agent closes each turn, or Speechmatics closes it server-side
 - **Speaker diarization** — attribute each segment to a speaker
 - **Stable speaker labels** — carry the same labels across sessions
-- **Custom vocabulary** — bias recognition towards domain-specific words
+- **Custom dictionary** — bias recognition towards domain-specific words
 - **Speaker formatting** — template speaker labels for your language model
 
 ## Installation
@@ -43,6 +43,8 @@ SPEECHMATICS_API_KEY=your_speechmatics_key
 ## Endpoint
 
 The plugin connects to `wss://eu2.rt.speechmatics.com/v2/agent`. Set `base_url` to reach a different region or a self-hosted deployment. Agent STT sessions are served on the `/v2/agent` path, and the SDK appends `/agent` when your URL omits it.
+
+Speechmatics can route automatically to the nearest of its regional servers through the `global` endpoint. If you have data residency requirements, pin to a region instead. For every hostname, see [supported endpoints](/get-started/authentication#supported-endpoints).
 
 ```python
 stt = speechmatics.STT(
@@ -76,10 +78,10 @@ The `speechmatics.STT` constructor accepts the following transcription parameter
 | `base_url` | string | `wss://eu2.rt.speechmatics.com/v2/agent` | Endpoint to connect to |
 | `model` | Model \| string | `linden-1` | Transcription model. `linden-1` is the only model agent STT accepts |
 | `language` | string | `"en"` | Language code for the input audio. See [Languages](/speech-to-text/languages) |
-| `output_locale` | string \| null | `null` | BCP-47 locale controlling spelling and number formats, for example `"en-GB"` |
+| `output_locale` | string \| null | `null` | BCP-47 locale controlling spelling and number formats. Locales are per language, for example `"en-GB"`, `"en-US"`, `"en-AU"`. See [Languages](/speech-to-text/languages) |
 | `domain` | string \| null | `null` | Domain-specific language pack, for example `"finance"` |
 | `include_partials` | boolean | `true` | Emit interim segments that update until the final segment arrives |
-| `additional_vocab` | array \| null | `null` | `AdditionalVocabEntry` objects biasing recognition towards specific words |
+| `additional_vocab` | array \| null | `null` | `AdditionalVocabEntry` objects forming a [custom dictionary](/speech-to-text/features/custom-dictionary) |
 | `sample_rate` | number | `16000` | Audio sample rate in Hz. Agent STT accepts `16000` only; any other value raises a `ValueError` |
 | `audio_encoding` | AudioEncoding | `PCM_S16LE` | LiveKit frames are 16-bit PCM and are forwarded unconverted, so any other value raises a `ValueError` |
 
@@ -87,9 +89,9 @@ Every language is global: whichever you select, the model recognizes a range of 
 
 A parameter you leave unset is not sent, and agent STT applies its own default rather than the one in the Realtime API schema. Partials and diarization are both on unless you turn them off.
 
-### Custom vocabulary
+### Custom dictionary
 
-Pass `additional_vocab` entries to boost recognition of names and domain terms. Each entry takes a `content` value and optional `sounds_like` pronunciation variants.
+Use the [custom dictionary](/speech-to-text/features/custom-dictionary) to bias recognition towards names and domain terms. Pass entries as `additional_vocab`; each takes a `content` value and optional `sounds_like` pronunciation variants for when the spelling doesn't match how the word is said.
 
 ```python
 from livekit.plugins.speechmatics import AdditionalVocabEntry
@@ -166,7 +168,9 @@ End-of-utterance timing in `VAD` mode belongs to the service and is not configur
 
 [Diarization](/speech-to-text/features/diarization) (attributing speech to individual speakers) is enabled by default. Each transcript segment carries one speaker label, such as `S1`. Segments the model cannot attribute are labelled `UU`, and with diarization disabled every segment is labelled `UU`.
 
-Agent STT reports one speaker per segment rather than per word, so there is no per-word speaker data.
+Agent STT reports one speaker per segment rather than per word, so there is no per-word speaker data. A segment is the unit the service emits, so the speaker label changes between transcript events and never inside one.
+
+Speakers are labelled in the order they are first heard: `S1`, `S2`, and so on. Labels hold for the session but are not stable across sessions unless you carry them over with `known_speakers`.
 
 ### Diarization parameters
 
@@ -192,7 +196,7 @@ stt = speechmatics.STT(
 )
 ```
 
-Include the format in your agent instructions so the model interprets the labels consistently. To detect the primary speaker and format transcripts by speaker across providers, wrap the plugin with LiveKit's [`MultiSpeakerAdapter`](https://docs.livekit.io/agents/models/stt/#speaker-diarization).
+Include the format in your agent instructions so the language model reads the labels as speaker attribution rather than as part of what was said. Two settings help when speakers are hard to separate: raise `speaker_sensitivity` to split similar-sounding voices more aggressively, and set `prefer_current_speaker` to reduce switching mid-turn. To detect the primary speaker and format transcripts by speaker across providers, wrap the plugin with LiveKit's [`MultiSpeakerAdapter`](https://docs.livekit.io/agents/models/stt/#speaker-diarization).
 
 ### Reuse speaker labels across sessions
 
