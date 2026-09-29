@@ -34,6 +34,8 @@ To choose a transcription model, refer to [Models](/speech-to-text/models).
 
 The languages, packs, and options on this page apply to the Enhanced and Standard models. The Melia 1 model is multilingual: it transcribes the individual languages listed here and switches between them automatically, without language selection. You can use their language codes as [language hints](/speech-to-text/batch/input#language-hints). Melia 1 does not support the `auto` option, the bilingual and multi-language pack codes, or translation. For Melia 1, refer to [Models](/speech-to-text/models).
 
+The Agent STT API uses the Linden 1 model, which supports the same languages as Realtime transcription. Translation is not available. For Agent STT, refer to [Models](/speech-to-text/models#linden-1).
+
 ## Transcription languages
 
 To automatically identify the language in an audio file, use the [Language Identification](/speech-to-text/batch/language-identification) feature.
@@ -148,6 +150,7 @@ This config selects the Mandarin and English pack:
 {
   "type": "transcription",
   "transcription_config": {
+    "model": "enhanced",
     "language": "cmn_en"
   }
 }
@@ -159,43 +162,10 @@ This config selects the Spanish and English pack, which requires the `domain` pr
 {
   "type": "transcription",
   "transcription_config": {
+    "model": "enhanced",
     "language": "es",
     "domain": "bilingual-en"
   }
 }
 ```
 
-## Healthcare domain
-
-Speechmatics offers a medical domain that provides high accuracy for healthcare use cases such as ambient scribes and dictation tools. The medical domain is available with the Enhanced model only. It does not apply to the Standard or Melia 1 models.
-
-The medical domain is kept up to date using officially maintained data sources. This improves recognition of medical terminology such as procedures, medications, conditions, and anatomy.
-
-For languages without medical domain support, the Enhanced model still gives high accuracy in the healthcare domain.
-
-Set the `domain` property to `medical`:
-
-```json
-{
-  "type": "transcription",
-  "transcription_config": {
-    "model": "enhanced",
-    "language": "en",
-    "domain": "medical"
-  }
-}
-```
-
-| Language | Realtime | Batch |
-|---|---|---|
-| Arabic English | Available | Available |
-| Danish | Available | Available |
-| Dutch | Available | Available |
-| English | Available | Available |
-| Finnish | Available | Available |
-| French | Available | Available |
-| German | Available | Available |
-| Norwegian | Available | Available |
-| Spanish | Available | Available |
-| Swedish | Available | Available |
-| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | |

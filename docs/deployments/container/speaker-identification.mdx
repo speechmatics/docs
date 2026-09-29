@@ -15,6 +15,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 [Speaker identification](/speech-to-text/features/speaker-identification) requires the Batch or Realtime Transcriber to access one or more cryptographically strong secrets. These secrets are used to generate and validate speaker identifiers. This page explains how to prepare these secret files and mount them into the Transcriber Container in both Batch and Realtime deployments.
 
+:::warning
+Batch speaker identification requires GPU inference. It is not supported by the [CPU speech-to-text container](/deployments/container/cpu-speech-to-text) in batch mode. For batch processing, use the [GPU speech-to-text container](/deployments/container/gpu-speech-to-text). Realtime speaker identification is supported on both CPU and GPU containers.
+:::
+
 ## Preparing the secret directory
 
 Speaker ID secrets must be stored in a dedicated directory on the host machine. Each secret is contained in a separate file whose name follows the pattern: `<secret_dir>/s.<integer>`. For example:

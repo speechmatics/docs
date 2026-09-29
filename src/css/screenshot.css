@@ -1,0 +1,6 @@
+.screenshot {
+  display: block;
+  margin-inline: auto;
+  max-width: min(var(--screenshot-max-width, 542px), 100%);
+  height: auto;
+}

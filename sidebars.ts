@@ -5,14 +5,12 @@ import gettingStartedSidebar from "./docs/get-started/sidebar";
 import integrationsAndSDKSidebar from "./docs/integrations-and-sdks/sidebar";
 import speechToTextSidebar from "./docs/speech-to-text/sidebar";
 import textToSpeechSidebar from "./docs/text-to-speech/sidebar";
-import voiceAgentsSidebar from "./docs/voice-agents/sidebar";
 
 export default {
   docs: [
     gettingStartedSidebar,
     speechToTextSidebar,
     textToSpeechSidebar,
-    voiceAgentsSidebar,
     integrationsAndSDKSidebar,
     deploymentsSidebar,
     administrationSidebar,

@@ -1,5 +1,6 @@
 ---
- description: Build a local voice bot with Speechmatics STT and TTS using Pipecat.
+title: Pipecat quickstart
+description: Build a local voice bot with Speechmatics Speech to Text and Text to Speech using Pipecat.
 ---
 
 import CodeBlock from '@theme/CodeBlock'
@@ -9,14 +10,14 @@ import pipecatQuickstartMainPy from "./assets/main.py?raw"
 
 Build a local voice bot with Speechmatics and Pipecat in minutes.
 
-[Pipecat](https://docs.pipecat.ai/) is a framework for building real-time voice bots using a pipeline architecture. In this quickstart, you’ll run a local WebRTC server and connect to your bot from your browser.
+[Pipecat](https://docs.pipecat.ai/) is a framework for building real-time voice bots using a pipeline architecture. In this quickstart, you'll run a local WebRTC server and connect to your bot from your browser.
 
 ## Features
 
-- **Real-time transcription** — Low-latency speech-to-text as users speak
-- **Natural text to speech** — Give your bot a clear, natural voice
-- **Local web client** — Test your bot in a browser at `http://localhost:7860/client`
-- **No infrastructure** — No cloud deployment or room setup required
+- **Real-time transcription** — low-latency Speech to Text (STT) through agent STT
+- **Natural text to speech** — give your bot a clear, natural voice
+- **Local web client** — test your bot in a browser at `http://localhost:7860/client`
+- **No infrastructure** — no cloud deployment or room setup required
 
 ## Prerequisites
 
@@ -37,7 +38,7 @@ mkdir voice-agent && cd voice-agent
 Create a `requirements.txt` file:
 
 ```text title="requirements.txt"
-pipecat-ai[local-smart-turn-v3,silero,speechmatics,webrtc,openai,runner]
+pipecat-ai[local-smart-turn,silero,speechmatics,webrtc,openai,runner]~=1.10.0
 pipecat-ai-small-webrtc-prebuilt
 python-dotenv
 loguru

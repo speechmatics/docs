@@ -341,3 +341,11 @@ configmap
 sessiongroups
 melia
 مرحبا
+Theo
+pipecat
+vapi
+linden
+silero
+backchannels
+endpointing
+ttfs

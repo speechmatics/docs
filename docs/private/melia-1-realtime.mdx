@@ -1,0 +1,226 @@
+---
+description: Melia 1 delivers code-switching for 56 languages, in Realtime.
+---
+
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import meliaRealtimePythonExample from "./assets/melia-1-rt-example.py?raw";
+import meliaRealtimeJsExample from "./assets/melia-1-rt-example.js?raw";
+import melia1GpuSttRtDockerCompose from './assets/gpu-stt-melia-1-rt-docker-compose.yml?raw';
+
+# Melia 1 Realtime Preview - Multilingual transcription
+
+Melia 1 is available as an early preview for existing customers on the Realtime API. It detects the spoken language automatically from 56 languages, handles code-switching mid-sentence, and labels each word with the language it was spoken in. This is the Realtime companion to the [Batch Melia 1](../speech-to-text/models).
+
+:::warning
+This is an early preview for evaluation only, and is not intended for production use. Only a subset of Realtime features is currently supported (see [Capabilities](#capabilities)). Remaining features will be added ahead of the production release in October 2026.
+:::
+
+## Getting started
+You can start right away using your existing API keys using our Preview SaaS — no new credentials needed. If you don't have an API key, head to the [portal](https://portal.speechmatics.com) to get one.
+
+Want to try it without writing code? Try our [demo here](https://melia-rt-preview.speechmatics.cloud), just enter your API key and start transcribing.
+
+## Try through the API & SDKs
+The API schema is consistent with the [V2 Realtime WebSocket API](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket) with some additions and limitations described below.
+
+The [Python and JavaScript SDKs](/integrations-and-sdks/sdks) work against the preview endpoint. Point the SDK at the preview URL below and set the model (`melia-1`) and language (`multi`) in your transcription config.
+
+### Supported endpoint
+The preview runs on a dedicated endpoint, separate from the production Realtime service:
+
+| Region            | Endpoint                                 |
+|-------------------|------------------------------------------|
+| Preview (EU & US) | **wss://preview.rt.speechmatics.com/v2** |
+
+The preview is deployed in France (EU) and Oregon (USA), and is available on SaaS only.
+
+## Real-time inference on prem
+
+:::warning
+Real-time (streaming) inference on prem for Melia 1 is an early preview for evaluation only, and is not intended for production use.
+:::
+
+GPU requirements are the same as for [Batch inference](/deployments/container/gpu-speech-to-text-melia-1#system-requirements).
+
+The Melia 1 inference server can run in two modes: _batch_ or _real-time_. The default mode is batch. To configure the server for real-time, set the `SM_STREAMING` environment variable to `true` when starting the inference server:
+
+<CodeBlock language="bash">
+  {`docker run --rm -it \\
+    -v $PWD/license.json:/license.json \\
+    --gpus '"device=0"' \\
+    -e CUDA_VISIBLE_DEVICES \\
+    -e SM_STREAMING=true \\
+    -p 8001:8001 \\
+    speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:1.7.0
+`}
+</CodeBlock>
+
+When the Container starts you should see output similar to this,
+indicating that the server has started and is ready to serve requests.
+
+```
+I0911 11:04:02.321449 1 server.cc:709] 
++--------------------+---------+--------+
+| Model              | Version | Status |
++--------------------+---------+--------+
+| aed                | 1       | READY  |
+| body               | 1       | READY  |
+| preprocessor       | 1       | READY  |
+| streaming          | 1       | READY  |
+| streaming_ensemble | 1       | READY  |
++--------------------+---------+--------+
+...
+I0911 11:04:02.449550 1 grpc_server.cc:2579] "Started GRPCInferenceService at 0.0.0.0:8001"
+I0911 11:04:02.449744 1 http_server.cc:4961] "Started HTTPService at 0.0.0.0:8000"
+I0911 11:04:02.491582 1 http_server.cc:400] "Started Metrics Service at 0.0.0.0:8002"
+```
+
+The server can only support one of these modes at once.
+
+Once the inference server is running in real-time mode, run the Melia 1 transcriber as normal, with the `SM_INFERENCE_ENDPOINT` environment variable set to the gRPC endpoint of the inference server. Unlike the [Standard and Enhanced GPU container](/deployments/container/gpu-speech-to-text#batch-and-realtime-inference), Melia 1 uses the same transcriber image for both batch and real-time — there are no separate `rt-` and `batch-` prefixed images. Set `SM_ASR_MODE=rt` to run the transcriber in real-time mode:
+
+```bash
+docker run --rm -it \
+  -e SM_INFERENCE_ENDPOINT=<server>:<port> \
+  -e SM_ASR_MODE=rt \
+  -v $PWD/license.json:/license.json \
+  -p 9000:9000 \
+  speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:1.7.0
+```
+
+Connect over WebSocket as described in [Realtime transcription](/deployments/container/cpu-speech-to-text#realtime-transcription).
+
+### Multi-session containers
+
+By default the real-time container will accept only one websocket connection at a time. To enable multiple connections, set the environment variable `SM_MAX_CONCURRENT_CONNECTIONS` to the maximum number of sessions to allow. When this is set, the `/ready` [health check endpoint](/deployments/container/cpu-speech-to-text#health-service) will return true if there is a free connection available.
+
+CPU usage scales with the number of active sessions, whereas most memory usage is shared between connections.
+
+### Monitoring the server
+
+The inference server is based on [Nvidia's Triton architecture](https://developer.nvidia.com/nvidia-triton-inference-server) and as such
+can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP APIs. To expose these, configure an external mapping for port
+8002(Prometheus) or 8000(HTTP).
+
+### Docker compose example
+
+This Docker Compose file will create a Speechmatics Melia 1 GPU Inference Server:
+
+(assumes your `license.json` file is in the current working directory)
+
+<CodeBlock language="yaml" title="docker-compose.yml">
+{melia1GpuSttRtDockerCompose.replace('{{ CONTAINER_VERSION }}', '1.7.0')}
+</CodeBlock>
+
+## Minimal example
+Example minimal `StartRecognition` message:
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    // highlight-start
+    "language": "multi",
+    "model": "melia-1"
+    // highlight-end
+  }
+}
+```
+:::warning
+Ensure you remove unsupported configuration, for example `max_delay`.
+:::
+
+### Using the SDK
+
+Install the SDK:
+
+<Tabs groupId="language">
+  <TabItem value="python" label="Python">
+  Install using pip:
+  ```
+  pip install speechmatics-rt pyaudio
+  ```
+  :::note
+  `pyaudio` is required for microphone input in this quickstart.
+  :::
+  </TabItem>
+  <TabItem value="javascript" label="JavaScript">
+  Install using npm:
+  ```
+  npm install @speechmatics/real-time-client @speechmatics/auth
+  ```
+  :::note
+  This quickstart uses `sox` for microphone input. Install it with `brew install sox` (macOS) or `apt install sox` (Linux).
+  :::
+  </TabItem>
+</Tabs>
+
+Use Melia 1:
+
+<Tabs groupId="language">
+  <TabItem value="python" label="Python">
+    <CodeBlock language="python">{meliaRealtimePythonExample}</CodeBlock>
+    Press `Ctrl+C` to stop.
+  </TabItem>
+  <TabItem value="javascript" label="NodeJS + Sox">
+    <CodeBlock language="javascript">{meliaRealtimeJsExample}</CodeBlock>
+  </TabItem>
+</Tabs>
+
+### LanguageInfo message
+A new (optional) `LanguageInfo` message is sent from the transcriber to the client the first time a new language code is detected in the audio. It is emitted **once per language code**, immediately before that language first appears in an `AddPartialTranscript` (Partial) or `AddTranscript` (Final) message.
+
+Use it to configure how you process and display the transcript — for example, word spacing and text direction for right-to-left scripts.
+
+Support for this message response is not currently available in the SDKs.
+
+Message format:
+
+```json
+{
+  "message": "LanguageInfo",
+  "language": "ar",
+  "word_delimiter": " ",
+  "writing_direction": "right-to-left",
+  "partial": true
+}
+```
+
+- `language` (String): The detected language code.
+- `word_delimiter` (String): The delimiter to use between words when reconstructing the transcript for this language.
+- `writing_direction` (String): Either `left-to-right` or `right-to-left`.
+- `partial` (Boolean): Optional. When present, this is `true`, indicating the message was triggered by a Partial transcript.
+
+## Capabilities
+
+| Feature                                        | Current capability                                                        | Future plans                                 |
+|------------------------------------------------|---------------------------------------------------------------------------|----------------------------------------------|
+| Accuracy multilingual audio                    | Ahead of Enhanced                                                         | Continued improvements Q3/Q4                 |
+| Accuracy monolingual audio                     | Ahead of Standard                                                         | Continued improvements Q3/Q4                 |
+| Partials                                       | ✅                                                                         |                                             |
+| Finals                                         | ✅                                                                         |                                             |
+| Channel diarization                            | ✅                                                                         |                                             |
+| Output locale                                  | ✅                                                                         |                                             |
+| Word timings                                   | ✅                                                                         |                                             |
+| Language labeling                              | ✅ Word-level                                                              |                                             |
+| Alphanumeric smart formatting                  | ✅ Improved accuracy, e.g. recognition of email/web addresses transcription |                                            |
+| [End of utterance / force end of utterance](/speech-to-text/realtime/turn-detection#client-side-turn-detection) | ✅ Supported since container version 1.7.0                                | |
+| Language hints (guide predicted languages)     | ⚠️ Not yet                                                                | Targeting September 2026                        |
+| Speaker diarization                            | ⚠️ Not yet                                                                | Planned Q4 2026                              |
+| Speaker identification                         | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| `max_delay` / `max_delay_mode` latency control | ⚠️ Not yet. Finals latency averages around 4 seconds and varies           | Lower latency and control planned Q3/Q4 2026 |
+| Custom dictionary                              | ⚠️ Not yet                                                                | Planned Q4 2026                              |
+| Entities / punctuation overrides               | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| Disfluency removal                             | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| Profanity tagging                              | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| Audio volume filtering                         | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| Translation                                    | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+| Audio events                                   | ⚠️ Not yet                                                                | Prioritized according to customer need       |
+
+## Next steps
+Feedback on this preview determines what ships in the production release. Send yours by 11 September 2026 through the [feedback form](https://forms.cloud.microsoft/e/kgSqEkQgMW). For anything else, contact your Customer Success Manager.
+
+- Look up the full message schema in the [Realtime WebSocket API reference](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket).
+- Transcribe pre-recorded multilingual audio with [Batch Melia 1](../speech-to-text/models), generally available.

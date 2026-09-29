@@ -50,6 +50,7 @@ When processing long audio jobs the benefits on RTF of the persistent batch work
 <CodeBlock language="bash">
 {`docker run -it \
   -e LICENSE_TOKEN=$TOKEN_VALUE \
+  -e SM_INFERENCE_ENDPOINT=<server>:<port> \
   -p PORT:18000 \
   batch-asr-transcriber-en:${smVariables.latestContainerVersion} \
   --run-mode http \
@@ -87,7 +88,7 @@ curl -X POST address.of.container:PORT/v2/jobs \
     "transcription_config": {
       "language": "en",
       "diarization": "speaker",
-      "operating_point": "enhanced"
+      "model": "enhanced"
     }
   }' \
   -F 'data_file=@~/audio_file.mp3'
@@ -190,7 +191,7 @@ HTTP 503: {"detail": "Server busy: 8 engines not available (2 engines in use, 5 
 
 ## Speaker identification
 
-To enable the Speaker identification feature you can use the same logic used for the one shot [batch container](/speech-to-text/features/speaker-identification).
+To enable the speaker identification feature you can use the same logic used for the one shot [batch container](/speech-to-text/features/speaker-identification). Speaker identification requires the [GPU speech-to-text container](/deployments/container/gpu-speech-to-text) — it is not supported in batch mode on CPU.
 To enable per-customer encrypted identifiers (as used in our SaaS offering), pass a `user_id` in the `X-SM-Processing-Data` header.
 
 ```bash
@@ -201,7 +202,7 @@ curl -X POST address.of.container:PORT/v2/jobs \
     "transcription_config": {
       "language": "en",
       "diarization": "speaker",
-      "operating_point": "enhanced"
+      "model": "enhanced"
     }
   }' \
   -F 'data_file=@~/audio_file.mp3'

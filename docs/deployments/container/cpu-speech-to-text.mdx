@@ -257,7 +257,7 @@ The first-session loading time can be reduced down to several hundred millisecon
 You can enable this feature by setting the `SM_PREWARM_ENGINE_MODES` environment variable, with a semicolon separated list describing the required engine modes. For example, to prewarm 1 English GPU Standard and 2 English GPU Enhanced:
 `SM_PREWARM_ENGINE_MODES='en_general_gpu_standard:1;en_general_gpu_enhanced:2'`
 
-In general, the format is: `{language}_{domain}_{processor}_{operating_point}:{prewarm_connections}`.
+In general, the format is: `{language}_{domain}_{processor}_{model}:{prewarm_connections}`.
 
 The parameters are:
 - `language` - One of the supported [language codes](/speech-to-text/languages)
@@ -266,7 +266,7 @@ The parameters are:
 
 - `processor` - One of `cpu` or `gpu`. Note that selecting `gpu` requires a [GPU Inference Container](/deployments/container/gpu-speech-to-text)
 
-- `operating_point` - One of `standard` or `enhanced`. The [operating point](/speech-to-text/models) you want to prewarm
+- `model` - One of `standard` or `enhanced`. The [model](/speech-to-text/models) you want to prewarm
 
 - `prewarm_connections` - Integer. The number of engine instances of the specific mode you want to pre-warm. The total number of `prewarm_connections` cannot be greater than `SM_MAX_CONCURRENT_CONNECTIONS`. After the pre-warming is complete, this parameter does not limit the types of connections the engine can start.
 

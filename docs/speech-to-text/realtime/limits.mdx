@@ -7,13 +7,13 @@ import HTTPMethodBadge from '@theme/HTTPMethodBadge'
 
 # Limits – Realtime
 
-Speechmatics limits the number of hours of audio users can process each month to help manage load on our servers. The current limits (in hours) by account type are listed in the table below:
+Speechmatics limits the number of concurrent Realtime sessions by account type. The current limits are listed in the table below:
 
-|            | Max. hours per month | Max. concurrent sessions |
-| ---------- | -------------------- | ------------------------ |
-| Free Tier  | 20                   | 2                        |
-| Paid Tier  | 6,000                | 50                       |
-| Enterprise | Custom               | Custom                   |
+|            | Max. concurrent sessions |
+| ---------- | ------------------------ |
+| Free       | 2                        |
+| Pro        | 50                       |
+| Enterprise | Custom                   |
 
 
 Please reach out to [Support](https://support.speechmatics.com) if you need to increase the above limits.
@@ -33,6 +33,10 @@ Clients can disconnect a session before it is automatically terminated and immed
 If seamless transition is required, the new session can be connected a few seconds before disconnecting the old session.
 
 Since unpredictable network issues can cause WebSocket connections to be dropped, we recommend graceful handling of session termination for long-running sessions.
+
+## Custom dictionary limits
+
+If a session's custom dictionary (`additional_vocab`) contains more than 20,000 items, the Realtime SaaS service sends an in-band error message of type [`protocol_error`](/api-ref/realtime-transcription-websocket#error) and closes the WebSocket connection with code `1003`. See [Custom dictionary content limits](/speech-to-text/features/custom-dictionary#maximum-number-of-custom-dictionary-items) for details.
 
 ## Data retention limits
 

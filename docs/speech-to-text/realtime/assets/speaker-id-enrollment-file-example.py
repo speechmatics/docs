@@ -16,6 +16,7 @@ async def enroll_speakers():
     handler_tasks: list[asyncio.Task] = []
 
     transcription_config = speechmatics.models.TranscriptionConfig(**{
+            "model": "enhanced",
             "language": LANGUAGE,
             "diarization": "speaker",
         }

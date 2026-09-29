@@ -276,6 +276,8 @@ The following configuration options **must** be specified when running the ASR C
 
 To correctly configure the transcriber, set `SM_EATS_URL` environment variable to point to ASR Usage Container. e.g., `SM_EATS_URL=asr-usage.example.net:9090` or `SM_EATS_URL=10.244.8.32:9090`, where `asr-usage.example.net` and `10.244.8.32` correspond to the relevant ASR Usage Container instance. The port `9090` is the default listening port for incoming data from transcribers. The port number is alterable by using the `EATS_PORT` environment variable.
 
+`SM_EATS_URL` can be set alongside `SM_ENABLE_USAGE_REPORTING` — leave `SM_ENABLE_USAGE_REPORTING` at its default of `true` so the transcriber sends the same billing events described in [Automatic usage reporting](/deployments/usage-reporting/automatic#technical-details) to your Usage Container instead of to Speechmatics.
+
 Below is a working example of running an ASR Batch Container that will then send transcription event data to a running ASR Usage Container:
 
 ```bash

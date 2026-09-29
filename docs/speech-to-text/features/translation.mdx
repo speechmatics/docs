@@ -24,6 +24,8 @@ import transcriptResponseSchema from "!openapi-schema-loader!@site/spec/batch.ya
 
 # Translation
 
+**Available in:** Batch, Realtime. Not available in Agent STT.
+
 Translate your audio into multiple languages through a single API call, with over 30 languages supported.
 
 ## Use cases
@@ -197,7 +199,8 @@ settings = ConnectionSettings(
 conf = {
     "type": "transcription",
     "transcription_config": {
-        "language": LANGUAGE
+        "language": LANGUAGE,
+        "model": "enhanced"
     },
     "translation_config": {
         "target_languages":TRANSLATION_LANGUAGES
@@ -292,6 +295,7 @@ translation_config = speechmatics.models.RTTranslationConfig(
 )
 
 transcription_config = speechmatics.models.TranscriptionConfig(
+    model="enhanced",
     language=LANGUAGE,
     translation_config=translation_config
 )

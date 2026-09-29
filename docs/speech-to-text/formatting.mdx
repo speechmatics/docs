@@ -5,6 +5,7 @@ keywords:
     numeral formatting,
     output formatting,
     punctuation,
+    smart formatting,
     transcript format,
     transcription
   ]
@@ -36,13 +37,32 @@ Available English locales:
 - US English (`en-US`)
 - Australian English (`en-AU`)
 
-Available Chinese Mandarin locales:
+Available Mandarin locales:
 - Simplified Mandarin (`cmn-Hans`, default)
 - Traditional Mandarin (`cmn-Hant`)
 
 :::tip
 **Recommended for English transcription**. Without a specified locale, spelling may be inconsistent within the same transcript.
 :::
+
+### Output locale for multilingual transcription
+
+[Melia 1](/speech-to-text/models#melia-1) can transcribe more than one language in the same job, so `output_locale` also accepts an array of locales, one per language present in the audio:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "melia-1",
+    "language": "multi",
+    // highlight-start
+    "output_locale": ["en-GB", "cmn-Hans"]
+    // highlight-end
+  }
+}
+```
+
+Each locale in the array must belong to a different language. Passing two locales for the same language, for example `en-GB` and `en-US` together, is rejected.
 
 ## Profanities
 
@@ -77,7 +97,7 @@ For other languages, consider using [word replacement](#word-replacement) to ide
 
 ## Disfluencies
 
-Disfluencies are hesitation sounds like "um", "uh", and "hmm". In English, these are automatically tagged with `disfluency`:
+Disfluencies are hesitation sounds like "um", "uh", and "hmm". Speechmatics automatically tags them with `disfluency` in the transcript output:
 
 ```json
 "results": [
@@ -100,7 +120,7 @@ Disfluencies are hesitation sounds like "um", "uh", and "hmm". In English, these
 ```
 
 <details data-accent-color="gray">
-  <summary>Full list of tagged disfluencies</summary>
+  <summary>Full list of tagged English disfluencies</summary>
 <CodeBlock>
 {`huh
 aha
@@ -146,6 +166,30 @@ uum`}
 </CodeBlock>
 </details>
 
+### Supported languages for disfluencies
+
+Disfluency tagging and removal are available for the following languages. Each language has its own set of hesitation sounds; the expandable list at the start of this section covers English.
+
+- Arabic (`ar`)
+- Danish (`da`)
+- Dutch (`nl`)
+- English (`en`)
+- French (`fr`)
+- German (`de`)
+- Greek (`el`)
+- Hebrew (`he`)
+- Hindi (`hi`)
+- Hungarian (`hu`)
+- Italian (`it`)
+- Japanese (`ja`)
+- Mandarin (`cmn`)
+- Polish (`pl`)
+- Portuguese (`pt`)
+- Russian (`ru`)
+- Spanish (`es`)
+
+Coverage of hesitation sounds varies by language. If you rely on disfluency removal for a specific language, test it with representative audio rather than assuming full coverage.
+
 ### Removing disfluencies
 
 You can automatically remove disfluencies from your transcript:
@@ -168,7 +212,7 @@ Without disfluency removal:
 With disfluency removal:
 > What would you like?
 
-This feature is available for English only. The default setting is `"remove_disfluencies": false`.
+This feature is available for the [supported languages](#supported-languages-for-disfluencies). The default setting is `"remove_disfluencies": false`.
 
 ## Word replacement
 
@@ -221,13 +265,19 @@ Word replacement rules:
 
 ## Smart formatting
 
-Speechmatics automatically converts spoken numbers, dates, currencies, and other entities into properly formatted text. This makes transcripts more readable without losing timing information.
+Smart formatting converts spoken numbers, dates, currencies, and other entities into properly formatted text. This makes transcripts more readable without losing timing information.
 
-For example, spoken words like "nineteen ninety nine" become "1999" in the output.
+An *entity* is a spoken value that has a conventional written form, such as a number, date, currency, time, or measurement. Speechmatics detects each entity and converts it from the words as spoken into its written form. For example, the spoken words "nineteen ninety nine" become "1999" in the output.
+
+Smart formatting is applied by default. Set `enable_entities` to `true` to also expose the structure of each entity in the JSON output: the class of entity, and the individual spoken and written words it is made from.
+
+:::info
+`enable_entities` is not supported on Agent STT.
+:::
 
 ### Configuration
 
-To include detailed information about entities in your JSON output, add this to your configuration:
+To include detailed entity information in your JSON output, add `enable_entities` to your configuration:
 
 ```json
 {
@@ -338,7 +388,7 @@ The system applies different formatting rules based on the type of entity detect
 The system chooses entity classes based on context, so occasionally a value might be classified differently than expected. For example, "2001" could be a "cardinal" number or a "date".
 :::
 
-### Languages
+### Languages for smart formatting
 
 Each language follows its own conventions for:
 
@@ -351,10 +401,9 @@ Examples:
 - **German**: Uses periods for thousands (20.000), commas for decimals (10,5), and places currency symbols after values with a non-breaking space (10 $)
 - **French**: Uses non-breaking spaces for thousands (20 000), commas for decimals (10,5), and places currency symbols after values with a non-breaking space (10 $)
 
-Smart formatting is available in these languages:
+Smart formatting has had dedicated work for consistent results in these languages:
 
 - Cantonese
-- Chinese Mandarin (Simplified and Traditional)
 - Dutch
 - English
 - French
@@ -362,6 +411,7 @@ Smart formatting is available in these languages:
 - Hindi
 - Italian
 - Japanese
+- Mandarin (Simplified and Traditional)
 - Mandarin & English (bilingual)
 - Mandarin Malay Tamil & English (multilingual)
 - Norwegian
@@ -370,6 +420,10 @@ Smart formatting is available in these languages:
 - Spanish
 - Swedish
 - Tamil & English (bilingual)
+
+Other languages still format numbers and entities on a best-effort basis through the model, with variable results. If you rely on formatting for a language that isn't listed, test it with representative audio rather than assuming full coverage.
+
+Formatting coverage isn't reported by [feature discovery](/speech-to-text/features/feature-discovery), which covers transcription, translation, and language identification. This page is the reference for formatting language support.
 
 ## Punctuation
 
@@ -383,6 +437,10 @@ All Speechmatics language packs support punctuation to improve transcript readab
 | All other languages | . , ! ? | . ! ? | |
 
 ### Configuration
+
+:::info
+`punctuation_overrides` is not supported on Agent STT.
+:::
 
 You can control which punctuation marks appear in your transcripts using the `punctuation_overrides` setting:
 

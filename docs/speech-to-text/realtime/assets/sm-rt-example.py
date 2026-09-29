@@ -14,7 +14,8 @@ audio_format = AudioFormat(
     chunk_size=4096,
 )
 config = TranscriptionConfig(
-    language="en", 
+    model="enhanced",
+    language="en",
     max_delay=0.7,
 )
 

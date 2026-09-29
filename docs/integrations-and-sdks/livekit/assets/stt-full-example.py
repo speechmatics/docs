@@ -1,24 +1,22 @@
 from livekit.agents import AgentSession
-from livekit.plugins import speechmatics
+from livekit.plugins import silero, speechmatics
 from livekit.plugins.speechmatics import (
     AdditionalVocabEntry,
-    AudioEncoding,
-    OperatingPoint,
-    SpeakerFocusMode,
-    SpeakerIdentifier,
     TurnDetectionMode,
 )
 
+# Shared between the session and the plugin so only one model is loaded
+vad = silero.VAD.load()
+
 stt = speechmatics.STT(
-    # Service options
+    # Transcription
     language="en",
     output_locale="en-US",
-    operating_point=OperatingPoint.ENHANCED,
-
-    # Turn detection
-    turn_detection_mode=TurnDetectionMode.ADAPTIVE,
-    max_delay=1.5,
     include_partials=True,
+
+    # Turn detection: the VAD above closes each turn
+    turn_detection_mode=TurnDetectionMode.EXTERNAL,
+    vad=vad,
 
     # Diarization
     enable_diarization=True,
@@ -26,23 +24,18 @@ stt = speechmatics.STT(
     max_speakers=4,
     prefer_current_speaker=True,
 
-    # Speaker focus
-    focus_speakers=["S1", "S2"],
-    focus_mode=SpeakerFocusMode.RETAIN,
-    ignore_speakers=["__ASSISTANT__"],
-
-    # Output formatting
-    speaker_active_format="[{speaker_id}]: {text}",
-    speaker_passive_format="[{speaker_id} (background)]: {text}",
+    # Renders each segment as <S1>Good morning.</S1>
+    speaker_format="<{speaker_id}>{text}</{speaker_id}>",
 
     # Custom vocabulary
     additional_vocab=[
         AdditionalVocabEntry(content="Speechmatics"),
-        AdditionalVocabEntry(content="LiveKit", sounds_like=["live kit", "livekit"]),
+        AdditionalVocabEntry(content="LiveKit", sounds_like=["live kit"]),
     ],
 )
 
 session = AgentSession(
     stt=stt,
-    # ... llm, tts, vad, etc.
+    vad=vad,
+    # ... llm, tts, etc.
 )

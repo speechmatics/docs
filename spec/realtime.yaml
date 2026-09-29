@@ -483,6 +483,10 @@ components:
           type: string
           description: |
             The channel identifier to which the audio belongs. This field is only seen in multichannel.
+        forced:
+          type: boolean
+          description: |
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -506,6 +510,10 @@ components:
           type: string
           description: |
             The channel identifier to which the audio belongs. This field is only seen in multichannel.
+        forced:
+          type: boolean
+          description: |
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -520,6 +528,10 @@ components:
         channel:
           type: string
           description: The channel identifier to which the EndOfUtterance message belongs. This field is only seen in multichannel.
+        forced:
+          type: boolean
+          description: |
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -637,6 +649,11 @@ components:
             Only set when `type` is `concurrent_session_usage`. Indicates the timestamp of the most recent usage update, in the format `YYYY-MM-DDTHH:MM:SSZ` (UTC). This value is updated even when usage exceeds the quota, as it represents the most recent known data. In some cases, it may be empty or outdated due to internal errors preventing successful update.
           type: string
           example: "2025-03-25T08:45:31Z"
+        region:
+          description: >-
+            Only set when `type` is `concurrent_session_usage`. The region that reported this usage, for example `eu`.
+          type: string
+          example: "eu"
       required:
         - message
         - type
@@ -888,6 +905,7 @@ components:
             $ref: "#/components/schemas/AudioEventType"
     VocabList:
       type: array
+      maxItems: 20000
       description: |
         Configure [custom dictionary](https://docs.speechmatics.com/speech-to-text/features/custom-dictionary). Default is an empty list. You should be aware that there is a performance penalty (latency degradation and memory increase) from using `additional_vocab`, especially if you use a large word list. When initializing a session that uses `additional_vocab` in the config, you should expect a delay of up to 15 seconds (depending on the size of the list).
       items:
@@ -1110,7 +1128,7 @@ components:
         tags:
           type: array
           description: |
-            This is a set list of profanities and disfluencies respectively that cannot be altered by the end user. `[disfluency]` is only present in English, and `[profanity]` is present in English, Spanish, and Italian
+            This is a set list of profanities and disfluencies respectively that cannot be altered by the end user. `[disfluency]` is present in the [supported languages](https://docs.speechmatics.com/speech-to-text/formatting#supported-languages-for-disfluencies), and `[profanity]` is present in English, Spanish, and Italian
           items:
             $ref: "#/components/schemas/RecognitionAlternativeTagsEnum"
       required:
