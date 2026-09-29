@@ -10,7 +10,7 @@ Speechmatics offers models in two groups. The Batch and Realtime APIs share a se
 | API | Models |
 |---|---|
 | Batch | `enhanced`, `standard`, `melia-1` |
-| Realtime | `enhanced`, `standard` |
+| Realtime | `enhanced`, `standard`, `melia-1` |
 | Agent STT | `linden-1` |
 
 ## Batch and Realtime models
@@ -22,20 +22,22 @@ Speechmatics offers models in two groups. The Batch and Realtime APIs share a se
 | Model | `enhanced` | `standard` | `melia-1` |
 | Specialized variant | Medical | — | — |
 | Accuracy | Highest | High | High |
-| Turnaround | Fast | Fastest | Fastest |
-| Processing modes | Batch and Realtime | Batch and Realtime | Batch |
+| Turnaround | Fast | Fastest | Fastest on Batch; see [Realtime latency](#melia-1-on-realtime) |
+| Processing modes | Batch and Realtime | Batch and Realtime | Batch and Realtime |
 | Regions | EU, US, AUS | EU, US, AUS | EU, US |
 | Language handling | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Automatic multilingual](#melia-1) |
-| Diarization | Speaker and channel | Speaker and channel | Speaker and channel |
+| Diarization | Speaker and channel | Speaker and channel | Speaker and channel on Batch; channel on Realtime |
 | Language labeling | — | — | Per word |
 | Custom dictionary | ✅ | ✅ | Not yet |
 | Confidence scores | ✅ | ✅ | Not yet |
 | Speaker identification | ✅ | ✅ | Not yet |
 | Speech intelligence | ✅ | ✅ | Not yet |
 
-Enhanced and Standard are feature-identical and differ only in accuracy and speed: Enhanced delivers the highest accuracy, and Standard prioritizes throughput. Melia 1 matches Standard for accuracy and adds automatic multilingual transcription, but it is available for Batch only and supports a reduced feature set. Speech intelligence covers translation, summarization, topic detection, chapters, sentiment, and audio events.
+Enhanced and Standard are feature-identical and differ only in accuracy and speed: Enhanced delivers the highest accuracy, and Standard prioritizes throughput. Melia 1 matches Standard for accuracy and adds automatic multilingual transcription, but supports a reduced feature set. Speech intelligence covers translation, summarization, topic detection, chapters, sentiment, and audio events.
 
-Melia 1 matches the Enhanced and Standard models for core transcription features, including diarization, word timings, punctuation, notifications, and output locale. It does not yet support the following features, which are available with the Enhanced and Standard models:
+Melia 1 feature support differs between Batch and Realtime. For the Realtime gaps, refer to [Melia 1 on Realtime](#melia-1-on-realtime).
+
+On Batch, Melia 1 matches the Enhanced and Standard models for core transcription features, including diarization, word timings, punctuation, notifications, and output locale. It does not yet support the following features, which are available with the Enhanced and Standard models:
 
 - Custom vocabulary and formatting: custom dictionary, find and replace, spoken form output, profanity tagging
 - Output detail: confidence scores, entity detection, audio filtering
@@ -72,13 +74,13 @@ This config selects the `enhanced` model:
 }
 ```
 
-Enhanced and Standard are available for Realtime and Batch transcription. Melia 1 is currently available for Batch transcription.
+Enhanced, Standard, and Melia 1 are all available for Realtime and Batch transcription.
 
 ### Melia 1
 
 Melia 1 is a multilingual model. It transcribes audio that contains more than one language, including speakers who switch language mid-conversation, and returns a single continuous transcript. It does not require you to select a language pack, and its accuracy is on par with the Standard model.
 
-Set `"model": "melia-1"` and `"language": "multi"`:
+Set `"model": "melia-1"` and `"language": "multi"`. This Batch job config selects Melia 1:
 
 ```json
 {
@@ -92,24 +94,55 @@ Set `"model": "melia-1"` and `"language": "multi"`:
 }
 ```
 
+The same two properties select Melia 1 in a Realtime `StartRecognition` message:
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    // highlight-start
+    "model": "melia-1",
+    "language": "multi"
+    // highlight-end
+  }
+}
+```
+
 :::warning
 Melia 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
 :::
 
-Melia 1 is available for Batch transcription in the EU and US regions only. It is not available in the Australia (AU1) region.
-
-| Region | Endpoint |
-|---|---|
-| EU1 (Europe) | `eu1.asr.api.speechmatics.com` |
-| US1 (USA) | `us1.asr.api.speechmatics.com` |
-
-For the full list of Batch endpoints, refer to [Authentication](/get-started/authentication#supported-endpoints).
-
 Melia 1 supports [output locale](/speech-to-text/formatting#output-locale), including an array of locales for multilingual jobs. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription).
 
-For the features Melia 1 does not yet support, refer to [Compare the models](#compare-the-models).
+To configure language hints and read the per-language output, refer to Batch [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output), or Realtime [Input](/speech-to-text/realtime/input#language-hints) and [Output](/speech-to-text/realtime/output#languageinfo-message).
 
-To configure language hints and read the per-language output metadata, refer to [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output).
+#### Regions and endpoints
+
+Melia 1 is available in the EU and US regions only. It is not available in the Australia (AU1) region.
+
+| Region | Batch endpoint | Realtime endpoint |
+|---|---|---|
+| EU1 (Europe) | `eu1.asr.api.speechmatics.com` | TBC |
+| US1 (USA) | `us1.asr.api.speechmatics.com` | TBC |
+
+{/* TODO: replace the TBC Realtime endpoints once confirmed at release. */}
+
+For the full list of endpoints, refer to [Authentication](/get-started/authentication#supported-endpoints).
+
+#### Melia 1 on Realtime
+
+Melia 1 on Realtime supports Partials and Finals, channel diarization, word timings, word-level language labeling, output locale, smart formatting, [end of utterance and force end of utterance](/speech-to-text/realtime/turn-detection#client-side-turn-detection), and [language hints](/speech-to-text/realtime/input#language-hints).
+
+It does not yet support the following Realtime features, which are available with the Enhanced and Standard models:
+
+- Speaker diarization and speaker identification
+- `max_delay` and `max_delay_mode` latency control. Finals latency averages around 4 seconds and varies
+- Custom dictionary
+- Entity detection and punctuation overrides
+- Disfluency removal, profanity tagging, and audio filtering
+- Translation and audio events
+
+Omit unsupported properties from your `transcription_config`.
 
 ### Enhanced Medical model {#healthcare-domain}
 

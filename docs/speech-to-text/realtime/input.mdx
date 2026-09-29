@@ -1,5 +1,5 @@
 ---
-description: 'Learn about the supported input audio formats for the Speechmatics Realtime API'
+description: 'Configure audio formats and language hints for a Speechmatics Realtime transcription session.'
 keywords: [speechmatics, transcription, speech recognition, asr, api, limits]
 toc_max_heading_level: 2
 sidebar_position: 2
@@ -24,6 +24,30 @@ For capturing raw audio in the browser, try our [`browser-audio-input` package](
 The format must be supplied in the `audio_format` field of the `StartRecognition` message. See the [API reference](/api-ref/realtime-transcription-websocket#startrecognition).
 
 <SchemaNode schema={realtimeSchema.components.schemas.AudioFormat} />
+
+## Language hints
+
+Language hints apply to the [Melia 1](/speech-to-text/models#melia-1) model only, which detects every language it hears automatically. They are optional. The Enhanced and Standard models transcribe one selected language, set with `language`.
+
+Hints tell the model which languages to expect in the audio, biasing detection toward them. They are most useful for short utterances, audio with heavy accents, or conversations where two languages sound similar, where they make language labeling more reliable.
+
+Provide hints in the `StartRecognition` message as a list of [supported languages](/speech-to-text/languages#transcription-languages) to guide detection without restricting it. This config hints that the audio contains English and Arabic:
+
+```json
+{
+  "message": "StartRecognition",
+  "transcription_config": {
+    "model": "melia-1",
+    // Melia 1 requires "multi" rather than a single language code
+    "language": "multi",
+    // highlight-start
+    "language_hints": ["en", "ar"]
+    // highlight-end
+  }
+}
+```
+
+The model can still detect and label a language you did not hint, and it labels only the languages it actually hears. To render each detected language correctly, refer to the [`LanguageInfo` message](/speech-to-text/realtime/output#languageinfo-message).
 
 ## Sending audio
 
