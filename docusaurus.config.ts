@@ -1,5 +1,6 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
+import { cyan, cyanDark, gray, grayDark } from "@radix-ui/colors";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import katex from "rehype-katex";
 import math from "remark-math";
@@ -211,7 +212,10 @@ const config: Config = {
       src: "https://widget.kapa.ai/kapa-widget.bundle.js",
       "data-website-id": "9d6b9fcb-ce70-4c31-a262-4c7bd548bbca",
       "data-project-name": "Speechmatics",
-      "data-project-color": "#00a2c7",
+      "data-project-color": cyan.cyan9,
+      "data-project-color-dark": cyanDark.cyan9,
+      "data-surface-color": gray.gray1,
+      "data-surface-color-dark": grayDark.gray1,
       "data-project-logo": "/img/logo.svg",
       "data-color-scheme-selector": "[data-theme='dark']",
       "data-view-mode": "sidebar",
