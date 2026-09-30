@@ -31,6 +31,10 @@ export default {
       id: "speech-to-text/realtime/turn-detection",
     },
     {
+      type: "doc",
+      id: "speech-to-text/realtime/session-parking",
+    },
+    {
       type: "category",
       label: "Guides",
       items: [
