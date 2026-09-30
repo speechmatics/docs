@@ -25,7 +25,7 @@ import sttFullExample from "./assets/stt-full-example.py?raw"
 Install Pipecat with the Speechmatics extra:
 
 ```bash
-uv add "pipecat-ai[speechmatics]~=1.10.0"
+uv add "pipecat-ai[speechmatics]~=1.11.0"
 ```
 
 ## Authentication
@@ -147,7 +147,7 @@ In `EXTERNAL` mode something must close each turn. With no VAD anywhere in the p
 
 ### Server-side turn detection
 
-Setting `turn_detection_mode` to `VAD` hands endpointing to Speechmatics. The service requests `ExternalUserTurnStrategies` when it starts, proposes each turn boundary, and lets those strategies resolve it, so `should_interrupt` becomes the control for barge-in.
+Setting `turn_detection_mode` to `VAD` hands turn handling to Speechmatics, which runs server-side VAD to drive turn detection. The service requests `ExternalUserTurnStrategies` when it starts, proposes each turn boundary, and lets those strategies resolve it, so `should_interrupt` becomes the control for barge-in.
 
 ```python
 stt = SpeechmaticsSTTService(

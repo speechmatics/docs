@@ -8,9 +8,15 @@ import livekitQuickstartMainPy from "./assets/main.py?raw"
 
 # LiveKit quickstart
 
-Build a real-time voice AI agent with Speechmatics and LiveKit in minutes.
+Build a real-time voice agent with Speechmatics and LiveKit in minutes.
 
-[LiveKit Agents](https://docs.livekit.io/agents/) is a framework for building voice AI applications using WebRTC. The Speechmatics plugin adds Speech to Text (STT) through agent STT and Text to Speech (TTS) to your agent.
+[LiveKit Agents](https://docs.livekit.io/agents/) is a framework for building voice AI applications using WebRTC. Plug Speechmatics STT and TTS into your voice agent pipeline. The STT plugin uses [agent STT](/speech-to-text/agent-stt), our turn-based transcription for voice agents, powered by Linden 1.
+
+:::note
+
+Linden 1 requires LiveKit Agents v1.8.2 or later.
+
+:::
 
 ## Features
 
@@ -100,6 +106,8 @@ Create a `main.py` file:
 <CodeBlock language="python" title="main.py">
   {livekitQuickstartMainPy}
 </CodeBlock>
+
+Both plugins run on their defaults here. See [Speech to text](/integrations-and-sdks/livekit/stt) to configure diarization, turn detection and language, and [Text to speech](/integrations-and-sdks/livekit/tts) to choose a voice.
 
 ### 6. Run your agent
 
