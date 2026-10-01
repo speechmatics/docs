@@ -32,7 +32,7 @@ keywords:
 
 To choose a transcription model, refer to [Models](/speech-to-text/models).
 
-The languages, packs, and options on this page apply to the Enhanced and Standard models. The Melia 1 model is multilingual: it transcribes the individual languages listed here and switches between them automatically, without language selection. You can use their language codes as [language hints](/speech-to-text/batch/input#language-hints). Melia 1 does not support the `auto` option, the bilingual and multi-language pack codes, or translation. For Melia 1, refer to [Models](/speech-to-text/models).
+The languages, packs, and options on this page apply to the Enhanced and Standard models. The Melia 1 and Oak 1 models are multilingual: they transcribe the individual languages listed here and switch between them automatically, without language selection. You can use their language codes as [language hints](/speech-to-text/batch/input#language-hints). Melia 1 and Oak 1 do not support the `auto` option, the bilingual and multi-language pack codes, or translation. For Melia 1 and Oak 1, refer to [Models](/speech-to-text/models).
 
 The Agent STT API uses the Linden 1 model, which supports the same languages as Realtime transcription. Translation is not available. For Agent STT, refer to [Models](/speech-to-text/models#linden-1).
 
@@ -171,7 +171,9 @@ This config selects the Spanish and English pack, which requires the `domain` pr
 
 ## Medical languages
 
-Speechmatics offers two models tuned for healthcare audio: the [Enhanced Medical model](/speech-to-text/models#healthcare-domain), which transcribes a single selected language, and [Oak 1](/speech-to-text/models#oak-1), which is multilingual and detects the language automatically. For languages not listed in the table below, the underlying model still delivers high accuracy on healthcare audio without the medical tuning.
+Speechmatics offers two models tuned for healthcare audio: the [Enhanced Medical model](/speech-to-text/models#healthcare-domain), which transcribes a single selected language, and [Oak 1](/speech-to-text/models#oak-1), which is multilingual and detects the language automatically.
+
+For a language outside this table, Enhanced Medical falls back to the standard Enhanced model, which still delivers high accuracy on healthcare audio without the medical tuning. Oak 1 transcribes all the [individual languages listed above](#transcription-languages) regardless of this table — the table lists only the languages where Oak 1 has the additional medical terminology uplift (procedures, medications, conditions, and anatomy); outside it, Oak 1 still transcribes the language, without that uplift.
 
 | Language | Enhanced Medical | Oak 1 |
 |---|---|---|
