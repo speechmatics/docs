@@ -148,7 +148,7 @@ For the features Oak 1 does not yet support, refer to [Compare the models](#comp
 
 To configure language hints and read the per-language output metadata, refer to [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output).
 
-Oak 1 is a standalone model for healthcare audio. It is separate from the [Enhanced Medical model](#healthcare-domain): use Oak 1 for multilingual healthcare audio, and Enhanced Medical for single-language healthcare audio that needs full feature support.
+Oak 1 is a standalone model for healthcare audio. It is separate from the [Enhanced Medical model](#healthcare-domain): use Oak 1 for multilingual healthcare audio, and Enhanced Medical for single-language healthcare audio that needs full feature support. For the languages Oak 1 supports, refer to [Medical languages](/speech-to-text/languages#medical-languages).
 
 ### Enhanced Medical model {#healthcare-domain}
 
@@ -156,7 +156,7 @@ Speechmatics offers the Enhanced Medical model that delivers high accuracy on he
 
 The Enhanced Medical model is kept up to date using officially maintained data sources. This improves recognition of medical terminology such as procedures, medications, conditions, and anatomy.
 
-For languages not listed below, the Enhanced model still delivers high accuracy on healthcare audio without the medical domain. For multilingual healthcare audio, use [Oak 1](#oak-1) instead.
+For languages outside the Enhanced Medical language list, the Enhanced model still delivers high accuracy on healthcare audio without the medical domain. For multilingual healthcare audio, use [Oak 1](#oak-1) instead.
 
 To use the Enhanced Medical model, set the `domain` property to `medical`:
 
@@ -173,19 +173,7 @@ To use the Enhanced Medical model, set the `domain` property to `medical`:
 }
 ```
 
-| Language | Realtime | Batch |
-|---|---|---|
-| Arabic English | Available | Available |
-| Danish | Available | Available |
-| Dutch | Available | Available |
-| English | Available | Available |
-| Finnish | Available | Available |
-| French | Available | Available |
-| German | Available | Available |
-| Norwegian | Available | Available |
-| Spanish | Available | Available |
-| Swedish | Available | Available |
-| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | |
+For the languages the Enhanced Medical model supports, refer to [Medical languages](/speech-to-text/languages#medical-languages).
 
 ### Operating points
 
