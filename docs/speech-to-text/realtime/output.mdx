@@ -1,5 +1,5 @@
 ---
-description: 'Learn about latency in the Speechmatics Realtime server'
+description: 'Learn how the Speechmatics Realtime API returns transcripts, and how to control latency and multilingual output.'
 keywords: [speechmatics, real-time, rt, latency, low latency, fast, transcription, speech recognition, asr]
 title: 'Output – Realtime'
 sidebar_label: 'Output'
@@ -112,6 +112,32 @@ With `Partials` enabled and `max_delay_mode` as `fixed`, messages received could
 - **(Final)**: five.
 
 **Final output**: I am 30 five.
+
+## `LanguageInfo` message
+
+The [Melia 1](/speech-to-text/models#melia-1) model labels each word with the language it was spoken in, so a single session can return words in more than one language. The `LanguageInfo` message tells you how to render the words of a given language. The server sends it once per language code, immediately before that language first appears in an `AddPartialTranscript` or `AddTranscript` message.
+
+Use it to set word spacing and text direction as you build up the transcript, which matters for right-to-left scripts such as Arabic and Hebrew.
+
+This message reports that Arabic has been detected and is written right-to-left:
+
+```json
+{
+  "message": "LanguageInfo",
+  // Sent once, just before the first Arabic word arrives
+  "language": "ar",
+  "word_delimiter": " ",
+  "writing_direction": "right-to-left",
+  "partial": true
+}
+```
+
+- `language` (String): The detected language code.
+- `word_delimiter` (String): The delimiter to place between words of this language when reconstructing the transcript.
+- `writing_direction` (String): Either `left-to-right` or `right-to-left`.
+- `partial` (Boolean): Optional. Present only when `true`, indicating a Partial transcript triggered the message.
+
+The Speechmatics SDKs do not yet surface `LanguageInfo`. Read it from the WebSocket messages directly.
 
 ## App usage tracking
 

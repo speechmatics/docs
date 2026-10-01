@@ -170,28 +170,8 @@ Use Melia 1:
 </Tabs>
 
 ### LanguageInfo message
-A new (optional) `LanguageInfo` message is sent from the transcriber to the client the first time a new language code is detected in the audio. It is emitted **once per language code**, immediately before that language first appears in an `AddPartialTranscript` (Partial) or `AddTranscript` (Final) message.
 
-Use it to configure how you process and display the transcript — for example, word spacing and text direction for right-to-left scripts.
-
-Support for this message response is not currently available in the SDKs.
-
-Message format:
-
-```json
-{
-  "message": "LanguageInfo",
-  "language": "ar",
-  "word_delimiter": " ",
-  "writing_direction": "right-to-left",
-  "partial": true
-}
-```
-
-- `language` (String): The detected language code.
-- `word_delimiter` (String): The delimiter to use between words when reconstructing the transcript for this language.
-- `writing_direction` (String): Either `left-to-right` or `right-to-left`.
-- `partial` (Boolean): Optional. When present, this is `true`, indicating the message was triggered by a Partial transcript.
+The `LanguageInfo` message is documented publicly. Refer to [`LanguageInfo` message](/speech-to-text/realtime/output#languageinfo-message).
 
 ## Capabilities
 
@@ -207,7 +187,7 @@ Message format:
 | Language labeling                              | ✅ Word-level                                                              |                                             |
 | Alphanumeric smart formatting                  | ✅ Improved accuracy, e.g. recognition of email/web addresses transcription |                                            |
 | [End of utterance / force end of utterance](/speech-to-text/realtime/turn-detection#client-side-turn-detection) | ✅ Supported since container version 1.7.0                                | |
-| Language hints (guide predicted languages)     | ⚠️ Not yet                                                                | Targeting September 2026                        |
+| [Language hints](/speech-to-text/realtime/input#language-hints) | ✅                                                       |                                              |
 | Speaker diarization                            | ⚠️ Not yet                                                                | Planned Q4 2026                              |
 | Speaker identification                         | ⚠️ Not yet                                                                | Prioritized according to customer need       |
 | `max_delay` / `max_delay_mode` latency control | ⚠️ Not yet. Finals latency averages around 4 seconds and varies           | Lower latency and control planned Q3/Q4 2026 |
