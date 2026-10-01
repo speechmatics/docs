@@ -99,6 +99,11 @@ The same two properties select Melia 1 in a Realtime `StartRecognition` message:
 ```json
 {
   "message": "StartRecognition",
+  "audio_format": {
+    "type": "raw",
+    "encoding": "pcm_s16le",
+    "sample_rate": 16000
+  },
   "transcription_config": {
     // highlight-start
     "model": "melia-1",
@@ -112,7 +117,7 @@ The same two properties select Melia 1 in a Realtime `StartRecognition` message:
 Melia 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
 :::
 
-Melia 1 supports [output locale](/speech-to-text/formatting#output-locale), including an array of locales for multilingual jobs. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription).
+Melia 1 supports [output locale](/speech-to-text/formatting#output-locale). On Batch, `output_locale` also accepts an array of locales, one per language in the audio. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription). On Realtime, `output_locale` does not yet accept an array. Set a single locale.
 
 To configure language hints and read the per-language output, refer to Batch [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output), or Realtime [Input](/speech-to-text/realtime/input#language-hints) and [Output](/speech-to-text/realtime/output#languageinfo-message).
 

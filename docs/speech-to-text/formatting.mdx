@@ -47,7 +47,7 @@ Available Mandarin locales:
 
 ### Output locale for multilingual transcription
 
-[Melia 1](/speech-to-text/models#melia-1) can transcribe more than one language in the same job, so `output_locale` also accepts an array of locales, one per language present in the audio:
+On Batch, [Melia 1](/speech-to-text/models#melia-1) can transcribe more than one language in the same job, so `output_locale` also accepts an array of locales, one per language present in the audio:
 
 ```json
 {
@@ -63,6 +63,8 @@ Available Mandarin locales:
 ```
 
 Each locale in the array must belong to a different language. Passing two locales for the same language, for example `en-GB` and `en-US` together, is rejected.
+
+On Realtime, `output_locale` does not yet accept an array. Set a single locale.
 
 ## Profanities
 

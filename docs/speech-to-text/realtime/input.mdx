@@ -27,7 +27,7 @@ The format must be supplied in the `audio_format` field of the `StartRecognition
 
 ## Language hints
 
-Language hints apply to the [Melia 1](/speech-to-text/models#melia-1) model only, which detects every language it hears automatically. They are optional. The Enhanced and Standard models transcribe one selected language, set with `language`.
+Language hints are optional and apply only to the [Melia 1](/speech-to-text/models#melia-1) model, which detects supported languages automatically. For the Enhanced and Standard models, set `language` to a [supported language](/speech-to-text/languages) instead.
 
 Hints tell the model which languages to expect in the audio, biasing detection toward them. They are most useful for short utterances, audio with heavy accents, or conversations where two languages sound similar, where they make language labeling more reliable.
 
@@ -36,6 +36,11 @@ Provide hints in the `StartRecognition` message as a list of [supported language
 ```json
 {
   "message": "StartRecognition",
+  "audio_format": {
+    "type": "raw",
+    "encoding": "pcm_s16le",
+    "sample_rate": 16000
+  },
   "transcription_config": {
     "model": "melia-1",
     // Melia 1 requires "multi" rather than a single language code
