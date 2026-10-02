@@ -9,7 +9,7 @@ Speechmatics offers models in two groups. The Batch and Realtime APIs share a se
 
 | API | Models |
 |---|---|
-| Batch | `enhanced`, `standard`, `melia-1` |
+| Batch | `enhanced`, `standard`, `melia-1`, `oak-1` |
 | Realtime | `enhanced`, `standard` |
 | Agent STT | `linden-1` |
 
@@ -17,32 +17,32 @@ Speechmatics offers models in two groups. The Batch and Realtime APIs share a se
 
 ### Compare the models
 
-| Capability | Enhanced | Standard | Melia 1 |
-|---|---|---|---|
-| Model | `enhanced` | `standard` | `melia-1` |
-| Specialized variant | Medical | — | — |
-| Accuracy | Highest | High | High |
-| Turnaround | Fast | Fastest | Fastest |
-| Processing modes | Batch and Realtime | Batch and Realtime | Batch |
-| Regions | EU, US, AUS | EU, US, AUS | EU, US |
-| Language handling | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Automatic multilingual](#melia-1) |
-| Diarization | Speaker and channel | Speaker and channel | Speaker and channel |
-| Language labeling | — | — | Per word |
-| Custom dictionary | ✅ | ✅ | Not yet |
-| Confidence scores | ✅ | ✅ | Not yet |
-| Speaker identification | ✅ | ✅ | Not yet |
-| Speech intelligence | ✅ | ✅ | Not yet |
+| Capability | Enhanced | Standard | Melia 1 | Oak 1 |
+|---|---|---|---|---|
+| Model | `enhanced` | `standard` | `melia-1` | `oak-1` |
+| Medical specialization | Medical variant available | — | — | Medical native model |
+| Accuracy | Highest | High | High | High |
+| Turnaround | Fast | Fastest | Fastest | Fastest |
+| Processing modes | Batch and Realtime | Batch and Realtime | Batch | Batch |
+| Regions | EU, US, AUS | EU, US, AUS | EU, US | EU, US |
+| Language handling | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Automatic multilingual](#melia-1) | [Automatic multilingual](#oak-1) |
+| Diarization | Speaker and channel | Speaker and channel | Speaker and channel | Speaker and channel |
+| Language labeling | — | — | Per word | Per word |
+| Custom dictionary | ✅ | ✅ | Not yet | Not yet |
+| Confidence scores | ✅ | ✅ | Not yet | Not yet |
+| Speaker identification | ✅ | ✅ | Not yet | Not yet |
+| Speech intelligence | ✅ | ✅ | Not yet | Not yet |
 
-Enhanced and Standard are feature-identical and differ only in accuracy and speed: Enhanced delivers the highest accuracy, and Standard prioritizes throughput. Melia 1 matches Standard for accuracy and adds automatic multilingual transcription, but it is available for Batch only and supports a reduced feature set. Speech intelligence covers translation, summarization, topic detection, chapters, sentiment, and audio events.
+Enhanced and Standard are feature-identical and differ only in accuracy and speed: Enhanced delivers the highest accuracy, and Standard prioritizes throughput. Melia 1 and Oak 1 add automatic multilingual transcription, but are available for Batch only and support a reduced feature set. Speech intelligence covers translation, summarization, topic detection, chapters, sentiment, and audio events.
 
-Melia 1 matches the Enhanced and Standard models for core transcription features, including diarization, word timings, punctuation, notifications, and output locale. It does not yet support the following features, which are available with the Enhanced and Standard models:
+Melia 1 and Oak 1 match the Enhanced and Standard models for core transcription features, including diarization, word timings, punctuation, notifications, and output locale. They do not yet support the following features, which are available with the Enhanced and Standard models:
 
 - Custom vocabulary and formatting: custom dictionary, find and replace, spoken form output, profanity tagging
 - Output detail: confidence scores, entity detection, audio filtering
 - Speaker identification
 - Speech intelligence: audio events, translation, summarization, chapters, topics, sentiment
 
-Melia 1 is an early-access model and its feature support is expanding. Check the [release notes](https://speechmatics.featurebase.app/en/changelog) for the latest.
+Check the [release notes](https://speechmatics.featurebase.app/en/changelog) for the latest feature support.
 
 ### Choose a model
 
@@ -52,7 +52,7 @@ Use Standard when throughput or latency matter more than maximum accuracy, such 
 
 Use Melia 1 for audio that contains more than one language, including speakers who switch language mid-conversation.
 
-For healthcare use cases, use the [Enhanced Medical model](#healthcare-domain) which is tuned for medical terminology.
+Use Oak 1 for multilingual healthcare audio, such as ambient scribes and dictation tools where speakers switch languages mid-conversation. For single-language healthcare audio that needs full feature support, such as custom dictionary or confidence scores, use the [Enhanced Medical model](#healthcare-domain) instead.
 
 ### Specify a model
 
@@ -72,7 +72,7 @@ This config selects the `enhanced` model:
 }
 ```
 
-Enhanced and Standard are available for Realtime and Batch transcription. Melia 1 is currently available for Batch transcription.
+Enhanced and Standard are available for Realtime and Batch transcription. Melia 1 and Oak 1 are currently available for Batch transcription.
 
 ### Melia 1
 
@@ -111,13 +111,52 @@ For the features Melia 1 does not yet support, refer to [Compare the models](#co
 
 To configure language hints and read the per-language output metadata, refer to [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output).
 
+### Oak 1
+
+Oak 1 is a multilingual model tuned for healthcare audio, such as ambient scribes and dictation tools. Like Melia 1, it transcribes audio that contains more than one language, including speakers who switch language mid-conversation, and returns a single continuous transcript. It does not require you to select a language pack.
+
+Set `"model": "oak-1"` and `"language": "multi"`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    // highlight-start
+    "model": "oak-1",
+    "language": "multi"
+    // highlight-end
+  }
+}
+```
+
+:::warning
+Oak 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
+:::
+
+Oak 1 is available for Batch transcription in the EU and US regions only. It is not available in the Australia (AU1) region.
+
+| Region | Endpoint |
+|---|---|
+| EU1 (Europe) | `eu1.asr.api.speechmatics.com` |
+| US1 (USA) | `us1.asr.api.speechmatics.com` |
+
+For the full list of Batch endpoints, refer to [Authentication](/get-started/authentication#supported-endpoints).
+
+Oak 1 supports [output locale](/speech-to-text/formatting#output-locale), including an array of locales for multilingual jobs. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription).
+
+For the features Oak 1 does not yet support, refer to [Compare the models](#compare-the-models).
+
+To configure language hints and read the per-language output metadata, refer to [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output).
+
+Oak 1 is a standalone model for healthcare audio. It is separate from the [Enhanced Medical model](#healthcare-domain): use Oak 1 for multilingual healthcare audio, and Enhanced Medical for single-language healthcare audio that needs full feature support. For the languages Oak 1 supports, refer to [Medical languages](/speech-to-text/languages#medical-languages).
+
 ### Enhanced Medical model {#healthcare-domain}
 
 Speechmatics offers the Enhanced Medical model that delivers high accuracy on healthcare audio such as ambient scribes and dictation tools.
 
 The Enhanced Medical model is kept up to date using officially maintained data sources. This improves recognition of medical terminology such as procedures, medications, conditions, and anatomy.
 
-For languages not listed below, the Enhanced model still delivers high accuracy on healthcare audio without the medical domain.
+For languages outside the Enhanced Medical language list, the Enhanced model still delivers high accuracy on healthcare audio without the medical domain. For multilingual healthcare audio, use [Oak 1](#oak-1) instead.
 
 To use the Enhanced Medical model, set the `domain` property to `medical`:
 
@@ -134,19 +173,7 @@ To use the Enhanced Medical model, set the `domain` property to `medical`:
 }
 ```
 
-| Language | Realtime | Batch |
-|---|---|---|
-| Arabic English | Available | Available |
-| Danish | Available | Available |
-| Dutch | Available | Available |
-| English | Available | Available |
-| Finnish | Available | Available |
-| French | Available | Available |
-| German | Available | Available |
-| Norwegian | Available | Available |
-| Spanish | Available | Available |
-| Swedish | Available | Available |
-| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | |
+For the languages the Enhanced Medical model supports, refer to [Medical languages](/speech-to-text/languages#medical-languages).
 
 ### Operating points
 

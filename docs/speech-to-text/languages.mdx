@@ -32,7 +32,7 @@ keywords:
 
 To choose a transcription model, refer to [Models](/speech-to-text/models).
 
-The languages, packs, and options on this page apply to the Enhanced and Standard models. The Melia 1 model is multilingual: it transcribes the individual languages listed here and switches between them automatically, without language selection. You can use their language codes as [language hints](/speech-to-text/batch/input#language-hints). Melia 1 does not support the `auto` option, the bilingual and multi-language pack codes, or translation. For Melia 1, refer to [Models](/speech-to-text/models).
+The languages, packs, and options on this page apply to the Enhanced and Standard models. The Melia 1 and Oak 1 models are multilingual: they transcribe the individual languages listed here and switch between them automatically, without language selection. You can use their language codes as [language hints](/speech-to-text/batch/input#language-hints). Melia 1 and Oak 1 do not support the `auto` option, the bilingual and multi-language pack codes, or translation. For Melia 1 and Oak 1, refer to [Models](/speech-to-text/models).
 
 The Agent STT API uses the Linden 1 model, which supports the same languages as Realtime transcription. Translation is not available. For Agent STT, refer to [Models](/speech-to-text/models#linden-1).
 
@@ -114,6 +114,28 @@ Speechmatics takes a global-first approach to languages. A single language pack 
 
 Each language is uniquely identified by a two-letter code (ISO 639-1) or three-letter code (ISO 639-3) in API requests and responses.
 
+## Medical languages
+
+Speechmatics offers two models tuned for healthcare audio: the [Enhanced Medical model](/speech-to-text/models#healthcare-domain), which transcribes a single selected language, and [Oak 1](/speech-to-text/models#oak-1), which is multilingual and detects the language automatically.
+
+For a language outside this table, Enhanced Medical falls back to the standard Enhanced model, which still delivers high accuracy on healthcare audio without the medical tuning. Oak 1 transcribes all the [individual languages listed above](#transcription-languages) regardless of this table — the table lists only the languages where Oak 1 has the additional medical terminology uplift (procedures, medications, conditions, and anatomy); outside it, Oak 1 still transcribes the language, without that uplift.
+
+| Language | Enhanced Medical | Oak 1 |
+|---|---|---|
+| Arabic | — | Available |
+| Arabic and English | Available | — |
+| Danish | Available | Available |
+| Dutch | Available | Available |
+| English | Available | Available |
+| Finnish | Available | Available |
+| French | Available | Available |
+| German | Available | Available |
+| Norwegian | Available | Available |
+| Polish | — | Available |
+| Spanish | Available | Available |
+| Swedish | Available | Available |
+| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | [Contact us](https://www.speechmatics.com/speak-to-sales) |
+
 ## Translation languages
 
 Translation is available with the Enhanced and Standard models. It is supported for most Speechmatics languages, with the supported translation pairs listed below. For more details, see [Translation](/speech-to-text/features/translation).
@@ -127,7 +149,7 @@ Translation is available with the Enhanced and Standard models. It is supported 
 ## Bilingual and multi-language packs
 
 :::note
-These packs handle a fixed set of languages that you select in advance. To transcribe audio without selecting languages, including spontaneous switching across all supported languages, use the Melia 1 multilingual model. Refer to [Models](/speech-to-text/models).
+These packs handle a fixed set of languages that you select in advance. To transcribe audio without selecting languages, including spontaneous switching across all supported languages, use the Melia 1 multilingual model, or Oak 1 for healthcare audio. Refer to [Models](/speech-to-text/models).
 :::
 
 The Enhanced and Standard models can transcribe a selected combination of languages in one media file or stream, including speakers who switch between the languages in that pack. Each pack covers a fixed set of languages that you select with the `language` property.
@@ -168,4 +190,3 @@ This config selects the Spanish and English pack, which requires the `domain` pr
   }
 }
 ```
-
