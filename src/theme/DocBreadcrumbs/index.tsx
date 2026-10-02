@@ -39,6 +39,8 @@ export default function DocBreadcrumbs(): ReactNode {
                 weight="medium"
                 color="gray"
                 style={isTopLevel ? { textTransform: "uppercase" } : {}}
+                // Read by the Algolia crawler as hierarchy.lvl0 (top-level section)
+                className={idx === 0 ? "docsearch-lvl0" : undefined}
               >
                 {item.label}
               </Text>
