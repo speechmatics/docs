@@ -143,20 +143,6 @@ docker pull speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:${smVa
 
 See [how to run the Melia 1 GPU container here.](/deployments/container/gpu-speech-to-text-melia-1)
 
-### Oak 1 model
-
-Oak 1 is a multilingual, GPU-only model tuned for healthcare audio, generally available in Batch. For an overview, see [Models](/speech-to-text/models#oak-1).
-
-<CodeBlock language="bash">
-  {`# pulling the Oak 1 Batch transcriber with the ${smVariables.latestOak1ContainerVersion} tag:
-docker pull speechmaticspublic.azurecr.io/sm-asr-transcriber-oak-1:${smVariables.latestOak1ContainerVersion}
-
-# pulling the Oak 1 GPU inference server with the ${smVariables.latestOak1ContainerVersion} tag:
-docker pull speechmaticspublic.azurecr.io/sm-asr-inference-server-oak-1:${smVariables.latestOak1ContainerVersion}`}
-</CodeBlock>
-
-See [how to run the Oak 1 GPU container here.](/deployments/container/gpu-speech-to-text-oak-1)
-
 ## Pulling translation GPU image
 
 This GPU image is required to use Translation in Batch or Realtime.

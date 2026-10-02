@@ -3,7 +3,6 @@ export const smVariables = {
   latestApplianceVersion: "6.3.0",
   latestContainerVersion: "15.19.0",
   latestMelia1ContainerVersion: "1.3.0",
-  latestOak1ContainerVersion: "1.0.0",
   usageContainerVersion: "0.3.0",
   helmChartVersion: "1.4.0",
 } as const;
