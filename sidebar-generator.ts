@@ -20,7 +20,9 @@ export const sidebarItemsGenerator: SidebarItemsGeneratorOption = async ({
 }) => {
   const docs = args.docs
     .filter((doc) => {
-      const isBatchDoc = (doc.frontMatter.info_path as string | undefined)?.startsWith("api-ref/batch/");
+      const isBatchDoc = (
+        doc.frontMatter.info_path as string | undefined
+      )?.startsWith("api-ref/batch/");
       if (doc.frontMatter.api_path && isBatchDoc) {
         return batchAPIPaths.includes(doc.frontMatter.api_path as string);
       }
