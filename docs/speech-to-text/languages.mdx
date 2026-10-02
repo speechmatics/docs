@@ -114,6 +114,28 @@ Speechmatics takes a global-first approach to languages. A single language pack 
 
 Each language is uniquely identified by a two-letter code (ISO 639-1) or three-letter code (ISO 639-3) in API requests and responses.
 
+## Medical languages
+
+Speechmatics offers two models tuned for healthcare audio: the [Enhanced Medical model](/speech-to-text/models#healthcare-domain), which transcribes a single selected language, and [Oak 1](/speech-to-text/models#oak-1), which is multilingual and detects the language automatically.
+
+For a language outside this table, Enhanced Medical falls back to the standard Enhanced model, which still delivers high accuracy on healthcare audio without the medical tuning. Oak 1 transcribes all the [individual languages listed above](#transcription-languages) regardless of this table — the table lists only the languages where Oak 1 has the additional medical terminology uplift (procedures, medications, conditions, and anatomy); outside it, Oak 1 still transcribes the language, without that uplift.
+
+| Language | Enhanced Medical | Oak 1 |
+|---|---|---|
+| Arabic | — | Available |
+| Arabic and English | Available | — |
+| Danish | Available | Available |
+| Dutch | Available | Available |
+| English | Available | Available |
+| Finnish | Available | Available |
+| French | Available | Available |
+| German | Available | Available |
+| Norwegian | Available | Available |
+| Polish | — | Available |
+| Spanish | Available | Available |
+| Swedish | Available | Available |
+| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | [Contact us](https://www.speechmatics.com/speak-to-sales) |
+
 ## Translation languages
 
 Translation is available with the Enhanced and Standard models. It is supported for most Speechmatics languages, with the supported translation pairs listed below. For more details, see [Translation](/speech-to-text/features/translation).
@@ -168,26 +190,3 @@ This config selects the Spanish and English pack, which requires the `domain` pr
   }
 }
 ```
-
-## Medical languages
-
-Speechmatics offers two models tuned for healthcare audio: the [Enhanced Medical model](/speech-to-text/models#healthcare-domain), which transcribes a single selected language, and [Oak 1](/speech-to-text/models#oak-1), which is multilingual and detects the language automatically.
-
-For a language outside this table, Enhanced Medical falls back to the standard Enhanced model, which still delivers high accuracy on healthcare audio without the medical tuning. Oak 1 transcribes all the [individual languages listed above](#transcription-languages) regardless of this table — the table lists only the languages where Oak 1 has the additional medical terminology uplift (procedures, medications, conditions, and anatomy); outside it, Oak 1 still transcribes the language, without that uplift.
-
-| Language | Enhanced Medical | Oak 1 |
-|---|---|---|
-| Arabic | — | Available |
-| Arabic English | Available | — |
-| Danish | Available | Available |
-| Dutch | Available | Available |
-| English | Available | Available |
-| Finnish | Available | Available |
-| French | Available | Available |
-| German | Available | Available |
-| Norwegian | Available | Available |
-| Polish | — | Available |
-| Spanish | Available | Available |
-| Swedish | Available | Available |
-| Additional languages | [Contact us](https://www.speechmatics.com/speak-to-sales) | [Contact us](https://www.speechmatics.com/speak-to-sales) |
-
