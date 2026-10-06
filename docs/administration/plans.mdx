@@ -8,10 +8,10 @@ description: Understand the Free, Pro, and Enterprise plans and how each one is 
 Speechmatics offers two self-serve plans, Free and Pro, plus Enterprise for contract-based usage.
 
 - **Free.** Get started with a $100 credit grant at no cost, with no payment card required.
-- **Pro.** A self-serve plan you pay for with pay-as-you-go billing, with volume and model training discounts.
+- **Pro.** A self-serve plan you pay for with pay-as-you-go billing, credit packs, or a subscription, with commitment and model training discounts.
 - **Enterprise.** A contract-based plan with dedicated support and deployment options beyond the cloud. See [Enterprise](#enterprise).
 
-Billing is in credits: one credit is worth one US dollar. New sign-ups receive a $100 credit grant. On Free you use these credits at no cost; on Pro you add a payment card and pay for usage beyond your granted credits through pay-as-you-go (PAYG). See [Billing](/administration/billing).
+Billing is in credits. Each model uses a fixed number of credits per hour of audio, the same on every plan. On pay-as-you-go (PAYG) one credit costs one US dollar; credit packs and subscriptions lower the price per credit. New sign-ups receive a $100 credit grant. On Free you use these credits at no cost; on Pro you add a payment card and pay for usage beyond your credits. See [Billing](/administration/billing).
 
 :::note
 Accounts created before 1 August 2026 receive a one-time $25 transition credit.
@@ -23,27 +23,40 @@ Prices are not listed here. For current rates, see the [Speechmatics pricing pag
 
 To upgrade from Free to Pro, add a payment card on the Billing page. See [Billing](/administration/billing).
 
-On Pro, usage draws down your granted credits first. Once your granted credits are used up, further usage is charged to your payment card on the first of each month for the previous month's usage. Charges are calculated to the exact second, based on the per-hour rate for each product type.
+On Pro, usage draws down your credits first. Usage is calculated to the exact second, based on the per-hour rate for each product type. How you pay depends on how you buy credits.
 
-## Discounts
+## Ways to buy credits
 
-Pro plans can access two discounts, which can be applied at the same time. For current discount rates, see the [pricing page](https://www.speechmatics.com/pricing).
+Pro offers three ways to buy credits. Features, models, and limits are the same for each.
 
-### Model training discount
+- **Pay-as-you-go.** Keep a payment card on file. Once your credits are used up, usage is charged to your card at one US dollar per credit on the first of each month for the previous month's usage. No commitment and no discount.
+- **Credit packs.** A one-off purchase of a fixed number of credits. Larger packs cost less per credit. Pack credits expire 12 months after purchase.
+- **Subscriptions.** A monthly or annual commitment that adds credits to your balance at a lower price per credit. Annual subscriptions give the largest discount. If you use more than your subscription's credits, the overage is billed at the end of the month at your subscription's discounted price per credit.
 
-Enable **Model training** to receive a discount on your usage. Model training, also called data logging, lets Speechmatics use anonymized data to improve its models and services. You can change this setting at any time, and it applies to future usage only.
+For current pack sizes, subscription tiers, and prices per credit, see the [pricing page](https://www.speechmatics.com/pricing).
 
-Enable **Model training** in **Manage workspace**.
+### Credit expiry
 
-### Volume discount
+| Credit source | Expires after |
+|---|---|
+| $100 sign-up grant | 12 months |
+| Credit packs | 12 months from purchase |
+| Annual subscription credits | 12 months |
+| Monthly subscription credits | 2 months |
 
-A volume discount applies automatically to billable usage above 500 hours per month, for each Speech to Text product type (a combination of processing mode and model, such as Realtime Enhanced).
+If you cancel a subscription, your account moves to pay-as-you-go. Credits already in your balance keep their expiry dates.
 
-For example, if in one month you use 800 hours of Realtime Enhanced and 400 hours of Realtime Standard, you are billed as:
+:::note
+The automatic volume discount on usage above 500 hours per month ended on 1 October 2026. Subscriptions and credit packs replace it.
+:::
 
-- 500 hours of Realtime Enhanced at the base rate
-- 300 hours of Realtime Enhanced at the discounted rate
-- 400 hours of Realtime Standard at the base rate
+## Model training discount
+
+Enable **Model training** to receive a discount on your transcription usage. The discount applies to Speech to Text transcription only. It does not apply to add-ons, such as translation, or to Text to Speech. It can be combined with a subscription or credit pack discount.
+
+Model training, also called data logging, lets Speechmatics use anonymized data to improve its models and services. It is off by default. You can change this setting at any time, and it applies to future usage only.
+
+Enable **Model training** in **Manage workspace**. For the current discount rate, see the [pricing page](https://www.speechmatics.com/pricing).
 
 ## Enterprise
 
