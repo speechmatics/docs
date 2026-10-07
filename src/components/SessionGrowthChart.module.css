@@ -1,0 +1,134 @@
+.root {
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --surface: var(--ifm-background-color);
+  --ink: var(--ifm-font-color-base);
+  --ink-muted: var(--ifm-color-emphasis-700);
+  --grid: var(--ifm-color-emphasis-200);
+  margin: 1.5rem 0;
+  max-width: 720px;
+}
+
+:global(html[data-theme="dark"]) .root {
+  --series-1: #3987e5;
+  --series-2: #d95926;
+}
+
+.root svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-size: 12px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  font-size: 0.875rem;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.legend i {
+  display: inline-block;
+  width: 16px;
+  vertical-align: middle;
+  margin-right: 0.4rem;
+}
+
+.keyOpen {
+  height: 2px;
+  background: var(--series-1);
+}
+
+.keyLimit {
+  height: 0;
+  border-top: 2px dashed var(--ink-muted);
+}
+
+.keyRoom,
+.keyRejected {
+  height: 10px;
+  border-radius: 2px;
+}
+
+.keyRoom {
+  background: color-mix(in srgb, var(--series-1) 18%, transparent);
+}
+
+.keyRejected {
+  background: color-mix(in srgb, var(--series-2) 45%, transparent);
+}
+
+.grid {
+  stroke: var(--grid);
+  stroke-width: 1;
+}
+
+.tick,
+.axisLabel {
+  fill: var(--ink-muted);
+}
+
+.open,
+.limit {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.open {
+  stroke: var(--series-1);
+  stroke-width: 2;
+}
+
+.limit {
+  stroke: var(--ink-muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+.room {
+  fill: color-mix(in srgb, var(--series-1) 18%, transparent);
+}
+
+.rejected {
+  fill: color-mix(in srgb, var(--series-2) 45%, transparent);
+}
+
+.marker circle {
+  fill: var(--surface);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.marker text {
+  fill: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.crosshair {
+  stroke: var(--ink-muted);
+  stroke-width: 1;
+}
+
+.dot {
+  fill: var(--series-1);
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.readout {
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+  margin-top: 0.25rem;
+  min-height: 1.25rem;
+}
+
+.notes {
+  color: var(--ink);
+  font-size: 0.875rem;
+  margin: 0.75rem 0 0;
+}

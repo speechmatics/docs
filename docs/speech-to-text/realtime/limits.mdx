@@ -4,33 +4,48 @@ description: 'Learn about the limits for the Speechmatics Realtime API'
 ---
 
 import HTTPMethodBadge from '@theme/HTTPMethodBadge'
+import SessionGrowthChart from '@site/src/components/SessionGrowthChart'
 
 # Limits – Realtime
 
-Speechmatics doesn't cap the total number of Realtime sessions you can have running at once. Instead, we limit how fast you can **open new sessions**, so we have time to scale capacity to meet your traffic.
+## Concurrent session limits
 
-Two numbers define this:
+Speechmatics has no fixed cap on how many Realtime sessions you run at once. Your usage can grow as large as your application needs.
 
-- **Rate limit** – how many new sessions you can start per minute, on average.
-- **Burst allowance** – how many you can start in a single minute if traffic arrives unevenly.
+The only limit is how fast you add sessions. On the Pro plan, you can add up to 200 sessions in any 5 minutes, and up to 100 of them in any 1 minute. This protects the service from sudden spikes, so capacity is ready as your traffic grows.
 
-|            | Rate limit (new sessions/min) | Burst allowance (new sessions/min) |
-| ---------- | ------------------------------ | ----------------------------------- |
-| Free       | 2                               | 2                                    |
-| Pro        | 40                              | 200                                  |
-| Enterprise | Custom                          | Custom                               |
+Closing sessions gives the room back: close 50 sessions and you can open 50 new ones right away.
 
-As long as you stay within these limits, you can keep opening sessions and scale to any volume over time — there's no separate cap on how many sessions you can have open at once.
+| Plan       | Sessions added in any 5 minutes | Of which in any 1 minute |
+| ---------- | ------------------------------- | ------------------------ |
+| Free       | 10                              | 2                        |
+| Pro        | 200                             | 100                      |
+| Enterprise | Custom                          | Custom                   |
 
 :::note
-Need a higher rate limit? Reach out to [Support](https://support.speechmatics.com).
+Need higher limits? Reach out to [Support](https://support.speechmatics.com).
 :::
+
+### Session limit over time
+
+The chart simulates a Pro plan contract over 10 minutes. The blue band is the room to add sessions right now. It shrinks as you add sessions and grows again when sessions end or as time passes.
+
+<SessionGrowthChart />
+
+### How session growth is measured
+
+Speechmatics checks two rolling windows: the last 1 minute and the last 5 minutes. Growth in each window is counted from the highest number of sessions you had just before it, so closing and reopening sessions never counts as growth. Returning to a level you held in the last 10 minutes does not count against the 5-minute limit. Each window has its own limit, shown in the table above.
 
 ### What happens if you exceed your limit
 
-If you try to open sessions faster than your rate limit and burst allowance allow, the new session is rejected: the server sends an in-band error followed by a WebSocket close with code `4005` (`quota_exceeded`). See the [Realtime API Reference](/api-ref/realtime-transcription-websocket#error) for details.
+New sessions beyond the limit are rejected: the server sends an in-band error followed by a WebSocket close with code `4005` (`quota_exceeded`). See the [Realtime API Reference](/api-ref/realtime-transcription-websocket#error) for details. Sessions you already have keep running.
 
-### Session limits
+Retry after a short wait. Room frees up as earlier growth leaves the window, or when you close sessions. For example, on the Pro plan:
+
+- You add 100 sessions at 12:00. More are rejected until about 12:01.
+- You add 200 sessions by 12:01. More are rejected until about 12:05.
+
+## Session duration limits
 
 Realtime SaaS sessions will be automatically ended if any of the following criteria are met:
 - Session duration reaches 48 hours
