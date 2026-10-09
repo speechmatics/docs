@@ -50,7 +50,7 @@ These name the layers, model variants, and packaged products in the STT decision
 
 | Canonical form | Do not use | Notes |
 |---|---|---|
-| Melia 1 | Melia-1, melia 1, Melia | Model variant. Space, no hyphen. The `model` config/API value is `melia-1` (hyphenated, lowercase) — use that form only in code, config, and API references. Multilingual; Batch only today. |
+| Melia 1 | Melia-1, melia 1, Melia | Model variant. Space, no hyphen. The `model` config/API value is `melia-1` (hyphenated, lowercase) — use that form only in code, config, and API references. Multilingual |
 | Linden 1 | Linden-1, linden 1 | Model variant for the agent STT interaction pattern. The `model` config/API value is `linden-1` (hyphenated, lowercase). Agent STT only; SaaS only. |
 | Medical | medical domain, Medical domain | Model sub-variant of Enhanced. Capitalized when naming the sub-variant or a product (Batch Enhanced Medical); lowercase as an ordinary adjective ("medical transcription"). |
 | Agent STT Linden 1 | Agent Transcription API, Agent Transcription API v1 | Packaged product: agent STT on the Linden 1 model variant. |

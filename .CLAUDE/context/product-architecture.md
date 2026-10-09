@@ -42,7 +42,7 @@ The model used to transcribe. Available model variants depend on the interaction
 
 Notes:
 - Standard prioritizes turnaround and cost; Enhanced prioritizes accuracy.
-- Melia 1 is multilingual: no language pack selection, and it requires `"language": "multi"`. Batch only today.
+- Melia 1 is multilingual: no language pack selection, and it requires `"language": "multi"`. 
 
 ### Level 4: Model sub-variant
 
@@ -101,6 +101,6 @@ The model ships with four English voices:
 - **STT and TTS are separate product lines.** They share the API-at-top pattern but their mid-level semantics differ. STT Level 1 is processing mode; TTS Level 1 is model. Do not assume a uniform level model across the two.
 - **Model sub-variants live at Level 4**, between model variant and packaging. A sub-variant (such as Medical) is a separately trained extension of its parent model variant, tuned for a use case or sector — more than a packaging label, but dependent on its parent rather than a standalone model.
 - **agent STT is an interaction pattern on the Realtime API for building voice agents.** It is coming soon, with model variant Linden 1 and packaged product Agent STT Linden 1. A *voice agent* is a full conversational pipeline (STT + LLM + STT) and is a distinct concept that Speechmatics does not sell. agent STT provides the STT layer only. Never describe a Speechmatics product as a "voice agent."
-- **Melia 1 is multilingual and Batch only today.** It requires `"language": "multi"` and has no language pack selection.
+- **Melia 1 is multilingual.** It requires `"language": "multi"` and has no language pack selection.
 - **Deployment is an orthogonal axis.** SaaS on Cloud and on-prem are the current surfaces. On-device is coming soon and its feature coverage is currently narrower than Cloud and on-prem; check current documentation before describing on-device support.
 - **The decision tree is a guide, not a strict path.** A reader's product selection may skip layers.
