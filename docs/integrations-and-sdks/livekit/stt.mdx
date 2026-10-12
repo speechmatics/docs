@@ -138,7 +138,7 @@ In `EXTERNAL` mode something must close each turn. If Silero isn't installed and
 
 ### Server-side turn detection
 
-Setting `turn_detection_mode` to `VAD` hands endpointing to Speechmatics. You must also set `turn_detection="stt"` in the session's turn handling options — without it the session ignores the end-of-speech events the plugin emits.
+Setting `turn_detection_mode` to `VAD` hands turn handling to Speechmatics, which runs server-side VAD to drive turn detection. You must also set `turn_detection="stt"` in the session's turn handling options — without it the session ignores the end-of-speech events the plugin emits.
 
 ```python
 from livekit.agents import AgentSession, TurnHandlingOptions

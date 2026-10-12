@@ -302,7 +302,9 @@ components:
             - pcm_s16le
         sample_rate:
           additionalProperties: false
-          const: 16000
+          enum:
+            - 8000
+            - 16000
         type:
           additionalProperties: false
           const: raw
