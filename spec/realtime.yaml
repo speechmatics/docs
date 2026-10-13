@@ -65,6 +65,8 @@ channels:
         $ref: "#/components/messages/AudioEventEnded"
       EndOfUtterance:
         $ref: "#/components/messages/EndOfUtterance"
+      LanguageInfo:
+        $ref: "#/components/messages/LanguageInfo"
       Info:
         $ref: "#/components/messages/Info"
       Warning:
@@ -103,6 +105,7 @@ operations:
       - $ref: "#/channels/subscribe/messages/AudioEventStarted"
       - $ref: "#/channels/subscribe/messages/AudioEventEnded"
       - $ref: "#/channels/subscribe/messages/EndOfUtterance"
+      - $ref: "#/channels/subscribe/messages/LanguageInfo"
       - $ref: "#/channels/subscribe/messages/Info"
       - $ref: "#/channels/subscribe/messages/Warning"
       - $ref: "#/channels/subscribe/messages/Error"
@@ -200,6 +203,13 @@ components:
         Like punctuation, an `EndOfUtterance` has zero duration.
       payload:
         $ref: "#/components/schemas/EndOfUtterance"
+    LanguageInfo:
+      summary: |
+        Reports the word delimiter and writing direction for a language detected in the audio.
+
+        Sent only by the `melia-1` model, which labels each word with the language it was spoken in. The message is emitted once per language code, immediately before that language first appears in an `AddPartialTranscript` or `AddTranscript` message. Use it to set word spacing and text direction when rendering the transcript (see [`LanguageInfo` message](https://docs.speechmatics.com/speech-to-text/realtime/output#languageinfo-message)).
+      payload:
+        $ref: "#/components/schemas/LanguageInfo"
     AddPartialTranslation:
       summary: Contains a work-in-progress translation of a part of the audio that the client has sent.
       payload:
@@ -535,6 +545,30 @@ components:
       required:
         - message
         - metadata
+    LanguageInfo:
+      type: object
+      properties:
+        message:
+          const: LanguageInfo
+        language:
+          type: string
+          description: The detected language code.
+          example: "ar"
+        word_delimiter:
+          type: string
+          description: The delimiter to place between words of this language when reconstructing the transcript.
+          example: " "
+        writing_direction:
+          $ref: "#/components/schemas/WritingDirectionEnum"
+        partial:
+          type: boolean
+          description: |
+            Whether the message was triggered by a Partial transcript. This field is only seen when its value is `true`.
+      required:
+        - message
+        - language
+        - word_delimiter
+        - writing_direction
     EndOfUtteranceMetadata:
       type: object
       properties:
@@ -752,6 +786,13 @@ components:
           description: |
             Language model to process the audio input, normally specified as an ISO language code. The value must be consistent with the language code used in the API endpoint URL.
           example: "en"
+        language_hints:
+          type: array
+          description: |
+            The languages expected in the audio, specified as [ISO Language Codes](https://docs.speechmatics.com/speech-to-text/languages). Biases language detection toward these languages without restricting it to them. Only used by the `melia-1` model, which requires `language` to be set to `multi`. See [Language hints](https://docs.speechmatics.com/speech-to-text/realtime/input#language-hints).
+          items:
+            type: string
+          example: ["en", "ar"]
         domain:
           type: string
           description: Request a specialized model based on 'language' but optimized for a particular field, e.g. `finance` or `medical`.
@@ -1118,7 +1159,8 @@ components:
           format: float
         language:
           type: string
-          description: The language that the alternative word is assumed to be spoken in. Currently, this will always be equal to the language that was requested in the initial `StartRecognition` message.
+          description: |
+            The language that the alternative word is assumed to be spoken in. For the `standard` and `enhanced` models this is always the language requested in the initial `StartRecognition` message. The `melia-1` model detects the language per word, so this value can vary across the transcript.
         display:
           $ref: "#/components/schemas/RecognitionDisplay"
         speaker:
