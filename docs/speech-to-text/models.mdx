@@ -24,7 +24,7 @@ Speechmatics offers models in two groups. The Batch and Realtime APIs share a se
 | Accuracy | Highest | High | High | High |
 | Turnaround | Fast | Fastest | Fastest on Batch | Fastest |
 | Processing modes | Batch and Realtime | Batch and Realtime | Batch and Realtime | Batch |
-| Regions | EU, US, AUS | EU, US, AUS | EU, US, AU (Realtime) | EU, US |
+| Regions | All | All | All | EU, US |
 | Language handling | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Automatic multilingual](#melia-1) | [Automatic multilingual](#oak-1) |
 | Diarization | Speaker and channel | Speaker and channel | Speaker and channel on Batch; channel diarization only on Realtime | Speaker and channel |
 | Language labeling | — | — | Per word | Per word |
@@ -123,13 +123,13 @@ To configure language hints and read the per-language output, refer to Batch [In
 
 #### Regions and endpoints
 
-Melia 1 Realtime is available in all regions. Melia 1 Batch is available in the EU and US regions only. It is not available in the Australia (AU1) region.
+Melia 1 is available in all regions. For Batch ensure to use the endpoints below.
 
 | Region | Batch endpoint | Realtime endpoint |
 |---|---|---|
 | EU (Europe) | `eu1.asr.api.speechmatics.com` | `eu.rt.speechmatics.com` |
 | US (USA) | `us1.asr.api.speechmatics.com` | `us.rt.speechmatics.com` |
-| AU (Australia) | N/A | `au.rt.speechmatics.com` |
+| AU (Australia) | au1.asr.api.speechmatics.com | `au.rt.speechmatics.com` |
 | Global | N/A | `global.rt.speechmatics.com` |
 
 For the full list of endpoints, refer to [Authentication](/get-started/authentication#supported-endpoints).
@@ -171,12 +171,13 @@ Set `"model": "oak-1"` and `"language": "multi"`:
 Oak 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
 :::
 
-Oak 1 is available for Batch transcription in the EU and US regions only. It is not available in the Australia (AU1) region.
+Oak 1 is available for Batch transcription in all regions. For Batch ensure to use the endpoints below.
 
 | Region | Endpoint |
 |---|---|
 | EU1 (Europe) | `eu1.asr.api.speechmatics.com` |
 | US1 (USA) | `us1.asr.api.speechmatics.com` |
+| AU (Australia) | au1.asr.api.speechmatics.com |
 
 For the full list of Batch endpoints, refer to [Authentication](/get-started/authentication#supported-endpoints).
 
