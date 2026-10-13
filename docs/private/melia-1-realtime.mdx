@@ -171,7 +171,7 @@ Use Melia 1:
 
 ### LanguageInfo message
 
-The `LanguageInfo` message is documented publicly. Refer to [`LanguageInfo` message](/speech-to-text/realtime/output#languageinfo-message).
+The `LanguageInfo` message is sent from the transcriber to the client the first time a new language code is detected in the audio. It is emitted **once per language code**, immediately before that language first appears in an `AddPartialTranscript` (Partial) or `AddTranscript` (Final) message. Refer to [`LanguageInfo` message](/speech-to-text/realtime/output#languageinfo-message) for full details.
 
 ## Capabilities
 
