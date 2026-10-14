@@ -36,6 +36,8 @@ Use the end of utterance feature to help with turn detection in real-time conver
 
 End of utterance detection is a feature that allows you to detect when a person has finished speaking. This is useful for voice AI, translation, and dictation use cases.
 
+Automatic silence-based end of utterance detection is supported by Enhanced and Standard. Melia 1 does not support it and rejects `end_of_utterance_silence_trigger` in `conversation_config`. For Melia 1, use [client side turn detection](#client-side-turn-detection) with `ForceEndOfUtterance`.
+
 End of utterance uses server-side word timings to detect periods without speech. The moment a word is detected on the server, a countdown begins.
 If a new word is detected, the countdown restarts.
 If the configured interval passes without another word being detected, an end of utterance is triggered.
@@ -103,6 +105,8 @@ On detecting an end of utterance, the server sends an  `EndOfUtterance` message,
 ## Client side turn detection
 
 You can use our `ForceEndOfUtterance` message to manually trigger an end of utterance detection at any point in the conversation. This allows you to integrate your own end of turn detection model with our ASR.
+
+`ForceEndOfUtterance` is supported by Enhanced, Standard, and Melia 1. For Melia 1, your client must detect when the speaker has finished, for example using voice activity detection, and send this message. Omit `conversation_config.end_of_utterance_silence_trigger` from the Melia 1 transcription config.
 
 The `ForceEndOfUtterance` message is sent to the server to trigger an end of utterance detection:
 

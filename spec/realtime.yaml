@@ -142,7 +142,9 @@ components:
       payload:
         $ref: "#/components/schemas/EndOfChannel"
     ForceEndOfUtterance:
-      summary: Requests a finalized transcript.
+      summary: |
+        Requests a finalized transcript followed by an `EndOfUtterance` message.
+        Supported by Enhanced, Standard, and Melia 1. The client decides when to send this message using its own turn detection.
       payload:
         $ref: "#/components/schemas/ForceEndOfUtterance"
     SetRecognitionConfig:
@@ -197,8 +199,9 @@ components:
         $ref: "#/components/schemas/AddTranscript"
     EndOfUtterance:
       summary: |
-        Indicates the end of an utterance, triggered by a configurable period of non-speech.
-        The message is sent when no speech has been detected for a short period of time, configurable by the `end_of_utterance_silence_trigger` parameter in `conversation_config` (see [End Of Utterance](https://docs.speechmatics.com/speech-to-text/realtime/turn-detection#configuration)).
+        Indicates the end of an utterance, triggered by a configurable period of non-speech or a client-sent `ForceEndOfUtterance` message.
+        Enhanced and Standard support automatic silence-based detection, configured by the `end_of_utterance_silence_trigger` parameter in `conversation_config` (see [End of utterance](https://docs.speechmatics.com/speech-to-text/realtime/turn-detection#configuration)).
+        Melia 1 does not support automatic silence-based detection and rejects this setting. With Melia 1, send `ForceEndOfUtterance` to receive an `EndOfUtterance` message.
 
         Like punctuation, an `EndOfUtterance` has zero duration.
       payload:
@@ -917,6 +920,8 @@ components:
         talking. The `end_of_utterance_silence_trigger` is the time in seconds
         after which the server will assume that the speaker has finished
         speaking, and will emit an `EndOfUtterance` message. A value of 0 disables the feature.
+        Supported by Enhanced and Standard. Melia 1 rejects `end_of_utterance_silence_trigger`
+        in `conversation_config`; use client-side turn detection and send `ForceEndOfUtterance` instead.
     TranslationConfig:
       type: object
       description: |

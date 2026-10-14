@@ -136,10 +136,13 @@ For the full list of endpoints, refer to [Authentication](/get-started/authentic
 
 #### Melia 1 on Realtime
 
-Melia 1 on Realtime supports Partials and Finals, channel diarization, word timings, word-level language labeling, output locale, smart formatting, [end of utterance and force end of utterance](/speech-to-text/realtime/turn-detection#client-side-turn-detection), and [language hints](/speech-to-text/realtime/input#language-hints).
+Melia 1 on Realtime supports Partials and Finals, channel diarization, word timings, word-level language labeling, output locale, smart formatting, [`ForceEndOfUtterance`](/speech-to-text/realtime/turn-detection#client-side-turn-detection), and [language hints](/speech-to-text/realtime/input#language-hints).
+
+For Melia 1, your client must detect when the speaker has finished, for example using voice activity detection, and send `ForceEndOfUtterance`. The server then returns a final transcript followed by an `EndOfUtterance` message.
 
 It does not yet support the following Realtime features, which are available with the Enhanced and Standard models:
 
+- Automatic silence-based end of utterance detection. Melia 1 rejects `end_of_utterance_silence_trigger` in `conversation_config`.
 - Speaker diarization and Speaker identification
 - `max_delay` and `max_delay_mode` latency control.
 - Custom dictionary
