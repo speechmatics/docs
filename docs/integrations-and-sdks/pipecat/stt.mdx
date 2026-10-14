@@ -16,7 +16,7 @@ import sttFullExample from "./assets/stt-full-example.py?raw"
 - **Turn detection** — Pipecat's own voice activity detector (VAD) closes each turn, or Speechmatics closes it server-side
 - **Speaker diarization** — attribute each segment to a speaker
 - **Stable speaker labels** — carry the same labels across sessions
-- **Custom vocabulary** — bias recognition towards domain-specific words
+- **Custom dictionary** — bias recognition towards domain-specific words
 - **Speaker formatting** — template speaker labels for your language model
 - **Runtime updates** — change most settings mid-conversation
 
@@ -48,7 +48,7 @@ stt = SpeechmaticsSTTService(
 )
 ```
 
-For the hostname of each region, see [supported endpoints](/get-started/authentication#supported-endpoints).
+Speechmatics can route automatically to the nearest of its regional servers through the `global` endpoint. If you have data residency requirements, pin to a region instead. For every hostname, see [supported endpoints](/get-started/authentication#supported-endpoints).
 
 ## Basic usage
 
@@ -90,15 +90,15 @@ Settings are passed as `settings=SpeechmaticsSTTService.Settings(...)` and can b
 | `language` | Language \| string | `Language.EN` | Language code for the input audio. See [Languages](/speech-to-text/languages) |
 | `domain` | string \| null | `null` | Domain-specific language pack, for example `"finance"`, or a bilingual pack such as `"bilingual-en"` |
 | `enable_partials` | boolean \| null | `true` | Emit interim segments that update until the final segment arrives |
-| `additional_vocab` | array | `[]` | `AdditionalVocabEntry` objects biasing recognition towards specific words |
+| `additional_vocab` | array | `[]` | `AdditionalVocabEntry` objects forming a [custom dictionary](/speech-to-text/features/custom-dictionary) |
 
 Every language is global: whichever you select, the model recognizes a range of accents and dialects.
 
 A setting you leave unset is not sent, and agent STT applies its own default rather than the one in the Realtime API schema. Partials and diarization are both on unless you turn them off.
 
-### Custom vocabulary
+### Custom dictionary
 
-Pass `additional_vocab` entries to boost recognition of names and domain terms. Each entry takes a `content` value and optional `sounds_like` pronunciation variants.
+Use the [custom dictionary](/speech-to-text/features/custom-dictionary) to bias recognition towards names and domain terms. Pass entries as `additional_vocab`; each takes a `content` value and optional `sounds_like` pronunciation variants for when the spelling doesn't match how the word is said.
 
 ```python
 stt = SpeechmaticsSTTService(
@@ -168,7 +168,9 @@ End-of-utterance timing in `VAD` mode belongs to the service and is not configur
 
 [Diarization](/speech-to-text/features/diarization) (attributing speech to individual speakers) is enabled by default. It labels each transcript segment with one speaker, such as `S1`. The label arrives on the `TranscriptionFrame` as `user_id`. Segments the model cannot attribute are labelled `UU`, and with diarization disabled every segment is labelled `UU`.
 
-Agent STT reports one speaker per segment rather than per word, so there is no per-word speaker data.
+Agent STT reports one speaker per segment rather than per word, so there is no per-word speaker data. A segment is the unit the service emits, so the speaker label changes between transcript events and never inside one.
+
+Speakers are labelled in the order they are first heard: `S1`, `S2`, and so on. Labels hold for the session but are not stable across sessions unless you carry them over with `known_speakers`.
 
 ### Diarization settings
 
@@ -195,7 +197,7 @@ stt = SpeechmaticsSTTService(
 )
 ```
 
-Include the format in your bot's system prompt so the model interprets the labels consistently. The template accepts the following attributes.
+Include the format in your bot's system prompt so the language model reads the labels as speaker attribution rather than as part of what was said. Two settings help when speakers are hard to separate: raise `speaker_sensitivity` to split similar-sounding voices more aggressively, and set `prefer_current_speaker` to reduce switching mid-turn. The template accepts the following attributes.
 
 | Attribute | Type | Description | Example |
 |-----------|------|-------------|---------|
