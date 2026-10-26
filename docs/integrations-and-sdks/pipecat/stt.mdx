@@ -74,7 +74,7 @@ pipeline = Pipeline([transport.input(), stt, user_aggregator, llm, tts, transpor
 |-----------|------|---------|-------------|
 | `api_key` | string | env var | Speechmatics API key. Falls back to `SPEECHMATICS_API_KEY` |
 | `base_url` | string | `wss://eu2.rt.speechmatics.com/v2/agent` | Endpoint to connect to. Falls back to `SPEECHMATICS_RT_URL` |
-| `sample_rate` | number \| null | pipeline default | Audio sample rate in Hz. Agent STT requires `16000` |
+| `sample_rate` | number \| null | pipeline default | Audio sample rate in Hz. Agent STT accepts `8000` and `16000`; any other value fails the service permanently |
 | `encoding` | AudioEncoding | `PCM_S16LE` | Audio encoding. Set at construction only, not a runtime setting |
 | `settings` | Settings \| null | `null` | Runtime-configurable settings |
 | `should_interrupt` | boolean | `true` | Interrupt bot output when Speechmatics detects user speech. Applies to `VAD` turn detection only |
