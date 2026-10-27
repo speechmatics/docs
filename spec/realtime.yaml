@@ -21,6 +21,10 @@ servers:
     variables:
       ports:
         default: "9000"
+    # Any one of these authenticates the connection.
+    security:
+      - $ref: "#/components/securitySchemes/apiKey"
+      - $ref: "#/components/securitySchemes/temporaryKey"
 # One channel: the WebSocket connection. Written, as AsyncAPI 3 intends, from
 # the point of view of the application this document describes — the
 # Speechmatics Realtime server. So the server *receives* what a client sends
@@ -30,6 +34,9 @@ channels:
   realtime:
     address: /
     title: Realtime transcription
+    bindings:
+      ws:
+        method: GET
     messages:
       StartRecognition:
         $ref: "#/components/messages/StartRecognition"
@@ -115,6 +122,17 @@ operations:
       - $ref: "#/channels/realtime/messages/Error"
       - $ref: "#/channels/realtime/messages/SpeakersResult"
 components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: Your [API key](/get-started/authentication), for server-side connections.
+    temporaryKey:
+      type: httpApiKey
+      name: jwt
+      in: query
+      description: |
+        A [temporary key](/get-started/authentication#temporary-keys), for connections from a browser, which cannot set the `Authorization` header — and should not hold your long-lived API key. For example, `wss://eu.rt.speechmatics.com/v2?jwt=<temporary-key>`.
   messages:
     GetSpeakers:
       summary: Requests any detected speaker identifiers to be returned.
