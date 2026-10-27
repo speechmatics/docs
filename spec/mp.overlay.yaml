@@ -1,0 +1,41 @@
+# What the Management API spec does not say, as an OpenAPI Overlay 1.0
+# (https://spec.openapis.org/overlay/v1.0.0).
+#
+# scripts/generate-openapi.ts converts spec/mp.yaml (Swagger 2.0) to OpenAPI 3
+# and applies these actions, in order, to make src/generated/mp.openapi.yaml —
+# what Speculoos reads. Every target must match. See batch.overlay.yaml.
+#
+# The live reference reads static/mp-api.yaml instead, which
+# generate-mp-spec.ts writes with the host in basePath; this overlay says the
+# same with a server.
+#
+# What should change upstream instead is collated in spec/UPSTREAM-CHANGES.md.
+
+overlay: 1.0.0
+info:
+  title: Speechmatics Management API, as OpenAPI 3
+  version: 1.0.0
+
+actions:
+  # swagger2openapi makes a relative server from basePath alone.
+  - target: $.servers
+    description: Replaced below.
+    remove: true
+  - target: $
+    description: The host, which spec/mp.yaml leaves out.
+    update:
+      servers:
+        - url: https://mp.speechmatics.com/v1
+
+  # The spec declares no authentication.
+  - target: $
+    description: Every operation takes a management token.
+    update:
+      components:
+        securitySchemes:
+          managementToken:
+            type: http
+            scheme: bearer
+            description: A [management token](/administration/management-tokens), scoped to the workspace.
+      security:
+        - managementToken: []

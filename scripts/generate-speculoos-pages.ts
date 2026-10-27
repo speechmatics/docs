@@ -44,6 +44,7 @@ interface Api {
 
 const APIS: Api[] = [
   { name: "batch" },
+  { name: "mp" },
   {
     name: "realtime",
     entries: {

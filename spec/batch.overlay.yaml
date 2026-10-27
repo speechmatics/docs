@@ -2,7 +2,7 @@
 # (https://spec.openapis.org/overlay/v1.0.0).
 #
 # spec/batch.yaml is generated from the openapi-specifications repo and stays
-# Swagger 2.0 for now. scripts/generate-batch-openapi.ts converts the generated
+# Swagger 2.0 for now. scripts/generate-openapi.ts converts the generated
 # static/batch.yaml to OpenAPI 3 and applies these actions, in order, to make
 # src/generated/batch.openapi.yaml — what Speculoos reads.
 #
@@ -10,9 +10,7 @@
 # silently dropping a patch. Prose copied from upstream here does not follow
 # later upstream edits, so keep this file to what Swagger 2.0 cannot express.
 #
-# TODO: success examples. Most operations have only error examples, so the
-# example panel beside them shows errors alone. Add them upstream, or here
-# until upstream has them.
+# What should change upstream instead is collated in spec/UPSTREAM-CHANGES.md.
 
 overlay: 1.0.0
 info:

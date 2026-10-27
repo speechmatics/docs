@@ -45,6 +45,11 @@ function examplesOf(entry: ApiEntry): EntryExample[] {
     .sort((a, b) => rank(a) - rank(b));
 }
 
+/** Whether the panel has anything to show: without, the page leaves no room for it. */
+export function hasOperationPanel(entry: ApiEntry): boolean {
+  return codeSamplesOf(entry).length > 0 || entryExamples(entry).length > 0;
+}
+
 export function OperationPanel({ entry }: { entry: ApiEntry }): ReactNode {
   const samples = codeSamplesOf(entry);
   return (

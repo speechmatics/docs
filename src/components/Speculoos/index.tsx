@@ -12,7 +12,7 @@ import { radixThemes } from "@speculoos/map-radix-themes";
 import { Entry, SpeculoosProvider, useEntries } from "@speculoos/react";
 import { defaultHref, entrySlug, type HrefTarget } from "@speculoos/core";
 import Markdown from "@theme/Markdown";
-import { OperationPanel } from "./OperationPanel";
+import { hasOperationPanel, OperationPanel } from "./OperationPanel";
 import { SessionPanel } from "./SessionPanel";
 import styles from "./styles.module.css";
 import type { ReactNode } from "react";
@@ -96,19 +96,29 @@ function Entries({ only, handshakeExtras, after }: {
   const entries = useEntries().filter((entry) => only === undefined || entrySlug(entry) === only);
   return (
     <>
-      {entries.map((entry) => (
-        <Grid key={entrySlug(entry)} columns={{ initial: "1", lg: "minmax(0, 1fr) 380px" }} gap="6">
-          <Box minWidth="0">
-            {/* Level 1: one entry per page, so its heading — title and URL — is the page's. */}
-            <Entry entry={entry} level={1} handshakeExtras={handshakeExtras} />
-            {after}
-          </Box>
-          {/* mt matches the entry section's own top margin, so the two headings line up. */}
-          <Box mt="7" className={styles.panel}>
-            {entry.kind === "channel" ? <SessionPanel entry={entry} /> : <OperationPanel entry={entry} />}
-          </Box>
-        </Grid>
-      ))}
+      {entries.map((entry) => {
+        // An operation with no code samples or examples has no panel, and its reference takes the width.
+        const panel = entry.kind === "channel" || hasOperationPanel(entry);
+        return (
+          <Grid
+            key={entrySlug(entry)}
+            columns={{ initial: "1", lg: panel ? "minmax(0, 1fr) 380px" : "1" }}
+            gap="6"
+          >
+            <Box minWidth="0">
+              {/* Level 1: one entry per page, so its heading — title and URL — is the page's. */}
+              <Entry entry={entry} level={1} handshakeExtras={handshakeExtras} />
+              {after}
+            </Box>
+            {panel && (
+              // mt matches the entry section's own top margin, so the two headings line up.
+              <Box mt="7" className={styles.panel}>
+                {entry.kind === "channel" ? <SessionPanel entry={entry} /> : <OperationPanel entry={entry} />}
+              </Box>
+            )}
+          </Grid>
+        );
+      })}
     </>
   );
 }
