@@ -94,12 +94,12 @@ function inSessionOrder(entry: ApiEntry): EntryExample[] {
  * the reference scrolls — Deepgram's and Stripe's layout. Below the `lg`
  * breakpoint there is no room beside, and the examples follow the entry.
  */
-function Entries(): ReactNode {
+function Entries({ handshakeExtras }: { handshakeExtras?: ReactNode }): ReactNode {
   return (
     <>
       {useEntries().map((entry) => (
         <Grid key={entrySlug(entry)} columns={{ initial: "1", lg: "minmax(0, 1fr) 380px" }} gap="6">
-          <Entry entry={entry} level={2} />
+          <Entry entry={entry} level={2} handshakeExtras={handshakeExtras} />
           <Box style={{ position: "sticky", top: "calc(var(--ifm-navbar-height) + 1rem)", alignSelf: "start" }}>
             <EntryExamples entry={entry} level={3} examples={inSessionOrder(entry)} />
           </Box>
@@ -109,11 +109,14 @@ function Entries(): ReactNode {
   );
 }
 
-/** Every entry in an API, one after another. */
-export function SpeculoosReference({ ir }: { ir: ApiIR }): ReactNode {
+/**
+ * Every entry in an API, one after another. `handshakeExtras` is the page's own
+ * prose for the end of a channel's Handshake section.
+ */
+export function SpeculoosReference({ ir, handshakeExtras }: { ir: ApiIR; handshakeExtras?: ReactNode }): ReactNode {
   return (
     <SpeculoosProvider ir={ir} components={components} options={options}>
-      <Entries />
+      <Entries handshakeExtras={handshakeExtras} />
     </SpeculoosProvider>
   );
 }

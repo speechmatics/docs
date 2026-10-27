@@ -13,11 +13,12 @@ info:
     url: "https://docs.speechmatics.com/rt-api-ref"
 servers:
   default:
-    host: eu.rt.speechmatics.com
+    host: global.rt.speechmatics.com
     pathname: /v2
     protocol: wss
     protocolVersion: v13 (RFC 6455)
-    description: RealTime ASR server
+    description: |
+      Routes each connection to the nearest region, for the lowest latency. To keep data in one region instead, connect to that region's endpoint, such as `wss://eu.rt.speechmatics.com/v2`. See [Supported endpoints](/get-started/authentication#supported-endpoints).
     variables:
       ports:
         default: "9000"
@@ -132,7 +133,7 @@ components:
       name: jwt
       in: query
       description: |
-        A [temporary key](/get-started/authentication#temporary-keys), for connections from a browser, which cannot set the `Authorization` header — and should not hold your long-lived API key. For example, `wss://eu.rt.speechmatics.com/v2?jwt=<temporary-key>`.
+        A [temporary key](/get-started/authentication#temporary-keys), for connections from a browser, which cannot set the `Authorization` header — and should not hold your long-lived API key. For example, `wss://global.rt.speechmatics.com/v2?jwt=<temporary-key>`.
   messages:
     GetSpeakers:
       summary: Requests any detected speaker identifiers to be returned.
