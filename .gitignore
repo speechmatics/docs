@@ -24,6 +24,7 @@ yarn-error.log*
 docs/api-ref/jobs
 docs/api-ref/batch
 docs/api-ref/management
+docs/api-ref/speculoos
 static/*.yaml
 
 # Speculoos IR, built from spec/ by `npm run build:speculoos-ir`

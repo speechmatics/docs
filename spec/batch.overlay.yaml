@@ -9,6 +9,10 @@
 # Every target must match: a field renamed upstream fails the build rather than
 # silently dropping a patch. Prose copied from upstream here does not follow
 # later upstream edits, so keep this file to what Swagger 2.0 cannot express.
+#
+# TODO: success examples. Most operations have only error examples, so the
+# example panel beside them shows errors alone. Add them upstream, or here
+# until upstream has them.
 
 overlay: 1.0.0
 info:
@@ -20,6 +24,11 @@ actions:
     description: OpenAPI 3.1, for `const` and JSON Schema 2020-12.
     update:
       openapi: 3.1.0
+
+  # Not documented: the live reference leaves it out too (sidebar-generator.ts).
+  - target: $.paths['/jobs/{jobid}/log']
+    description: The job's log file, which is not for customers.
+    remove: true
 
   # A multipart part that is JSON: Swagger 2.0's formData can only call it a
   # string. OpenAPI 3 says what it is, and how it is sent.
