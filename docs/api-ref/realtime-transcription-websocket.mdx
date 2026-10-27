@@ -11,6 +11,10 @@ import WebsocketMessageArrow from "@site/src/theme/WebsocketMessageArrow";
 import { AsyncAPIMessage } from "@site/src/theme/AsyncAPIMessage";
 import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml";
 
+{/* The spec describes the server (AsyncAPI 3), so what the client sends is what the server receives. */}
+export const sentMessages = realtimeSchema.operations.receiveClientMessages.messages.map((m) => [m["x-parser-message-name"], m]);
+export const receivedMessages = realtimeSchema.operations.sendServerMessages.messages.map((m) => [m["x-parser-message-name"], m]);
+
 <Heading
   as={"h1"}
   className={"openapi__heading"}
@@ -133,7 +137,7 @@ The following values of the `message` field are supported:
 
 
 <Flex direction="column" gap="4">
-{Object.entries(realtimeSchema.channels.publish.messages).map(([messageName, message]) => {
+{sentMessages.map(([messageName, message]) => {
   return (
     <AsyncAPIMessage
       key={messageName}
@@ -148,7 +152,7 @@ The following values of the `message` field are supported:
 ## Received messages
 
 <Flex direction="column" gap="4">
-{Object.entries(realtimeSchema.channels.subscribe.messages).map(([messageName, message]) => {
+{receivedMessages.map(([messageName, message]) => {
   return (
     <AsyncAPIMessage
       key={messageName}
@@ -183,13 +187,13 @@ export const toc = [
   { value: "Handshake Responses", id: "handshake-responses", level: 2 },
   { value: "Message Handling", id: "message-handling", level: 2 },
   { value: "Sent messages", id: "sent-messages", level: 2 },
-  ...Object.entries(realtimeSchema.channels.publish.messages).map(([messageName, message]) => ({
+  ...sentMessages.map(([messageName, message]) => ({
     "value": messageName,
     "id": messageName.toLowerCase(),
     "level": 3
   })),
   { value: "Received messages", id: "received-messages", level: 2 },
-  ...Object.entries(realtimeSchema.channels.subscribe.messages).map(([messageName, message]) => ({
+  ...receivedMessages.map(([messageName, message]) => ({
     "value": messageName,
     "id": messageName.toLowerCase(),
     "level": 3

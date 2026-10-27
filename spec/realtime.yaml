@@ -13,16 +13,23 @@ info:
     url: "https://docs.speechmatics.com/rt-api-ref"
 servers:
   default:
-    host: eu.rt.speechmatics.com/v2
+    host: eu.rt.speechmatics.com
+    pathname: /v2
     protocol: wss
     protocolVersion: v13 (RFC 6455)
     description: RealTime ASR server
     variables:
       ports:
         default: "9000"
+# One channel: the WebSocket connection. Written, as AsyncAPI 3 intends, from
+# the point of view of the application this document describes — the
+# Speechmatics Realtime server. So the server *receives* what a client sends
+# (StartRecognition, AddAudio, …) and *sends* what a client receives
+# (RecognitionStarted, AddTranscript, …).
 channels:
-  publish:
+  realtime:
     address: /
+    title: Realtime transcription
     messages:
       StartRecognition:
         $ref: "#/components/messages/StartRecognition"
@@ -40,9 +47,6 @@ channels:
         $ref: "#/components/messages/SetRecognitionConfig"
       GetSpeakers:
         $ref: "#/components/messages/GetSpeakers"
-  subscribe:
-    address: /
-    messages:
       RecognitionStarted:
         $ref: "#/components/messages/RecognitionStarted"
       AudioAdded:
@@ -76,40 +80,40 @@ channels:
       SpeakersResult:
         $ref: "#/components/messages/SpeakersResult"
 operations:
-  publish:
-    action: send
-    channel:
-      $ref: "#/channels/publish"
-    messages:
-      - $ref: "#/channels/publish/messages/StartRecognition"
-      - $ref: "#/channels/publish/messages/AddAudio"
-      - $ref: "#/channels/publish/messages/AddChannelAudio"
-      - $ref: "#/channels/publish/messages/EndOfStream"
-      - $ref: "#/channels/publish/messages/EndOfChannel"
-      - $ref: "#/channels/publish/messages/ForceEndOfUtterance"
-      - $ref: "#/channels/publish/messages/SetRecognitionConfig"
-      - $ref: "#/channels/publish/messages/GetSpeakers"
-  subscribe:
+  receiveClientMessages:
     action: receive
     channel:
-      $ref: "#/channels/subscribe"
+      $ref: "#/channels/realtime"
     messages:
-      - $ref: "#/channels/subscribe/messages/RecognitionStarted"
-      - $ref: "#/channels/subscribe/messages/AudioAdded"
-      - $ref: "#/channels/subscribe/messages/ChannelAudioAdded"
-      - $ref: "#/channels/subscribe/messages/AddPartialTranscript"
-      - $ref: "#/channels/subscribe/messages/AddTranscript"
-      - $ref: "#/channels/subscribe/messages/AddPartialTranslation"
-      - $ref: "#/channels/subscribe/messages/AddTranslation"
-      - $ref: "#/channels/subscribe/messages/EndOfTranscript"
-      - $ref: "#/channels/subscribe/messages/AudioEventStarted"
-      - $ref: "#/channels/subscribe/messages/AudioEventEnded"
-      - $ref: "#/channels/subscribe/messages/EndOfUtterance"
-      - $ref: "#/channels/subscribe/messages/LanguageInfo"
-      - $ref: "#/channels/subscribe/messages/Info"
-      - $ref: "#/channels/subscribe/messages/Warning"
-      - $ref: "#/channels/subscribe/messages/Error"
-      - $ref: "#/channels/subscribe/messages/SpeakersResult"
+      - $ref: "#/channels/realtime/messages/StartRecognition"
+      - $ref: "#/channels/realtime/messages/AddAudio"
+      - $ref: "#/channels/realtime/messages/AddChannelAudio"
+      - $ref: "#/channels/realtime/messages/EndOfStream"
+      - $ref: "#/channels/realtime/messages/EndOfChannel"
+      - $ref: "#/channels/realtime/messages/ForceEndOfUtterance"
+      - $ref: "#/channels/realtime/messages/SetRecognitionConfig"
+      - $ref: "#/channels/realtime/messages/GetSpeakers"
+  sendServerMessages:
+    action: send
+    channel:
+      $ref: "#/channels/realtime"
+    messages:
+      - $ref: "#/channels/realtime/messages/RecognitionStarted"
+      - $ref: "#/channels/realtime/messages/AudioAdded"
+      - $ref: "#/channels/realtime/messages/ChannelAudioAdded"
+      - $ref: "#/channels/realtime/messages/AddPartialTranscript"
+      - $ref: "#/channels/realtime/messages/AddTranscript"
+      - $ref: "#/channels/realtime/messages/AddPartialTranslation"
+      - $ref: "#/channels/realtime/messages/AddTranslation"
+      - $ref: "#/channels/realtime/messages/EndOfTranscript"
+      - $ref: "#/channels/realtime/messages/AudioEventStarted"
+      - $ref: "#/channels/realtime/messages/AudioEventEnded"
+      - $ref: "#/channels/realtime/messages/EndOfUtterance"
+      - $ref: "#/channels/realtime/messages/LanguageInfo"
+      - $ref: "#/channels/realtime/messages/Info"
+      - $ref: "#/channels/realtime/messages/Warning"
+      - $ref: "#/channels/realtime/messages/Error"
+      - $ref: "#/channels/realtime/messages/SpeakersResult"
 components:
   messages:
     GetSpeakers:
