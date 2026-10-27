@@ -54,7 +54,7 @@ function Row({ found }: { found: Located }): ReactNode {
     </Link>
   );
   const arrow = (
-    <Text size="2" color="cyan" aria-label={client ? "client sends" : "server sends"}>
+    <Text size="2" color="teal" aria-label={client ? "client sends" : "server sends"}>
       {client ? "↑" : "↓"}
     </Text>
   );

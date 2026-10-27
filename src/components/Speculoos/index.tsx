@@ -9,9 +9,10 @@ import type { ApiIR, WsMessage } from "@speculoos/core";
 import { Box, Callout, Flex, Grid } from "@radix-ui/themes";
 import { InfoIcon } from "lucide-react";
 import { radixThemes } from "@speculoos/map-radix-themes";
-import { Entry, EntryExamples, SpeculoosProvider, useEntries } from "@speculoos/react";
+import { Entry, SpeculoosProvider, useEntries } from "@speculoos/react";
 import { defaultHref, entrySlug, type HrefTarget } from "@speculoos/core";
 import Markdown from "@theme/Markdown";
+import { OperationPanel } from "./OperationPanel";
 import { SessionPanel } from "./SessionPanel";
 import styles from "./styles.module.css";
 import type { ReactNode } from "react";
@@ -49,9 +50,21 @@ function MessageAvailability({ message }: { message: WsMessage }): ReactNode {
   );
 }
 
+/**
+ * The sidebar's badge colours (src/css/badge.css), so a method or protocol
+ * reads the same in the reference as it does in the navigation. A channel's
+ * directions share the WebSocket colour; the arrow says which way.
+ */
+const SIDEBAR_COLORS = {
+  method: { get: "cyan", post: "green", put: "yellow", delete: "red" },
+  direction: { "client-sends": "teal", "server-sends": "teal" },
+  tone: { protocol: "teal" },
+} as const;
+
 const components = radixThemes({
   markdown: ({ children }: { children: string }) => <Markdown>{children}</Markdown>,
   messageExtras: MessageAvailability,
+  colors: SIDEBAR_COLORS,
 });
 
 /**
@@ -75,18 +88,24 @@ const options = {
  * `after` is the page's own content for the end of the reference column: for
  * a channel, how the connection closes.
  */
-function Entries({ handshakeExtras, after }: { handshakeExtras?: ReactNode; after?: ReactNode }): ReactNode {
+function Entries({ only, handshakeExtras, after }: {
+  only?: string;
+  handshakeExtras?: ReactNode;
+  after?: ReactNode;
+}): ReactNode {
+  const entries = useEntries().filter((entry) => only === undefined || entrySlug(entry) === only);
   return (
     <>
-      {useEntries().map((entry) => (
+      {entries.map((entry) => (
         <Grid key={entrySlug(entry)} columns={{ initial: "1", lg: "minmax(0, 1fr) 380px" }} gap="6">
           <Box minWidth="0">
-            <Entry entry={entry} level={2} handshakeExtras={handshakeExtras} />
+            {/* Level 1: one entry per page, so its heading — title and URL — is the page's. */}
+            <Entry entry={entry} level={1} handshakeExtras={handshakeExtras} />
             {after}
           </Box>
           {/* mt matches the entry section's own top margin, so the two headings line up. */}
           <Box mt="7" className={styles.panel}>
-            {entry.kind === "channel" ? <SessionPanel entry={entry} /> : <EntryExamples entry={entry} level={3} />}
+            {entry.kind === "channel" ? <SessionPanel entry={entry} /> : <OperationPanel entry={entry} />}
           </Box>
         </Grid>
       ))}
@@ -95,22 +114,25 @@ function Entries({ handshakeExtras, after }: { handshakeExtras?: ReactNode; afte
 }
 
 /**
- * Every entry in an API, one after another. `handshakeExtras` and `after` are
- * the page's own prose: for the end of a channel's Handshake section, and for
- * after its messages.
+ * Every entry in an API, one after another — or just one, by its slug
+ * (`entrySlug`), for a page per entry. `handshakeExtras` and `after` are the
+ * page's own prose: for the end of a channel's Handshake section, and for
+ * after an entry.
  */
 export function SpeculoosReference({
   ir,
+  entry,
   handshakeExtras,
   after,
 }: {
   ir: ApiIR;
+  entry?: string;
   handshakeExtras?: ReactNode;
   after?: ReactNode;
 }): ReactNode {
   return (
     <SpeculoosProvider ir={ir} components={components} options={options}>
-      <Entries handshakeExtras={handshakeExtras} after={after} />
+      <Entries {...(entry !== undefined ? { only: entry } : {})} handshakeExtras={handshakeExtras} after={after} />
     </SpeculoosProvider>
   );
 }

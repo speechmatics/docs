@@ -35,6 +35,10 @@ channels:
   realtime:
     address: /
     title: Realtime transcription
+    description: |
+      Transcribe audio as you stream it, over one WebSocket connection. Open the connection and send `StartRecognition` with your audio format and transcription settings; then stream audio as binary messages, and transcripts arrive as they are ready. Every other message is a JSON object that names itself in its `message` field.
+
+      New to the Realtime API? Start with the [quickstart](/speech-to-text/realtime/quickstart).
     bindings:
       ws:
         method: GET

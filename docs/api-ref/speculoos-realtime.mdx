@@ -2,15 +2,13 @@
 title: Realtime API Reference (Speculoos pilot)
 description: Pilot of the Realtime API reference rendered by Speculoos.
 hide_table_of_contents: true
+# The entry's own heading, with its URL, is the page title.
+hide_title: true
 ---
 import { SpeculoosReference } from "@site/src/components/Speculoos";
 import realtime from "@site/src/generated/realtime.ir.json";
 import HandshakeResponses from "./_realtime-handshake-responses.mdx";
 import ConnectionClose from "./_realtime-connection-close.mdx";
-
-Transcribe audio as you stream it, over one WebSocket connection. Open the connection and send `StartRecognition` with your audio format and transcription settings; then stream audio as binary messages, and transcripts arrive as they are ready. Every other message is a JSON object that names itself in its `message` field.
-
-New to the Realtime API? Start with the [quickstart](/speech-to-text/realtime/quickstart).
 
 <SpeculoosReference
   ir={realtime}
