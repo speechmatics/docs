@@ -64,10 +64,16 @@ export function AsyncAPIMessage({
               {messageName}
             </Heading>
           </Flex>
-          {!!message.payload.example && (
+          {/* A message's own `examples`; the payload schema's `example` is
+              the older place, still used by other specs. */}
+          {!!(message.examples?.[0]?.payload ?? message.payload.example) && (
             <MessageExample
               title={messageName}
-              exampleJSON={JSON.stringify(message.payload.example, null, 2)}
+              exampleJSON={JSON.stringify(
+                message.examples?.[0]?.payload ?? message.payload.example,
+                null,
+                2,
+              )}
             />
           )}
         </Flex>

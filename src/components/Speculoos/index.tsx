@@ -6,11 +6,11 @@
  * map picks up the cyan accent with nothing passed here.
  */
 import type { ApiIR, WsMessage } from "@speculoos/core";
-import { Callout, Flex } from "@radix-ui/themes";
+import { Box, Callout, Flex, Grid } from "@radix-ui/themes";
 import { InfoIcon } from "lucide-react";
 import { radixThemes } from "@speculoos/map-radix-themes";
-import { Entry, SpeculoosProvider, useEntries } from "@speculoos/react";
-import { defaultHref, entrySlug, type HrefTarget } from "@speculoos/core";
+import { Entry, EntryExamples, SpeculoosProvider, useEntries } from "@speculoos/react";
+import { defaultHref, entryExamples, entrySlug, type ApiEntry, type EntryExample, type HrefTarget } from "@speculoos/core";
 import Markdown from "@theme/Markdown";
 import type { ReactNode } from "react";
 
@@ -59,14 +59,51 @@ const components = radixThemes({
  */
 const options = {
   expandRefs: "always",
+  // Examples sit in a panel beside the reference instead; see Entries.
+  inlineExamples: false,
   href: (target: HrefTarget) => (target.kind === "type" ? undefined : defaultHref(target)),
 } as const;
 
+/**
+ * The order messages pass in a realtime session — the protocol overview's
+ * diagram — which a spec has no way to say. Examples follow it, so the panel
+ * reads as one session from start to finish; anything unlisted goes last.
+ */
+const SESSION_ORDER = [
+  "StartRecognition",
+  "RecognitionStarted",
+  "AddAudio",
+  "AudioAdded",
+  "AddPartialTranscript",
+  "AddTranscript",
+  "EndOfStream",
+  "EndOfTranscript",
+  "Error",
+];
+
+function inSessionOrder(entry: ApiEntry): EntryExample[] {
+  const rank = (e: EntryExample) => {
+    const i = e.of.kind === "message" ? SESSION_ORDER.indexOf(e.of.message.name) : -1;
+    return i === -1 ? SESSION_ORDER.length : i;
+  };
+  return entryExamples(entry).sort((a, b) => rank(a) - rank(b));
+}
+
+/**
+ * Each entry with its examples beside it, in a panel that stays in view while
+ * the reference scrolls — Deepgram's and Stripe's layout. Below the `lg`
+ * breakpoint there is no room beside, and the examples follow the entry.
+ */
 function Entries(): ReactNode {
   return (
     <>
       {useEntries().map((entry) => (
-        <Entry key={entrySlug(entry)} entry={entry} level={2} />
+        <Grid key={entrySlug(entry)} columns={{ initial: "1", lg: "minmax(0, 1fr) 380px" }} gap="6">
+          <Entry entry={entry} level={2} />
+          <Box style={{ position: "sticky", top: "calc(var(--ifm-navbar-height) + 1rem)", alignSelf: "start" }}>
+            <EntryExamples entry={entry} level={3} examples={inSessionOrder(entry)} />
+          </Box>
+        </Grid>
       ))}
     </>
   );

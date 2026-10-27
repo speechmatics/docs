@@ -26,3 +26,13 @@ code {
 .rt-DataListValue p:last-of-type {
   margin-bottom: 0;
 }
+
+/*
+ * A table inside a field description (an enum's values, say) has the narrow
+ * value column to fit into. Keep its codes whole — the Radix Table it renders
+ * as already scrolls sideways — rather than breaking `recognition_quality` one
+ * character per line.
+ */
+.rt-DataListValue table code {
+  white-space: nowrap;
+}
