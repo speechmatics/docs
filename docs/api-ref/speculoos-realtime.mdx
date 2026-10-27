@@ -6,5 +6,14 @@ hide_table_of_contents: true
 import { SpeculoosReference } from "@site/src/components/Speculoos";
 import realtime from "@site/src/generated/realtime.ir.json";
 import HandshakeResponses from "./_realtime-handshake-responses.mdx";
+import ConnectionClose from "./_realtime-connection-close.mdx";
 
-<SpeculoosReference ir={realtime} handshakeExtras={<HandshakeResponses />} />
+Transcribe audio as you stream it, over one WebSocket connection. Open the connection and send `StartRecognition` with your audio format and transcription settings; then stream audio as binary messages, and transcripts arrive as they are ready. Every other message is a JSON object that names itself in its `message` field.
+
+New to the Realtime API? Start with the [quickstart](/speech-to-text/realtime/quickstart).
+
+<SpeculoosReference
+  ir={realtime}
+  handshakeExtras={<HandshakeResponses />}
+  after={<ConnectionClose />}
+/>

@@ -1,0 +1,14 @@
+/*
+ * The panel beside the reference sticks while the reference scrolls — but only
+ * where it is beside it, from Radix's `lg` breakpoint. A sticky panel taller
+ * than the window could never show its bottom, so it scrolls on its own.
+ */
+@media (min-width: 1280px) {
+  .panel {
+    position: sticky;
+    top: calc(var(--ifm-navbar-height) + 1rem);
+    align-self: start;
+    max-height: calc(100vh - var(--ifm-navbar-height) - 2rem);
+    overflow-y: auto;
+  }
+}

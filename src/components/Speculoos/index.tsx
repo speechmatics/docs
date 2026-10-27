@@ -10,8 +10,10 @@ import { Box, Callout, Flex, Grid } from "@radix-ui/themes";
 import { InfoIcon } from "lucide-react";
 import { radixThemes } from "@speculoos/map-radix-themes";
 import { Entry, EntryExamples, SpeculoosProvider, useEntries } from "@speculoos/react";
-import { defaultHref, entryExamples, entrySlug, type ApiEntry, type EntryExample, type HrefTarget } from "@speculoos/core";
+import { defaultHref, entrySlug, type HrefTarget } from "@speculoos/core";
 import Markdown from "@theme/Markdown";
+import { SessionPanel } from "./SessionPanel";
+import styles from "./styles.module.css";
 import type { ReactNode } from "react";
 
 /**
@@ -59,49 +61,32 @@ const components = radixThemes({
  */
 const options = {
   expandRefs: "always",
-  // Examples sit in a panel beside the reference instead; see Entries.
+  // Examples sit in the panel beside the reference instead; see Entries.
   inlineExamples: false,
   href: (target: HrefTarget) => (target.kind === "type" ? undefined : defaultHref(target)),
 } as const;
 
 /**
- * The order messages pass in a realtime session — the protocol overview's
- * diagram — which a spec has no way to say. Examples follow it, so the panel
- * reads as one session from start to finish; anything unlisted goes last.
+ * Each entry with a panel beside it that stays in view while the reference
+ * scrolls — Deepgram's and Stripe's layout: a channel's session at a glance,
+ * or a REST operation's examples. Below the `lg` breakpoint there is no room
+ * beside, and the panel follows the entry.
+ *
+ * `after` is the page's own content for the end of the reference column: for
+ * a channel, how the connection closes.
  */
-const SESSION_ORDER = [
-  "StartRecognition",
-  "RecognitionStarted",
-  "AddAudio",
-  "AudioAdded",
-  "AddPartialTranscript",
-  "AddTranscript",
-  "EndOfStream",
-  "EndOfTranscript",
-  "Error",
-];
-
-function inSessionOrder(entry: ApiEntry): EntryExample[] {
-  const rank = (e: EntryExample) => {
-    const i = e.of.kind === "message" ? SESSION_ORDER.indexOf(e.of.message.name) : -1;
-    return i === -1 ? SESSION_ORDER.length : i;
-  };
-  return entryExamples(entry).sort((a, b) => rank(a) - rank(b));
-}
-
-/**
- * Each entry with its examples beside it, in a panel that stays in view while
- * the reference scrolls — Deepgram's and Stripe's layout. Below the `lg`
- * breakpoint there is no room beside, and the examples follow the entry.
- */
-function Entries({ handshakeExtras }: { handshakeExtras?: ReactNode }): ReactNode {
+function Entries({ handshakeExtras, after }: { handshakeExtras?: ReactNode; after?: ReactNode }): ReactNode {
   return (
     <>
       {useEntries().map((entry) => (
         <Grid key={entrySlug(entry)} columns={{ initial: "1", lg: "minmax(0, 1fr) 380px" }} gap="6">
-          <Entry entry={entry} level={2} handshakeExtras={handshakeExtras} />
-          <Box style={{ position: "sticky", top: "calc(var(--ifm-navbar-height) + 1rem)", alignSelf: "start" }}>
-            <EntryExamples entry={entry} level={3} examples={inSessionOrder(entry)} />
+          <Box minWidth="0">
+            <Entry entry={entry} level={2} handshakeExtras={handshakeExtras} />
+            {after}
+          </Box>
+          {/* mt matches the entry section's own top margin, so the two headings line up. */}
+          <Box mt="7" className={styles.panel}>
+            {entry.kind === "channel" ? <SessionPanel entry={entry} /> : <EntryExamples entry={entry} level={3} />}
           </Box>
         </Grid>
       ))}
@@ -110,13 +95,22 @@ function Entries({ handshakeExtras }: { handshakeExtras?: ReactNode }): ReactNod
 }
 
 /**
- * Every entry in an API, one after another. `handshakeExtras` is the page's own
- * prose for the end of a channel's Handshake section.
+ * Every entry in an API, one after another. `handshakeExtras` and `after` are
+ * the page's own prose: for the end of a channel's Handshake section, and for
+ * after its messages.
  */
-export function SpeculoosReference({ ir, handshakeExtras }: { ir: ApiIR; handshakeExtras?: ReactNode }): ReactNode {
+export function SpeculoosReference({
+  ir,
+  handshakeExtras,
+  after,
+}: {
+  ir: ApiIR;
+  handshakeExtras?: ReactNode;
+  after?: ReactNode;
+}): ReactNode {
   return (
     <SpeculoosProvider ir={ir} components={components} options={options}>
-      <Entries handshakeExtras={handshakeExtras} />
+      <Entries handshakeExtras={handshakeExtras} after={after} />
     </SpeculoosProvider>
   );
 }

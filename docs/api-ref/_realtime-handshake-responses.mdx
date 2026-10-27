@@ -60,12 +60,3 @@ Sec-WebSocket-Accept: 87kiC/LI5WgXG52nSylnfXdz260=
 
 </TabItem>
 </Tabs>
-
-{/* Moves to the Error message once close codes have a home there. */}
-##### Client retry
-
-After a successful handshake, the server can still send an immediate error and close the connection. For these errors only, retry after at least 5–10 seconds:
-
-- `4005 quota_exceeded`
-- `4013 job_error`
-- `1011 internal_error`
