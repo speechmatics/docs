@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "run-p build:jobs-api-ref build:mp-api-ref && dotenv -e .env -e .env.local node_modules/.bin/docusaurus start",
-    "build": "run-p build:jobs-api-ref build:mp-api-ref && dotenv -e .env -e .env.local node_modules/.bin/docusaurus build",
+    "start": "run-p build:jobs-api-ref build:mp-api-ref build:speculoos-ir && dotenv -e .env -e .env.local node_modules/.bin/docusaurus start",
+    "build": "run-p build:jobs-api-ref build:mp-api-ref build:speculoos-ir && dotenv -e .env -e .env.local node_modules/.bin/docusaurus build",
     "build:jobs-spec": "tsx scripts/generate-batch-spec.ts",
     "build:jobs-api-ref": "rimraf docs/api-ref/jobs && npm run build:jobs-spec && docusaurus gen-api-docs jobs",
     "build:agent-stt-spec": "tsx scripts/generate-agent-stt-spec.ts",
@@ -21,7 +21,9 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "spellcheck": "npx cspell **/*.md **/*.mdx",
-    "sync-redirects": "tsx scripts/redirects/sync-redirects.ts"
+    "sync-redirects": "tsx scripts/redirects/sync-redirects.ts",
+    "build:speculoos-ir": "speculoos build spec/realtime.yaml -o src/generated/realtime.ir.json",
+    "speculoos:refresh": "npm install --save ../speculoos/.packs/speculoos-core.tgz ../speculoos/.packs/speculoos-react.tgz ../speculoos/.packs/speculoos-map-radix-themes.tgz && npm install --save-dev ../speculoos/.packs/speculoos-cli.tgz ../speculoos/.packs/speculoos-asyncapi.tgz ../speculoos/.packs/speculoos-openapi.tgz ../speculoos/.packs/speculoos-loader.tgz ../speculoos/.packs/speculoos-jsonschema.tgz ../speculoos/.packs/speculoos-adapter-kit.tgz ../speculoos/.packs/speculoos-transforms.tgz && rimraf node_modules/.cache/webpack"
   },
   "dependencies": {
     "@docusaurus/core": "^3.9.2",
@@ -30,6 +32,9 @@
     "@mdx-js/react": "^3.0.0",
     "@radix-ui/themes": "^3.2.1",
     "@signalwire/docusaurus-plugin-llms-txt": "^1.2.1",
+    "@speculoos/core": "file:../speculoos/.packs/speculoos-core.tgz",
+    "@speculoos/map-radix-themes": "file:../speculoos/.packs/speculoos-map-radix-themes.tgz",
+    "@speculoos/react": "file:../speculoos/.packs/speculoos-react.tgz",
     "asyncapi-schema-loader": "^0.0.1",
     "clsx": "^2.0.0",
     "devicon": "^2.17.0",
@@ -51,6 +56,13 @@
     "@docusaurus/module-type-aliases": "^3.9.2",
     "@docusaurus/tsconfig": "^3.9.2",
     "@docusaurus/types": "^3.9.2",
+    "@speculoos/adapter-kit": "file:../speculoos/.packs/speculoos-adapter-kit.tgz",
+    "@speculoos/asyncapi": "file:../speculoos/.packs/speculoos-asyncapi.tgz",
+    "@speculoos/cli": "file:../speculoos/.packs/speculoos-cli.tgz",
+    "@speculoos/jsonschema": "file:../speculoos/.packs/speculoos-jsonschema.tgz",
+    "@speculoos/loader": "file:../speculoos/.packs/speculoos-loader.tgz",
+    "@speculoos/openapi": "file:../speculoos/.packs/speculoos-openapi.tgz",
+    "@speculoos/transforms": "file:../speculoos/.packs/speculoos-transforms.tgz",
     "@types/mixpanel-browser": "^2.60.0",
     "cspell": "^8.17.3",
     "dotenv": "^17.2.0",
@@ -66,7 +78,11 @@
     "postman-code-generators": "1.10.1"
   },
   "browserslist": {
-    "production": [">0.5%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 3 chrome version",
       "last 3 firefox version",

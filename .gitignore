@@ -25,6 +25,9 @@ docs/api-ref/jobs
 docs/api-ref/batch
 docs/api-ref/management
 static/*.yaml
+
+# Speculoos IR, built from spec/ by `npm run build:speculoos-ir`
+src/generated
 .vercel
 .env*.local
 
