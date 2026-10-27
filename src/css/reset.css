@@ -6,3 +6,23 @@ pre {
 code {
   background-color: unset;
 }
+
+/*
+ * Infima styles every <code>, and the two properties Radix's Code leaves alone
+ * — border and vertical-align — leak into it. Unset them here, once, so every
+ * Radix Code renders as Radix intends: MDX inline code (CodeInline) and
+ * anything built from Radix alike. Adjust Code's look from here, globally.
+ */
+.rt-Code {
+  border: unset;
+  vertical-align: unset;
+}
+
+/*
+ * A description inside a Radix DataList value (Speculoos field rows): the
+ * site's Markdown gives every paragraph a bottom margin, which leaves a gap
+ * under the last one before the next row.
+ */
+.rt-DataListValue p:last-of-type {
+  margin-bottom: 0;
+}

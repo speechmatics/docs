@@ -24,6 +24,13 @@ export default [
         label: "Transcribe Realtime audio",
         className: "wss api-method",
       },
+      // Speculoos pilot. Temporary: the sidebar will be generated per entry.
+      {
+        type: "doc",
+        id: "api-ref/speculoos-realtime",
+        label: "Transcribe Realtime audio (pilot)",
+        className: "wss api-method",
+      },
       {
         type: "doc",
         id: "api-ref/agent-stt-websocket",

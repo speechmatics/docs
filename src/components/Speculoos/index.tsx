@@ -10,7 +10,7 @@ import { Callout, Flex } from "@radix-ui/themes";
 import { InfoIcon } from "lucide-react";
 import { radixThemes } from "@speculoos/map-radix-themes";
 import { Entry, SpeculoosProvider, useEntries } from "@speculoos/react";
-import { entrySlug } from "@speculoos/core";
+import { defaultHref, entrySlug, type HrefTarget } from "@speculoos/core";
 import Markdown from "@theme/Markdown";
 import type { ReactNode } from "react";
 
@@ -52,6 +52,16 @@ const components = radixThemes({
   messageExtras: MessageAvailability,
 });
 
+/**
+ * Types are expanded where they are used, collapsed behind the map's "Show N
+ * properties" toggle, rather than collected in a Types section a reader has to
+ * jump to and back from. So a type name is not a link: there is nowhere to go.
+ */
+const options = {
+  expandRefs: "always",
+  href: (target: HrefTarget) => (target.kind === "type" ? undefined : defaultHref(target)),
+} as const;
+
 function Entries(): ReactNode {
   return (
     <>
@@ -65,7 +75,7 @@ function Entries(): ReactNode {
 /** Every entry in an API, one after another. */
 export function SpeculoosReference({ ir }: { ir: ApiIR }): ReactNode {
   return (
-    <SpeculoosProvider ir={ir} components={components}>
+    <SpeculoosProvider ir={ir} components={components} options={options}>
       <Entries />
     </SpeculoosProvider>
   );
