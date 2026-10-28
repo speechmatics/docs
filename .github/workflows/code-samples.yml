@@ -8,6 +8,7 @@ on:
       - spec/**
       - scripts/generate-batch-spec.ts
       - scripts/generate-openapi.ts
+      - scripts/generate-mp-openapi.ts
       - scripts/test-code-samples.ts
       - scripts/code-samples/**
       - package.json
