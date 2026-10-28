@@ -25,7 +25,7 @@ import sttFullExample from "./assets/stt-full-example.py?raw"
 Install Pipecat with the Speechmatics extra:
 
 ```bash
-uv add "pipecat-ai[speechmatics]~=1.11.0"
+uv add "pipecat-ai[speechmatics]~=1.14.0"
 ```
 
 ## Authentication
@@ -74,7 +74,7 @@ pipeline = Pipeline([transport.input(), stt, user_aggregator, llm, tts, transpor
 |-----------|------|---------|-------------|
 | `api_key` | string | env var | Speechmatics API key. Falls back to `SPEECHMATICS_API_KEY` |
 | `base_url` | string | `wss://eu2.rt.speechmatics.com/v2/agent` | Endpoint to connect to. Falls back to `SPEECHMATICS_RT_URL` |
-| `sample_rate` | number \| null | pipeline default | Audio sample rate in Hz. Agent STT requires `16000` |
+| `sample_rate` | number \| null | pipeline default | Audio sample rate in Hz. Agent STT accepts `8000` and `16000`; any other value fails the service permanently |
 | `encoding` | AudioEncoding | `PCM_S16LE` | Audio encoding. Set at construction only, not a runtime setting |
 | `settings` | Settings \| null | `null` | Runtime-configurable settings |
 | `should_interrupt` | boolean | `true` | Interrupt bot output when Speechmatics detects user speech. Applies to `VAD` turn detection only |
@@ -90,6 +90,7 @@ Settings are passed as `settings=SpeechmaticsSTTService.Settings(...)` and can b
 | `language` | Language \| string | `Language.EN` | Language code for the input audio. See [Languages](/speech-to-text/languages) |
 | `domain` | string \| null | `null` | Domain-specific language pack, for example `"finance"`, or a bilingual pack such as `"bilingual-en"` |
 | `enable_partials` | boolean \| null | `true` | Emit interim segments that update until the final segment arrives |
+| `emit_sentences` | boolean \| null | `false` | Close a segment at each sentence end, so each sentence arrives as its own `TranscriptionFrame` |
 | `additional_vocab` | array | `[]` | `AdditionalVocabEntry` objects biasing recognition towards specific words |
 
 Every language is global: whichever you select, the model recognizes a range of accents and dialects.
@@ -255,5 +256,6 @@ This example combines transcription, turn detection, diarization, and speaker fo
 
 - [Quickstart](/integrations-and-sdks/pipecat) — build a complete bot with Pipecat
 - [Text to speech](/integrations-and-sdks/pipecat/tts) — add Speechmatics voices
+- [Segmentation](/speech-to-text/agent-stt/segmentation) — what closes a segment
 - [Diarization](/speech-to-text/features/diarization) — tune speaker separation
 - [Pipecat documentation](https://docs.pipecat.ai/server/services/stt/speechmatics) — full Speechmatics STT reference
