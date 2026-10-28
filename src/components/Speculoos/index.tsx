@@ -5,7 +5,8 @@
  * The site's own <Theme> (src/theme/Root.tsx) already wraps every page, so the
  * map picks up the cyan accent with nothing passed here.
  */
-import type { ApiIR, WsMessage } from "@speculoos/core";
+import type { ApiEntry, ApiIR, WsMessage } from "@speculoos/core";
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
 import { Box, Callout, Flex, Grid } from "@radix-ui/themes";
 import { InfoIcon } from "lucide-react";
 import { radixThemes } from "@speculoos/map-radix-themes";
@@ -88,12 +89,30 @@ const options = {
  * `after` is the page's own content for the end of the reference column: for
  * a channel, how the connection closes.
  */
+/**
+ * The anchors an entry renders — its own, its operations' and its messages' —
+ * as Docusaurus's link checker needs to be told of them: it only sees the
+ * headings it renders itself.
+ */
+function anchorsOf(entry: ApiEntry): string[] {
+  const operations = entry.kind === "operation" ? [entry.operation] : entry.endpoint.operations;
+  return [
+    entrySlug(entry),
+    ...operations.flatMap((op) => [
+      op.slug,
+      ...(op.kind === "message" ? op.messages.map((m) => m.slug).filter((s): s is string => s !== undefined) : []),
+    ]),
+  ];
+}
+
 function Entries({ only, handshakeExtras, after }: {
   only?: string;
   handshakeExtras?: ReactNode;
   after?: ReactNode;
 }): ReactNode {
   const entries = useEntries().filter((entry) => only === undefined || entrySlug(entry) === only);
+  const brokenLinks = useBrokenLinks();
+  for (const entry of entries) for (const anchor of anchorsOf(entry)) brokenLinks.collectAnchor(anchor);
   return (
     <>
       {entries.map((entry) => {

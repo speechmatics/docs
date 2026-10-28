@@ -157,6 +157,26 @@
       "permanent": true
     },
     {
+      "source": "/api-ref/batch/speechmatics-asr-rest-api",
+      "destination": "/api-ref",
+      "permanent": true
+    },
+    {
+      "source": "/api-ref/batch/get-the-log-file-for-a-job",
+      "destination": "/api-ref/batch/get-job-details",
+      "permanent": true
+    },
+    {
+      "source": "/api-ref/management/management-api",
+      "destination": "/api-ref",
+      "permanent": true
+    },
+    {
+      "source": "/api-ref/management/post-a-new-project",
+      "destination": "/api-ref/management/create-a-project",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true

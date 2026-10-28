@@ -34,7 +34,7 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   </TabItem>
   <TabItem value="real-time" label="Realtime transcription" default>
 
-For server-side calls, your API key must be provided in the header of the [WebSocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses). For example:
+For server-side calls, your API key must be provided in the header of the [WebSocket connection request](/api-ref/realtime-transcription-websocket). For example:
 ```bash
 GET /v2/ HTTP/1.1
 Host: eu.rt.speechmatics.com
@@ -43,7 +43,7 @@ Connection: Upgrade
 Authorization: Bearer YOUR_API_KEY
 User-Agent: Python/3.8 websockets/8.1
 ```
-For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. These can be passed as a query param to the [WebSocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses) URL. For example:
+For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. These can be passed as a query param to the [WebSocket connection request](/api-ref/realtime-transcription-websocket) URL. For example:
 
 ```bash
 wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
@@ -209,7 +209,7 @@ curl -L -X POST "https://mp.speechmatics.com/v1/api-keys?type=rt" \
 ```
 
 :::info
-Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
+Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket).
 ::: 
 </TabItem>
   <TabItem value="agent-stt" label="Agent STT">

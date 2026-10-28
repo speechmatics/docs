@@ -45,7 +45,7 @@ When this happens, the server sends a [final transcript](/speech-to-text/realtim
 
 ### Configuration
 
-To enable end of utterance detection, include the following in the [StartRecognition](/api-ref/realtime-transcription-websocket#startrecognition) message:
+To enable end of utterance detection, include the following in the [StartRecognition](/api-ref/realtime-transcription-websocket#start-recognition) message:
 
 ```json
 {
@@ -134,7 +134,7 @@ You can also use `ForceEndOfUtterance` with multi-channel diarization:
 }
 ```
 
-When the server receives this message, it sends an [AddTranscript](../../api-ref/realtime-transcription-websocket#addtranscript) message followed by an [EndOfUtterance](../../api-ref/realtime-transcription-websocket#endofutterance) message. Both include a `forced` field set to `true` to indicate they were triggered by a `ForceEndOfUtterance` message.
+When the server receives this message, it sends an [AddTranscript](../../api-ref/realtime-transcription-websocket#add-transcript) message followed by an [EndOfUtterance](../../api-ref/realtime-transcription-websocket#end-of-utterance) message. Both include a `forced` field set to `true` to indicate they were triggered by a `ForceEndOfUtterance` message.
 
 ## Semantic turn detection
 

@@ -33,9 +33,6 @@ pages, `region` deprecated).
 - **Undescribed fields:** `apikey_id` and `project_id` (path), and most
   properties of `Project`, `ApiKey` and `CreateApiKeysResponse`.
 
-`spec/mp.yaml` and `generate-mp-spec.ts` stay until the live reference moves to
-the public spec.
-
 ## Batch API (`spec/batch.yaml`)
 
 - **Examples:** upstream has error examples only. `batch.overlay.yaml` adds a
@@ -48,9 +45,8 @@ the public spec.
   replaces it).
 - **`SentimentSegment.confidence`:** `type: number,` — a typo no validator
   accepts (the overlay fixes it).
-- **`/jobs/{jobid}/log`:** not for customers, so both references leave it out
-  (`sidebar-generator.ts`, `batch.overlay.yaml`). Removing or marking it
-  upstream would let both filters go.
+- **`/jobs/{jobid}/log`:** not for customers, so `batch.overlay.yaml` removes
+  it. Removing it upstream would let that action go.
 - **What `batch.overlay.yaml` adds:** each action there is a candidate. Most
   need OpenAPI 3 (the multipart `config` part as a `JobConfig` sent as JSON,
   the bearer scheme, documented enum values), so they wait on upstream's move

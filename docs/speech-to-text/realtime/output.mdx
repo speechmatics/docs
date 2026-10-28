@@ -8,9 +8,9 @@ import Admonition from '@theme/Admonition'
 
 # Output
 
-The Realtime API returns transcription output, and other information through a variety of messages, see [Received Messages](/api-ref/realtime-transcription-websocket#received-messages).
+The Realtime API returns transcription output, and other information through a variety of messages, see [Received Messages](/api-ref/realtime-transcription-websocket#send-server-messages).
 
-Which messages are returned, and how frequently, depends on how the session is configured in the [StartRecognition](/api-ref/realtime-transcription-websocket#startrecognition) message.
+Which messages are returned, and how frequently, depends on how the session is configured in the [StartRecognition](/api-ref/realtime-transcription-websocket#start-recognition) message.
 
 ## Latency
 
@@ -19,7 +19,7 @@ When transcribing in real-time, you can control the maximum time to wait for the
 For even faster output, use [Partial transcripts](#partial-transcripts) to receive transcription output before higher-accuracy final transcripts are returned.
 
 ### Configuration example
-The following example shows a typical configuration for low latency applications. Include this in the [StartRecognition](/api-ref/realtime-transcription-websocket#startrecognition) message.
+The following example shows a typical configuration for low latency applications. Include this in the [StartRecognition](/api-ref/realtime-transcription-websocket#start-recognition) message.
 
 ```json
 {
@@ -53,9 +53,9 @@ Based on our own testing and experience, we can offer a few guidelines on `max_d
 
 ## Partial transcripts
 
-Partial transcripts allow you to receive preliminary transcription and update as more context is available until the higher-accuracy [Finals](/api-ref/realtime-transcription-websocket#addtranscript) are returned. Typically Partials are returned in less than 500 milliseconds. Partials latency is not affected by the `max_delay` setting. 
+Partial transcripts allow you to receive preliminary transcription and update as more context is available until the higher-accuracy [Finals](/api-ref/realtime-transcription-websocket#add-transcript) are returned. Typically Partials are returned in less than 500 milliseconds. Partials latency is not affected by the `max_delay` setting. 
 
-[Partial transcripts](/api-ref/realtime-transcription-websocket.mdx#addpartialtranscript) are enabled using the `enable_partials` config option. For example:
+[Partial transcripts](/api-ref/realtime-transcription-websocket#add-partial-transcript) are enabled using the `enable_partials` config option. For example:
 
 ```json
 {

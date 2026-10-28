@@ -1,7 +1,6 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 import { cyan, cyanDark, gray, grayDark } from "@radix-ui/colors";
-import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import katex from "rehype-katex";
 import math from "remark-math";
 import { checkRedirectsPlugin } from "./plugins/check-redirects";
@@ -71,7 +70,6 @@ const config: Config = {
           //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
           routeBasePath: "/",
           sidebarPath: "./sidebars.ts",
-          docItemComponent: "@theme/ApiItem", // Derived from docusaurus-theme-openapi
           remarkPlugins: [math],
           rehypePlugins: [katex],
           sidebarItemsGenerator,
@@ -162,25 +160,6 @@ const config: Config = {
 
   plugins: [
     [
-      "docusaurus-plugin-openapi-docs",
-      {
-        id: "api", // plugin id
-        docsPluginId: "classic", // configured for preset-classic
-        config: {
-          jobs: {
-            specPath: "static/batch.yaml",
-            outputDir: "docs/api-ref/batch",
-            template: "templates/api.mustache",
-          } satisfies OpenApiPlugin.Options,
-          mp: {
-            specPath: "static/mp-api.yaml",
-            outputDir: "docs/api-ref/management",
-            template: "templates/api.mustache",
-          } satisfies OpenApiPlugin.Options,
-        },
-      },
-    ],
-    [
       "@signalwire/docusaurus-plugin-llms-txt",
       {
         siteTitle: "Speechmatics Docs",
@@ -195,7 +174,9 @@ const config: Config = {
     sourceLoaderPlugin,
     checkRedirectsPlugin,
   ],
-  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"], // export theme components
+  // docusaurus-theme-openapi-docs: its Schema component, until the Agent STT
+  // reference moves to Speculoos.
+  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"],
   scripts: [
     {
       src: "/js/color-theme.js",

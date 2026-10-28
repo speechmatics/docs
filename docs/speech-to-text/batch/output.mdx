@@ -109,7 +109,7 @@ A deleted job is not included in the list unless you request it explicitly, as d
 
 ## Load and process the transcript
 
-The transcript endpoint returns plain text, JSON, or SRT. Request the format using the `format` query parameter. See the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#request).
+The transcript endpoint returns plain text, JSON, or SRT. Request the format using the `format` query parameter. See the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job).
 
 A few useful things to know about transcript formats:
 
@@ -124,7 +124,7 @@ Like the job status endpoint, this endpoint applies a short default wait. Pass t
 
 Below is the schema for the transcript response when using the default JSON format.
 
-Refer to the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#responses) for further details.
+Refer to the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job) for further details.
 
 <SchemaNode schema={batchSchema.paths["/jobs/{jobid}/transcript"].get.responses["200"].schema} />
 
