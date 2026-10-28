@@ -17,7 +17,7 @@ servers:
 paths:
   /api-keys:
     get:
-      summary: Get all API keys for a project.
+      summary: Get all API keys
       parameters:
         - name: project_id
           in: query
@@ -57,11 +57,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     post:
-      summary: Create an API key.
+      summary: Create an API key
+      description: |-
+        Create an API key in your workspace.
+
+        This endpoint issues two kinds of key:
+
+        - **Permanent key** — a long-lived key for a project. Set `project_id` (and optionally `name`) and omit `ttl`. Use this for a normal project API key.
+        - **Temporary key** — a short-lived key that expires automatically. Set `ttl` to the lifetime in seconds. Use temporary keys to authenticate end-user requests without exposing a long-lived key.
+
+        A long-lived API key can create only temporary keys. Creating a permanent key needs a [management token](/administration/management-tokens).
+
+        The `au` region supports Batch only, so it cannot be combined with `type=rt`.
       parameters:
         - name: type
           in: query
-          description: Set the product this token will be authorised to access. Defaults to batch.
+          description: "The product this key can access: `batch` (default), `rt` (Realtime), or `tts` (Text to Speech)."
           schema:
             type: string
             enum:
@@ -109,11 +120,9 @@ paths:
       security:
         - managementToken: []
         - apiKey: []
-      description: >-
-        A long-lived API key can create only temporary keys (with `ttl` set). Creating a permanent key needs a management token.
   /api-keys/{apikey_id}:
     delete:
-      summary: Delete an API key.
+      summary: Delete an API key
       parameters:
         - name: apikey_id
           in: path
@@ -147,7 +156,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /projects:
     get:
-      summary: Get projects for a contract.
+      summary: Get all projects
       parameters: []
       responses:
         "200":
@@ -175,7 +184,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     post:
-      summary: Post new projects to a contract.
+      summary: Create a project
       parameters: []
       requestBody:
         content:
@@ -205,7 +214,7 @@ paths:
       x-codegen-request-body-name: body
   /projects/{project_id}:
     get:
-      summary: Get a project by its ID.
+      summary: Get a project by ID
       parameters:
         - name: project_id
           in: path
@@ -251,7 +260,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     put:
-      summary: Update a project.
+      summary: Update a project
       parameters:
         - name: project_id
           in: path
@@ -277,7 +286,7 @@ paths:
           content: {}
       x-codegen-request-body-name: body
     delete:
-      summary: Delete a project.
+      summary: Delete a project
       parameters:
         - name: project_id
           in: path
@@ -364,22 +373,28 @@ components:
           type: integer
           format: int64
           nullable: true
+          description: The project the API key belongs to. Set this to create a permanent key for a specific project.
         name:
           maxLength: 120
           type: string
           nullable: true
+          description: A display name for the API key (up to 120 characters).
         client_ref:
           type: string
           nullable: true
+          description: "An end-user reference. For `batch` keys, it restricts the key to jobs created with the same `client_ref`; it is ignored for `rt` keys."
         ttl:
           maximum: 86400
           minimum: 60
           type: integer
           format: int64
           nullable: true
+          description: "Time to live for a temporary key, in seconds, from 60 (1 minute) to 86400 (24 hours). Set `ttl` to create a temporary key that expires automatically; omit it to create a permanent key."
         region:
           type: string
           nullable: true
+          deprecated: true
+          description: "Deprecated. Region (`eu` (default), `usa`, or `au`) is now determined by the endpoint you call. Still accepted for backward compatibility, but it has no effect."
           enum:
             - eu
             - usa

@@ -21,15 +21,12 @@ Content fixes go into the service spec, not the overlay.
 
 Done upstream: the server, authentication (a management token everywhere;
 either one on `POST /api-keys`, which can create only temporary keys with an
-API key) and `date-time`.
+API key), `date-time`, and the content `spec/mp.yaml` had that the service
+spec lacked (descriptions on `POST /api-keys`, summaries matching the live
+pages, `region` deprecated).
 
 ### To fix
 
-- **Content lost from `spec/mp.yaml`:** the docs team's edits never reached the
-  service spec. Port them: the `POST /api-keys` description, the `type`
-  parameter's description, the `CreateApiKeysRequest` property descriptions
-  (marking `region` deprecated), and summaries that match the live pages —
-  without trailing full stops or "contract".
 - **`CreateProjectRequest.contract_id`:** contracts are internal; does it
   belong in the public spec?
 - **Examples:** no operation has a request or response example.
