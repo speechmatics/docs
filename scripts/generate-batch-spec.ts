@@ -3,7 +3,7 @@ import yaml from "yaml";
 
 const spec = yaml.parse(readFileSync("spec/batch.yaml", "utf8"));
 
-const METHODS = ["get", "post", "delete"] as const;
+const METHODS = ["get", "put", "post", "delete"] as const;
 
 const LANGUAGES = {
   js: "Javascript",

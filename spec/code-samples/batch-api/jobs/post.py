@@ -1,8 +1,8 @@
-from speechmatics.batch_client import BatchClient
+from speechmatics.batch import Client, TranscriptionConfig
 
-# Open the client using a context manager
-with BatchClient("YOUR_API_KEY") as client:
-    job_id = client.submit_job(
-        audio="PATH_TO_FILE",
+with Client(api_key="YOUR_API_KEY") as client:
+    job = client.submit_job(
+        "example.wav",
+        transcription_config=TranscriptionConfig(language="en", model="enhanced"),
     )
-    print(job_id)
+    print(job.id)

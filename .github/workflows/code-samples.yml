@@ -1,0 +1,31 @@
+# Runs the API reference's code samples against a mock built from the spec.
+# See scripts/test-code-samples.ts.
+name: Code samples
+
+on:
+  pull_request:
+    paths: &paths
+      - spec/**
+      - scripts/generate-batch-spec.ts
+      - scripts/generate-openapi.ts
+      - scripts/test-code-samples.ts
+      - scripts/code-samples/**
+      - package.json
+      - package-lock.json
+      - .github/workflows/code-samples.yml
+  push:
+    branches: [main]
+    paths: *paths
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: astral-sh/setup-uv@v6
+      - run: npm ci
+      - run: npm run test:code-samples

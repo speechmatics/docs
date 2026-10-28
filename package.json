@@ -22,6 +22,7 @@
     "lint:fix": "biome check --write .",
     "spellcheck": "npx cspell **/*.md **/*.mdx",
     "sync-redirects": "tsx scripts/redirects/sync-redirects.ts",
+    "test:code-samples": "npm run build:jobs-spec && tsx scripts/generate-openapi.ts batch static/batch.yaml && tsx scripts/test-code-samples.ts",
     "build:speculoos-ir": "speculoos build spec/realtime.yaml -o src/generated/realtime.ir.json && tsx scripts/generate-openapi.ts batch static/batch.yaml && speculoos build src/generated/batch.openapi.yaml --name batch -o src/generated/batch.ir.json && speculoos build spec/management-api-v3.yaml --name mp -o src/generated/mp.ir.json && tsx scripts/generate-speculoos-pages.ts",
     "speculoos:refresh": "npm install --save ../speculoos/.packs/speculoos-core.tgz ../speculoos/.packs/speculoos-react.tgz ../speculoos/.packs/speculoos-map-radix-themes.tgz && npm install --save-dev ../speculoos/.packs/speculoos-cli.tgz ../speculoos/.packs/speculoos-asyncapi.tgz ../speculoos/.packs/speculoos-openapi.tgz ../speculoos/.packs/speculoos-loader.tgz ../speculoos/.packs/speculoos-jsonschema.tgz ../speculoos/.packs/speculoos-adapter-kit.tgz ../speculoos/.packs/speculoos-transforms.tgz && rimraf node_modules/.cache/webpack"
   },
@@ -65,7 +66,10 @@
     "@speculoos/loader": "file:../speculoos/.packs/speculoos-loader.tgz",
     "@speculoos/openapi": "file:../speculoos/.packs/speculoos-openapi.tgz",
     "@speculoos/transforms": "file:../speculoos/.packs/speculoos-transforms.tgz",
+    "@speechmatics/batch-client": "^5.4.2",
     "@types/mixpanel-browser": "^2.60.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^2.1.1",
     "cspell": "^8.17.3",
     "dotenv": "^17.2.0",
     "dotenv-cli": "^9.0.0",

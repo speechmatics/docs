@@ -1,22 +1,12 @@
+import { openAsBlob } from "node:fs";
 import { BatchClient } from "@speechmatics/batch-client";
 
-const client = new BatchClient({ apiKey: "YOUR_API_KEY" });
+const client = new BatchClient({ apiKey: "YOUR_API_KEY", appId: "my-app" });
 
-// This is to get a File handle in NodeJS
-// In the browser, you can pass a File object from a form input, or similar
-const blob = await openAsBlob("PATH_TO_FILE");
-const file = new File([blob], "your_filename");
+// In a browser, pass a File from a file input instead.
+const file = new File([await openAsBlob("example.wav")], "example.wav");
 
-const response = await client.createTranscriptionJob({
-  file,
-  config: {
-    type: "transcription",
-    transcription_config: {
-      model: "enhanced",
-      language: "en",
-    },
-  },
+const { id } = await client.createTranscriptionJob(file, {
+  transcription_config: { language: "en", model: "enhanced" },
 });
-
-const json = await response.json();
-console.log(json);
+console.log(id);
