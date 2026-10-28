@@ -10,8 +10,10 @@
  * `as` shows the whole type under a key, as it sits in a request. Either way
  * the one row opens, since its nesting is the point; `expanded` says so for a
  * whole type. A name that is not in the IR fails the build rather than
- * rendering an empty table.
+ * rendering an empty table. The table sits on a card, as the reference's
+ * messages do, so it stands apart from the prose around it.
  */
+import { Card } from "@radix-ui/themes";
 import type { ApiIR, Node, TypeDef } from "@speculoos/core";
 import { SchemaTable } from "@speculoos/react";
 import type { ReactNode } from "react";
@@ -91,11 +93,13 @@ export function Schema({
   const open = expanded ?? (property !== undefined || as !== undefined);
   return (
     <SiteSpeculoos ir={ir}>
-      {node === undefined ? (
-        <SchemaTable typeId={def.id} expanded={open} />
-      ) : (
-        <SchemaTable node={node} expanded={open} />
-      )}
+      <Card size="1" my="4">
+        {node === undefined ? (
+          <SchemaTable typeId={def.id} expanded={open} />
+        ) : (
+          <SchemaTable node={node} expanded={open} />
+        )}
+      </Card>
     </SiteSpeculoos>
   );
 }

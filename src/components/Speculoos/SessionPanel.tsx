@@ -3,6 +3,7 @@ import {
   Card,
   Flex,
   Heading,
+  HoverCard,
   Link,
   Separator,
   Text,
@@ -11,7 +12,7 @@ import {
  * A realtime session at a glance, as a compact sequence diagram: what the
  * client sends on the left, what the server sends on the right, in the order
  * they pass, with the audio/transcript loop bracketed. Each message links to
- * its card in the reference, and opens to its example where it has one.
+ * its card in the reference; hovering it shows its example, where it has one.
  *
  * It replaces the protocol overview's Mermaid diagram, beside the reference
  * rather than above it. The order is this site's knowledge, not the spec's:
@@ -20,7 +21,7 @@ import {
  */
 import type { ApiEntry, WsMessage } from "@speculoos/core";
 import CodeBlock from "@theme/CodeBlock";
-import { type ReactNode, useState } from "react";
+import type { ReactNode } from "react";
 
 /** One step of the session: a message, or a run of them that repeats. */
 type Step = { message: string } | { repeat: string[]; label: string };
@@ -89,11 +90,10 @@ function messagesOf(entry: ApiEntry): Map<string, Located> {
 }
 
 function Row({ found }: { found: Located }): ReactNode {
-  const [open, setOpen] = useState(false);
   const { message, sends } = found;
   const example = message.examples[0];
   const client = sends === "client";
-  const name = (
+  const link = (
     <Link
       href={`#${message.slug ?? ""}`}
       size="2"
@@ -104,6 +104,33 @@ function Row({ found }: { found: Located }): ReactNode {
       {message.name}
     </Link>
   );
+  // The example on hover. A hover card is for pointers only; keyboard and
+  // touch readers lose nothing by it, since the link goes to the message's
+  // card, examples and all.
+  const name =
+    example === undefined ? (
+      link
+    ) : (
+      <HoverCard.Root openDelay={300}>
+        <HoverCard.Trigger>{link}</HoverCard.Trigger>
+        <HoverCard.Content
+          size="1"
+          side="left"
+          align="start"
+          width="360px"
+          maxHeight="60vh"
+        >
+          {example.summary !== undefined && (
+            <Text as="p" size="1" color="gray" mb="1">
+              {example.summary}
+            </Text>
+          )}
+          <CodeBlock language="json">
+            {JSON.stringify(example.payload, null, 2)}
+          </CodeBlock>
+        </HoverCard.Content>
+      </HoverCard.Root>
+    );
   const arrow = (
     <Text
       size="2"
@@ -113,61 +140,30 @@ function Row({ found }: { found: Located }): ReactNode {
       {client ? "↑" : "↓"}
     </Text>
   );
-  const toggle =
-    example === undefined ? null : (
-      <Text
-        asChild
-        size="1"
-        color="gray"
-        style={{ cursor: "pointer", background: "none", border: 0, padding: 0 }}
-      >
-        <button
-          type="button"
-          aria-expanded={open}
-          onClick={() => setOpen((o) => !o)}
-          title="Example"
-        >
-          {open ? "▾" : "▸"}
-        </button>
-      </Text>
-    );
   return (
-    <Box>
-      <Flex align="center" gap="2" justify={client ? "start" : "end"} py="1">
-        {client ? (
-          <>
-            {arrow}
-            {name}
-            {toggle}
-          </>
-        ) : (
-          <>
-            {toggle}
-            {name}
-            {arrow}
-          </>
-        )}
-      </Flex>
-      {open && example !== undefined && (
-        <Box my="2">
-          {example.summary !== undefined && (
-            <Text as="p" size="1" color="gray" mb="1">
-              {example.summary}
-            </Text>
-          )}
-          <CodeBlock language="json">
-            {JSON.stringify(example.payload, null, 2)}
-          </CodeBlock>
-        </Box>
+    <Flex align="center" gap="2" justify={client ? "start" : "end"} py="1">
+      {client ? (
+        <>
+          {arrow}
+          {name}
+        </>
+      ) : (
+        <>
+          {name}
+          {arrow}
+        </>
       )}
-    </Box>
+    </Flex>
   );
 }
 
 function Rows({
   names,
   messages,
-}: { names: string[]; messages: Map<string, Located> }): ReactNode {
+}: {
+  names: string[];
+  messages: Map<string, Located>;
+}): ReactNode {
   return (
     <>
       {names.map((name) => {

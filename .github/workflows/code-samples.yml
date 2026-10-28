@@ -18,6 +18,11 @@ on:
     branches: [main]
     paths: *paths
 
+# It reads the repository and nothing else: no secrets, and a read-only token,
+# as pull requests from forks get anyway.
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
