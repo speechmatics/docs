@@ -6,8 +6,8 @@ sidebar_position: 2
 ---
 
 import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
-import SchemaNode from '@theme/Schema'
-import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml"
+import { Schema } from "@site/src/components/Speculoos";
+import realtime from "@site/src/generated/realtime.ir.json";
 
 # Input
 
@@ -23,7 +23,7 @@ For capturing raw audio in the browser, try our [`browser-audio-input` package](
 
 The format must be supplied in the `audio_format` field of the `StartRecognition` message. See the [API reference](/api-ref/realtime-transcription-websocket#start-recognition).
 
-<SchemaNode schema={realtimeSchema.components.schemas.AudioFormat} />
+<Schema ir={realtime} type="AudioFormat" />
 
 ## Language hints
 

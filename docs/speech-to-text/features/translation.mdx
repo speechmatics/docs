@@ -18,9 +18,9 @@ sidebar_position: 1
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import SchemaNode from "@theme/Schema";
-import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml";
-import transcriptResponseSchema from "!openapi-schema-loader!@site/spec/batch.yaml"
+import { Schema } from "@site/src/components/Speculoos";
+import realtime from "@site/src/generated/realtime.ir.json";
+import batch from "@site/src/generated/batch.ir.json";
 
 # Translation
 
@@ -64,7 +64,7 @@ You can configure up to five translation languages at a time.
 
 The returned JSON will include a new property called `translations`, which contains a list of translated text for each target language requested (using the same [ISO language codes](/speech-to-text/languages) as for transcription).
 
-<SchemaNode schema={transcriptResponseSchema.definitions.RetrieveTranscriptResponse} />
+<Schema ir={batch} type="RetrieveTranscriptResponse" />
 
 An example of the response is below:
 
@@ -130,7 +130,7 @@ An example of the response is below:
 
 Realtime provides a stream of translation messages per language requested. Translation messages will arrive after transcription messages, but won't delay transcription. Realtime translations have the following schema:
 
-<SchemaNode schema={realtimeSchema.components.schemas.AddTranslation} />
+<Schema ir={realtime} type="AddTranslation" />
 
 Translations arrive as lower latency partial results and higher latency, more accurate finals.
 

@@ -3,11 +3,11 @@ description: 'Learn about the sentiment analysis offering for the Speechmatics B
 ---
 
 import CodeBlock from '@theme/CodeBlock'
-import SchemaNode from '@theme/Schema'
+import { Schema } from "@site/src/components/Speculoos";
 import { Box } from '@radix-ui/themes'
 
 import sentimentPythonSample from "./assets/sentiment.py"
-import batchSpec from "!openapi-schema-loader!@site/spec/batch.yaml"
+import batch from "@site/src/generated/batch.ir.json";
 
 # Sentiment analysis
 
@@ -41,7 +41,7 @@ Sentiment results are only available in the JSON output.
 Segments of the transcript are labeled with either positive, negative or neutral and a confidence score. This score indicates the model's certainty regarding the assigned sentiment prediction.
 
 <Box m="2">
-  <SchemaNode schema={batchSpec.definitions.SentimentAnalysisResult} expanded />
+  <Schema ir={batch} type="SentimentAnalysisResult" expanded />
 </Box>
 
 ```json

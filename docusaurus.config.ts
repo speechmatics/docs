@@ -174,9 +174,7 @@ const config: Config = {
     sourceLoaderPlugin,
     checkRedirectsPlugin,
   ],
-  // docusaurus-theme-openapi-docs: its Schema component, until the Agent STT
-  // reference moves to Speculoos.
-  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"],
+  themes: ["@docusaurus/theme-mermaid"],
   scripts: [
     {
       src: "/js/color-theme.js",
