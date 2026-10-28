@@ -1,0 +1,27 @@
+---
+# Every Markdown file needs a description (docusaurus.config.ts), partials too.
+description: How an Agent STT connection closes, for after the reference's messages.
+---
+{/*
+  After the Speculoos reference's messages: how the connection closes. Close
+  codes are their own part of the protocol — AsyncAPI has no place for them,
+  and they do not map one-to-one onto Error types — so they are prose here.
+*/}
+
+### Connection close
+
+An `Error` message can be followed by a WebSocket close frame. Its code, and the reason it carries:
+
+| Close code | Reason |
+| --- | --- |
+| 1003 | `protocol_error` |
+| 1008 | `policy_violation` |
+| 1011 | `internal_error` |
+| 4001 | `not_authorised` |
+| 4003 | `not_allowed` |
+| 4004 | `invalid_model` |
+| 4005 | `quota_exceeded` |
+| 4006 | `timelimit_exceeded` |
+| 4013 | `job_error` |
+
+For `4005`, `4013` and `1011` only, retry after at least 5–10 seconds.

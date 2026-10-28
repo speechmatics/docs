@@ -1,3 +1,5 @@
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
+import { Box, Callout, Flex, Grid } from "@radix-ui/themes";
 /**
  * Speculoos pilot: API reference rendered from Speculoos IR through the Radix
  * Themes component map. The IR is built from spec/ by `npm run build:speculoos-ir`.
@@ -6,17 +8,15 @@
  * map picks up the cyan accent with nothing passed here.
  */
 import type { ApiEntry, ApiIR, WsMessage } from "@speculoos/core";
-import useBrokenLinks from "@docusaurus/useBrokenLinks";
-import { Box, Callout, Flex, Grid } from "@radix-ui/themes";
-import { InfoIcon } from "lucide-react";
+import { type HrefTarget, defaultHref, entrySlug } from "@speculoos/core";
 import { radixThemes } from "@speculoos/map-radix-themes";
 import { Entry, SpeculoosProvider, useEntries } from "@speculoos/react";
-import { defaultHref, entrySlug, type HrefTarget } from "@speculoos/core";
 import Markdown from "@theme/Markdown";
-import { hasOperationPanel, OperationPanel } from "./OperationPanel";
-import { SessionPanel } from "./SessionPanel";
-import styles from "./styles.module.css";
+import { InfoIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { OperationPanel, hasOperationPanel } from "./OperationPanel";
+import { SessionPanel, hasSessionPanel } from "./SessionPanel";
+import styles from "./styles.module.css";
 
 /**
  * The site's Markdown component: react-markdown with the site's MDX components,
@@ -36,7 +36,8 @@ function MessageAvailability({ message }: { message: WsMessage }): ReactNode {
   if (deployments === undefined && !preview) return null;
   let text = "Currently available";
   if (preview) text += " in [preview mode](/private/preview-mode)";
-  if (deployments) text += ` ${preview ? "and" : "for"} ${deployments.join(" and ")} deployments`;
+  if (deployments)
+    text += ` ${preview ? "and" : "for"} ${deployments.join(" and ")} deployments`;
   return (
     <Flex mb="2">
       <Callout.Root size="1" color="gray">
@@ -63,7 +64,9 @@ const SIDEBAR_COLORS = {
 } as const;
 
 const components = radixThemes({
-  markdown: ({ children }: { children: string }) => <Markdown>{children}</Markdown>,
+  markdown: ({ children }: { children: string }) => (
+    <Markdown>{children}</Markdown>
+  ),
   messageExtras: MessageAvailability,
   colors: SIDEBAR_COLORS,
 });
@@ -77,7 +80,8 @@ const options = {
   expandRefs: "always",
   // Examples sit in the panel beside the reference instead; see Entries.
   inlineExamples: false,
-  href: (target: HrefTarget) => (target.kind === "type" ? undefined : defaultHref(target)),
+  href: (target: HrefTarget) =>
+    target.kind === "type" ? undefined : defaultHref(target),
 } as const;
 
 /**
@@ -95,29 +99,44 @@ const options = {
  * headings it renders itself.
  */
 function anchorsOf(entry: ApiEntry): string[] {
-  const operations = entry.kind === "operation" ? [entry.operation] : entry.endpoint.operations;
+  const operations =
+    entry.kind === "operation" ? [entry.operation] : entry.endpoint.operations;
   return [
     entrySlug(entry),
     ...operations.flatMap((op) => [
       op.slug,
-      ...(op.kind === "message" ? op.messages.map((m) => m.slug).filter((s): s is string => s !== undefined) : []),
+      ...(op.kind === "message"
+        ? op.messages
+            .map((m) => m.slug)
+            .filter((s): s is string => s !== undefined)
+        : []),
     ]),
   ];
 }
 
-function Entries({ only, handshakeExtras, after }: {
+function Entries({
+  only,
+  handshakeExtras,
+  after,
+}: {
   only?: string;
   handshakeExtras?: ReactNode;
   after?: ReactNode;
 }): ReactNode {
-  const entries = useEntries().filter((entry) => only === undefined || entrySlug(entry) === only);
+  const entries = useEntries().filter(
+    (entry) => only === undefined || entrySlug(entry) === only,
+  );
   const brokenLinks = useBrokenLinks();
-  for (const entry of entries) for (const anchor of anchorsOf(entry)) brokenLinks.collectAnchor(anchor);
+  for (const entry of entries)
+    for (const anchor of anchorsOf(entry)) brokenLinks.collectAnchor(anchor);
   return (
     <>
       {entries.map((entry) => {
         // An operation with no code samples or examples has no panel, and its reference takes the width.
-        const panel = entry.kind === "channel" || hasOperationPanel(entry);
+        const panel =
+          entry.kind === "channel"
+            ? hasSessionPanel(entry)
+            : hasOperationPanel(entry);
         return (
           <Grid
             key={entrySlug(entry)}
@@ -126,13 +145,21 @@ function Entries({ only, handshakeExtras, after }: {
           >
             <Box minWidth="0">
               {/* Level 1: one entry per page, so its heading — title and URL — is the page's. */}
-              <Entry entry={entry} level={1} handshakeExtras={handshakeExtras} />
+              <Entry
+                entry={entry}
+                level={1}
+                handshakeExtras={handshakeExtras}
+              />
               {after}
             </Box>
             {panel && (
               // mt matches the entry section's own top margin, so the two headings line up.
               <Box mt="7" className={styles.panel}>
-                {entry.kind === "channel" ? <SessionPanel entry={entry} /> : <OperationPanel entry={entry} />}
+                {entry.kind === "channel" ? (
+                  <SessionPanel entry={entry} />
+                ) : (
+                  <OperationPanel entry={entry} />
+                )}
               </Box>
             )}
           </Grid>
@@ -161,7 +188,11 @@ export function SpeculoosReference({
 }): ReactNode {
   return (
     <SpeculoosProvider ir={ir} components={components} options={options}>
-      <Entries {...(entry !== undefined ? { only: entry } : {})} handshakeExtras={handshakeExtras} after={after} />
+      <Entries
+        {...(entry !== undefined ? { only: entry } : {})}
+        handshakeExtras={handshakeExtras}
+        after={after}
+      />
     </SpeculoosProvider>
   );
 }

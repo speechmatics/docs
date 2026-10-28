@@ -9,7 +9,8 @@ import remarkAdmonition from "./remark-admonition";
 /**
  * react-markdown 8 hands custom components props of its own — `node` on
  * every one, `inline` on `code`, `ordered`, `depth`, `index` and `checked` on
- * lists — and the MDX components pass every prop on to the DOM. So each is
+ * lists, `isHeader` on table cells — and the MDX components pass every prop on
+ * to the DOM. So each is
  * wrapped to drop them first.
  */
 function withoutMarkdownProps(
@@ -22,6 +23,7 @@ function withoutMarkdownProps(
     depth,
     index,
     checked,
+    isHeader,
     ...props
   }: Record<string, unknown>) => <Component {...props} />;
 }
