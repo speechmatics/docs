@@ -109,3 +109,124 @@ actions:
         - const: expired
           title: expired
           description: The system deleted the job. Usually because the job was in the `done` state for a very long time.
+
+  # A typo upstream (`type: number,`) that no validator accepts.
+  - target: $.components.schemas.SentimentSegment.properties.confidence
+    description: A number.
+    update:
+      type: number
+
+  # Swagger 2.0 gives a response one schema, which the conversion copies to
+  # every media type: a plain-text transcript is text, not the JSON object.
+  - target: $.paths['/jobs/{jobid}/transcript'].get.responses['200'].content['text/plain'].schema
+    description: Replaced below.
+    remove: true
+  - target: $.paths['/jobs/{jobid}/transcript'].get.responses['200'].content['text/plain']
+    description: Text, or SRT subtitles.
+    update:
+      schema:
+        type: string
+
+  # Success examples, one per operation, all about one job: the job that
+  # `POST /jobs` creates is the one the others list, read, transcribe and
+  # delete. Upstream has error examples only. The code samples in
+  # spec/code-samples/batch-api are tested against a mock that serves these.
+  - target: $.paths['/jobs'].post.responses['201'].content['application/json']
+    description: The new job's id.
+    update:
+      examples:
+        response:
+          value:
+            id: dlbvi9xpzf
+  - target: $.paths['/jobs'].get.responses['200'].content['application/json']
+    description: Jobs, most recent first.
+    update:
+      examples:
+        response:
+          value:
+            jobs:
+              - created_at: "2026-10-28T09:12:44.583Z"
+                data_name: example.wav
+                duration: 42
+                id: dlbvi9xpzf
+                status: done
+                config:
+                  type: transcription
+                  transcription_config:
+                    language: en
+                    model: enhanced
+              - created_at: "2026-10-27T16:03:10.112Z"
+                data_name: interview.mp3
+                duration: 1806
+                id: r9fk2m1x7q
+                status: running
+                config:
+                  type: transcription
+                  transcription_config:
+                    language: en
+                    diarization: speaker
+  - target: $.paths['/jobs/{jobid}'].get.responses['200'].content['application/json']
+    description: A finished job.
+    update:
+      examples:
+        response:
+          value:
+            job:
+              created_at: "2026-10-28T09:12:44.583Z"
+              data_name: example.wav
+              duration: 42
+              id: dlbvi9xpzf
+              status: done
+              config:
+                type: transcription
+                transcription_config:
+                  language: en
+                  model: enhanced
+  - target: $.paths['/jobs/{jobid}'].delete.responses['200'].content['application/json']
+    description: The job, now deleted.
+    update:
+      examples:
+        response:
+          value:
+            job:
+              created_at: "2026-10-28T09:12:44.583Z"
+              data_name: example.wav
+              duration: 42
+              id: dlbvi9xpzf
+              status: deleted
+              config:
+                type: transcription
+                transcription_config:
+                  language: en
+                  model: enhanced
+  # Upstream's has alignment jobs, which no longer exist (`JobType` is
+  # transcription only).
+  - target: $.paths['/usage'].get.responses['200'].content['application/json'].examples
+    description: Replaced below.
+    remove: true
+  - target: $.paths['/usage'].get.responses['200'].content['application/json']
+    description: A month's usage, by model and language.
+    update:
+      examples:
+        response:
+          value:
+            since: "2026-10-01T00:00:00Z"
+            until: "2026-10-31T23:59:59Z"
+            summary:
+              - mode: batch
+                type: transcription
+                count: 5
+                duration_hrs: 1.53
+            details:
+              - mode: batch
+                type: transcription
+                language: en
+                operating_point: enhanced
+                count: 4
+                duration_hrs: 1.33
+              - mode: batch
+                type: transcription
+                language: de
+                operating_point: standard
+                count: 1
+                duration_hrs: 0.2

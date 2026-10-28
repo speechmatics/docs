@@ -72,9 +72,6 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/CreateJobResponse"
-          examples:
-            application/json:
-              id: dlbvi9xpzf
         "400":
           description: Bad request
           schema:

@@ -41,8 +41,16 @@ the public spec.
 
 ## Batch API (`spec/batch.yaml`)
 
-- **Examples:** most operations have only error examples, so the example panel
-  beside them shows errors alone. Success examples are needed.
+- **Examples:** upstream has error examples only. `batch.overlay.yaml` adds a
+  success example per operation, which the code-sample tests serve and check
+  against the schemas; upstream could take them as they are.
+- **Stale examples:** the schema-level examples on `RetrieveJobsResponse`,
+  `RetrieveJobResponse` and `DeleteJobResponse` use `status: transcribing`
+  and a job-level `transcription_config`, neither of which the schema has; the
+  `/usage` example has alignment jobs, which no longer exist (the overlay
+  replaces it).
+- **`SentimentSegment.confidence`:** `type: number,` — a typo no validator
+  accepts (the overlay fixes it).
 - **`/jobs/{jobid}/log`:** not for customers, so both references leave it out
   (`sidebar-generator.ts`, `batch.overlay.yaml`). Removing or marking it
   upstream would let both filters go.
