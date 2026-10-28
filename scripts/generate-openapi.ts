@@ -14,7 +14,8 @@
  * lets an action that matches nothing fail the build — a field renamed
  * upstream would otherwise silently drop its patch.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
 import { JSONPath } from "jsonpath-plus";
 import swagger2openapi from "swagger2openapi"; // ships no types
 import yaml from "yaml";
@@ -98,6 +99,7 @@ async function main(): Promise<void> {
     actions: Action[];
   };
   apply(openapi, overlay.actions);
+  mkdirSync(dirname(OUT), { recursive: true });
   writeFileSync(OUT, yaml.stringify(openapi));
   console.log(
     `${SOURCE} + ${OVERLAY} → ${OUT} (${overlay.actions.length} actions)`,

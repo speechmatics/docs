@@ -1,3 +1,4 @@
+import path from "node:path";
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 import { cyan, cyanDark, gray, grayDark } from "@radix-ui/colors";
@@ -49,7 +50,13 @@ const config: Config = {
     mermaid: true,
     async parseFrontMatter(params) {
       const result = await params.defaultParseFrontMatter(params);
-      if (!result.frontMatter.description) {
+      // Partials (_file.mdx, or in an _folder) are not pages, and Docusaurus
+      // fails a CI build if one has front matter.
+      const isPartial = path
+        .relative(__dirname, params.filePath)
+        .split(path.sep)
+        .some((segment) => segment.startsWith("_"));
+      if (!isPartial && !result.frontMatter.description) {
         console.error(
           `Missing description for Markdown/MDX file: ${params.filePath}`,
         );
