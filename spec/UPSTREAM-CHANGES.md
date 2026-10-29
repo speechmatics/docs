@@ -45,6 +45,10 @@ pages, `region` deprecated).
   replaces it).
 - **`SentimentSegment.confidence`:** `type: number,` — a typo no validator
   accepts (the overlay fixes it).
+- **Response descriptions:** `POST /jobs`'s 201 is described as "OK", and
+  `DELETE /jobs/{jobid}`'s 200 as "The job that was deleted." The reference's
+  examples panel labels each status by its description, so these read oddly
+  there: "Created" and "OK" would do.
 - **`/jobs/{jobid}/log`:** not for customers, so `batch.overlay.yaml` removes
   it. Removing it upstream would let that action go.
 - **What `batch.overlay.yaml` adds:** each action there is a candidate. Most
