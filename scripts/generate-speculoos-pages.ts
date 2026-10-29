@@ -12,6 +12,10 @@
  * A page's own prose — what the spec cannot say — lives in partials beside the
  * hand-written pages, and the config below passes them to an entry by prop.
  *
+ * It also writes src/generated/pages.json, each entry's URL by API and entry
+ * slug, so a <Schema> in a guide can link to where its type is used in the
+ * reference.
+ *
  * Standalone rather than a Docusaurus plugin: only the page template is
  * Docusaurus's.
  */
@@ -134,7 +138,7 @@ function page(
   api: Api,
   entry: ApiEntry,
   position: number,
-): { file: string; mdx: string } {
+): { file: string; url: string; mdx: string } {
   const slug = entrySlug(entry);
   const config = api.entries?.[slug] ?? {};
   const title = titleOf(entry);
@@ -171,9 +175,11 @@ function page(
     `<SpeculoosReference ${props.join(" ")} />`,
     "",
   ].join("\n");
-  return { file: `${file}.mdx`, mdx };
+  const url = `${api.route ?? `/api-ref/${api.dir}`}/${file}`;
+  return { file: `${file}.mdx`, url, mdx };
 }
 
+const urls: Record<string, Record<string, string>> = {};
 for (const api of APIS) {
   const ir = JSON.parse(
     readFileSync(`src/generated/${api.name}.ir.json`, "utf8"),
@@ -188,8 +194,11 @@ for (const api of APIS) {
   if (unknown.length > 0)
     throw new Error(`${api.name}: no entry ${unknown.join(", ")}`);
   const files = new Set<string>();
+  const apiUrls: Record<string, string> = {};
+  urls[api.name] = apiUrls;
   entries.forEach((entry, i) => {
-    const { file, mdx } = page(api, entry, i + 1);
+    const { file, url, mdx } = page(api, entry, i + 1);
+    apiUrls[entrySlug(entry)] = url;
     if (files.has(file))
       throw new Error(`${api.name}: two entries would write ${file}`);
     files.add(file);
@@ -197,3 +206,4 @@ for (const api of APIS) {
   });
   console.log(`${api.name}: ${entries.length} pages → ${dir}`);
 }
+writeFileSync("src/generated/pages.json", `${JSON.stringify(urls, null, 2)}\n`);

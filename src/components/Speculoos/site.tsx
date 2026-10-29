@@ -10,7 +10,7 @@ import { Callout, Flex } from "@radix-ui/themes";
 import type { ApiIR, WsMessage } from "@speculoos/core";
 import { type HrefTarget, defaultHref } from "@speculoos/core";
 import { radixThemes } from "@speculoos/map-radix-themes";
-import { SpeculoosProvider } from "@speculoos/react";
+import { type Components, SpeculoosProvider } from "@speculoos/react";
 import { InfoIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import Markdown from "../Markdown";
@@ -58,7 +58,7 @@ const SIDEBAR_COLORS = {
  * typography and admonitions as hand-written pages. It uses rehype-raw without
  * a sanitiser: fine for first-party specs, not for anything else.
  */
-const components = radixThemes({
+export const components = radixThemes({
   markdown: ({ children }: { children: string }) => (
     <Markdown>{children}</Markdown>
   ),
@@ -79,16 +79,25 @@ const options = {
     target.kind === "type" ? undefined : defaultHref(target),
 } as const;
 
-/** Speculoos for `ir`, rendered as this site renders it. */
+/**
+ * Speculoos for `ir`, rendered as this site renders it — with `overrides` in
+ * place of the map's own components, for one table that needs its own.
+ */
 export function SiteSpeculoos({
   ir,
+  overrides,
   children,
 }: {
   ir: ApiIR;
+  overrides?: Partial<Components>;
   children: ReactNode;
 }): ReactNode {
   return (
-    <SpeculoosProvider ir={ir} components={components} options={options}>
+    <SpeculoosProvider
+      ir={ir}
+      components={overrides ? { ...components, ...overrides } : components}
+      options={options}
+    >
       {children}
     </SpeculoosProvider>
   );
