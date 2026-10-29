@@ -7,8 +7,9 @@
  * map picks up the cyan accent with nothing passed here.
  */
 import { Callout, Flex } from "@radix-ui/themes";
-import type { ApiIR, WsMessage } from "@speculoos/core";
-import { type HrefTarget, defaultHref } from "@speculoos/core";
+import pages from "@site/src/generated/pages.json";
+import type { ApiEntry, ApiIR, WsMessage } from "@speculoos/core";
+import { type HrefTarget, defaultHref, entrySlug } from "@speculoos/core";
 import { radixThemes } from "@speculoos/map-radix-themes";
 import { type Components, SpeculoosProvider } from "@speculoos/react";
 import { InfoIcon } from "lucide-react";
@@ -78,6 +79,17 @@ const options = {
   href: (target: HrefTarget) =>
     target.kind === "type" ? undefined : defaultHref(target),
 } as const;
+
+/**
+ * The page an entry is on, as scripts/generate-speculoos-pages.ts wrote it —
+ * by the API's name, which is the IR's document's.
+ */
+export function entryUrl(ir: ApiIR, entry: ApiEntry): string | undefined {
+  const urls = (pages as Record<string, Record<string, string>>)[
+    ir.provenance.documents[0] ?? ""
+  ];
+  return urls?.[entrySlug(entry)];
+}
 
 /**
  * Speculoos for `ir`, rendered as this site renders it — with `overrides` in

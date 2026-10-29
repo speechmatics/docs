@@ -3,15 +3,16 @@
  * spec/ by `npm run build:speculoos-ir`). Pages are generated, one per entry,
  * by scripts/generate-speculoos-pages.ts.
  */
+import DocusaurusLink from "@docusaurus/Link";
 import useBrokenLinks from "@docusaurus/useBrokenLinks";
-import { Box, Grid } from "@radix-ui/themes";
+import { Box, Flex, Grid, Heading, Link } from "@radix-ui/themes";
 import type { ApiEntry, ApiIR } from "@speculoos/core";
 import { entrySlug } from "@speculoos/core";
-import { Entry, useEntries } from "@speculoos/react";
+import { Entry, useComponents, useEntries } from "@speculoos/react";
 import type { ReactNode } from "react";
 import { OperationPanel, hasOperationPanel } from "./OperationPanel";
 import { SessionPanel, hasSessionPanel } from "./SessionPanel";
-import { SiteSpeculoos } from "./site";
+import { SiteSpeculoos, entryUrl } from "./site";
 import styles from "./styles.module.css";
 
 export { Schema } from "./Schema";
@@ -143,6 +144,76 @@ export function SpeculoosReference({
         handshakeExtras={handshakeExtras}
         after={after}
       />
+    </SiteSpeculoos>
+  );
+}
+
+/** An entry's line in the overview: its method or protocol, and its title. */
+function EntryLink({ ir, entry }: { ir: ApiIR; entry: ApiEntry }): ReactNode {
+  const C = useComponents();
+  const url = entryUrl(ir, entry);
+  const rest =
+    entry.kind === "operation" && entry.operation.kind === "request-response"
+      ? entry.operation
+      : undefined;
+  const title =
+    (entry.kind === "operation"
+      ? entry.operation.docs.title
+      : entry.endpoint.docs.title) ?? entry.endpoint.address;
+  return (
+    <Flex asChild align="center" gap="2" py="1">
+      <li>
+        {rest !== undefined ? (
+          <C.Badge tone="method" value={rest.method}>
+            {rest.method.toUpperCase()}
+          </C.Badge>
+        ) : (
+          <C.Badge tone="protocol" value={entry.endpoint.protocols[0]}>
+            {entry.endpoint.protocols[0]?.toUpperCase()}
+          </C.Badge>
+        )}
+        {url === undefined ? (
+          title
+        ) : (
+          <Link asChild>
+            <DocusaurusLink to={url}>{title}</DocusaurusLink>
+          </Link>
+        )}
+      </li>
+    </Flex>
+  );
+}
+
+function Overview({ ir }: { ir: ApiIR }): ReactNode {
+  const C = useComponents();
+  const entries = useEntries();
+  return (
+    <>
+      {ir.info.description !== undefined && (
+        <C.Markdown>{ir.info.description}</C.Markdown>
+      )}
+      <Heading as="h2" size="6" mt="6" mb="3">
+        Endpoints
+      </Heading>
+      <Box asChild p="0" m="0" style={{ listStyle: "none" }}>
+        <ul>
+          {entries.map((entry) => (
+            <EntryLink key={entrySlug(entry)} ir={ir} entry={entry} />
+          ))}
+        </ul>
+      </Box>
+    </>
+  );
+}
+
+/**
+ * An API's overview page: its `info.description`, which the reference pages
+ * have no place for, then a link to each of its entries' pages.
+ */
+export function SpeculoosOverview({ ir }: { ir: ApiIR }): ReactNode {
+  return (
+    <SiteSpeculoos ir={ir}>
+      <Overview ir={ir} />
     </SiteSpeculoos>
   );
 }

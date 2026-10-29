@@ -20,12 +20,11 @@
  */
 import DocusaurusLink from "@docusaurus/Link";
 import { Card, Code, Flex, Link, Text } from "@radix-ui/themes";
-import pages from "@site/src/generated/pages.json";
 import type { ApiEntry, ApiIR, Node, TypeDef, TypeId } from "@speculoos/core";
 import { apiEntries, entrySlug } from "@speculoos/core";
 import { type Components, SchemaTable } from "@speculoos/react";
 import { type ReactNode, useMemo } from "react";
-import { SiteSpeculoos, components } from "./site";
+import { SiteSpeculoos, components, entryUrl } from "./site";
 
 function typeNamed(ir: ApiIR, name: string): TypeDef {
   const found = Object.values(ir.schemas).find((t) => t.name === name);
@@ -146,11 +145,8 @@ function usageOf(ir: ApiIR, id: TypeId): Use | undefined {
   return best?.use;
 }
 
-/** The page an entry is on, from scripts/generate-speculoos-pages.ts. */
 function hrefOf(ir: ApiIR, use: Use): string | undefined {
-  const api = ir.provenance.documents[0];
-  const urls = (pages as Record<string, Record<string, string>>)[api ?? ""];
-  const url = urls?.[entrySlug(use.entry)];
+  const url = entryUrl(ir, use.entry);
   if (url === undefined) return undefined;
   return use.anchor !== undefined ? `${url}#${use.anchor}` : url;
 }
