@@ -7,25 +7,16 @@ import MDXComponents from "@theme/MDXComponents";
 import remarkAdmonition from "./remark-admonition";
 
 /**
- * react-markdown 8 hands custom components props of its own — `node` on
- * every one, `inline` on `code`, `ordered`, `depth`, `index` and `checked` on
- * lists, `isHeader` on table cells — and the MDX components pass every prop on
- * to the DOM. So each is
- * wrapped to drop them first.
+ * react-markdown hands every custom component the hast `node` it renders, and
+ * the MDX components pass every prop on to the DOM. So each is wrapped to drop
+ * it first.
  */
 function withoutMarkdownProps(
   Component: ComponentType<Record<string, unknown>>,
 ) {
-  return ({
-    node,
-    inline,
-    ordered,
-    depth,
-    index,
-    checked,
-    isHeader,
-    ...props
-  }: Record<string, unknown>) => <Component {...props} />;
+  return ({ node, ...props }: Record<string, unknown>) => (
+    <Component {...props} />
+  );
 }
 
 const components = Object.fromEntries(
