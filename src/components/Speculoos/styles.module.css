@@ -12,3 +12,8 @@
     overflow-y: auto;
   }
 }
+
+/* The session panel above the reference, closed until asked for. */
+.collapsible > summary {
+  cursor: pointer;
+}

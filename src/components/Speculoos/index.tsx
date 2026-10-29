@@ -41,7 +41,9 @@ function anchorsOf(entry: ApiEntry): string[] {
  * Each entry with a panel beside it that stays in view while the reference
  * scrolls — Deepgram's and Stripe's layout: a channel's session at a glance,
  * or a REST operation's examples. Below the `lg` breakpoint there is no room
- * beside, and the panel follows the entry.
+ * beside: a REST operation's panel follows the entry, and a channel's session
+ * comes first, collapsed, since after the whole reference it would be
+ * thousands of pixels down.
  *
  * `after` is the page's own content for the end of the reference column: for
  * a channel, how the connection closes.
@@ -69,32 +71,48 @@ function Entries({
           entry.kind === "channel"
             ? hasSessionPanel(entry)
             : hasOperationPanel(entry);
+        const channel = entry.kind === "channel";
         return (
-          <Grid
-            key={entrySlug(entry)}
-            columns={{ initial: "1", lg: panel ? "minmax(0, 1fr) 380px" : "1" }}
-            gap="6"
-          >
-            <Box minWidth="0">
-              {/* Level 1: one entry per page, so its heading — title and URL — is the page's. */}
-              <Entry
-                entry={entry}
-                level={1}
-                handshakeExtras={handshakeExtras}
-              />
-              {after}
-            </Box>
-            {panel && (
-              // mt matches the entry section's own top margin, so the two headings line up.
-              <Box mt="7" className={styles.panel}>
-                {entry.kind === "channel" ? (
-                  <SessionPanel entry={entry} />
-                ) : (
-                  <OperationPanel entry={entry} />
-                )}
+          <Box key={entrySlug(entry)}>
+            {panel && channel && (
+              <Box display={{ initial: "block", lg: "none" }} mt="5">
+                <SessionPanel entry={entry} collapsed />
               </Box>
             )}
-          </Grid>
+            <Grid
+              columns={{
+                initial: "1",
+                lg: panel ? "minmax(0, 1fr) 380px" : "1",
+              }}
+              gap="6"
+            >
+              <Box minWidth="0">
+                {/* Level 1: one entry per page, so its heading — title and URL — is the page's. */}
+                <Entry
+                  entry={entry}
+                  level={1}
+                  handshakeExtras={handshakeExtras}
+                />
+                {after}
+              </Box>
+              {panel && (
+                // mt matches the entry section's own top margin, so the two headings line up.
+                <Box
+                  mt="7"
+                  display={
+                    channel ? { initial: "none", lg: "block" } : undefined
+                  }
+                  className={styles.panel}
+                >
+                  {channel ? (
+                    <SessionPanel entry={entry} />
+                  ) : (
+                    <OperationPanel entry={entry} />
+                  )}
+                </Box>
+              )}
+            </Grid>
+          </Box>
         );
       })}
     </>
