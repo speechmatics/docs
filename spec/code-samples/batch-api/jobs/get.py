@@ -1,10 +1,5 @@
-from speechmatics.batch_client import BatchClient
+from speechmatics.batch import Client
 
-with BatchClient("YOUR_API_KEY") as client:
-    jobs_list = client.list_jobs()
-
-    # Here, we get and print out the name
-    # of the first job if it exists
-    if len(jobs_list):
-        first_job_name = jobs_list["jobs"][0]["data_name"]
-        print(first_job_name)
+with Client(api_key="YOUR_API_KEY") as client:
+    for job in client.list_jobs(limit=10):
+        print(job.id, job.status)

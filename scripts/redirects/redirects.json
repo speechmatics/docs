@@ -110,5 +110,21 @@
   {
     "source": "/voice-agents/overview",
     "destination": "/speech-to-text/agent-stt"
+  },
+  {
+    "source": "/api-ref/batch/speechmatics-asr-rest-api",
+    "destination": "/api-ref"
+  },
+  {
+    "source": "/api-ref/batch/get-the-log-file-for-a-job",
+    "destination": "/api-ref/batch/get-job-details"
+  },
+  {
+    "source": "/api-ref/management/management-api",
+    "destination": "/api-ref"
+  },
+  {
+    "source": "/api-ref/management/post-a-new-project",
+    "destination": "/api-ref/management/create-a-project"
   }
 ]

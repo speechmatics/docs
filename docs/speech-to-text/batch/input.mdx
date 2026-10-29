@@ -5,8 +5,8 @@ title: 'Input – Batch'
 sidebar_label: 'Input'
 description: 'Learn about configuration and supported input audio formats for the Speechmatics Batch API'
 ---
-import SchemaNode from "@theme/Schema";
-import batchSchema from "!openapi-schema-loader!@site/spec/batch.yaml";
+import { Schema } from "@site/src/components/Speculoos";
+import batch from "@site/src/generated/batch.ir.json";
 
 # Input
 
@@ -38,7 +38,7 @@ Jobs are configured by passing a JSON string to the `config` field of the `Creat
 
 Below are the complete fields of the configuration object:
 
-<SchemaNode schema={batchSchema.definitions.JobConfig} />
+<Schema ir={batch} type="JobConfig" />
 
 ### Language hints
 

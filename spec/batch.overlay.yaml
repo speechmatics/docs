@@ -1,0 +1,232 @@
+# What the Batch API spec cannot say in Swagger 2.0, as an OpenAPI Overlay 1.0
+# (https://spec.openapis.org/overlay/v1.0.0).
+#
+# spec/batch.yaml is generated from the openapi-specifications repo and stays
+# Swagger 2.0 for now. scripts/generate-openapi.ts converts the generated
+# static/batch.yaml to OpenAPI 3 and applies these actions, in order, to make
+# src/generated/batch.openapi.yaml — what Speculoos reads.
+#
+# Every target must match: a field renamed upstream fails the build rather than
+# silently dropping a patch. Prose copied from upstream here does not follow
+# later upstream edits, so keep this file to what Swagger 2.0 cannot express.
+#
+# What should change upstream instead is collated in spec/UPSTREAM-CHANGES.md.
+
+overlay: 1.0.0
+info:
+  title: Speechmatics Batch API, as OpenAPI 3.1
+  version: 1.0.0
+
+actions:
+  - target: $
+    description: OpenAPI 3.1, for `const` and JSON Schema 2020-12.
+    update:
+      openapi: 3.1.0
+
+  # Not documented: the live reference leaves it out too (sidebar-generator.ts).
+  - target: $.paths['/jobs/{jobid}/log']
+    description: The job's log file, which is not for customers.
+    remove: true
+
+  # A multipart part that is JSON: Swagger 2.0's formData can only call it a
+  # string. OpenAPI 3 says what it is, and how it is sent.
+  # Remove only what changes and merge the rest: a property keeps its upstream
+  # position, and its upstream prose where that still holds.
+  - target: $.paths['/jobs'].post.requestBody.content['multipart/form-data'].schema.properties.config.type
+    description: Not a bare string —
+    remove: true
+  - target: $.paths['/jobs'].post.requestBody.content['multipart/form-data'].schema.properties.config
+    description: — a JobConfig.
+    update:
+      $ref: "#/components/schemas/JobConfig"
+      description: The job's configuration, sent as a JSON string.
+  - target: $.paths['/jobs'].post.requestBody.content['multipart/form-data']
+    description: The config part is sent as JSON.
+    update:
+      encoding:
+        config:
+          contentType: application/json
+
+  # Swagger 2.0 has no bearer scheme, only an API key in a header.
+  - target: $.components.securitySchemes.bearerAuth
+    description: Replaced below.
+    remove: true
+  - target: $.components.securitySchemes
+    description: Bearer authentication.
+    update:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        description: Your API key, or a temporary key (JWT).
+
+  # Enums whose values are described in a bulleted description. Swagger 2.0
+  # has no oneOf; a oneOf of documented consts gives each value its own words.
+  - target: $.components.schemas.CreateJobResponse.properties.status.enum
+    description: Values listed below, each with its own description.
+    remove: true
+  - target: $.components.schemas.CreateJobResponse.properties.status
+    description: The long-poll outcome, value by value.
+    update:
+      description: >-
+        **Note**: Only available on SaaS on Cloud. Present only when the
+        `wait` query parameter is set. Reports the outcome of the wait, which
+        is distinct from the job lifecycle status returned by
+        `GET /jobs/{jobid}`.
+      oneOf:
+        - const: created
+          title: created
+          description: The job was created and is still running, or `wait` elapsed before it finished.
+        - const: done
+          title: done
+          description: The job finished; the transcript is embedded under the requested `format` key when available.
+        - const: rejected
+          title: rejected
+          description: The job could not be processed.
+        - const: deleted
+          title: deleted
+          description: The job was deleted before it could finish.
+
+  - target: $.components.schemas.JobDetails.properties.status.enum
+    description: Values listed below, each with its own description.
+    remove: true
+  - target: $.components.schemas.JobDetails.properties.status
+    description: The job lifecycle, value by value.
+    update:
+      description: The status of the job.
+      oneOf:
+        - const: running
+          title: running
+          description: The job is actively running.
+        - const: done
+          title: done
+          description: The job completed successfully.
+        - const: rejected
+          title: rejected
+          description: The job was accepted at first, but later could not be processed by the transcriber.
+        - const: deleted
+          title: deleted
+          description: The user deleted the job.
+        - const: expired
+          title: expired
+          description: The system deleted the job. Usually because the job was in the `done` state for a very long time.
+
+  # A typo upstream (`type: number,`) that no validator accepts.
+  - target: $.components.schemas.SentimentSegment.properties.confidence
+    description: A number.
+    update:
+      type: number
+
+  # Swagger 2.0 gives a response one schema, which the conversion copies to
+  # every media type: a plain-text transcript is text, not the JSON object.
+  - target: $.paths['/jobs/{jobid}/transcript'].get.responses['200'].content['text/plain'].schema
+    description: Replaced below.
+    remove: true
+  - target: $.paths['/jobs/{jobid}/transcript'].get.responses['200'].content['text/plain']
+    description: Text, or SRT subtitles.
+    update:
+      schema:
+        type: string
+
+  # Success examples, one per operation, all about one job: the job that
+  # `POST /jobs` creates is the one the others list, read, transcribe and
+  # delete. Upstream has error examples only. The code samples in
+  # spec/code-samples/batch-api are tested against a mock that serves these.
+  - target: $.paths['/jobs'].post.responses['201'].content['application/json']
+    description: The new job's id.
+    update:
+      examples:
+        response:
+          value:
+            id: dlbvi9xpzf
+  - target: $.paths['/jobs'].get.responses['200'].content['application/json']
+    description: Jobs, most recent first.
+    update:
+      examples:
+        response:
+          value:
+            jobs:
+              - created_at: "2026-10-28T09:12:44.583Z"
+                data_name: example.wav
+                duration: 42
+                id: dlbvi9xpzf
+                status: done
+                config:
+                  type: transcription
+                  transcription_config:
+                    language: en
+                    model: enhanced
+              - created_at: "2026-10-27T16:03:10.112Z"
+                data_name: interview.mp3
+                duration: 1806
+                id: r9fk2m1x7q
+                status: running
+                config:
+                  type: transcription
+                  transcription_config:
+                    language: en
+                    diarization: speaker
+  - target: $.paths['/jobs/{jobid}'].get.responses['200'].content['application/json']
+    description: A finished job.
+    update:
+      examples:
+        response:
+          value:
+            job:
+              created_at: "2026-10-28T09:12:44.583Z"
+              data_name: example.wav
+              duration: 42
+              id: dlbvi9xpzf
+              status: done
+              config:
+                type: transcription
+                transcription_config:
+                  language: en
+                  model: enhanced
+  - target: $.paths['/jobs/{jobid}'].delete.responses['200'].content['application/json']
+    description: The job, now deleted.
+    update:
+      examples:
+        response:
+          value:
+            job:
+              created_at: "2026-10-28T09:12:44.583Z"
+              data_name: example.wav
+              duration: 42
+              id: dlbvi9xpzf
+              status: deleted
+              config:
+                type: transcription
+                transcription_config:
+                  language: en
+                  model: enhanced
+  # Upstream's has alignment jobs, which no longer exist (`JobType` is
+  # transcription only).
+  - target: $.paths['/usage'].get.responses['200'].content['application/json'].examples
+    description: Replaced below.
+    remove: true
+  - target: $.paths['/usage'].get.responses['200'].content['application/json']
+    description: A month's usage, by model and language.
+    update:
+      examples:
+        response:
+          value:
+            since: "2026-10-01T00:00:00Z"
+            until: "2026-10-31T23:59:59Z"
+            summary:
+              - mode: batch
+                type: transcription
+                count: 5
+                duration_hrs: 1.53
+            details:
+              - mode: batch
+                type: transcription
+                language: en
+                operating_point: enhanced
+                count: 4
+                duration_hrs: 1.33
+              - mode: batch
+                type: transcription
+                language: de
+                operating_point: standard
+                count: 1
+                duration_hrs: 0.2

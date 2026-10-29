@@ -8,8 +8,8 @@ import React, { type ReactNode } from "react";
 export default function CodeInline(props: Props): ReactNode {
   return (
     <Code asChild color="gray" highContrast>
-      {/* Unset the default Docusaurus `code` styles */}
-      <code {...props} style={{ border: "unset", verticalAlign: "unset" }} />
+      {/* Infima's leftover `code` styles are unset for every .rt-Code in reset.css */}
+      <code {...props} />
     </Code>
   );
 }

@@ -13,16 +13,35 @@ info:
     url: "https://docs.speechmatics.com/rt-api-ref"
 servers:
   default:
-    host: eu.rt.speechmatics.com/v2
+    host: global.rt.speechmatics.com
+    pathname: /v2
     protocol: wss
     protocolVersion: v13 (RFC 6455)
-    description: RealTime ASR server
+    description: |
+      Routes each connection to the nearest region, for the lowest latency. To keep data in one region instead, connect to that region's endpoint, such as `wss://eu.rt.speechmatics.com/v2`. See [Supported endpoints](/get-started/authentication#supported-endpoints).
     variables:
       ports:
         default: "9000"
+    # Any one of these authenticates the connection.
+    security:
+      - $ref: "#/components/securitySchemes/apiKey"
+      - $ref: "#/components/securitySchemes/temporaryKey"
+# One channel: the WebSocket connection. Written, as AsyncAPI 3 intends, from
+# the point of view of the application this document describes — the
+# Speechmatics Realtime server. So the server *receives* what a client sends
+# (StartRecognition, AddAudio, …) and *sends* what a client receives
+# (RecognitionStarted, AddTranscript, …).
 channels:
-  publish:
+  realtime:
     address: /
+    title: Realtime transcription
+    description: |
+      Transcribe audio as you stream it, over one WebSocket connection. Open the connection and send `StartRecognition` with your audio format and transcription settings; then stream audio as binary messages, and transcripts arrive as they are ready. Every other message is a JSON object that names itself in its `message` field.
+
+      New to the Realtime API? Start with the [quickstart](/speech-to-text/realtime/quickstart).
+    bindings:
+      ws:
+        method: GET
     messages:
       StartRecognition:
         $ref: "#/components/messages/StartRecognition"
@@ -40,9 +59,6 @@ channels:
         $ref: "#/components/messages/SetRecognitionConfig"
       GetSpeakers:
         $ref: "#/components/messages/GetSpeakers"
-  subscribe:
-    address: /
-    messages:
       RecognitionStarted:
         $ref: "#/components/messages/RecognitionStarted"
       AudioAdded:
@@ -76,41 +92,52 @@ channels:
       SpeakersResult:
         $ref: "#/components/messages/SpeakersResult"
 operations:
-  publish:
-    action: send
-    channel:
-      $ref: "#/channels/publish"
-    messages:
-      - $ref: "#/channels/publish/messages/StartRecognition"
-      - $ref: "#/channels/publish/messages/AddAudio"
-      - $ref: "#/channels/publish/messages/AddChannelAudio"
-      - $ref: "#/channels/publish/messages/EndOfStream"
-      - $ref: "#/channels/publish/messages/EndOfChannel"
-      - $ref: "#/channels/publish/messages/ForceEndOfUtterance"
-      - $ref: "#/channels/publish/messages/SetRecognitionConfig"
-      - $ref: "#/channels/publish/messages/GetSpeakers"
-  subscribe:
+  receiveClientMessages:
     action: receive
     channel:
-      $ref: "#/channels/subscribe"
+      $ref: "#/channels/realtime"
     messages:
-      - $ref: "#/channels/subscribe/messages/RecognitionStarted"
-      - $ref: "#/channels/subscribe/messages/AudioAdded"
-      - $ref: "#/channels/subscribe/messages/ChannelAudioAdded"
-      - $ref: "#/channels/subscribe/messages/AddPartialTranscript"
-      - $ref: "#/channels/subscribe/messages/AddTranscript"
-      - $ref: "#/channels/subscribe/messages/AddPartialTranslation"
-      - $ref: "#/channels/subscribe/messages/AddTranslation"
-      - $ref: "#/channels/subscribe/messages/EndOfTranscript"
-      - $ref: "#/channels/subscribe/messages/AudioEventStarted"
-      - $ref: "#/channels/subscribe/messages/AudioEventEnded"
-      - $ref: "#/channels/subscribe/messages/EndOfUtterance"
-      - $ref: "#/channels/subscribe/messages/LanguageInfo"
-      - $ref: "#/channels/subscribe/messages/Info"
-      - $ref: "#/channels/subscribe/messages/Warning"
-      - $ref: "#/channels/subscribe/messages/Error"
-      - $ref: "#/channels/subscribe/messages/SpeakersResult"
+      - $ref: "#/channels/realtime/messages/StartRecognition"
+      - $ref: "#/channels/realtime/messages/AddAudio"
+      - $ref: "#/channels/realtime/messages/AddChannelAudio"
+      - $ref: "#/channels/realtime/messages/EndOfStream"
+      - $ref: "#/channels/realtime/messages/EndOfChannel"
+      - $ref: "#/channels/realtime/messages/ForceEndOfUtterance"
+      - $ref: "#/channels/realtime/messages/SetRecognitionConfig"
+      - $ref: "#/channels/realtime/messages/GetSpeakers"
+  sendServerMessages:
+    action: send
+    channel:
+      $ref: "#/channels/realtime"
+    messages:
+      - $ref: "#/channels/realtime/messages/RecognitionStarted"
+      - $ref: "#/channels/realtime/messages/AudioAdded"
+      - $ref: "#/channels/realtime/messages/ChannelAudioAdded"
+      - $ref: "#/channels/realtime/messages/AddPartialTranscript"
+      - $ref: "#/channels/realtime/messages/AddTranscript"
+      - $ref: "#/channels/realtime/messages/AddPartialTranslation"
+      - $ref: "#/channels/realtime/messages/AddTranslation"
+      - $ref: "#/channels/realtime/messages/EndOfTranscript"
+      - $ref: "#/channels/realtime/messages/AudioEventStarted"
+      - $ref: "#/channels/realtime/messages/AudioEventEnded"
+      - $ref: "#/channels/realtime/messages/EndOfUtterance"
+      - $ref: "#/channels/realtime/messages/LanguageInfo"
+      - $ref: "#/channels/realtime/messages/Info"
+      - $ref: "#/channels/realtime/messages/Warning"
+      - $ref: "#/channels/realtime/messages/Error"
+      - $ref: "#/channels/realtime/messages/SpeakersResult"
 components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: Your [API key](/get-started/authentication), for server-side connections.
+    temporaryKey:
+      type: httpApiKey
+      name: jwt
+      in: query
+      description: |
+        A [temporary key](/get-started/authentication#temporary-keys), for connections from a browser, which cannot set the `Authorization` header — and should not hold your long-lived API key. For example, `wss://global.rt.speechmatics.com/v2?jwt=<temporary-key>`.
   messages:
     GetSpeakers:
       summary: Requests any detected speaker identifiers to be returned.
@@ -124,11 +151,34 @@ components:
       summary: Initiates a new recognition session.
       payload:
         $ref: "#/components/schemas/StartRecognition"
+      examples:
+        - summary: Start a session with partials, translation and audio events
+          payload:
+            {
+              "message": "StartRecognition",
+              "audio_format":
+                { "type": "raw", "encoding": "pcm_f32le", "sample_rate": 16000 },
+              "transcription_config":
+                {
+                  "language": "en",
+                  "model": "enhanced",
+                  "output_locale": "en-US",
+                  "additional_vocab": ["gnocchi", "bucatini", "bigoli"],
+                  "diarization": "speaker",
+                  "max_delay": 1.0,
+                  "enable_partials": true,
+                },
+              "translation_config":
+                { "target_languages": ["es", "de"], "enable_partials": true },
+              "audio_events_config": { "types": ["applause", "music"] },
+            }
     AddAudio:
       summary: A binary chunk of audio. The server confirms receipt by sending an AudioAdded message.
       contentType: application/octet-stream
       payload:
-        $ref: "#/components/schemas/AddAudio"
+        type: string
+        format: binary
+        description: Raw audio bytes, in the encoding and sample rate given by `audio_format` in StartRecognition.
     AddChannelAudio:
       summary: Audio belonging to a specific channel.
       payload:
@@ -137,6 +187,9 @@ components:
       summary: Declares that the client has no more audio to send.
       payload:
         $ref: "#/components/schemas/EndOfStream"
+      examples:
+        - summary: No more audio after the 312th AddAudio
+          payload: { "message": "EndOfStream", "last_seq_no": 312 }
     EndOfChannel:
       summary: Declares that the channel has no more audio to send.
       payload:
@@ -163,6 +216,22 @@ components:
       summary: Server response to StartRecognition, acknowledging that a recognition session has started.
       payload:
         $ref: "#/components/schemas/RecognitionStarted"
+      examples:
+        - summary: The session is ready for audio
+          payload:
+            {
+              "message": "RecognitionStarted",
+              "orchestrator_version": "2025.11.07+cd4ff775c0+14.7.0",
+              "id": "807670e9-14af-4fa2-9e8f-5d525c22156e",
+              "language_pack_info":
+                {
+                  "adapted": false,
+                  "itn": true,
+                  "language_description": "English",
+                  "word_delimiter": " ",
+                  "writing_direction": "left-to-right",
+                },
+            }
     AudioAdded:
       summary: |
         Server response to AddAudio, indicating that audio has been added successfully.
@@ -197,6 +266,50 @@ components:
       summary: Contains the final transcript of a part of the audio that the client has sent.
       payload:
         $ref: "#/components/schemas/AddTranscript"
+      examples:
+        - summary: A final transcript of two words
+          payload:
+            {
+              "message": "AddTranscript",
+              "format": "2.1",
+              "metadata":
+                { "start_time": 1.45, "end_time": 2.2, "transcript": "Hello, world." },
+              "results":
+                [
+                  {
+                    "type": "word",
+                    "start_time": 1.45,
+                    "end_time": 1.8,
+                    "alternatives":
+                      [{ "content": "Hello", "confidence": 0.98, "language": "en", "speaker": "S1" }],
+                  },
+                  {
+                    "type": "punctuation",
+                    "start_time": 1.8,
+                    "end_time": 1.8,
+                    "is_eos": false,
+                    "attaches_to": "previous",
+                    "alternatives":
+                      [{ "content": ",", "confidence": 1.0, "language": "en", "speaker": "S1" }],
+                  },
+                  {
+                    "type": "word",
+                    "start_time": 1.85,
+                    "end_time": 2.2,
+                    "alternatives":
+                      [{ "content": "world", "confidence": 0.95, "language": "en", "speaker": "S1" }],
+                  },
+                  {
+                    "type": "punctuation",
+                    "start_time": 2.2,
+                    "end_time": 2.2,
+                    "is_eos": true,
+                    "attaches_to": "previous",
+                    "alternatives":
+                      [{ "content": ".", "confidence": 1.0, "language": "en", "speaker": "S1" }],
+                  },
+                ],
+            }
     EndOfUtterance:
       summary: |
         Indicates the end of an utterance, triggered by a configurable period of non-speech or a client-sent `ForceEndOfUtterance` message.
@@ -225,6 +338,9 @@ components:
       summary: Server response to `EndOfStream`, after the server has finished sending all AddTranscript messages.
       payload:
         $ref: "#/components/schemas/EndOfTranscript"
+      examples:
+        - summary: Every transcript has been sent
+          payload: { "message": "EndOfTranscript" }
     AudioEventStarted:
       summary: Start of an audio event detected.
       payload:
@@ -245,6 +361,14 @@ components:
       summary: Error messages sent from the server to the client. After any error, the transcription is terminated and the connection is closed.
       payload:
         $ref: "#/components/schemas/Error"
+      examples:
+        - summary: The requested language is not available
+          payload:
+            {
+              "message": "Error",
+              "type": "invalid_model",
+              "reason": "We are not able to serve the requested language: xx",
+            }
   schemas:
     GetSpeakers:
       type: object
@@ -335,28 +459,6 @@ components:
         - message
         - audio_format
         - transcription_config
-      example:
-        {
-          "message": "StartRecognition",
-          "audio_format":
-            { "type": "raw", "encoding": "pcm_f32le", "sample_rate": 16000 },
-          "transcription_config":
-            {
-              "language": "en",
-              "model": "enhanced",
-              "output_locale": "en-US",
-              "additional_vocab": ["gnocchi", "bucatini", "bigoli"],
-              "diarization": "speaker",
-              "max_delay": 1.0,
-              "enable_partials": true,
-            },
-          "translation_config":
-            { "target_languages": ["es", "de"], "enable_partials": true },
-          "audio_events_config": { "types": ["applause", "music"] },
-        }
-    AddAudio:
-      type: string
-      format: binary
     AddChannelAudio:
       type: object
       properties:
@@ -440,20 +542,6 @@ components:
             type: string
       required:
         - message
-      example:
-        {
-          "message": "RecognitionStarted",
-          "orchestrator_version": "2025.11.07+cd4ff775c0+14.7.0",
-          "id": "807670e9-14af-4fa2-9e8f-5d525c22156e",
-          "language_pack_info":
-            {
-              "adapted": false,
-              "itn": true,
-              "language_description": "English",
-              "word_delimiter": " ",
-              "writing_direction": "left-to-right",
-            },
-        }
     AudioAdded:
       type: object
       properties:
@@ -1296,84 +1384,128 @@ components:
     InfoTypeEnum:
       type: string
       description: |
-        The following are the possible info types:
-
-        | Info Type | Description |
-        | --- | --- |
-        | `recognition_quality` | Informs the client what particular quality-based model is used to handle the recognition. Sent to the client immediately after the WebSocket handshake is completed.|
-        | `concurrent_session_usage` | Informs the client of their quota for concurrent sessions and how much of it they are using. Sent to the client immediately after the WebSocket handshake is completed.|
-      enum:
-        - recognition_quality
-        - concurrent_session_usage
+        The kind of information an `Info` message carries.
+      oneOf:
+        - const: recognition_quality
+          title: recognition_quality
+          description: |
+            Informs the client what particular quality-based model is used to handle the recognition. Sent to the client immediately after the WebSocket handshake is completed.
+        - const: concurrent_session_usage
+          title: concurrent_session_usage
+          description: |
+            Informs the client of their quota for concurrent sessions and how much of it they are using. Sent to the client immediately after the WebSocket handshake is completed.
     WarningTypeEnum:
       type: string
       description: |
-        The following are the possible warning types:
+        The kind of problem a `Warning` message reports.
+      oneOf:
+        - const: duration_limit_exceeded
+          title: duration_limit_exceeded
+          description: |
+            The maximum allowed duration of a single utterance to process has been exceeded. Any `AddAudio` messages received that exceed this limit are confirmed with `AudioAdded`, but are ignored by the transcription engine. Exceeding the limit triggers the same mechanism as receiving an `EndOfStream` message, so the Server will eventually send an `EndOfTranscript` message and suspend.
+        - const: unsupported_translation_pair
+          title: unsupported_translation_pair
+          description: |
+            One of the requested translation target languages is unsupported (given the source audio language). The error message specifies the unsupported language pair.
+        - const: idle_timeout
+          title: idle_timeout
+          description: |
+            Informs that the session is approaching the idle duration limit (no audio data sent within the last hour), with a `reason` of the form:
 
-        | Warning Type | Description |
-        | --- | --- |
-        | `duration_limit_exceeded` | The maximum allowed duration of a single utterance to process has been exceeded. Any `AddAudio` messages received that exceed this limit are confirmed with `AudioAdded`, but are ignored by the transcription engine. Exceeding the limit triggers the same mechanism as receiving an `EndOfStream` message, so the Server will eventually send an `EndOfTranscript` message and suspend.
-        | `unsupported_translation_pair` | One of the requested translation target languages is unsupported (given the source audio language). The error message specifies the unsupported language pair.
-        | `idle_timeout` | Informs that the session is approaching the idle duration limit (no audio data sent within the last hour), with a `reason` of the form: <p>`Session will timeout in {time_remaining}m due to inactivity, no audio sent within the last {time_elapsed}m`</p> Currently the server will send messages at 15, 10 and 5m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).
-        | `session_timeout` | Informs that the session is approaching the max session duration limit (maximum session duration of 48 hours), with a `reason` of the form: <p>`Session will timeout in {time_remaining}m due to max duration, session has been active for {time_elapsed}m`</p> Currently the server will send messages at 45, 30 and 15m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).|
-        | `empty_translation_target_list` | No supported translation target languages specified. Translation will not run.
-        | `add_audio_after_eos` | Protocol specification doesn't allow adding audio after `EndOfStream` has been received. Any `AddAudio messages after this, will be ignored.
-        | `speaker_id` | Informs the client about any speaker ID related issues. |
-      enum:
-        - duration_limit_exceeded
-        - unsupported_translation_pair
-        - idle_timeout
-        - session_timeout
-        - empty_translation_target_list
-        - add_audio_after_eos
-        - speaker_id
+            `Session will timeout in {time_remaining}m due to inactivity, no audio sent within the last {time_elapsed}m`
+
+            Currently the server will send messages at 15, 10 and 5m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).
+        - const: session_timeout
+          title: session_timeout
+          description: |
+            Informs that the session is approaching the max session duration limit (maximum session duration of 48 hours), with a `reason` of the form:
+
+            `Session will timeout in {time_remaining}m due to max duration, session has been active for {time_elapsed}m`
+
+            Currently the server will send messages at 45, 30 and 15m prior to timeout, and will send a final error message on timeout, before closing the connection with the code 1008. (see [Realtime limits](https://docs.speechmatics.com/speech-to-text/realtime/limits) for more information).
+        - const: empty_translation_target_list
+          title: empty_translation_target_list
+          description: |
+            No supported translation target languages specified. Translation will not run.
+        - const: add_audio_after_eos
+          title: add_audio_after_eos
+          description: |
+            Protocol specification doesn't allow adding audio after `EndOfStream` has been received. Any `AddAudio` messages after this, will be ignored.
+        - const: speaker_id
+          title: speaker_id
+          description: |
+            Informs the client about any speaker ID related issues.
     ErrorTypeEnum:
       type: string
-      # TODO if OpenAPI/AsyncAPI ever adds enum descriptors, we can move this description there
-      # https://github.com/OAI/OpenAPI-Specification/issues/348
-      # In the meantime we just have a long description of the different enum variants
       description: |
-        The following are the possible error types:
-
-        | Error Type | Description |
-        | --- | --- |
-        | `invalid_message` | The message received was not understood. |
-        | `invalid_model` | Unable to use the model for the recognition. This can happen if the language is not supported at all, or is not available for the user. |
-        | `invalid_language` | The requested language is not valid or is not supported. |
-        | `invalid_config` | The config received contains some wrong or unsupported fields, or too many translation target languages were requested. |
-        | `invalid_audio_type` | Audio type is not supported, is deprecated, or the `audio_type` is malformed. |
-        | `invalid_output_format` | Output format is not supported, is deprecated, or the `output_format` is malformed. |
-        | `not_authorised` | User was not recognised, or the API key provided is not valid. |
-        | `not_allowed` | User is not allowed to use this message (is not allowed to perform the action the message would invoke). |
-        | `job_error` | Unable to do any work on this job, the server might have timed out etc. |
-        | `protocol_error` | Message received was syntactically correct, but could not be accepted due to protocol limitations. This is usually caused by messages sent in the wrong order. |
-        | `quota_exceeded` | Maximum number of concurrent connections allowed for the contract has been reached |
-        | `timelimit_exceeded` | Usage quota for the contract has been reached |
-        | `idle_timeout` | Idle duration limit was reached (no audio data sent within the last hour), a closing handshake with code 1008 follows this in-band error. |
-        | `session_timeout` | Max session duration was reached (maximum session duration of 48 hours), a closing handshake with code 1008 follows this in-band error. |
-        | `unknown_error` | An error that did not fit any of the types above. |
+        The kind of error an `Error` message reports.
 
         :::info
 
         `invalid_message`, `protocol_error` and `unknown_error` can be triggered as a response to any type of messages.
 
         :::
-      enum:
-        - invalid_message
-        - invalid_model
-        - invalid_language
-        - invalid_config
-        - invalid_audio_type
-        - invalid_output_format
-        - not_authorised
-        - not_allowed
-        - job_error
-        - protocol_error
-        - quota_exceeded
-        - timelimit_exceeded
-        - idle_timeout
-        - session_timeout
-        - unknown_error
+      oneOf:
+        - const: invalid_message
+          title: invalid_message
+          description: |
+            The message received was not understood.
+        - const: invalid_model
+          title: invalid_model
+          description: |
+            Unable to use the model for the recognition. This can happen if the language is not supported at all, or is not available for the user.
+        - const: invalid_language
+          title: invalid_language
+          description: |
+            The requested language is not valid or is not supported.
+        - const: invalid_config
+          title: invalid_config
+          description: |
+            The config received contains some wrong or unsupported fields, or too many translation target languages were requested.
+        - const: invalid_audio_type
+          title: invalid_audio_type
+          description: |
+            Audio type is not supported, is deprecated, or the `audio_type` is malformed.
+        - const: invalid_output_format
+          title: invalid_output_format
+          description: |
+            Output format is not supported, is deprecated, or the `output_format` is malformed.
+        - const: not_authorised
+          title: not_authorised
+          description: |
+            User was not recognised, or the API key provided is not valid.
+        - const: not_allowed
+          title: not_allowed
+          description: |
+            User is not allowed to use this message (is not allowed to perform the action the message would invoke).
+        - const: job_error
+          title: job_error
+          description: |
+            Unable to do any work on this job, the server might have timed out etc.
+        - const: protocol_error
+          title: protocol_error
+          description: |
+            Message received was syntactically correct, but could not be accepted due to protocol limitations. This is usually caused by messages sent in the wrong order.
+        - const: quota_exceeded
+          title: quota_exceeded
+          description: |
+            Maximum number of concurrent connections allowed for the contract has been reached
+        - const: timelimit_exceeded
+          title: timelimit_exceeded
+          description: |
+            Usage quota for the contract has been reached
+        - const: idle_timeout
+          title: idle_timeout
+          description: |
+            Idle duration limit was reached (no audio data sent within the last hour), a closing handshake with code 1008 follows this in-band error.
+        - const: session_timeout
+          title: session_timeout
+          description: |
+            Max session duration was reached (maximum session duration of 48 hours), a closing handshake with code 1008 follows this in-band error.
+        - const: unknown_error
+          title: unknown_error
+          description: |
+            An error that did not fit any of the types above.
     AudioEventStartData:
       type: object
       properties:

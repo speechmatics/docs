@@ -17,7 +17,7 @@ export default function DocRootLayoutMain({ children }: Props): ReactNode {
       justify="center"
     >
       <main>
-        <Box maxWidth="1000px" minWidth="0">
+        <Box width="100%" maxWidth="1000px" minWidth="0">
           {children}
         </Box>
       </main>

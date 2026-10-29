@@ -43,11 +43,7 @@ function TabContent({
 function TabsComponent(props: Props): ReactNode {
   const tabs = useTabs(props);
   return (
-    <RadixTabs.Root
-      defaultValue={props.defaultValue}
-      value={tabs.selectedValue}
-      onValueChange={tabs.selectValue}
-    >
+    <RadixTabs.Root value={tabs.selectedValue} onValueChange={tabs.selectValue}>
       <RadixTabs.List>
         {sanitizeTabsChildren(props.children).map((child) => (
           <RadixTabs.Trigger key={child.props.value} value={child.props.value}>

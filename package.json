@@ -4,13 +4,10 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "run-p build:jobs-api-ref build:mp-api-ref && dotenv -e .env -e .env.local node_modules/.bin/docusaurus start",
-    "build": "run-p build:jobs-api-ref build:mp-api-ref && dotenv -e .env -e .env.local node_modules/.bin/docusaurus build",
+    "start": "npm run build:jobs-spec && npm run build:speculoos-ir && dotenv -e .env -e .env.local node_modules/.bin/docusaurus start",
+    "build": "npm run build:jobs-spec && npm run build:speculoos-ir && dotenv -e .env -e .env.local node_modules/.bin/docusaurus build",
     "build:jobs-spec": "tsx scripts/generate-batch-spec.ts",
-    "build:jobs-api-ref": "rimraf docs/api-ref/jobs && npm run build:jobs-spec && docusaurus gen-api-docs jobs",
     "build:agent-stt-spec": "tsx scripts/generate-agent-stt-spec.ts",
-    "build:mp-spec": "tsx scripts/generate-mp-spec.ts",
-    "build:mp-api-ref": "rimraf docs/api-ref/management && npm run build:mp-spec && docusaurus gen-api-docs mp",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -21,7 +18,10 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "spellcheck": "npx cspell **/*.md **/*.mdx",
-    "sync-redirects": "tsx scripts/redirects/sync-redirects.ts"
+    "sync-redirects": "tsx scripts/redirects/sync-redirects.ts",
+    "test:code-samples": "npm run build:jobs-spec && tsx scripts/generate-openapi.ts batch static/batch.yaml && tsx scripts/generate-mp-openapi.ts && tsx scripts/test-code-samples.ts",
+    "build:speculoos-ir": "speculoos build spec/realtime.yaml -o src/generated/realtime.ir.json && speculoos build spec/agent-stt.yaml -o src/generated/agent-stt.ir.json && tsx scripts/generate-openapi.ts batch static/batch.yaml && speculoos build src/generated/batch.openapi.yaml --name batch -o src/generated/batch.ir.json && tsx scripts/generate-mp-openapi.ts && speculoos build src/generated/mp.openapi.yaml --name mp -o src/generated/mp.ir.json && tsx scripts/generate-speculoos-pages.ts",
+    "speculoos:local": "npm install --no-save ../speculoos/.packs/speculoos-core.tgz ../speculoos/.packs/speculoos-react.tgz ../speculoos/.packs/speculoos-map-radix-themes.tgz ../speculoos/.packs/speculoos-cli.tgz ../speculoos/.packs/speculoos-asyncapi.tgz ../speculoos/.packs/speculoos-openapi.tgz ../speculoos/.packs/speculoos-loader.tgz ../speculoos/.packs/speculoos-jsonschema.tgz ../speculoos/.packs/speculoos-adapter-kit.tgz ../speculoos/.packs/speculoos-transforms.tgz && rimraf node_modules/.cache/webpack"
   },
   "dependencies": {
     "@docusaurus/core": "^3.9.2",
@@ -30,19 +30,20 @@
     "@mdx-js/react": "^3.0.0",
     "@radix-ui/themes": "^3.2.1",
     "@signalwire/docusaurus-plugin-llms-txt": "^1.2.1",
-    "asyncapi-schema-loader": "^0.0.1",
+    "@speculoos/core": "0.1.0-alpha.0",
+    "@speculoos/map-radix-themes": "0.1.0-alpha.0",
+    "@speculoos/react": "0.1.0-alpha.0",
     "clsx": "^2.0.0",
     "devicon": "^2.17.0",
-    "docusaurus-plugin-openapi-docs": "^4.4.0",
-    "docusaurus-theme-openapi-docs": "^4.4.0",
     "lucide-react": "^0.512.0",
     "mixpanel-browser": "^2.67.0",
-    "openapi-schema-loader": "^1.0.1",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0",
     "rehype-katex": "^7.0.1",
-    "remark-gfm": "3.0.1",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0"
   },
   "devDependencies": {
@@ -51,13 +52,18 @@
     "@docusaurus/module-type-aliases": "^3.9.2",
     "@docusaurus/tsconfig": "^3.9.2",
     "@docusaurus/types": "^3.9.2",
+    "@speculoos/cli": "0.1.0-alpha.0",
+    "@speechmatics/batch-client": "^5.4.2",
     "@types/mixpanel-browser": "^2.60.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^2.1.1",
     "cspell": "^8.17.3",
     "dotenv": "^17.2.0",
     "dotenv-cli": "^9.0.0",
-    "npm-run-all": "^4.1.5",
+    "jsonpath-plus": "^10.3.0",
     "raw-loader": "^4.0.2",
     "rimraf": "^6.0.1",
+    "swagger2openapi": "^7.0.8",
     "tsx": "^4.19.4",
     "typescript": "~5.6.2",
     "yaml": "^2.8.0"
@@ -66,7 +72,11 @@
     "postman-code-generators": "1.10.1"
   },
   "browserslist": {
-    "production": [">0.5%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 3 chrome version",
       "last 3 firefox version",

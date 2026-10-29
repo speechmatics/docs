@@ -1,5 +1,5 @@
-/* Style the API method badges in a more Radix-y way.
-This cannot be done by Swizzling since it's not a Docusaurus component, it only exists in Infima classes. */
+/* The sidebar's API method badges, in a Radix style: the sidebar is Infima's,
+so they are drawn with CSS rather than a component. */
 .api-method > .menu__link {
   position: relative;
   padding-left: calc(
@@ -13,7 +13,6 @@ a.menu__link.menu__link--active {
   font-weight: var(--font-weight-bold);
 }
 
-.radix-themes .badge,
 .api-method > .menu__link::before {
   font-size: var(--font-size-1);
   line-height: var(--line-height-1);
@@ -41,8 +40,7 @@ a.menu__link.menu__link--active {
   margin-left: var(--ifm-menu-link-padding-horizontal);
 }
 
-.get.api-method > .menu__link::before,
-.badge.badge--primary {
+.get.api-method > .menu__link::before {
   --accent-3: var(--cyan-3);
   --accent-6: var(--cyan-6);
   --accent-9: var(--cyan-9);
@@ -50,8 +48,7 @@ a.menu__link.menu__link--active {
   content: "GET";
 }
 
-.post.api-method > .menu__link::before,
-.badge.badge--success {
+.post.api-method > .menu__link::before {
   --accent-3: var(--green-3);
   --accent-6: var(--green-6);
   --accent-9: var(--green-9);
@@ -59,8 +56,7 @@ a.menu__link.menu__link--active {
   content: "POST";
 }
 
-.put.api-method > .menu__link::before,
-.badge.badge--info {
+.put.api-method > .menu__link::before {
   --accent-3: var(--yellow-3);
   --accent-6: var(--yellow-6);
   --accent-9: var(--yellow-9);
@@ -68,8 +64,7 @@ a.menu__link.menu__link--active {
   content: "PUT";
 }
 
-.delete.api-method > .menu__link::before,
-.badge.badge--danger {
+.delete.api-method > .menu__link::before {
   --accent-3: var(--red-3);
   --accent-6: var(--red-6);
   --accent-9: var(--red-9);

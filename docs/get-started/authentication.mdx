@@ -34,7 +34,7 @@ curl -X GET "https://eu1.asr.api.speechmatics.com/v2/jobs/" \
   </TabItem>
   <TabItem value="real-time" label="Realtime transcription" default>
 
-For server-side calls, your API key must be provided in the header of the [WebSocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses). For example:
+For server-side calls, your API key must be provided in the header of the [WebSocket connection request](/api-ref/realtime-transcription-websocket). For example:
 ```bash
 GET /v2/ HTTP/1.1
 Host: eu.rt.speechmatics.com
@@ -43,7 +43,7 @@ Connection: Upgrade
 Authorization: Bearer YOUR_API_KEY
 User-Agent: Python/3.8 websockets/8.1
 ```
-For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. These can be passed as a query param to the [WebSocket connection request](/api-ref/realtime-transcription-websocket#handshake-responses) URL. For example:
+For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. These can be passed as a query param to the [WebSocket connection request](/api-ref/realtime-transcription-websocket) URL. For example:
 
 ```bash
 wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
@@ -52,7 +52,7 @@ wss://eu.rt.speechmatics.com/v2?jwt=$TEMP_KEY
   </TabItem>
   <TabItem value="agent-stt" label="Agent STT">
 
-For server-side calls, your API key must be provided in the header of the [WebSocket connection request](/api-ref/agent-stt-websocket#handshake-responses) to the `/v2/agent` path. For example:
+For server-side calls, your API key must be provided in the header of the [WebSocket connection request](/api-ref/agent-stt-websocket) to the `/v2/agent` path. For example:
 
 ```bash
 GET /v2/agent HTTP/1.1
@@ -63,7 +63,7 @@ Authorization: Bearer YOUR_API_KEY
 User-Agent: Python/3.12 websockets/15.0
 ```
 
-For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. Agent STT uses Realtime (`type=rt`) temporary keys. These can be passed as a query param to the [WebSocket connection request](/api-ref/agent-stt-websocket#handshake-responses) URL. For example:
+For client-side calls, we recommend using [temporary keys](#temporary-keys) (JWTs) to authenticate your requests. Agent STT uses Realtime (`type=rt`) temporary keys. These can be passed as a query param to the [WebSocket connection request](/api-ref/agent-stt-websocket) URL. For example:
 
 ```bash
 wss://global.rt.speechmatics.com/v2/agent?jwt=$TEMP_KEY
@@ -169,7 +169,7 @@ If your Batch temporary key will be exposed to end-users, for example in the bro
 The example request below creates a temporary key which can be used to create and retrieve Batch jobs for 60 seconds. These jobs will be associated with the reference 'USER123':
 
 ```bash
-curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=batch" \
+curl -L -X POST "https://mp.speechmatics.com/v1/api-keys?type=batch" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $API_KEY" \
      -d '{"ttl": 60, "client_ref": "USER123"}'
@@ -202,14 +202,14 @@ A Realtime temporary key is not tied to a region. The same key works with any Re
 The example request below will create a temporary key which can be used to start any number of Realtime transcription settings for 60 seconds:
 
 ```bash
-curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
+curl -L -X POST "https://mp.speechmatics.com/v1/api-keys?type=rt" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $API_KEY" \
      -d '{"ttl": 60 }'
 ```
 
 :::info
-Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket#browser-based-transcription).
+Note that when starting a Realtime transcription session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/realtime-transcription-websocket).
 ::: 
 </TabItem>
   <TabItem value="agent-stt" label="Agent STT">
@@ -223,14 +223,14 @@ An Agent STT temporary key is not tied to a region. The same key works with any 
 The example request below will create a temporary key which can be used to start any number of Agent STT sessions for 60 seconds:
 
 ```bash
-curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
+curl -L -X POST "https://mp.speechmatics.com/v1/api-keys?type=rt" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $API_KEY" \
      -d '{"ttl": 60 }'
 ```
 
 :::info
-Note that when starting an Agent STT session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/agent-stt-websocket#browser-based-transcription).
+Note that when starting an Agent STT session in the browser, you must provide the temporary key as a part of a query parameter. See our documentation on [browser based transcription](/api-ref/agent-stt-websocket).
 :::
 </TabItem>
 </Tabs>

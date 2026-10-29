@@ -6,8 +6,8 @@ sidebar_position: 2
 ---
 
 import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
-import SchemaNode from '@theme/Schema'
-import realtimeSchema from "!asyncapi-schema-loader!@site/spec/realtime.yaml"
+import { Schema } from "@site/src/components/Speculoos";
+import realtime from "@site/src/generated/realtime.ir.json";
 
 # Input
 
@@ -21,9 +21,9 @@ For capturing raw audio in the browser, try our [`browser-audio-input` package](
 
 ### `audio_format`
 
-The format must be supplied in the `audio_format` field of the `StartRecognition` message. See the [API reference](/api-ref/realtime-transcription-websocket#startrecognition).
+The format must be supplied in the `audio_format` field of the `StartRecognition` message. See the [API reference](/api-ref/realtime-transcription-websocket#start-recognition).
 
-<SchemaNode schema={realtimeSchema.components.schemas.AudioFormat} />
+<Schema ir={realtime} type="AudioFormat" />
 
 ## Language hints
 
@@ -56,7 +56,7 @@ The model can still detect and label a language you did not hint, and it labels 
 
 ## Sending audio
 
-After receiving a `RecognitionStarted` message, you can start sending audio over the Websocket connection. Audio is sent as binary data, encoded in the format specified in the `StartRecognition` message. See [Protocol overview](/api-ref/realtime-transcription-websocket#protocol-overview) for complete details of the API protocol.
+After receiving a `RecognitionStarted` message, you can start sending audio over the Websocket connection. Audio is sent as binary data, encoded in the format specified in the `StartRecognition` message. See [Protocol overview](/api-ref/realtime-transcription-websocket) for complete details of the API protocol.
 
 ## Next steps
 

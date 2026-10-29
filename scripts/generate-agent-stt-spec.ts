@@ -29,14 +29,20 @@ interface SourceSpec {
   oneOf: { $ref: string }[];
 }
 
+/** Who sends a message: the client, or the server. */
+type Side = "client" | "server";
+
 interface Overlay {
   info: Record<string, unknown>;
   servers: Record<string, unknown>;
+  /** The one channel: the WebSocket connection. */
+  channel: { id: string; title: string; description: string };
+  securitySchemes: Record<string, unknown>;
   omitProperties?: Record<string, string[]>;
   descriptions?: Record<string, Record<string, string>>;
   summaries?: Record<string, string>;
   extraMessages?: Record<
-    "publish" | "subscribe",
+    Side,
     Record<
       string,
       {
@@ -79,13 +85,26 @@ for (const [source, { definitions }] of [
 applyOverlayToSchemas();
 
 const messages: Record<string, JsonSchema> = {};
-const channels = {
-  publish: { address: "/", messages: {} as Record<string, JsonSchema> },
-  subscribe: { address: "/", messages: {} as Record<string, JsonSchema> },
+// One channel, the WebSocket connection, carrying both sides' messages. As
+// AsyncAPI 3 intends, the document describes the server: it receives what a
+// client sends, and sends what a client receives.
+const { id: channelId, title, description } = overlay.channel;
+const channel = {
+  address: "/",
+  title,
+  description,
+  bindings: { ws: { method: "GET" } },
+  messages: {} as Record<string, JsonSchema>,
 };
+const sent: Record<Side, string[]> = { client: [], server: [] };
 
-buildChannel("publish", messageNames(input));
-buildChannel("subscribe", messageNames(output));
+buildChannel("client", messageNames(input));
+buildChannel("server", messageNames(output));
+
+const operationMessages = (side: Side) =>
+  sent[side].map((name) => ({
+    $ref: `#/channels/${channelId}/messages/${name}`,
+  }));
 
 const document = {
   asyncapi: "3.0.0",
@@ -93,24 +112,21 @@ const document = {
   defaultContentType: "application/json",
   info: overlay.info,
   servers: overlay.servers,
-  channels,
+  channels: { [channelId]: channel },
   operations: {
-    publish: {
-      action: "send",
-      channel: { $ref: "#/channels/publish" },
-      messages: Object.keys(channels.publish.messages).map((name) => ({
-        $ref: `#/channels/publish/messages/${name}`,
-      })),
-    },
-    subscribe: {
+    receiveClientMessages: {
       action: "receive",
-      channel: { $ref: "#/channels/subscribe" },
-      messages: Object.keys(channels.subscribe.messages).map((name) => ({
-        $ref: `#/channels/subscribe/messages/${name}`,
-      })),
+      channel: { $ref: `#/channels/${channelId}` },
+      messages: operationMessages("client"),
+    },
+    sendServerMessages: {
+      action: "send",
+      channel: { $ref: `#/channels/${channelId}` },
+      messages: operationMessages("server"),
     },
   },
   components: {
+    securitySchemes: overlay.securitySchemes,
     messages,
     // Sorted so an upstream change produces a diff of that change alone.
     schemas: Object.fromEntries(
@@ -128,8 +144,8 @@ const document = {
 #         ${OUTPUT_FILE}
 #         (openapi-specifications repo, auto-generated/)
 #
-# Message summaries, servers and the binary AddAudio message come from
-# ${OVERLAY_PATH}. Edit that file, then run \`npm run build:agent-stt-spec\`.
+# The channel's prose, servers, security, message summaries and the binary
+# AddAudio message come from ${OVERLAY_PATH}. Edit that file, then run \`npm run build:agent-stt-spec\`.
 
 `;
 
@@ -138,8 +154,8 @@ const document = {
     header + yaml.stringify(document, { lineWidth: 0 }),
   );
   console.log(
-    `Wrote ${TARGET_PATH}: ${Object.keys(channels.publish.messages).length} sent and ` +
-      `${Object.keys(channels.subscribe.messages).length} received messages, ` +
+    `Wrote ${TARGET_PATH}: ${sent.client.length} client and ` +
+      `${sent.server.length} server messages, ` +
       `${Object.keys(schemas).length} schemas.`,
   );
 })();
@@ -287,11 +303,11 @@ function messageNames({ oneOf }: SourceSpec): string[] {
   });
 }
 
-function buildChannel(channel: "publish" | "subscribe", names: string[]) {
-  const extras = overlay.extraMessages?.[channel] ?? {};
+function buildChannel(side: Side, names: string[]) {
+  const extras = overlay.extraMessages?.[side] ?? {};
 
   for (const name of names) {
-    addMessage(channel, name, {
+    addMessage(side, name, {
       summary: summaryFor(name),
       payload: { $ref: `#/components/schemas/${name}` },
     });
@@ -300,7 +316,7 @@ function buildChannel(channel: "publish" | "subscribe", names: string[]) {
     for (const [extraName, extra] of Object.entries(extras)) {
       if (extra.after !== name) continue;
       schemas[extraName] = extra.schema;
-      addMessage(channel, extraName, {
+      addMessage(side, extraName, {
         summary: extra.summary,
         ...(extra.contentType ? { contentType: extra.contentType } : {}),
         payload: { $ref: `#/components/schemas/${extraName}` },
@@ -310,23 +326,23 @@ function buildChannel(channel: "publish" | "subscribe", names: string[]) {
 
   const unplaced = Object.entries(extras).filter(
     ([name, extra]) =>
-      !(name in channels[channel].messages) &&
+      !sent[side].includes(name) &&
       (!extra.after || !names.includes(extra.after)),
   );
   for (const [name, extra] of unplaced) {
     throw new Error(
-      `Overlay message "${name}" has after: "${extra.after}", which is not a ${channel} message.`,
+      `Overlay message "${name}" has after: "${extra.after}", which is not a ${side} message.`,
     );
   }
 }
 
-function addMessage(
-  channel: "publish" | "subscribe",
-  name: string,
-  message: JsonSchema,
-) {
+function addMessage(side: Side, name: string, message: JsonSchema) {
+  if (name in channel.messages) {
+    throw new Error(`"${name}" is both a client and a server message.`);
+  }
   messages[name] = message;
-  channels[channel].messages[name] = { $ref: `#/components/messages/${name}` };
+  channel.messages[name] = { $ref: `#/components/messages/${name}` };
+  sent[side].push(name);
 }
 
 function summaryFor(name: string): string {
