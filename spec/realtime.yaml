@@ -888,6 +888,7 @@ components:
         - standard
         - enhanced
         - melia-1
+        - oak-1
       default: standard
     PunctuationOverrides:
       type: object
