@@ -10,7 +10,7 @@ Speechmatics offers models in two groups. The Batch and Realtime APIs share a se
 | API | Models |
 |---|---|
 | Batch | `enhanced`, `standard`, `melia-1`, `oak-1` |
-| Realtime | `enhanced`, `standard`, `melia-1` |
+| Realtime | `enhanced`, `standard`, `melia-1`, `oak-1` |
 | Agent STT | `linden-1` |
 
 ## Batch and Realtime models
@@ -23,8 +23,8 @@ Speechmatics offers models in two groups. The Batch and Realtime APIs share a se
 | Medical specialization | Medical variant available | — | — | Medical native model |
 | Accuracy | Highest | High | High | High |
 | Turnaround | Fast | Fastest | Fastest on Batch | Fastest |
-| Processing modes | Batch and Realtime | Batch and Realtime | Batch and Realtime | Batch |
-| Regions | All | All | All | EU, US |
+| Processing modes | Batch and Realtime | Batch and Realtime | Batch and Realtime | Batch and Realtime |
+| Regions | All | All | All | EU, US, AU |
 | Language handling | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Automatic multilingual](#melia-1) | [Automatic multilingual](#oak-1) |
 | Diarization | Speaker and channel | Speaker and channel | Speaker and channel on Batch; channel diarization only on Realtime | Speaker and channel |
 | Language labeling | — | — | Per word | Per word |
@@ -33,7 +33,7 @@ Speechmatics offers models in two groups. The Batch and Realtime APIs share a se
 | Speaker identification | ✅ | ✅ | Not yet | Not yet |
 | Speech intelligence | ✅ | ✅ | Not yet | Not yet |
 
-Enhanced and Standard are feature-identical and differ only in accuracy and speed: Enhanced delivers the highest accuracy, and Standard prioritizes throughput. Melia 1 provides automatic multilingual transcription for 55+ languages, but supports a reduced feature set. Oak 1 provides automatic multilingual transcription for healthcare audio on Batch only, with the same reduced feature set. Speech intelligence covers translation, summarization, topic detection, chapters, sentiment, and audio events.
+Enhanced and Standard are feature-identical and differ only in accuracy and speed: Enhanced delivers the highest accuracy, and Standard prioritizes throughput. Melia 1 provides automatic multilingual transcription for 55+ languages, but supports a reduced feature set. Oak 1 provides automatic multilingual transcription for healthcare audio, with the same reduced feature set. Speech intelligence covers translation, summarization, topic detection, chapters, sentiment, and audio events.
 
 Melia 1 feature support differs between Batch and Realtime. For the Realtime gaps, refer to [Melia 1 on Realtime](#melia-1-on-realtime).
 
@@ -74,7 +74,7 @@ This config selects the `enhanced` model:
 }
 ```
 
-Enhanced, Standard, and Melia 1 are available for Realtime and Batch transcription. Oak 1 is currently available for Batch transcription.
+Enhanced, Standard, Melia 1, and Oak 1 are available for Realtime and Batch transcription.
 
 ### Melia 1
 
@@ -156,7 +156,7 @@ Omit unsupported properties from your `transcription_config`.
 
 Oak 1 is a multilingual model tuned for healthcare audio, such as ambient scribes and dictation tools. Like Melia 1, it transcribes audio that contains more than one language, including speakers who switch language mid-conversation, and returns a single continuous transcript. It does not require you to select a language pack.
 
-Set `"model": "oak-1"` and `"language": "multi"`:
+Set `"model": "oak-1"` and `"language": "multi"`. This Batch job config selects Oak 1:
 
 ```json
 {
@@ -170,25 +170,44 @@ Set `"model": "oak-1"` and `"language": "multi"`:
 }
 ```
 
+The same two properties select Oak 1 in a Realtime `StartRecognition` message:
+
+```json
+{
+  "message": "StartRecognition",
+  "audio_format": {
+    "type": "raw",
+    "encoding": "pcm_s16le",
+    "sample_rate": 16000
+  },
+  "transcription_config": {
+    // highlight-start
+    "model": "oak-1",
+    "language": "multi"
+    // highlight-end
+  }
+}
+```
+
 :::warning
 Oak 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
 :::
 
-Oak 1 is available for Batch transcription in all regions. For Batch ensure to use the endpoints below.
+Oak 1 supports [output locale](/speech-to-text/formatting#output-locale), including an array of locales for multilingual jobs, on both Batch and Realtime. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription).
 
-| Region | Endpoint |
-|---|---|
-| EU1 (Europe) | `eu1.asr.api.speechmatics.com` |
-| US1 (USA) | `us1.asr.api.speechmatics.com` |
-| AU (Australia) | `au1.asr.api.speechmatics.com` |
+To configure language hints and read the per-language output, refer to Batch [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output), or Realtime [Input](/speech-to-text/realtime/input#language-hints) and [Output](/speech-to-text/realtime/output#languageinfo-message).
 
-For the full list of Batch endpoints, refer to [Authentication](/get-started/authentication#supported-endpoints).
+Oak 1 is available in the EU, US, and AU regions.
 
-Oak 1 supports [output locale](/speech-to-text/formatting#output-locale), including an array of locales for multilingual jobs. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription).
+| Region | Batch endpoint | Realtime endpoint |
+|---|---|---|
+| EU (Europe) | `eu1.asr.api.speechmatics.com` | `eu.rt.speechmatics.com` |
+| US (USA) | `us1.asr.api.speechmatics.com` | `us.rt.speechmatics.com` |
+| AU (Australia) | `au1.asr.api.speechmatics.com` | `au.rt.speechmatics.com` |
 
-For the features Oak 1 does not yet support, refer to [Compare the models](#compare-the-models).
+For the full list of endpoints, refer to [Authentication](/get-started/authentication#supported-endpoints).
 
-To configure language hints and read the per-language output metadata, refer to [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output).
+For the features Oak 1 does not yet support, refer to [Compare the models](#compare-the-models). Check the [release notes](https://speechmatics.featurebase.app/en/changelog) for the latest Realtime feature support.
 
 Oak 1 is a standalone model for healthcare audio. It is separate from the [Enhanced Medical model](#healthcare-domain): use Oak 1 for multilingual healthcare audio, and Enhanced Medical for single-language healthcare audio that needs full feature support. For the languages Oak 1 supports, refer to [Medical languages](/speech-to-text/languages#medical-languages).
 
