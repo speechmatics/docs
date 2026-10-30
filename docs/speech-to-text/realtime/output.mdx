@@ -115,7 +115,7 @@ With `Partials` enabled and `max_delay_mode` as `fixed`, messages received could
 
 ## `LanguageInfo` message
 
-The [Melia 1](/speech-to-text/models#melia-1) model labels each word with the language it was spoken in, so a single session can return words in more than one language. The `LanguageInfo` message tells you how to render the words of a given language. The server sends it once per language code, immediately before that language first appears in an `AddPartialTranscript` or `AddTranscript` message.
+The [Melia 1](/speech-to-text/models#melia-1) and [Oak 1](/speech-to-text/models#oak-1) models label each word with the language it was spoken in, so a single session can return words in more than one language. The `LanguageInfo` message tells you how to render the words of a given language. The server sends it once per language code, immediately before that language first appears in an `AddPartialTranscript` or `AddTranscript` message.
 
 Use it to set word spacing and text direction as you build up the transcript, which matters for right-to-left scripts such as Arabic and Hebrew.
 
