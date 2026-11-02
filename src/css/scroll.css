@@ -1,3 +1,12 @@
 a[data-footnote-ref] {
   scroll-margin-top: var(--ifm-navbar-height);
 }
+
+/*
+ * Speculoos reference sections (messages, the handshake, endpoints) are
+ * anchors, linked from the session panel and from prose. Clear the navbar as
+ * Docusaurus's own headings do, so a section's title is not hidden under it.
+ */
+section[data-kind][id] {
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 0.5rem);
+}

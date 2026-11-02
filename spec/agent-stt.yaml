@@ -4,8 +4,8 @@
 #         agent-transcription-websocket-v2-output.json
 #         (openapi-specifications repo, auto-generated/)
 #
-# Message summaries, servers and the binary AddAudio message come from
-# spec/agent-stt.overlay.yaml. Edit that file, then run `npm run build:agent-stt-spec`.
+# The channel's prose, servers, security, message summaries and the binary
+# AddAudio message come from spec/agent-stt.overlay.yaml. Edit that file, then run `npm run build:agent-stt-spec`.
 
 asyncapi: 3.0.0
 id: urn:com:speechmatics:agent-stt-api
@@ -22,13 +22,34 @@ info:
     url: https://docs.speechmatics.com/api-ref/agent-stt-websocket
 servers:
   default:
-    host: global.rt.speechmatics.com/v2/agent
+    host: global.rt.speechmatics.com
+    pathname: /v2/agent
     protocol: wss
     protocolVersion: v13 (RFC 6455)
-    description: Agent STT server
+    description: |
+      Routes each connection to the nearest region, for the lowest latency. To keep data in one region instead, connect to that region's endpoint, such as `wss://eu.rt.speechmatics.com/v2/agent`. See [Supported endpoints](/get-started/authentication#supported-endpoints).
+    security:
+      - $ref: "#/components/securitySchemes/apiKey"
+      - $ref: "#/components/securitySchemes/temporaryKey"
 channels:
-  publish:
+  agent:
     address: /
+    title: Agent STT
+    description: |
+      Transcribe a conversation as it happens, for a voice agent, over one WebSocket connection. Open the connection and send `StartRecognition`, then stream audio as binary messages. Every other message is a JSON object that names itself in its `message` field.
+
+      Three groups of server messages carry the conversation itself, and are the ones your agent logic acts on:
+
+      | Group | Messages | What they mean |
+      | --- | --- | --- |
+      | Speech signals | `SpeechStarted`, `SpeechEnded` | Voice activity. Sent in `vad` mode only, and not turn boundaries — a mid-sentence pause ends speech without ending the turn. |
+      | Segments | `AddPartialSegment`, `AddSegment` | The transcript. Each partial is a snapshot that replaces the last; `AddSegment` is final and will not change. |
+      | Turn signals | `StartOfTurn`, `EndOfTurn` | Where a speaker's turn starts and ends. `EndOfTurn` is the turn's last message, and the cue for your agent to respond. |
+
+      Pass `AddSegment` downstream to your LLM, and use `AddPartialSegment` only for display. The other server messages manage the session rather than the conversation.
+    bindings:
+      ws:
+        method: GET
     messages:
       StartRecognition:
         $ref: "#/components/messages/StartRecognition"
@@ -42,9 +63,6 @@ channels:
         $ref: "#/components/messages/GetSpeakers"
       ForceEndOfUtterance:
         $ref: "#/components/messages/ForceEndOfUtterance"
-  subscribe:
-    address: /
-    messages:
       RecognitionStarted:
         $ref: "#/components/messages/RecognitionStarted"
       AudioAdded:
@@ -72,36 +90,47 @@ channels:
       SpeakersResult:
         $ref: "#/components/messages/SpeakersResult"
 operations:
-  publish:
-    action: send
-    channel:
-      $ref: "#/channels/publish"
-    messages:
-      - $ref: "#/channels/publish/messages/StartRecognition"
-      - $ref: "#/channels/publish/messages/AddAudio"
-      - $ref: "#/channels/publish/messages/EndOfStream"
-      - $ref: "#/channels/publish/messages/SetRecognitionConfig"
-      - $ref: "#/channels/publish/messages/GetSpeakers"
-      - $ref: "#/channels/publish/messages/ForceEndOfUtterance"
-  subscribe:
+  receiveClientMessages:
     action: receive
     channel:
-      $ref: "#/channels/subscribe"
+      $ref: "#/channels/agent"
     messages:
-      - $ref: "#/channels/subscribe/messages/RecognitionStarted"
-      - $ref: "#/channels/subscribe/messages/AudioAdded"
-      - $ref: "#/channels/subscribe/messages/AddPartialSegment"
-      - $ref: "#/channels/subscribe/messages/AddSegment"
-      - $ref: "#/channels/subscribe/messages/SpeechStarted"
-      - $ref: "#/channels/subscribe/messages/SpeechEnded"
-      - $ref: "#/channels/subscribe/messages/StartOfTurn"
-      - $ref: "#/channels/subscribe/messages/EndOfTurn"
-      - $ref: "#/channels/subscribe/messages/EndOfTranscript"
-      - $ref: "#/channels/subscribe/messages/Error"
-      - $ref: "#/channels/subscribe/messages/Warning"
-      - $ref: "#/channels/subscribe/messages/Info"
-      - $ref: "#/channels/subscribe/messages/SpeakersResult"
+      - $ref: "#/channels/agent/messages/StartRecognition"
+      - $ref: "#/channels/agent/messages/AddAudio"
+      - $ref: "#/channels/agent/messages/EndOfStream"
+      - $ref: "#/channels/agent/messages/SetRecognitionConfig"
+      - $ref: "#/channels/agent/messages/GetSpeakers"
+      - $ref: "#/channels/agent/messages/ForceEndOfUtterance"
+  sendServerMessages:
+    action: send
+    channel:
+      $ref: "#/channels/agent"
+    messages:
+      - $ref: "#/channels/agent/messages/RecognitionStarted"
+      - $ref: "#/channels/agent/messages/AudioAdded"
+      - $ref: "#/channels/agent/messages/AddPartialSegment"
+      - $ref: "#/channels/agent/messages/AddSegment"
+      - $ref: "#/channels/agent/messages/SpeechStarted"
+      - $ref: "#/channels/agent/messages/SpeechEnded"
+      - $ref: "#/channels/agent/messages/StartOfTurn"
+      - $ref: "#/channels/agent/messages/EndOfTurn"
+      - $ref: "#/channels/agent/messages/EndOfTranscript"
+      - $ref: "#/channels/agent/messages/Error"
+      - $ref: "#/channels/agent/messages/Warning"
+      - $ref: "#/channels/agent/messages/Info"
+      - $ref: "#/channels/agent/messages/SpeakersResult"
 components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: Your [API key](/get-started/authentication), for server-side connections.
+    temporaryKey:
+      type: httpApiKey
+      name: jwt
+      in: query
+      description: |
+        A Realtime (`type=rt`) [temporary key](/get-started/authentication#temporary-keys), for connections from a browser, which cannot set the `Authorization` header — and should not hold your long-lived API key. For example, `wss://global.rt.speechmatics.com/v2/agent?jwt=<temporary-key>`.
   messages:
     StartRecognition:
       summary: Initiates a new recognition session.

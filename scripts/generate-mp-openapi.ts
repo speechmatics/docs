@@ -1,6 +1,6 @@
 /**
- * Builds src/generated/mp.openapi.yaml — what the code-sample tests read for
- * the Management API — from the public spec, generated upstream
+ * Builds src/generated/mp.openapi.yaml — what Speculoos reads for the
+ * Management API — from the public spec, generated upstream
  * (spec/mp.yaml), and the code samples in
  * spec/code-samples/mp-api.
  */

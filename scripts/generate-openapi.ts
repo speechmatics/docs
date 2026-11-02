@@ -1,6 +1,6 @@
 /**
- * Builds src/generated/<name>.openapi.yaml — an API as OpenAPI 3, for the
- * code-sample tests (scripts/test-code-samples.ts) — from a Swagger 2.0 source and spec/<name>.overlay.yaml:
+ * Builds src/generated/<name>.openapi.yaml — an API as OpenAPI 3, for
+ * Speculoos — from a Swagger 2.0 source and spec/<name>.overlay.yaml:
  *
  *   tsx scripts/generate-openapi.ts batch static/batch.yaml
  *

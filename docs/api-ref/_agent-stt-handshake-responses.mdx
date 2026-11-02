@@ -1,0 +1,58 @@
+{/* Agent STT handshake responses, for the end of the reference's Handshake section. */}
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+{/*
+  The end of the Speculoos reference's Handshake card: what the spec has no
+  place for. Partials (leading underscore) are not pages of their own.
+  h5, to sit at the size of the card's own sections (Authentication).
+*/}
+
+##### Responses
+
+<Tabs>
+<TabItem value="101" label="101">
+
+**Switching Protocols.** Connected: send `StartRecognition` to begin.
+
+A successful handshake request:
+
+```http
+GET /v2/agent HTTP/1.1
+Host: eu.rt.speechmatics.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: ujRTbIaQsXO/0uCbjjkSZQ==
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+Authorization: Bearer wmz9fkLJM6U5NdyaG3HLHybGZj65PXp
+User-Agent: Python/3.12 websockets/15.0
+```
+
+And its response:
+
+```http
+HTTP/1.1 101 Switching Protocols
+Connection: upgrade
+Upgrade: WebSocket
+Sec-WebSocket-Accept: 87kiC/LI5WgXG52nSylnfXdz260=
+```
+
+</TabItem>
+<TabItem value="400" label="400">
+
+**Bad Request.** The handshake request is malformed.
+
+</TabItem>
+<TabItem value="401" label="401">
+
+**Unauthorized.** The API key or temporary key is not valid.
+
+</TabItem>
+<TabItem value="405" label="405">
+
+**Method Not Allowed.** The request method is not `GET`.
+
+</TabItem>
+</Tabs>

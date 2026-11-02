@@ -4,7 +4,7 @@
 # spec/batch.yaml is generated from the openapi-specifications repo and stays
 # Swagger 2.0 for now. scripts/generate-openapi.ts converts the generated
 # static/batch.yaml to OpenAPI 3 and applies these actions, in order, to make
-# src/generated/batch.openapi.yaml — what the code-sample tests read.
+# src/generated/batch.openapi.yaml — what Speculoos reads.
 #
 # Every target must match: a field renamed upstream fails the build rather than
 # silently dropping a patch. Prose copied from upstream here does not follow
