@@ -45,6 +45,27 @@ Available Mandarin locales:
 **Recommended for English transcription**. Without a specified locale, spelling may be inconsistent within the same transcript.
 :::
 
+### Output locale for multilingual transcription
+
+With Batch transcription, [Melia 1](/speech-to-text/models#melia-1) can transcribe more than one language in the same job, so `output_locale` also accepts an array of locales, one per language present in the audio:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "model": "melia-1",
+    "language": "multi",
+    // highlight-start
+    "output_locale": ["en-GB", "cmn-Hans"]
+    // highlight-end
+  }
+}
+```
+
+Each locale in the array must belong to a different language. Passing two locales for the same language, for example `en-GB` and `en-US` together, is rejected.
+
+On Realtime, `output_locale` does not yet accept an array. Set a single locale.
+
 ## Profanities
 
 You can tag profanities to identify or censor offensive language in your workflow. Profanity tagging is available for:
@@ -155,7 +176,6 @@ Disfluency tagging and removal are available for the following languages. Each l
 - Danish (`da`)
 - Dutch (`nl`)
 - English (`en`)
-- Finnish (`fi`)
 - French (`fr`)
 - German (`de`)
 - Greek (`el`)
@@ -165,12 +185,10 @@ Disfluency tagging and removal are available for the following languages. Each l
 - Italian (`it`)
 - Japanese (`ja`)
 - Mandarin (`cmn`)
-- Norwegian (`no`)
 - Polish (`pl`)
 - Portuguese (`pt`)
 - Russian (`ru`)
 - Spanish (`es`)
-- Swedish (`sv`)
 
 Coverage of hesitation sounds varies by language. If you rely on disfluency removal for a specific language, test it with representative audio rather than assuming full coverage.
 
@@ -254,6 +272,10 @@ Smart formatting converts spoken numbers, dates, currencies, and other entities 
 An *entity* is a spoken value that has a conventional written form, such as a number, date, currency, time, or measurement. Speechmatics detects each entity and converts it from the words as spoken into its written form. For example, the spoken words "nineteen ninety nine" become "1999" in the output.
 
 Smart formatting is applied by default. Set `enable_entities` to `true` to also expose the structure of each entity in the JSON output: the class of entity, and the individual spoken and written words it is made from.
+
+:::info
+`enable_entities` is not supported on Agent STT.
+:::
 
 ### Configuration
 
@@ -417,6 +439,10 @@ All Speechmatics language packs support punctuation to improve transcript readab
 | All other languages | . , ! ? | . ! ? | |
 
 ### Configuration
+
+:::info
+`punctuation_overrides` is not supported on Agent STT.
+:::
 
 You can control which punctuation marks appear in your transcripts using the `punctuation_overrides` setting:
 

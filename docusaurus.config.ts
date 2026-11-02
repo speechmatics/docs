@@ -1,5 +1,6 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
+import { cyan, cyanDark, gray, grayDark } from "@radix-ui/colors";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import katex from "rehype-katex";
 import math from "remark-math";
@@ -206,6 +207,27 @@ const config: Config = {
       defer: false,
       id: "Cookiebot",
       "data-cbid": "d687cfe6-4b5a-43ff-8e0e-ae6a3a33aeee",
+    },
+    {
+      src: "https://widget.kapa.ai/kapa-widget.bundle.js",
+      "data-website-id": "9d6b9fcb-ce70-4c31-a262-4c7bd548bbca",
+      "data-project-name": "Speechmatics",
+      "data-project-color": cyan.cyan9,
+      "data-project-color-dark": cyanDark.cyan9,
+      "data-surface-color": gray.gray1,
+      "data-surface-color-dark": grayDark.gray1,
+      "data-project-logo": "/img/logo.svg",
+      "data-color-scheme-selector": "[data-theme='dark']",
+      "data-view-mode": "sidebar",
+      "data-font-family": "DM Sans, sans-serif",
+      "data-text-color": gray.gray12,
+      "data-text-muted-color": gray.gray11,
+      "data-text-color-dark": grayDark.gray12,
+      "data-text-muted-color-dark": grayDark.gray11,
+      "data-modal-title": "Speechmatics Docs Agent",
+      "data-mcp-enabled": "true",
+      "data-mcp-server-url": "https://speechmatics.mcp.kapa.ai",
+      async: true,
     },
   ],
   stylesheets: [

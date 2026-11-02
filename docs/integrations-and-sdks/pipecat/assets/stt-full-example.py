@@ -1,15 +1,14 @@
 from pipecat.services.speechmatics.stt import SpeechmaticsSTTService
+from pipecat.transcriptions.language import Language
 
 stt = SpeechmaticsSTTService(
-    params=SpeechmaticsSTTService.InputParams(
-        # Service options
-        language="en",
-        operating_point=SpeechmaticsSTTService.OperatingPoint.ENHANCED,
+    settings=SpeechmaticsSTTService.Settings(
+        # Transcription
+        language=Language.EN,
+        enable_partials=True,
 
-        # Turn detection
+        # Turn detection: a Pipecat VAD closes each turn
         turn_detection_mode=SpeechmaticsSTTService.TurnDetectionMode.EXTERNAL,
-        max_delay=1.5,
-        include_partials=True,
 
         # Diarization
         enable_diarization=True,
@@ -17,19 +16,15 @@ stt = SpeechmaticsSTTService(
         max_speakers=4,
         prefer_current_speaker=True,
 
-        # Speaker focus
-        focus_speakers=["S1", "S2"],
-        focus_mode=SpeechmaticsSTTService.SpeakerFocusMode.RETAIN,
-        ignore_speakers=[],
-
-        # Output formatting
-        speaker_active_format="[{speaker_id}]: {text}",
-        speaker_passive_format="[{speaker_id} (background)]: {text}",
+        # Renders each segment as <S1>Good morning.</S1>
+        speaker_active_format="<{speaker_id}>{text}</{speaker_id}>",
 
         # Custom vocabulary
         additional_vocab=[
             SpeechmaticsSTTService.AdditionalVocabEntry(content="Speechmatics"),
-            SpeechmaticsSTTService.AdditionalVocabEntry(content="Pipecat", sounds_like=["pipe cat"]),
+            SpeechmaticsSTTService.AdditionalVocabEntry(
+                content="Pipecat", sounds_like=["pipe cat"]
+            ),
         ],
     ),
 )

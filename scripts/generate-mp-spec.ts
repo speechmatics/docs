@@ -11,7 +11,7 @@ const LANGUAGES = {
   sh: "Shell",
 } as const;
 
-spec.basePath = "https://mp.api.speechmatics.com/v1";
+spec.basePath = "https://mp.speechmatics.com/v1";
 
 const projectRoot = `${__dirname}/..`;
 

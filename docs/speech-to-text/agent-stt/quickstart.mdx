@@ -1,0 +1,117 @@
+---
+title: Quickstart
+pagination_prev: null
+pagination_next: null
+description: Transcribe a conversation with Agent STT.
+---
+
+import CodeBlock from '@theme/CodeBlock';
+import { Grid } from '@radix-ui/themes';
+import { LinkCard } from "@site/src/theme/LinkCard";
+import { Languages, Braces, Split } from 'lucide-react';
+
+import pythonAgentSttExample from "./assets/quickstart.py?raw"
+
+# Quickstart
+
+Agent STT returns transcription a segment at a time and reports the speech and turn events a voice agent needs, so you know when a speaker has finished and the transcript is ready to send to an LLM.
+
+## Using the Agent STT SDK
+
+The Agent STT SDK is a Python client for the Agent STT service. It runs no VAD or turn detection of its own — either the service closes turns, or your application does.
+
+To view the source, see [speechmatics-agent-stt](https://github.com/speechmatics/speechmatics-python-sdk/tree/main/sdk/agent_stt) on GitHub.
+
+### 1. Create an API key
+
+[Create an API key in the portal](https://portal.speechmatics.com/settings/api-keys), which you'll use to securely access the API. Store the key as a managed secret. See [Authentication](/get-started/authentication) for temporary keys and other options.
+
+:::info
+Enterprise customers may need to speak to [Support](https://support.speechmatics.com) to get your API keys.
+:::
+
+### 2. Install the SDK
+
+```
+pip install speechmatics-agent-stt pyaudio
+```
+
+:::note
+`pyaudio` is required for microphone input in this quickstart.
+:::
+
+### 3. Run the example
+
+Set your API key in the environment, then run the script:
+
+```
+export SPEECHMATICS_API_KEY=<your-api-key>
+```
+
+<CodeBlock language="python">
+  {pythonAgentSttExample}
+</CodeBlock>
+
+Speak into your microphone. You should see partials as you talk, then a final segment when the turn closes:
+
+```
+[partial] hello I'd like to check on my
+[final]   S1: Hello, I'd like to check on my order.
+[turn]    end at 3.24s
+```
+
+Press <kbd>Ctrl+C</kbd> to stop.
+
+## Understanding the output
+
+Read the text from `message["segment"]["transcript"]`, and the speaker label from `message["segment"]["speaker"]`.
+
+- **`AddPartialSegment`** — an interim preview. Each one replaces the previous, so don't concatenate them.
+- **`AddSegment`** — the finalized segment, and the stable output to pass to your LLM. Expect several per turn.
+- **`EndOfTurn`** — the speaker has finished and your agent can respond.
+
+See [Segmentation](/speech-to-text/agent-stt/segmentation) for what closes a segment and how speaker labels work.
+
+## Choosing who closes the turn
+
+By default the service closes turns itself, from voice activity. If something upstream already detects that a speaker has finished — Pipecat, LiveKit, a push-to-talk button — start the session in `external` mode and close each turn yourself:
+
+```python
+from speechmatics.agent_stt import TurnConfig, TurnDetectionMode
+
+client = AgentSttAsyncClient(
+    transcription_config=TranscriptionConfig(language="en"),
+    turn_config=TurnConfig(turn_detection_mode=TurnDetectionMode.EXTERNAL),
+)
+```
+
+Then close each turn when your side decides speech has ended:
+
+```python
+client.finalize()
+```
+
+The call is stamped with the audio position at the moment it was made, so the service cuts the turn where you heard speech stop rather than wherever the message lands. In this mode nothing else closes a turn — an application that stops calling `finalize()` never sees another `EndOfTurn`. See [Turn detection](/speech-to-text/agent-stt/turn-detection).
+
+## Next steps
+
+<Grid columns={{initial: "1", md: "3"}} gap="3">
+  <LinkCard
+    title="Turn detection"
+    description="Choose which side decides that a speaker has finished"
+    href="/speech-to-text/agent-stt/turn-detection"
+    icon={<Split/>}
+  />
+  <LinkCard
+    title="Speech to Text languages"
+    description="The languages you can pass as language"
+    href="/speech-to-text/languages"
+    icon={<Languages/>}
+  />
+  <LinkCard
+    title="Agent STT Reference"
+    description="Every WebSocket message, handshake response and error code"
+    href="/api-ref/agent-stt-websocket"
+    icon={<Braces/>}
+  />
+</Grid>

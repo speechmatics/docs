@@ -1,3 +1,4 @@
+import agentSttSidebar from "./agent-stt/sidebar";
 import batchSidebar from "./batch/sidebar";
 import realtimeSidebar from "./realtime/sidebar";
 
@@ -14,6 +15,7 @@ export default {
     },
     realtimeSidebar,
     batchSidebar,
+    agentSttSidebar,
     {
       type: "doc",
       id: "speech-to-text/models",

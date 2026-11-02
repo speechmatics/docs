@@ -1,5 +1,20 @@
 {
   "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'none'"
+        }
+      ]
+    }
+  ],
   "redirects": [
     {
       "source": "/speech-to-text/realtime/realtime_diarization",
@@ -88,47 +103,57 @@
     },
     {
       "source": "/voice-agents/flow",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/features/application-inputs",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/features/webrtc-livekit",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/setup",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/supported-languages",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/features/function-calling",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/guides/nextjs-guide",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/voice-agents/flow/guides/react-native",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/guides/projects",
       "destination": "/administration/projects",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents/voice-sdk",
+      "destination": "/integrations-and-sdks/voice-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
@@ -258,47 +283,47 @@
     },
     {
       "source": "/flow-api-ref",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/application-inputs",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/config",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/function-calling",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/introduction",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/languages-supported",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/livekit-webrtc",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/nextjs-guide",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/react-native-guide",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
@@ -963,12 +988,12 @@
     },
     {
       "source": "/flow",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
       "source": "/flow/getting-started",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {
@@ -988,7 +1013,7 @@
     },
     {
       "source": "/flow/flow-api-ref",
-      "destination": "/voice-agents/overview",
+      "destination": "/speech-to-text/agent-stt",
       "permanent": true
     },
     {

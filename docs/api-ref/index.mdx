@@ -6,7 +6,7 @@ description: Browse API reference for Speechmatics APIs
 ---
 import { Grid } from "@radix-ui/themes";
 import { LinkCard } from "@site/src/theme/LinkCard";
-import { ArrowUpDown, BotMessageSquare, CloudUpload, FileDown, LockKeyholeOpen, Settings2 } from "lucide-react";
+import { ArrowUpDown, BotMessageSquare, CloudUpload, FileDown, LockKeyholeOpen, MessagesSquare, Settings2 } from "lucide-react";
 
 # API reference
 
@@ -19,6 +19,11 @@ Speechmatics offers flexible REST and Websocket APIs for transcription and voice
     title="Realtime transcription via websocket"
     icon={<ArrowUpDown/>}
     href="/api-ref/realtime-transcription-websocket"
+  />
+  <LinkCard
+    title="Agent STT via websocket"
+    icon={<MessagesSquare/>}
+    href="/api-ref/agent-stt-websocket"
   />
   <LinkCard
     title="Create a transcription job by API"

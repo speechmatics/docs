@@ -65,6 +65,8 @@ channels:
         $ref: "#/components/messages/AudioEventEnded"
       EndOfUtterance:
         $ref: "#/components/messages/EndOfUtterance"
+      LanguageInfo:
+        $ref: "#/components/messages/LanguageInfo"
       Info:
         $ref: "#/components/messages/Info"
       Warning:
@@ -103,6 +105,7 @@ operations:
       - $ref: "#/channels/subscribe/messages/AudioEventStarted"
       - $ref: "#/channels/subscribe/messages/AudioEventEnded"
       - $ref: "#/channels/subscribe/messages/EndOfUtterance"
+      - $ref: "#/channels/subscribe/messages/LanguageInfo"
       - $ref: "#/channels/subscribe/messages/Info"
       - $ref: "#/channels/subscribe/messages/Warning"
       - $ref: "#/channels/subscribe/messages/Error"
@@ -139,7 +142,9 @@ components:
       payload:
         $ref: "#/components/schemas/EndOfChannel"
     ForceEndOfUtterance:
-      summary: Requests a finalized transcript.
+      summary: |
+        Requests a finalized transcript followed by an `EndOfUtterance` message.
+        Supported by Enhanced, Standard, Melia 1 and Oak 1. The client decides when to send this message using its own turn detection.
       payload:
         $ref: "#/components/schemas/ForceEndOfUtterance"
     SetRecognitionConfig:
@@ -194,12 +199,20 @@ components:
         $ref: "#/components/schemas/AddTranscript"
     EndOfUtterance:
       summary: |
-        Indicates the end of an utterance, triggered by a configurable period of non-speech.
-        The message is sent when no speech has been detected for a short period of time, configurable by the `end_of_utterance_silence_trigger` parameter in `conversation_config` (see [End Of Utterance](https://docs.speechmatics.com/speech-to-text/realtime/turn-detection#configuration)).
+        Indicates the end of an utterance, triggered by a configurable period of non-speech or a client-sent `ForceEndOfUtterance` message.
+        Enhanced and Standard support automatic silence-based detection, configured by the `end_of_utterance_silence_trigger` parameter in `conversation_config` (see [End of utterance](https://docs.speechmatics.com/speech-to-text/realtime/turn-detection#configuration)).
+        Melia 1 and Oak 1 do not support automatic silence-based detection and rejects this setting. With these models, send `ForceEndOfUtterance` to receive an `EndOfUtterance` message.
 
         Like punctuation, an `EndOfUtterance` has zero duration.
       payload:
         $ref: "#/components/schemas/EndOfUtterance"
+    LanguageInfo:
+      summary: |
+        Reports the word delimiter and writing direction for a language detected in the audio.
+
+        Sent only by the `melia-1` and `oak-1` models, which label each word with the language it was spoken in. The message is emitted once per language code, immediately before that language first appears in an `AddPartialTranscript` or `AddTranscript` message. Use it to set word spacing and text direction when rendering the transcript (see [`LanguageInfo` message](https://docs.speechmatics.com/speech-to-text/realtime/output#languageinfo-message)).
+      payload:
+        $ref: "#/components/schemas/LanguageInfo"
     AddPartialTranslation:
       summary: Contains a work-in-progress translation of a part of the audio that the client has sent.
       payload:
@@ -535,6 +548,30 @@ components:
       required:
         - message
         - metadata
+    LanguageInfo:
+      type: object
+      properties:
+        message:
+          const: LanguageInfo
+        language:
+          type: string
+          description: The detected language code.
+          example: "ar"
+        word_delimiter:
+          type: string
+          description: The delimiter to place between words of this language when reconstructing the transcript.
+          example: " "
+        writing_direction:
+          $ref: "#/components/schemas/WritingDirectionEnum"
+        partial:
+          type: boolean
+          description: |
+            Whether the message was triggered by a Partial transcript. This field is only seen when its value is `true`.
+      required:
+        - message
+        - language
+        - word_delimiter
+        - writing_direction
     EndOfUtteranceMetadata:
       type: object
       properties:
@@ -752,6 +789,13 @@ components:
           description: |
             Language model to process the audio input, normally specified as an ISO language code. The value must be consistent with the language code used in the API endpoint URL.
           example: "en"
+        language_hints:
+          type: array
+          description: |
+            The languages expected in the audio, specified as [ISO Language Codes](https://docs.speechmatics.com/speech-to-text/languages). Biases language detection toward these languages without restricting it to them. Only used by the `melia-1` and `oak-1` models, which require `language` to be set to `multi`. See [Language hints](https://docs.speechmatics.com/speech-to-text/realtime/input#language-hints).
+          items:
+            type: string
+          example: ["en", "ar"]
         domain:
           type: string
           description: Request a specialized model based on 'language' but optimized for a particular field, e.g. `finance` or `medical`.
@@ -836,6 +880,7 @@ components:
         - standard
         - enhanced
         - melia-1
+        - oak-1
     Model:
       type: string
       description: |
@@ -844,6 +889,7 @@ components:
         - standard
         - enhanced
         - melia-1
+        - oak-1
       default: standard
     PunctuationOverrides:
       type: object
@@ -876,6 +922,8 @@ components:
         talking. The `end_of_utterance_silence_trigger` is the time in seconds
         after which the server will assume that the speaker has finished
         speaking, and will emit an `EndOfUtterance` message. A value of 0 disables the feature.
+        Supported by Enhanced and Standard. Melia 1 and Oak 1 reject `end_of_utterance_silence_trigger`
+        in `conversation_config`; use client-side turn detection and send `ForceEndOfUtterance` instead.
     TranslationConfig:
       type: object
       description: |
@@ -905,6 +953,7 @@ components:
             $ref: "#/components/schemas/AudioEventType"
     VocabList:
       type: array
+      maxItems: 20000
       description: |
         Configure [custom dictionary](https://docs.speechmatics.com/speech-to-text/features/custom-dictionary). Default is an empty list. You should be aware that there is a performance penalty (latency degradation and memory increase) from using `additional_vocab`, especially if you use a large word list. When initializing a session that uses `additional_vocab` in the config, you should expect a delay of up to 15 seconds (depending on the size of the list).
       items:
@@ -1117,7 +1166,8 @@ components:
           format: float
         language:
           type: string
-          description: The language that the alternative word is assumed to be spoken in. Currently, this will always be equal to the language that was requested in the initial `StartRecognition` message.
+          description: |
+            The language that the alternative word is assumed to be spoken in. For the `standard` and `enhanced` models this is always the language requested in the initial `StartRecognition` message. The `melia-1` and `oak-1` models detect the language per word, so this value can vary across the transcript.
         display:
           $ref: "#/components/schemas/RecognitionDisplay"
         speaker:
