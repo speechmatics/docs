@@ -157,6 +157,11 @@
       "permanent": true
     },
     {
+      "source": "/api-ref/management/post-a-new-project",
+      "destination": "/api-ref/management/create-a-project",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true
