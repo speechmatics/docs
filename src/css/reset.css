@@ -6,3 +6,14 @@ pre {
 code {
   background-color: unset;
 }
+
+/*
+ * Infima styles every <code>, and the two properties Radix's Code leaves alone
+ * — border and vertical-align — leak into it. Unset them here, once, so every
+ * Radix Code renders as Radix intends: MDX inline code (CodeInline) and
+ * anything built from Radix alike. Adjust Code's look from here, globally.
+ */
+.rt-Code {
+  border: unset;
+  vertical-align: unset;
+}
