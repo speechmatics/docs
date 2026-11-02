@@ -22,11 +22,11 @@ Speechmatics offers models in two groups. The Batch and Realtime APIs share a se
 | Model | `enhanced` | `standard` | `melia-1` | `oak-1` |
 | Medical specialization | Medical variant available | — | — | Medical native model |
 | Accuracy | Highest | High | High | High |
-| Turnaround | Fast | Fastest | Fastest on Batch | Fastest |
+| Turnaround | Fast | Fastest | Fastest on Batch | Fastest on Batch |
 | Processing modes | Batch and Realtime | Batch and Realtime | Batch and Realtime | Batch and Realtime |
-| Regions | All | All | All | EU, US, AU |
+| Regions | All | All | All | All |
 | Language handling | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Selected language or pack](/speech-to-text/languages) ([auto-detect](/speech-to-text/batch/language-identification) available) | [Automatic multilingual](#melia-1) | [Automatic multilingual](#oak-1) |
-| Diarization | Speaker and channel | Speaker and channel | Speaker and channel on Batch; channel diarization only on Realtime | Speaker and channel |
+| Diarization | Speaker and channel | Speaker and channel | Speaker and channel on Batch; channel diarization only on Realtime | Speaker and channel on Batch; channel diarization only on Realtime |
 | Language labeling | — | — | Per word | Per word |
 | Custom dictionary | ✅ | ✅ | Not yet | Not yet |
 | Confidence scores | ✅ | ✅ | Not yet | Not yet |
@@ -35,7 +35,7 @@ Speechmatics offers models in two groups. The Batch and Realtime APIs share a se
 
 Enhanced and Standard are feature-identical and differ only in accuracy and speed: Enhanced delivers the highest accuracy, and Standard prioritizes throughput. Melia 1 provides automatic multilingual transcription for 55+ languages, but supports a reduced feature set. Oak 1 provides automatic multilingual transcription for healthcare audio, with the same reduced feature set. Speech intelligence covers translation, summarization, topic detection, chapters, sentiment, and audio events.
 
-Melia 1 feature support differs between Batch and Realtime. For the Realtime gaps, refer to [Melia 1 on Realtime](#melia-1-on-realtime).
+Melia 1 and Oak 1 feature support differs between Batch and Realtime. For the Realtime gaps, refer to [Melia 1 and Oak 1 on Realtime](#melia-1-and-oak-1-on-realtime).
 
 On Batch, Melia 1 and Oak 1 match the Enhanced and Standard models for core transcription features, including diarization, word timings, punctuation, notifications, and output locale. They do not yet support the following features, which are available with the Enhanced and Standard models:
 
@@ -134,24 +134,6 @@ Melia 1 is available in all regions. For Batch ensure to use the endpoints below
 
 For the full list of endpoints, refer to [Authentication](/get-started/authentication#supported-endpoints).
 
-#### Melia 1 on Realtime
-
-Melia 1 on Realtime supports Partials and Finals, channel diarization, word timings, word-level language labeling, output locale, smart formatting, [`ForceEndOfUtterance`](/speech-to-text/realtime/turn-detection#client-side-turn-detection), and [language hints](/speech-to-text/realtime/input#language-hints).
-
-For Melia 1, your client must detect when the speaker has finished, for example using voice activity detection, and send `ForceEndOfUtterance`. The server then returns a final transcript followed by an `EndOfUtterance` message.
-
-It does not yet support the following Realtime features, which are available with the Enhanced and Standard models:
-
-- Automatic silence-based end of utterance detection. Melia 1 rejects `end_of_utterance_silence_trigger` in `conversation_config`.
-- Speaker diarization and Speaker identification
-- `max_delay` and `max_delay_mode` latency control.
-- Custom dictionary
-- Entity detection and punctuation overrides
-- Disfluency removal, profanity tagging, and audio filtering
-- Translation and audio events
-
-Omit unsupported properties from your `transcription_config`.
-
 ### Oak 1
 
 Oak 1 is a multilingual model tuned for healthcare audio, such as ambient scribes and dictation tools. Like Melia 1, it transcribes audio that contains more than one language, including speakers who switch language mid-conversation, and returns a single continuous transcript. It does not require you to select a language pack.
@@ -193,23 +175,44 @@ The same two properties select Oak 1 in a Realtime `StartRecognition` message:
 Oak 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
 :::
 
-Oak 1 supports [output locale](/speech-to-text/formatting#output-locale), including an array of locales for multilingual jobs, on both Batch and Realtime. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription).
+Oak 1 supports [output locale](/speech-to-text/formatting#output-locale). On Batch, `output_locale` also accepts an array of locales, one per language in the audio. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription). On Realtime, `output_locale` does not yet accept an array. Set a single locale.
 
 To configure language hints and read the per-language output, refer to Batch [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output), or Realtime [Input](/speech-to-text/realtime/input#language-hints) and [Output](/speech-to-text/realtime/output#languageinfo-message).
 
-Oak 1 is available in the EU, US, and AU regions.
+#### Regions and endpoints
+
+Oak 1 is available in all regions. For Batch ensure to use the endpoints below.
 
 | Region | Batch endpoint | Realtime endpoint |
 |---|---|---|
 | EU (Europe) | `eu1.asr.api.speechmatics.com` | `eu.rt.speechmatics.com` |
 | US (USA) | `us1.asr.api.speechmatics.com` | `us.rt.speechmatics.com` |
 | AU (Australia) | `au1.asr.api.speechmatics.com` | `au.rt.speechmatics.com` |
+| Global | N/A | `global.rt.speechmatics.com` |
 
 For the full list of endpoints, refer to [Authentication](/get-started/authentication#supported-endpoints).
 
-For the features Oak 1 does not yet support, refer to [Compare the models](#compare-the-models). Check the [release notes](https://speechmatics.featurebase.app/en/changelog) for the latest Realtime feature support.
+For the Realtime features Oak 1 does not yet support, refer to [Melia 1 and Oak 1 on Realtime](#melia-1-and-oak-1-on-realtime).
 
 Oak 1 is a standalone model for healthcare audio. It is separate from the [Enhanced Medical model](#healthcare-domain): use Oak 1 for multilingual healthcare audio, and Enhanced Medical for single-language healthcare audio that needs full feature support. For the languages Oak 1 supports, refer to [Medical languages](/speech-to-text/languages#medical-languages).
+
+### Melia 1 and Oak 1 on Realtime
+
+Melia 1 and Oak 1 on Realtime support Partials and Finals, channel diarization, word timings, word-level language labeling, output locale, smart formatting, [`ForceEndOfUtterance`](/speech-to-text/realtime/turn-detection#client-side-turn-detection), and [language hints](/speech-to-text/realtime/input#language-hints).
+
+For these models, your client must detect when the speaker has finished, for example using voice activity detection, and send `ForceEndOfUtterance`. The server then returns a final transcript followed by an `EndOfUtterance` message.
+
+They do not yet support the following Realtime features, which are available with the Enhanced and Standard models:
+
+- Automatic silence-based end of utterance detection. Both models reject `end_of_utterance_silence_trigger` in `conversation_config`.
+- Speaker diarization and Speaker identification
+- `max_delay` and `max_delay_mode` latency control.
+- Custom dictionary
+- Entity detection and punctuation overrides
+- Disfluency removal, profanity tagging, and audio filtering
+- Translation and audio events
+
+Omit unsupported properties from your `transcription_config`.
 
 ### Enhanced Medical model {#healthcare-domain}
 
