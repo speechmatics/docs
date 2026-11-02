@@ -6,7 +6,7 @@ import { forwardRef } from "react";
 export type LinkCardRootProps = React.ComponentProps<typeof Card> & {
   direction?: "row" | "column";
   children: React.ReactNode;
-  as?: React.ComponentType<{ href: string }>;
+  as?: React.ComponentType<{ href?: string }>;
 } & (
     | { href: string }
     | {

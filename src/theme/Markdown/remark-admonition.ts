@@ -6,12 +6,12 @@ export default function remarkAdmonition() {
     const closingTagRegex = /^:::\s*$/;
     const textOnlyAdmonition = /^:::(\w+)(?:\[(.*?)\])?\s*([\s\S]*?)\s*:::$/;
 
-    const nodes = [];
-    let bufferedChildren = [];
+    const nodes: unknown[] = [];
+    let bufferedChildren: unknown[] = [];
 
     let insideAdmonition = false;
-    let type = null;
-    let title = null;
+    let type: string | null = null;
+    let title: string | null = null;
 
     // biome-ignore lint/complexity/noForEach: For some reason, using forEach is necessary here...
     tree.children.forEach((node) => {

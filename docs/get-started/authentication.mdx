@@ -169,7 +169,7 @@ If your Batch temporary key will be exposed to end-users, for example in the bro
 The example request below creates a temporary key which can be used to create and retrieve Batch jobs for 60 seconds. These jobs will be associated with the reference 'USER123':
 
 ```bash
-curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=batch" \
+curl -L -X POST "https://mp.speechmatics.com/v1/api-keys?type=batch" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $API_KEY" \
      -d '{"ttl": 60, "client_ref": "USER123"}'
@@ -202,7 +202,7 @@ A Realtime temporary key is not tied to a region. The same key works with any Re
 The example request below will create a temporary key which can be used to start any number of Realtime transcription settings for 60 seconds:
 
 ```bash
-curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
+curl -L -X POST "https://mp.speechmatics.com/v1/api-keys?type=rt" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $API_KEY" \
      -d '{"ttl": 60 }'
@@ -223,7 +223,7 @@ An Agent STT temporary key is not tied to a region. The same key works with any 
 The example request below will create a temporary key which can be used to start any number of Agent STT sessions for 60 seconds:
 
 ```bash
-curl -L -X POST "https://mp.speechmatics.com/v1/api_keys?type=rt" \
+curl -L -X POST "https://mp.speechmatics.com/v1/api-keys?type=rt" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $API_KEY" \
      -d '{"ttl": 60 }'
