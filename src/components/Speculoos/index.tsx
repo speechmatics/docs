@@ -38,13 +38,7 @@ function anchorsOf(entry: ApiEntry): string[] {
 }
 
 /**
- * Each entry with a panel beside it that stays in view while the reference
- * scrolls — Deepgram's and Stripe's layout: a channel's session at a glance,
- * or a REST operation's examples. Below the `lg` breakpoint there is no room
- * beside: a REST operation's panel follows the entry, and a channel's session
- * comes first, collapsed, since after the whole reference it would be
- * thousands of pixels down.
- *
+ * Each entry with a panel beside it that stays in view while the reference scrolls.
  * `after` is the page's own content for the end of the reference column: for
  * a channel, how the connection closes.
  */
@@ -82,7 +76,7 @@ function Entries({
             <Grid
               columns={{
                 initial: "1",
-                lg: panel ? "minmax(0, 1fr) 380px" : "1",
+                lg: channel ? "minmax(0, 1fr) 380px" : "2",
               }}
               gap="6"
             >

@@ -1,7 +1,7 @@
 /**
  * Builds src/generated/mp.openapi.yaml — what Speculoos reads for the
  * Management API — from the public spec, generated upstream
- * (spec/management-api-v3.yaml), and the code samples in
+ * (spec/mp.yaml), and the code samples in
  * spec/code-samples/mp-api.
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -9,7 +9,7 @@ import { dirname } from "node:path";
 import yaml from "yaml";
 import { addCodeSamples } from "./code-samples/inject";
 
-const SOURCE = "spec/management-api-v3.yaml";
+const SOURCE = "spec/mp.yaml";
 const SAMPLES = "spec/code-samples/mp-api";
 const OUT = "src/generated/mp.openapi.yaml";
 

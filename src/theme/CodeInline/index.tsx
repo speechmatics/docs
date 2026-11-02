@@ -7,7 +7,7 @@ import React, { type ReactNode } from "react";
 // MDX 1 used to have a inlineCode comp, see https://mdxjs.com/migrating/v2/
 export default function CodeInline(props: Props): ReactNode {
   return (
-    <Code asChild color="gray" highContrast>
+    <Code asChild variant="outline" color="gray">
       {/* Infima's leftover `code` styles are unset for every .rt-Code in reset.css */}
       <code {...props} />
     </Code>

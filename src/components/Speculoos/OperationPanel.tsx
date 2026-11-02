@@ -156,9 +156,6 @@ export function OperationPanel({ entry }: { entry: ApiEntry }): ReactNode {
     <Box>
       {samples.length > 0 && (
         <Box mb="5">
-          <Heading as="h3" size="5" mb="3">
-            Request
-          </Heading>
           <Tabs groupId="code-sample-language">
             {samples.map((sample) => {
               const lang = sample.lang.toLowerCase();

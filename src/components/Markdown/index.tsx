@@ -1,9 +1,9 @@
 import React, { type ComponentType } from "react";
 
+import MDXComponents from "@theme/MDXComponents";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import MDXComponents from "@theme/MDXComponents";
 import remarkAdmonition from "./remark-admonition";
 
 /**
