@@ -47,5 +47,5 @@ export default [
         dirName: "api-ref/management",
       },
     ],
-  }
+  },
 ] as const;
