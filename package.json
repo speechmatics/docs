@@ -21,7 +21,8 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "spellcheck": "npx cspell **/*.md **/*.mdx",
-    "sync-redirects": "tsx scripts/redirects/sync-redirects.ts"
+    "sync-redirects": "tsx scripts/redirects/sync-redirects.ts",
+    "test:code-samples": "npm run build:jobs-spec && tsx scripts/generate-openapi.ts batch static/batch.yaml && tsx scripts/generate-mp-openapi.ts && tsx scripts/test-code-samples.ts"
   },
   "dependencies": {
     "@docusaurus/core": "^3.9.2",
@@ -51,13 +52,18 @@
     "@docusaurus/module-type-aliases": "^3.9.2",
     "@docusaurus/tsconfig": "^3.9.2",
     "@docusaurus/types": "^3.9.2",
+    "@speechmatics/batch-client": "^5.4.2",
     "@types/mixpanel-browser": "^2.60.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^2.1.1",
     "cspell": "^8.17.3",
     "dotenv": "^17.2.0",
     "dotenv-cli": "^9.0.0",
+    "jsonpath-plus": "^10.3.0",
     "npm-run-all": "^4.1.5",
     "raw-loader": "^4.0.2",
     "rimraf": "^6.0.1",
+    "swagger2openapi": "^7.0.8",
     "tsx": "^4.19.4",
     "typescript": "~5.6.2",
     "yaml": "^2.8.0"
