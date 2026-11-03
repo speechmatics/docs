@@ -8,11 +8,11 @@ import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
 import Admonition from '@theme/Admonition';
 import CodeBlock from '@theme/CodeBlock'
-import SchemaNode from '@theme/Schema'
+import { Schema } from "@site/src/components/Speculoos";
 import HTTPMethodBadge from '@site/src/theme/HTTPMethodBadge'
 import checkJobStatusUnixSample from './assets/check-job-status.sh'
 import checkMultipleJobsStatusUnixSample from './assets/check-multiple-jobs-status.sh'
-import batchSchema from "!openapi-schema-loader!@site/spec/batch.yaml"
+import batch from "@site/src/generated/batch.ir.json";
 import transcriptResponseExample from "./assets/transcript-response-example.json?raw"
 import { HelpCircle, BookOpen, FileAudio, Clock } from "lucide-react"
 import { Card, Link, Text, Flex, Button, Box, Grid } from '@radix-ui/themes'
@@ -109,7 +109,7 @@ A deleted job is not included in the list unless you request it explicitly, as d
 
 ## Load and process the transcript
 
-The transcript endpoint returns plain text, JSON, or SRT. Request the format using the `format` query parameter. See the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#request).
+The transcript endpoint returns plain text, JSON, or SRT. Request the format using the `format` query parameter. See the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job).
 
 A few useful things to know about transcript formats:
 
@@ -124,9 +124,7 @@ Like the job status endpoint, this endpoint applies a short default wait. Pass t
 
 Below is the schema for the transcript response when using the default JSON format.
 
-Refer to the [API reference](/api-ref/batch/get-the-transcript-for-a-transcription-job#responses) for further details.
-
-<SchemaNode schema={batchSchema.paths["/jobs/{jobid}/transcript"].get.responses["200"].schema} />
+<Schema ir={batch} type="RetrieveTranscriptResponse" />
 
 ### Example response
 
@@ -196,7 +194,7 @@ The metadata object can contain the following properties:
 
 ### `tracking`
 
-<SchemaNode schema={batchSchema.definitions.TrackingData} />
+<Schema ir={batch} type="TrackingData" />
 
 For example:
 

@@ -16,9 +16,3 @@
 @import "./search-bar.css";
 @import "./markdown.css";
 @import "./screenshot.css";
-
-/* OpenAPI docs plugin customization */
-.radix-themes .openapi-explorer__form-item-input {
-  background-color: var(--gray-1);
-  border-color: var(--gray-4);
-}

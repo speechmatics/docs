@@ -3,30 +3,12 @@ import type {
   SidebarItemsGeneratorOption,
 } from "@docusaurus/plugin-content-docs/src/sidebars/types.js";
 
-// Only include these endpoints in the sidebar, even though more exist in the spec
-// TODO: Investigate this requirement. It would be ideal if we could either
-// 1. Include all spec endpoints in the site, or
-// 2. Remove irrelevant endpoints from the spec
-const batchAPIPaths = [
-  "/jobs",
-  "/jobs/{jobid}",
-  "/jobs/{jobid}/transcript",
-  "/usage",
-];
-
 export const sidebarItemsGenerator: SidebarItemsGeneratorOption = async ({
   defaultSidebarItemsGenerator,
   ...args
 }) => {
   const docs = args.docs
     .filter((doc) => {
-      const isBatchDoc = (
-        doc.frontMatter.info_path as string | undefined
-      )?.startsWith("api-ref/batch/");
-      if (doc.frontMatter.api_path && isBatchDoc) {
-        return batchAPIPaths.includes(doc.frontMatter.api_path as string);
-      }
-      // TODO we can also filter schema docs we don't want here.
       if (doc.frontMatter.sidebar_exclude) {
         return false;
       }

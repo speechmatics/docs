@@ -22,10 +22,46 @@ info:
 
 servers:
   default:
-    host: global.rt.speechmatics.com/v2/agent
+    host: global.rt.speechmatics.com
+    pathname: /v2/agent
     protocol: wss
     protocolVersion: v13 (RFC 6455)
-    description: Agent STT server
+    description: |
+      Routes each connection to the nearest region, for the lowest latency. To keep data in one region instead, connect to that region's endpoint, such as `wss://eu.rt.speechmatics.com/v2/agent`. See [Supported endpoints](/get-started/authentication#supported-endpoints).
+    # Any one of these authenticates the connection.
+    security:
+      - $ref: "#/components/securitySchemes/apiKey"
+      - $ref: "#/components/securitySchemes/temporaryKey"
+
+# The one channel: the WebSocket connection. Its description heads the API
+# reference page.
+channel:
+  id: agent
+  title: Agent STT
+  description: |
+    Transcribe a conversation as it happens, for a voice agent, over one WebSocket connection. Open the connection and send `StartRecognition`, then stream audio as binary messages. Every other message is a JSON object that names itself in its `message` field.
+
+    Three groups of server messages carry the conversation itself, and are the ones your agent logic acts on:
+
+    | Group | Messages | What they mean |
+    | --- | --- | --- |
+    | Speech signals | `SpeechStarted`, `SpeechEnded` | Voice activity. Sent in `vad` mode only, and not turn boundaries — a mid-sentence pause ends speech without ending the turn. |
+    | Segments | `AddPartialSegment`, `AddSegment` | The transcript. Each partial is a snapshot that replaces the last; `AddSegment` is final and will not change. |
+    | Turn signals | `StartOfTurn`, `EndOfTurn` | Where a speaker's turn starts and ends. `EndOfTurn` is the turn's last message, and the cue for your agent to respond. |
+
+    Pass `AddSegment` downstream to your LLM, and use `AddPartialSegment` only for display. The other server messages manage the session rather than the conversation.
+
+securitySchemes:
+  apiKey:
+    type: http
+    scheme: bearer
+    description: Your [API key](/get-started/authentication), for server-side connections.
+  temporaryKey:
+    type: httpApiKey
+    name: jwt
+    in: query
+    description: |
+      A Realtime (`type=rt`) [temporary key](/get-started/authentication#temporary-keys), for connections from a browser, which cannot set the `Authorization` header — and should not hold your long-lived API key. For example, `wss://global.rt.speechmatics.com/v2/agent?jwt=<temporary-key>`.
 
 # Fields the source JSON Schema carries that we do not want to document. They
 # are dropped from the generated document, along with any `anyOf` branch or
@@ -40,10 +76,10 @@ descriptions:
   TranscriptionConfig:
     model: The model to use for transcription. Agent STT is powered by `linden-1`.
 
-# Messages absent from the source JSON Schema, because they are not JSON.
-# `after` places the message in the channel, following the named message.
+# Messages absent from the source JSON Schema, because they are not JSON, by
+# who sends them. `after` places the message after the named one.
 extraMessages:
-  publish:
+  client:
     AddAudio:
       after: StartRecognition
       summary: A binary chunk of audio. The server confirms receipt by sending an AudioAdded message.
