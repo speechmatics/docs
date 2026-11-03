@@ -1,13 +1,13 @@
-import React, {type ReactNode} from 'react';
-import {Tooltip} from '@radix-ui/themes';
-import {WrapTextIcon} from 'lucide-react';
-import {translate} from '@docusaurus/Translate';
-import {useCodeBlockContext} from '@docusaurus/theme-common/internal';
-import Button from '@theme/CodeBlock/Buttons/Button';
-import type {Props} from '@theme/CodeBlock/Buttons/WordWrapButton';
+import { translate } from "@docusaurus/Translate";
+import { useCodeBlockContext } from "@docusaurus/theme-common/internal";
+import { Tooltip } from "@radix-ui/themes";
+import Button from "@theme/CodeBlock/Buttons/Button";
+import type { Props } from "@theme/CodeBlock/Buttons/WordWrapButton";
+import { WrapTextIcon } from "lucide-react";
+import React, { type ReactNode } from "react";
 
-export default function WordWrapButton({className}: Props): ReactNode {
-  const {wordWrap} = useCodeBlockContext();
+export default function WordWrapButton({ className }: Props): ReactNode {
+  const { wordWrap } = useCodeBlockContext();
 
   const canShowButton = wordWrap.isEnabled || wordWrap.isCodeScrollable;
   if (!canShowButton) {
@@ -15,10 +15,10 @@ export default function WordWrapButton({className}: Props): ReactNode {
   }
 
   const title = translate({
-    id: 'theme.CodeBlock.wordWrapToggle',
-    message: 'Toggle word wrap',
+    id: "theme.CodeBlock.wordWrapToggle",
+    message: "Toggle word wrap",
     description:
-      'The title attribute for toggle word wrapping button of code block lines',
+      "The title attribute for toggle word wrapping button of code block lines",
   });
 
   return (
@@ -27,7 +27,8 @@ export default function WordWrapButton({className}: Props): ReactNode {
         onClick={() => wordWrap.toggle()}
         className={className}
         aria-label={title}
-        aria-pressed={wordWrap.isEnabled}>
+        aria-pressed={wordWrap.isEnabled}
+      >
         <WrapTextIcon size={16} aria-hidden="true" />
       </Button>
     </Tooltip>

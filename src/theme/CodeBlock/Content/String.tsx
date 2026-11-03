@@ -1,16 +1,16 @@
-import React, {useEffect, useRef, type ReactNode} from 'react';
-import {useThemeConfig} from '@docusaurus/theme-common';
+import { useThemeConfig } from "@docusaurus/theme-common";
 import {
   CodeBlockContextProvider,
   type CodeBlockMetadata,
   createCodeBlockMetadata,
   useCodeWordWrap,
-} from '@docusaurus/theme-common/internal';
-import type {Props} from '@theme/CodeBlock/Content/String';
-import CodeBlockLayout from '@theme/CodeBlock/Layout';
+} from "@docusaurus/theme-common/internal";
+import type { Props } from "@theme/CodeBlock/Content/String";
+import CodeBlockLayout from "@theme/CodeBlock/Layout";
+import React, { useEffect, useRef, type ReactNode } from "react";
 
 function useCodeBlockMetadata(props: Props): CodeBlockMetadata {
-  const {prism} = useThemeConfig();
+  const { prism } = useThemeConfig();
   return createCodeBlockMetadata({
     code: props.children,
     className: props.className,
@@ -25,11 +25,11 @@ function useCodeBlockMetadata(props: Props): CodeBlockMetadata {
 
 // Opt in with `<CodeBlock wrap>` or a `wrap` flag in a code fence's metastring.
 // Titles are stripped first so `title="wrap"` doesn't count.
-function shouldWrap(props: Props & {wrap?: boolean}): boolean {
+function shouldWrap(props: Props & { wrap?: boolean }): boolean {
   if (props.wrap) {
     return true;
   }
-  const metastring = props.metastring?.replace(/title=(["']).*?\1/, '') ?? '';
+  const metastring = props.metastring?.replace(/title=(["']).*?\1/, "") ?? "";
   return /(?:^|\s)wrap(?=\s|$)/.test(metastring);
 }
 

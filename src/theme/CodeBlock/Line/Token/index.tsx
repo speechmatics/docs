@@ -1,5 +1,5 @@
-import React, {type ReactNode} from 'react';
-import type {Props} from '@theme/CodeBlock/Line/Token';
+import type { Props } from "@theme/CodeBlock/Line/Token";
+import React, { type ReactNode } from "react";
 
 // Pass-through components that users can swizzle and customize
 export default function CodeBlockLineToken({
