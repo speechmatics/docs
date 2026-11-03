@@ -1,25 +1,31 @@
-import React, {type ComponentProps, type ReactNode} from 'react';
+import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
+import {Card, type CardProps} from '@radix-ui/themes';
 import {ThemeClassNames, usePrismTheme} from '@docusaurus/theme-common';
 import {getPrismCssVariables} from '@docusaurus/theme-common/internal';
-import styles from './styles.module.css';
 
-export default function CodeBlockContainer<T extends 'div' | 'pre'>({
+type Props = Omit<CardProps, 'asChild'> & {
+  as: 'div' | 'pre';
+};
+
+// Card merges its props, classes and styles onto the child element via
+// `asChild`, so the element type never has to be generic over its props.
+export default function CodeBlockContainer({
   as: As,
+  children,
+  className,
+  style,
   ...props
-}: {as: T} & ComponentProps<T>): ReactNode {
+}: Props): ReactNode {
   const prismTheme = usePrismTheme();
   const prismCssVariables = getPrismCssVariables(prismTheme);
   return (
-    <As
-      // Polymorphic components are hard to type, without `oneOf` generics
-      {...(props as any)}
-      style={prismCssVariables}
-      className={clsx(
-        props.className,
-        styles.codeBlockContainer,
-        ThemeClassNames.common.codeBlock,
-      )}
-    />
+    <Card
+      asChild
+      mb="4"
+      {...props}
+      style={{...prismCssVariables, ...style}}>
+      <As>{children}</As>
+    </Card>
   );
 }
