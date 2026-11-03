@@ -110,5 +110,9 @@
   {
     "source": "/voice-agents/overview",
     "destination": "/speech-to-text/agent-stt"
+  },
+  {
+    "source": "/api-ref/management/post-a-new-project",
+    "destination": "/api-ref/management/create-a-project"
   }
 ]
