@@ -53,7 +53,14 @@ export default function CodeBlockContent({
   const {code, language, lineNumbersStart, lineClassNames} = metadata;
   return (
     <Highlight theme={prismTheme} code={code} language={language}>
-      {({className, style, tokens: lines, getLineProps, getTokenProps}) => (
+      {({
+        className,
+        // Drop the Prism theme background so the Card surface shows through
+        style: {backgroundColor, ...style},
+        tokens: lines,
+        getLineProps,
+        getTokenProps,
+      }) => (
         <Pre
           ref={wordWrap.codeBlockRef}
           className={clsx(classNameProp, className)}

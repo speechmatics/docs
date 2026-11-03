@@ -1,5 +1,6 @@
 .codeBlock {
-  --ifm-pre-background: var(--prism-background-color);
+  /* Let the Card surface show through instead of Infima's pre background */
+  background: none;
   margin: 0;
   padding: 0;
 }

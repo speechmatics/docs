@@ -24,7 +24,8 @@ export default function CodeBlockContainer({
       asChild
       mb="4"
       {...props}
-      style={{...prismCssVariables, ...style}}>
+      style={{...prismCssVariables, ...style}}
+      className={clsx(className, ThemeClassNames.common.codeBlock)}>
       <As>{children}</As>
     </Card>
   );
