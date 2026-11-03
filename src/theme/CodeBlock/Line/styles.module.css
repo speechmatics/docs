@@ -1,11 +1,6 @@
-/* Intentionally has zero specificity, so that to be able to override
-the background in custom CSS file due bug https://github.com/facebook/docusaurus/issues/3678 */
+/* Zero specificity so the colour stays easy to override */
 :where(:root) {
-  --docusaurus-highlighted-code-line-bg: rgb(72 77 91);
-}
-
-:where([data-theme='dark']) {
-  --docusaurus-highlighted-code-line-bg: rgb(100 100 100);
+  --docusaurus-highlighted-code-line-bg: var(--gray-3);
 }
 
 :global(.theme-code-block-highlighted-line) {
@@ -27,7 +22,8 @@ the background in custom CSS file due bug https://github.com/facebook/docusaurus
   position: sticky;
   left: 0;
   padding: 0 var(--ifm-pre-padding);
-  background: var(--ifm-pre-background);
+  /* Solid so code scrolling underneath stays hidden */
+  background: var(--color-panel-solid);
   overflow-wrap: normal;
 }
 

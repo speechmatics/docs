@@ -1,6 +1,7 @@
 .codeBlock {
   /* Let the Card surface show through instead of Infima's pre background */
   background: none;
+  max-height: 65svh;
   margin: 0;
   padding: 0;
 }
