@@ -1,13 +1,13 @@
 // This example transcribes a file in NodeJS.
 // For examples in other environments, see the link above
 
-import { openAsBlob } from "node:fs"; //
-import { BatchClient } from "@speechmatics/batch-client"; //
+import { openAsBlob } from "node:fs";
+import { BatchClient } from "@speechmatics/batch-client";
 
 const client = new BatchClient({
   apiKey: YOUR_API_KEY,
   appId: "nodeJS-example",
-}); //
+});
 
 console.log("Sending file for transcription...");
 
