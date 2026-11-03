@@ -1,5 +1,6 @@
 import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
+import {Flex} from '@radix-ui/themes';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 
 import CopyButton from '@theme/CodeBlock/Buttons/CopyButton';
@@ -15,10 +16,15 @@ export default function CodeBlockButtons({className}: Props): ReactNode {
   return (
     <BrowserOnly>
       {() => (
-        <div className={clsx(className, styles.buttonGroup)}>
+        <Flex
+          position="absolute"
+          top="2"
+          right="2"
+          gap="1"
+          className={clsx(className, styles.buttonGroup)}>
           <WordWrapButton />
           <CopyButton />
-        </div>
+        </Flex>
       )}
     </BrowserOnly>
   );

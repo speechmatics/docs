@@ -1,12 +1,19 @@
 import React, {type ReactNode} from 'react';
-import clsx from 'clsx';
-import type {Props} from '@theme/CodeBlock/Buttons/Button';
+import {IconButton, type IconButtonProps} from '@radix-ui/themes';
 
-export default function CodeBlockButton({
-  className,
-  ...props
-}: Props): ReactNode {
+type Props = Omit<IconButtonProps, 'asChild'>;
+
+// Toggle buttons pass `aria-pressed`; the pressed state picks up the accent
+// colour so the visual state always matches what assistive tech announces.
+export default function CodeBlockButton(props: Props): ReactNode {
+  const pressed = props['aria-pressed'] === true;
   return (
-    <button type="button" {...props} className={clsx('clean-btn', className)} />
+    <IconButton
+      type="button"
+      size="2"
+      variant="surface"
+      color={pressed ? undefined : 'gray'}
+      {...props}
+    />
   );
 }
