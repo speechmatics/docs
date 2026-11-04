@@ -67,8 +67,6 @@ paths:
         - **Temporary key** — a short-lived key that expires automatically. Set `ttl` to the lifetime in seconds. Use temporary keys to authenticate end-user requests without exposing a long-lived key.
 
         A long-lived API key can create only temporary keys. Creating a permanent key needs a [management token](/administration/management-tokens).
-
-        The `au` region supports Batch only, so it cannot be combined with `type=rt`.
       parameters:
         - name: type
           in: query
