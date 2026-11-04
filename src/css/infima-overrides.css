@@ -116,7 +116,6 @@ html[data-theme="dark"] {
   --default-font-family: "DM Sans", sans-serif;
   --ifm-font-family-base: var(--default-font-family);
 
-  --docusaurus-highlighted-code-line-bg: var(--gray-4);
   --docusaurus-details-decoration-color: var(--gray-11);
 }
 

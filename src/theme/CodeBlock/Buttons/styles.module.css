@@ -1,0 +1,16 @@
+/* Reveal the buttons on hover or keyboard focus; always show on touch devices */
+.buttonGroup {
+  opacity: 0;
+  transition: opacity 100ms ease-in-out;
+}
+
+:global(.theme-code-block:hover) .buttonGroup,
+.buttonGroup:focus-within {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .buttonGroup {
+    opacity: 1;
+  }
+}
