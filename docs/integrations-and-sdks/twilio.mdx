@@ -135,13 +135,13 @@ With the proxy running, dial your Twilio number from any phone.
 <TabItem value="python" label="Python">
 
 ```text
-[twilio] incoming Media Streams connection
-[twilio] protocol handshake ok
-[twilio] call started - stream=MZxxx... call=CAxxx... tracks=['inbound', 'outbound']
-[inbound ] Hello there. How are you doing today?
-[outbound] I'm doing pretty well thanks.
-[twilio] call stopped (stream=MZxxx...)
+[outbound] This call is being transcribed.
+[inbound ] Hello. Can you hear me?
+[outbound] Hey, hey. Yes, loud and clear.
+[inbound ] Awesome.
 ```
+
+Transcripts from the two channels interleave as they arrive, so a closing `.` or `?` can land on a later line.
 
 </TabItem>
 <TabItem value="javascript" label="Node.js">
@@ -175,6 +175,7 @@ Once a call arrives, the proxy has three jobs:
 | Problem | What to try |
 |---|---|
 | **`Missing required env vars in .env: ...`** | Copy `.env.example` to `.env` at the repo root and fill in every listed value. Both languages read the same file. |
+| **`Could not authenticate with Speechmatics: ...`** | The proxy checks your key when it starts and exits if it's rejected, before it opens ngrok or changes your Twilio number. Check `SPEECHMATICS_API_KEY` in `.env`. |
 | **`Twilio number ... not found on this account`** | Check `TWILIO_PHONE_NUMBER` is in E.164 form (leading `+`, country code, no spaces) and belongs to the account whose SID and token you're using. |
 | **Twilio Debugger shows `21219 - 'To' phone number not verified`** | Your Twilio account is in trial mode. Add `FORWARD_TO_NUMBER` at [Verified Caller IDs](https://console.twilio.com/us1/develop/phone-numbers/manage/verified), or upgrade the account. |
 | **The caller hears "an application error has occurred"** | Open the [Twilio Debugger](https://console.twilio.com/us1/monitor/logs/debugger) for the specific error code. Confirm ngrok is still running and the URL in the startup banner matches your number's Voice URL in the Twilio Console. |
