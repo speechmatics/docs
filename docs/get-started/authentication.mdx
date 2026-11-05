@@ -171,7 +171,7 @@ If your Batch temporary key will be exposed to end-users, for example in the bro
 The example request below creates a temporary key which can be used to create and retrieve Batch jobs for 60 seconds. These jobs will be associated with the reference 'USER123':
 
 ```bash
-curl -L -X POST "https://mp.speechmatics.com/v1/api-keys?type=batch" \
+curl -L -X POST "https://mp.speechmatics.com/v1/jwts?type=batch" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $API_KEY" \
      -d '{"ttl": 60, "client_ref": "USER123"}'
@@ -181,7 +181,6 @@ The response JSON looks like this:
 
 ```json
 {
-  "apikey_id": null,
   "key_value": "eyJhbG..."
 }
 ```
@@ -204,7 +203,7 @@ A Realtime temporary key is not tied to a region. The same key works with any Re
 The example request below will create a temporary key which can be used to start any number of Realtime transcription settings for 60 seconds:
 
 ```bash
-curl -L -X POST "https://mp.speechmatics.com/v1/api-keys?type=rt" \
+curl -L -X POST "https://mp.speechmatics.com/v1/jwts?type=rt" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $API_KEY" \
      -d '{"ttl": 60 }'
@@ -225,7 +224,7 @@ An Agent STT temporary key is not tied to a region. The same key works with any 
 The example request below will create a temporary key which can be used to start any number of Agent STT sessions for 60 seconds:
 
 ```bash
-curl -L -X POST "https://mp.speechmatics.com/v1/api-keys?type=rt" \
+curl -L -X POST "https://mp.speechmatics.com/v1/jwts?type=rt" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $API_KEY" \
      -d '{"ttl": 60 }'
@@ -238,6 +237,10 @@ Note that when starting an Agent STT session in the browser, you must provide th
 </Tabs>
 
 ### Temporary key configuration
+
+:::note
+`POST /v1/jwts` replaces the deprecated `POST /v1/api_keys` endpoint. If you still use `/v1/api_keys`, migrate to `/v1/jwts`. The `type` parameter, `ttl`, `client_ref` and `region` work the same way. The response contains only `key_value`, and the key is always issued for the project that owns the API key you authenticate with.
+:::
 
 
 | URL query parameter    | Required | Description                                                                                                                                                                                                                                                                                                                                                      |
