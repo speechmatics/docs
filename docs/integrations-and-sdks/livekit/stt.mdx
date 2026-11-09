@@ -26,7 +26,7 @@ The plugin connects directly to Speechmatics with your own API key. If you would
 Install LiveKit Agents with the Speechmatics and Silero extras:
 
 ```bash
-uv add "livekit-agents[speechmatics,silero]~=1.8.2"
+uv add "livekit-agents[speechmatics,silero]~=1.8.11"
 ```
 
 The default turn detection mode needs a VAD running in your agent, and the plugin loads [Silero](https://docs.livekit.io/agents/build/turns/vad/) when you don't supply one. That is why this command includes the `silero` extra. See [Turn detection modes](#turn-detection-modes).
@@ -79,8 +79,9 @@ The `speechmatics.STT` constructor accepts the following transcription parameter
 | `output_locale` | string \| null | `null` | BCP-47 locale controlling spelling and number formats, for example `"en-GB"` |
 | `domain` | string \| null | `null` | Domain-specific language pack, for example `"finance"` |
 | `include_partials` | boolean | `true` | Emit interim segments that update until the final segment arrives |
+| `emit_sentences` | boolean | `false` | Close a segment at each sentence end, so each sentence arrives as its own final transcript instead of one per turn |
 | `additional_vocab` | array \| null | `null` | `AdditionalVocabEntry` objects biasing recognition towards specific words |
-| `sample_rate` | number | `16000` | Audio sample rate in Hz. Agent STT accepts `16000` only; any other value raises a `ValueError` |
+| `sample_rate` | number | `16000` | Audio sample rate in Hz. Agent STT accepts `8000` and `16000`; any other value raises a `ValueError` |
 | `audio_encoding` | AudioEncoding | `PCM_S16LE` | LiveKit frames are 16-bit PCM and are forwarded unconverted, so any other value raises a `ValueError` |
 
 Every language is global: whichever you select, the model recognizes a range of accents and dialects.
