@@ -743,11 +743,7 @@ definitions:
       operating_point:
         $ref: "#/definitions/OperatingPoint"
         description: |-
-          Specify an operating point to use.
-          Operating points change the transcription process in a high level way, such as altering the acoustic model.
-          The default is `standard`.
-            - `standard`:
-            - `enhanced`: transcription will take longer but be more accurate than 'standard'
+          **Deprecated**: Use `model` instead. `operating_point` is left only for backward compatibility.
       additional_vocab:
         type: array
         x-omitempty: true
