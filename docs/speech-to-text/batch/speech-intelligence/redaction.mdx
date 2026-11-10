@@ -1,7 +1,7 @@
 ---
-title: Sensitive data recognition and redaction
+title: Redaction
 sidebar_label: Redaction
-description: "Detect and redact personal, health, and payment card information in Batch transcripts."
+description: "Remove personal, health, and payment card information from Batch transcripts."
 keywords:
   [
     speechmatics,
@@ -10,28 +10,25 @@ keywords:
     pii,
     phi,
     pci,
-    entity detection,
+    gdpr,
+    hipaa,
     sensitive data,
     transcription,
-    speech recognition,
   ]
 ---
 import CodeBlock from '@theme/CodeBlock'
 
 import redactionPythonSample from "./assets/redaction.py"
 
-# Sensitive data recognition and redaction
+# Redaction
 
-Speechmatics can find sensitive data in a Batch transcript, such as names, dates of birth, health conditions, and credit card numbers. You can use two features together or on their own:
+Redaction removes sensitive data, such as names, dates of birth, health conditions, and credit card numbers, from a Batch transcript. Each redacted value is replaced with a label for its entity class, such as `[name_given]`.
 
-- **Recognition** labels each sensitive value in the JSON transcript with its entity class.
-- **Redaction** replaces each sensitive value with a label, such as `[name_given]`, throughout the transcript.
+Redaction is available for Batch transcription in Speechmatics SaaS, on all [models](/speech-to-text/models). It is not available in Realtime or on-prem deployments.
 
-Recognition and redaction are available for Batch transcription in Speechmatics SaaS. They are not available in Realtime or on-prem deployments.
+## Enable redaction
 
-## Redact sensitive data
-
-To redact sensitive data, set `enable_redaction` to `true` and list the [entity classes](#entity-classes) to redact in `redaction_config.entity_classes`:
+To enable redaction, set `enable_redaction` to `true` and list what to redact in `redaction_config.entity_classes`:
 
 ```json
 {
@@ -40,19 +37,48 @@ To redact sensitive data, set `enable_redaction` to `true` and list the [entity 
     "language": "en",
     "enable_redaction": true,
     "redaction_config": {
-      "entity_classes": ["pii", "pci", "health"]
+      "entity_classes": ["gdpr"]
     }
   }
 }
 ```
 
-This Python example submits a job with redaction enabled and prints the redacted JSON transcript:
+This Python example submits a job with redaction enabled and prints the redacted results:
 
 <CodeBlock language="python">
   {redactionPythonSample}
 </CodeBlock>
 
-For the utterance "Mark was born on the 17th of January 2002.", the redacted JSON transcript looks like this (timings omitted):
+## Choose what to redact
+
+Each value in `redaction_config.entity_classes` is either an entity class group or a specific entity class. You can mix both in one list. Start with the regulation group that matches your compliance requirements, then add or remove specific entity classes to match your own data handling guidelines.
+
+- **Regulation groups**: `gdpr`, `gdpr_sensitive`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi`, and `appi_sensitive`. Each covers the entity classes a regulation treats as personal or sensitive data.
+- **Data type groups**: `health` (protected health information), `pci` (payment card information), and `pii` (personally identifiable information).
+- **Specific entity classes**: for example `name_given`, `dob`, or `credit_card`. A general class such as `name` or `location` also redacts its subclasses, such as `name_given` or `location_city`.
+
+`pii` is broad. It covers every class in the [PII table](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes#personally-identifiable-information-pii), including dates, times, amounts of money, and organization names, so it redacts much more than the values that identify a person. Use it only when you want all of these removed.
+
+For example, this configuration redacts everything covered by GDPR, plus given names and credit card numbers:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "enable_redaction": true,
+    "redaction_config": {
+      "entity_classes": ["gdpr", "name_given", "credit_card"]
+    }
+  }
+}
+```
+
+For every entity class and the groups that include it, see [Sensitive entity classes](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes).
+
+## Redacted output
+
+For the utterance "Mark was born on the 25th of July 2000.", the redacted JSON transcript looks like this (timings omitted):
 
 ```json
 {
@@ -70,226 +96,17 @@ For the utterance "Mark was born on the 17th of January 2002.", the redacted JSO
 
 Redaction removes the original values throughout the JSON transcript.
 
-## Recognize sensitive data
+## Use redaction with sensitive data recognition
 
-To recognize sensitive data without redacting it, set `enable_entities` to `true` and `entities_config.detect_advanced_entities` to `true`:
+Redaction works on its own. To also label each detected value with its entity class, enable [sensitive data recognition](/speech-to-text/batch/speech-intelligence/sensitive-data-recognition) in the same job. Redacted values are then returned as `entity` results with an `entity_class`.
 
-```json
-{
-  "type": "transcription",
-  "transcription_config": {
-    "language": "en",
-    "enable_entities": true,
-    "entities_config": {
-      "detect_advanced_entities": true
-    }
-  }
-}
-```
+If `enable_entities` is `true` in a job with redaction, `entities_config.detect_advanced_entities` must also be `true`. Otherwise, the job is rejected. Redaction can't be combined with [smart formatting entities](/speech-to-text/formatting#smart-formatting).
 
-Each recognized value appears in the JSON transcript as a result with `type` set to `entity` and an `entity_class`:
+When redaction is enabled, the transcript has no `spoken_form` or `written_form`.
 
-```json
-{
-  "results": [
-    {
-      "type": "entity",
-      "entity_class": "name_given",
-      "alternatives": [{ "content": "Mark", "speaker": "S1" }]
-    },
-    { "type": "word", "alternatives": [{ "content": "was", "speaker": "S1" }] },
-    { "type": "word", "alternatives": [{ "content": "born", "speaker": "S1" }] },
-    { "type": "word", "alternatives": [{ "content": "on", "speaker": "S1" }] },
-    { "type": "word", "alternatives": [{ "content": "the", "speaker": "S1" }] },
-    {
-      "type": "entity",
-      "entity_class": "dob",
-      "alternatives": [{ "content": "17th of January 2002", "speaker": "S1" }]
-    },
-    { "type": "punctuation", "alternatives": [{ "content": ".", "speaker": "S1" }] }
-  ]
-}
-```
+## Supported languages for redaction
 
-## Recognize and redact sensitive data
-
-To label every recognized value and redact the selected classes, combine both configurations:
-
-```json
-{
-  "type": "transcription",
-  "transcription_config": {
-    "language": "en",
-    "enable_entities": true,
-    "entities_config": {
-      "detect_advanced_entities": true
-    },
-    "enable_redaction": true,
-    "redaction_config": {
-      "entity_classes": ["pii", "pci", "health"]
-    }
-  }
-}
-```
-
-Redacted values keep their `entity` type and `entity_class`, with the content replaced by the label:
-
-```json
-{
-  "results": [
-    {
-      "type": "entity",
-      "entity_class": "name_given",
-      "alternatives": [{ "content": "[name_given]", "speaker": "S1" }]
-    },
-    { "type": "word", "alternatives": [{ "content": "was", "speaker": "S1" }] },
-    { "type": "word", "alternatives": [{ "content": "born", "speaker": "S1" }] },
-    { "type": "word", "alternatives": [{ "content": "on", "speaker": "S1" }] },
-    { "type": "word", "alternatives": [{ "content": "the", "speaker": "S1" }] },
-    {
-      "type": "entity",
-      "entity_class": "dob",
-      "alternatives": [{ "content": "[dob]", "speaker": "S1" }]
-    },
-    { "type": "punctuation", "alternatives": [{ "content": ".", "speaker": "S1" }] }
-  ]
-}
-```
-
-## Configuration rules for recognition and redaction
-
-A job that breaks these rules is rejected with a `400` error:
-
-- `entities_config` requires `enable_entities: true`.
-- `enable_redaction: true` requires `redaction_config.entity_classes` with at least one value, and no duplicates.
-- `redaction_config` is only allowed when `enable_redaction` is `true`.
-- If both `enable_redaction` and `enable_entities` are `true`, `entities_config.detect_advanced_entities` must also be `true`.
-
-For example, this configuration enables redaction with the default entity detection:
-
-```json
-{
-  "type": "transcription",
-  "transcription_config": {
-    "language": "en",
-    "enable_entities": true,
-    "enable_redaction": true,
-    "redaction_config": {
-      "entity_classes": ["pii", "pci", "health"]
-    }
-  }
-}
-```
-
-The job is rejected with this error:
-
-```json
-{
-  "code": 400,
-  "error": "Invalid config",
-  "detail": "enable_redaction requires advanced entity detection. When redaction is enabled, enable_entities must be false, or entities_config.detect_advanced_entities must be set to true."
-}
-```
-
-When recognition or redaction is enabled, the transcript has no `spoken_form` or `written_form`, and the [smart formatting entity classes](/speech-to-text/formatting#entity-classes) (`cardinal`, `decimal`, `fraction`, `ordinal`, `percentage`, `span`, `measurement`) are not returned.
-
-## Entity classes
-
-Each value in `redaction_config.entity_classes` is either a group or a specific entity class. You can mix groups and entity classes in one list. A general class such as `name` or `location` also covers its more specific classes, such as `name_given` or `location_city`.
-
-### Entity class groups
-
-| Group | Covers |
-|---|---|
-| `pii` | Personally identifiable information |
-| `pci` | Payment card information |
-| `health` | Protected health information |
-| `gdpr` | Personal data under the EU General Data Protection Regulation |
-| `gdpr_sensitive` | Special categories of personal data under GDPR |
-| `hipaa_safe_harbor` | Identifiers under the HIPAA Safe Harbor method |
-| `cpra` | Personal information under the California Privacy Rights Act |
-| `quebec_privacy_act` | Personal information under Quebec's privacy law (Law 25) |
-| `appi` | Personal information under Japan's Act on the Protection of Personal Information |
-| `appi_sensitive` | Special care-required personal information under APPI |
-
-### Personally identifiable information (PII)
-
-| Entity class | Description | Example |
-|---|---|---|
-| `account_number` | Customer account or membership identification number | Member ID: HZ-5235-001 |
-| `age` | Numbers associated with an individual's age | 27 years old |
-| `date` | Specific calendar dates, including days of the week, months, or years | Friday, Dec. 18, 2002 |
-| `date_interval` | Broader time periods, including date ranges, months, seasons, years, and decades | 5–9 May |
-| `dob` | Dates of birth | Born March 7, 1961 |
-| `driver_license` | Driver's permit numbers | DL# 134711-320 |
-| `duration` | Periods of time, specified as a number and a unit of time | 8 months |
-| `email_address` | Email addresses | support@speechmatics.com |
-| `event` | Names of events or holidays | Olympics |
-| `filename` | Names of computer files, including the extension or file path | brad-tax-returns.pdf |
-| `gender` | Terms indicating gender identity | female |
-| `healthcare_number` | Healthcare numbers and health plan beneficiary numbers | Policy No. 5584-486-674-YM |
-| `ip_address` | IPv4 and IPv6 addresses | 192.168.0.1 |
-| `language` | Names of natural languages | Korean |
-| `location` | Any named location; covers the `location_*` classes | Lake Victoria |
-| `location_address` | Full or partial mailing addresses | 25/300 Adelaide T., Perth WA 6000 |
-| `location_address_street` | Building number and street name, including unit or floor numbers | 25/300 Adelaide T. |
-| `location_city` | Municipality names, including villages, towns, and cities | Toronto |
-| `location_coordinate` | Latitude, longitude, or elevation coordinates | 40.748440, -73.984559 |
-| `location_country` | Country names | Namibia |
-| `location_state` | State, province, territory, or prefecture names | Ontario |
-| `location_zip` | Zip codes and postcodes | B2N 3E3 |
-| `marital_status` | Terms indicating marital status | married |
-| `money` | Names or amounts of currency | $94.50 |
-| `name` | Names of individuals, without personal titles; covers `name_given` and `name_family` | Dwayne Johnson |
-| `name_family` | Family names, often a last name in Western cultures | Johnson |
-| `name_given` | Given names, often a first or middle name in Western cultures | Dwayne |
-| `name_medical_professional` | Full names of medical professionals, including titles | Dr. Kay Martinez, MD |
-| `numerical_pii` | Numerical or alphanumeric PII not covered by other classes, such as order or tracking numbers | — |
-| `occupation` | Job titles or professions | engineer |
-| `organization` | Names of organizations or departments | LAPD |
-| `organization_id` | Organization identification numbers | — |
-| `organization_medical_facility` | Names of medical facilities, such as hospitals and clinics | Northwest General Hospital |
-| `origin` | Terms indicating nationality, ethnicity, or provenance | Canadian |
-| `passport_number` | Passport numbers | PA4568332 |
-| `password` | Passwords, PINs, access keys, or verification answers | My mother's maiden name is Smith |
-| `phone_number` | Telephone or fax numbers | 0115 957 1512 |
-| `physical_attribute` | Distinctive bodily attributes, including terms indicating race | I'm 190cm tall |
-| `political_affiliation` | Political parties, movements, or ideologies | Republican |
-| `religion` | Terms indicating religious affiliation | Presbyterian |
-| `sexuality` | Terms indicating sexual orientation | bisexual |
-| `ssn` | Social Security Numbers or equivalent government identification numbers | 078-05-1120 |
-| `ssn_in_aadhaar` | Aadhaar numbers | — |
-| `time` | Clock times | 10pm EST |
-| `url` | Internet addresses | www.speechmatics.com |
-| `username` | Usernames, login names, or handles | @Speechmatics |
-| `vehicle_id` | Vehicle identification numbers and license plates | BIF7547 |
-| `zodiac_sign` | Names of zodiac signs | Aries |
-
-### Protected health information (PHI)
-
-| Entity class | Description | Example |
-|---|---|---|
-| `blood_type` | Blood types | type AB positive |
-| `condition` | Medical conditions, diseases, syndromes, and disorders | arrhythmia |
-| `dose` | Prescribed quantity of a medication | 700 mg/day |
-| `drug` | Medications, vitamins, and supplements | acetaminophen |
-| `injury` | Bodily injuries, including dislocations | sprained wrist |
-| `medical_process` | Treatments, procedures, and tests | CT scan |
-| `statistics` | Medical statistics | 18% of patients |
-
-### Payment card information (PCI)
-
-| Entity class | Description | Example |
-|---|---|---|
-| `bank_account` | Bank account numbers, including IBAN | Acct. No. 012345-67 |
-| `credit_card` | Credit card numbers | 0123 0123 0123 0123 |
-| `credit_card_expiration` | Credit card expiration dates | Exp: 02/28 |
-| `cvv` | 3- or 4-digit card verification codes | CVV: 080 |
-| `routing_number` | Bank routing numbers | 012345678 |
-
-## Supported languages for recognition and redaction
-
-Recognition and redaction support all [transcription languages](/speech-to-text/languages#transcription-languages), except:
+Redaction supports all [transcription languages](/speech-to-text/languages#transcription-languages), except:
 
 - Bashkir
 - Basque
@@ -304,10 +121,10 @@ Recognition and redaction support all [transcription languages](/speech-to-text/
 - Uyghur
 - Welsh
 
-For Mandarin, recognition and redaction support Simplified characters only.
+For Mandarin, use the Simplified [output locale](/speech-to-text/formatting#output-locale) (`cmn-Hans`, the default). Redaction of Traditional characters (`cmn-Hant`) isn't supported yet.
 
 ## Next steps
 
-- Configure [smart formatting](/speech-to-text/formatting#smart-formatting) for numbers, dates, and currencies.
-- Review the [Batch output formats](/speech-to-text/batch/output).
+- Label sensitive data with [sensitive data recognition](/speech-to-text/batch/speech-intelligence/sensitive-data-recognition).
+- Look up every class in [Sensitive entity classes](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes).
 - See all parameters in the [Batch API reference](/api-ref/batch/create-a-new-job).

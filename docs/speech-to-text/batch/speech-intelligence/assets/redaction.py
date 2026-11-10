@@ -18,7 +18,7 @@ conf = {
         "language": LANGUAGE,
         # highlight-start
         "enable_redaction": True,
-        "redaction_config": {"entity_classes": ["pii", "pci", "health"]},
+        "redaction_config": {"entity_classes": ["gdpr"]},
         # highlight-end
     },
 }

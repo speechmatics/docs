@@ -1,0 +1,110 @@
+---
+title: Sensitive data recognition
+sidebar_label: Sensitive data recognition
+description: "Find and label personal, health, and payment card information in Batch transcripts."
+keywords:
+  [
+    speechmatics,
+    batch,
+    entity detection,
+    entity recognition,
+    pii,
+    phi,
+    pci,
+    sensitive data,
+    transcription,
+  ]
+---
+
+# Sensitive data recognition
+
+Sensitive data recognition finds sensitive data in a Batch transcript, such as names, dates of birth, health conditions, and credit card numbers. Each value is returned in the JSON transcript as an `entity` result labeled with its [entity class](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes).
+
+Sensitive data recognition is available for Batch transcription in Speechmatics SaaS, on all [models](/speech-to-text/models). It is not available in Realtime or on-prem deployments.
+
+## Enable sensitive data recognition
+
+To enable sensitive data recognition, set `enable_entities` to `true` and `entities_config.detect_advanced_entities` to `true`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "enable_entities": true,
+    "entities_config": {
+      "detect_advanced_entities": true
+    }
+  }
+}
+```
+
+`entities_config` is only accepted when `enable_entities` is `true`.
+
+## Sensitive data recognition output
+
+For the utterance "Mark was born on the 25th of July 2000.", the JSON transcript looks like this (timings omitted):
+
+```json
+{
+  "results": [
+    {
+      "type": "entity",
+      "entity_class": "name_given",
+      "alternatives": [{ "content": "Mark", "speaker": "S1" }]
+    },
+    { "type": "word", "alternatives": [{ "content": "was", "speaker": "S1" }] },
+    { "type": "word", "alternatives": [{ "content": "born", "speaker": "S1" }] },
+    { "type": "word", "alternatives": [{ "content": "on", "speaker": "S1" }] },
+    { "type": "word", "alternatives": [{ "content": "the", "speaker": "S1" }] },
+    {
+      "type": "entity",
+      "entity_class": "dob",
+      "alternatives": [{ "content": "25th of July 2000", "speaker": "S1" }]
+    },
+    { "type": "punctuation", "alternatives": [{ "content": ".", "speaker": "S1" }] }
+  ]
+}
+```
+
+Each recognized value has `type` set to `entity` and an `entity_class`, such as `name_given` or `dob`. Recognition returns the most specific class that applies. For the full list, see [Sensitive entity classes](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes).
+
+To remove the values instead of labeling them, use [redaction](/speech-to-text/batch/speech-intelligence/redaction). You can enable both in the same job.
+
+## Sensitive data recognition and smart formatting entities
+
+`enable_entities` returns one of two kinds of entities:
+
+| | Smart formatting entities | Sensitive data recognition |
+|---|---|---|
+| Configuration | `enable_entities: true` | `enable_entities: true` and `entities_config.detect_advanced_entities: true` |
+| Entity classes | `cardinal`, `date`, `money`, `percentage`, and other [smart formatting classes](/speech-to-text/formatting#entity-classes) | [Sensitive entity classes](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes), such as `name_given`, `dob`, and `credit_card` |
+| `spoken_form` and `written_form` | Included | Not included |
+| Models | Standard and Enhanced | All models |
+
+A job returns one kind or the other, not both. On Melia 1 and Oak 1, `enable_entities` is only accepted with `detect_advanced_entities` set to `true`.
+
+## Supported languages for sensitive data recognition
+
+Sensitive data recognition supports all [transcription languages](/speech-to-text/languages#transcription-languages), except:
+
+- Bashkir
+- Basque
+- Esperanto
+- Galician
+- Interlingua
+- Irish
+- Maltese
+- Marathi
+- Mongolian
+- Urdu
+- Uyghur
+- Welsh
+
+For Mandarin, use the Simplified [output locale](/speech-to-text/formatting#output-locale) (`cmn-Hans`, the default). Sensitive data recognition of Traditional characters (`cmn-Hant`) isn't supported yet.
+
+## Next steps
+
+- Remove sensitive data with [redaction](/speech-to-text/batch/speech-intelligence/redaction).
+- Look up every class in [Sensitive entity classes](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes).
+- See all parameters in the [Batch API reference](/api-ref/batch/create-a-new-job).
