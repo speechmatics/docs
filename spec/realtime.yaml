@@ -1483,7 +1483,7 @@ components:
         - const: job_error
           title: job_error
           description: |
-            Unable to do any work on this job, the server might have timed out etc.
+            Unable to do any work on this job, the server might have timed out etc. This error is also returned if the server can't process audio as fast as it is sent and the backlog grows too large.
         - const: protocol_error
           title: protocol_error
           description: |
