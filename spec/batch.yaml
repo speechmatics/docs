@@ -801,7 +801,122 @@ definitions:
       enable_entities:
         type: boolean
         description: >-
-          Include additional 'entity' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the 'content' field. The entities contain a 'spoken_form' field, which can be used in place of the corresponding 'word' type results, in case a spoken form is preferred to a written form. They also contain a 'written_form', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as 'one hundred million dollars' and '$100 million').
+          Include additional 'entity' objects in the transcription results, interleaved with the other types of results. With the default entity detection (e.g. dates, numbers), the concatenation of these words is represented as a single entity with the concatenated written form present in the 'content' field. The entities contain a 'spoken_form' field, which can be used in place of the corresponding 'word' type results, in case a spoken form is preferred to a written form. They also contain a 'written_form', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as 'one hundred million dollars' and '$100 million'). With `entities_config.detect_advanced_entities: true`, advanced entity detection is used instead (e.g. names, dates of birth, credit card numbers), and spoken and written forms are not available.
+      entities_config:
+        type: object
+        properties:
+          detect_advanced_entities:
+            type: boolean
+            description: >-
+              Must be set together with `enable_entities: true`. When true, advanced entity
+              detection is used instead of the default entity detection: entities such as names,
+              dates of birth and credit card numbers are returned, each with its specific
+              `entity_class` (e.g. 'name_given', 'dob'). When false or omitted, `enable_entities`
+              uses the default entity detection, with entity classes such as `cardinal`, `decimal`,
+              `fraction`, `ordinal`, `percentage`, `span` and `measurement`. Spoken and written forms
+              are not available with advanced entity detection.
+        description: >-
+          Configuration for Advanced Entities Detection.
+      enable_redaction:
+        type: boolean
+        description: >-
+          Redact advanced entities throughout the transcript: matching entity values are replaced with a
+          consistent label based on the `entity_class` (e.g. "[name_given]"). Must be set together with
+          `redaction_config.entity_classes`. If `enable_entities` is true,
+          `entities_config.detect_advanced_entities` must also be true (redaction relies on advanced
+          entity detection); if `enable_entities` is false or omitted, `enable_redaction` can be used
+          on its own. Spoken and written forms are not available when redaction is enabled.
+      redaction_config:
+        type: object
+        properties:
+          entity_classes:
+            type: array
+            minItems: 1
+            uniqueItems: true
+            items:
+              type: string
+              enum:
+                - pii
+                - pci
+                - health
+                - gdpr
+                - gdpr_sensitive
+                - hipaa_safe_harbor
+                - cpra
+                - quebec_privacy_act
+                - appi
+                - appi_sensitive
+                - account_number
+                - age
+                - date
+                - date_interval
+                - dob
+                - driver_license
+                - duration
+                - email_address
+                - event
+                - filename
+                - gender
+                - healthcare_number
+                - ip_address
+                - language
+                - location
+                - location_address
+                - location_address_street
+                - location_city
+                - location_coordinate
+                - location_country
+                - location_state
+                - location_zip
+                - marital_status
+                - money
+                - name
+                - name_family
+                - name_given
+                - name_medical_professional
+                - numerical_pii
+                - occupation
+                - organization
+                - organization_id
+                - organization_medical_facility
+                - origin
+                - passport_number
+                - password
+                - phone_number
+                - physical_attribute
+                - political_affiliation
+                - religion
+                - sexuality
+                - ssn
+                - ssn_in_aadhaar
+                - time
+                - url
+                - username
+                - vehicle_id
+                - zodiac_sign
+                - blood_type
+                - condition
+                - dose
+                - drug
+                - injury
+                - medical_process
+                - statistics
+                - bank_account
+                - credit_card
+                - credit_card_expiration
+                - cvv
+                - routing_number
+            description: >-
+              Categories of advanced entities to redact. Each value is either a group or a
+              specific entity type, and groups and entity types can be mixed. Groups: `pii`,
+              `pci` and `health` (personal, payment card and health information), and the
+              regulation-based groups `gdpr`, `gdpr_sensitive`, `hipaa_safe_harbor`, `cpra`,
+              `quebec_privacy_act`, `appi` and `appi_sensitive`. Specific entity types are matched
+              by their `entity_class` (e.g. `name_given`, `dob`, `credit_card`); a general type such
+              as `name` or `location` also covers its more specific types (e.g. `name_given`,
+              `location_city`).
+        description: >-
+          Configuration for redaction. Required, and only applied, when `enable_redaction` is true.
       max_delay_mode:
         type: string
         enum:
@@ -1556,6 +1671,12 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/SpokenFormRecognitionResult"
+      entity_class:
+        type: string
+        description: >-
+          For 'entity' results only, the class the entity has been formatted as, e.g. 'date',
+          'money', 'number' with the default entity detection, or the specific advanced entity type
+          (e.g. 'name_given', 'dob') with advanced entity detection or redaction.
       alternatives:
         type: array
         items:

@@ -1,0 +1,130 @@
+---
+title: Redaction
+sidebar_label: Redaction
+description: "Remove personal, health, and payment card information from Batch transcripts."
+keywords:
+  [
+    speechmatics,
+    batch,
+    redaction,
+    pii,
+    phi,
+    pci,
+    gdpr,
+    hipaa,
+    sensitive data,
+    transcription,
+  ]
+---
+import CodeBlock from '@theme/CodeBlock'
+
+import redactionPythonSample from "./assets/redaction.py"
+
+# Redaction
+
+Redaction removes sensitive data, such as names, dates of birth, health conditions, and credit card numbers, from a Batch transcript. Each redacted value is replaced with a label for its entity class, such as `[name_given]`.
+
+Redaction is available for Batch transcription in Speechmatics SaaS, on all [models](/speech-to-text/models). It is not available in Realtime or on-prem deployments.
+
+## Enable redaction
+
+To enable redaction, set `enable_redaction` to `true` and list what to redact in `redaction_config.entity_classes`:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "enable_redaction": true,
+    "redaction_config": {
+      "entity_classes": ["gdpr"]
+    }
+  }
+}
+```
+
+This Python example submits a job with redaction enabled and prints the redacted results:
+
+<CodeBlock language="python">
+  {redactionPythonSample}
+</CodeBlock>
+
+## Choose what to redact
+
+Each value in `redaction_config.entity_classes` is either an entity class group or a specific entity class. You can mix both in one list. Start with the regulation group that matches your compliance requirements, then add or remove specific entity classes to match your own data handling guidelines.
+
+- **Regulation groups**: `gdpr`, `gdpr_sensitive`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi`, and `appi_sensitive`. Each covers the entity classes a regulation treats as personal or sensitive data.
+- **Data type groups**: `health` (protected health information), `pci` (payment card information), and `pii` (personally identifiable information).
+- **Specific entity classes**: for example `name_given`, `dob`, or `credit_card`. A general class such as `name` or `location` also redacts its subclasses, such as `name_given` or `location_city`.
+
+`pii` is broad. It covers every class in the [PII table](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes#personally-identifiable-information-pii), including dates, times, amounts of money, and organization names, so it redacts much more than the values that identify a person. Use it only when you want all of these removed.
+
+For example, this configuration redacts everything covered by GDPR, plus given names and credit card numbers:
+
+```json
+{
+  "type": "transcription",
+  "transcription_config": {
+    "language": "en",
+    "enable_redaction": true,
+    "redaction_config": {
+      "entity_classes": ["gdpr", "name_given", "credit_card"]
+    }
+  }
+}
+```
+
+For every entity class and the groups that include it, see [Sensitive entity classes](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes).
+
+## Redacted output
+
+For the utterance "Mark was born on the 25th of July 2000.", the redacted JSON transcript looks like this (timings omitted):
+
+```json
+{
+  "results": [
+    { "type": "word", "alternatives": [{ "content": "[name_given]", "speaker": "S1" }] },
+    { "type": "word", "alternatives": [{ "content": "was", "speaker": "S1" }] },
+    { "type": "word", "alternatives": [{ "content": "born", "speaker": "S1" }] },
+    { "type": "word", "alternatives": [{ "content": "on", "speaker": "S1" }] },
+    { "type": "word", "alternatives": [{ "content": "the", "speaker": "S1" }] },
+    { "type": "word", "alternatives": [{ "content": "[dob]", "speaker": "S1" }] },
+    { "type": "punctuation", "alternatives": [{ "content": ".", "speaker": "S1" }] }
+  ]
+}
+```
+
+Redaction removes the original values throughout the JSON transcript.
+
+## Use redaction with sensitive data recognition
+
+Redaction works on its own. To also label each detected value with its entity class, enable [sensitive data recognition](/speech-to-text/batch/speech-intelligence/sensitive-data-recognition) in the same job. Redacted values are then returned as `entity` results with an `entity_class`.
+
+If `enable_entities` is `true` in a job with redaction, `entities_config.detect_advanced_entities` must also be `true`. Otherwise, the job is rejected. Redaction can't be combined with [smart formatting entities](/speech-to-text/formatting#smart-formatting).
+
+When redaction is enabled, the transcript has no `spoken_form` or `written_form`.
+
+## Supported languages for redaction
+
+Redaction supports all [transcription languages](/speech-to-text/languages#transcription-languages), except:
+
+- Bashkir
+- Basque
+- Esperanto
+- Galician
+- Interlingua
+- Irish
+- Maltese
+- Marathi
+- Mongolian
+- Urdu
+- Uyghur
+- Welsh
+
+For Mandarin, use the Simplified [output locale](/speech-to-text/formatting#output-locale) (`cmn-Hans`, the default). Redaction of Traditional characters (`cmn-Hant`) isn't supported yet.
+
+## Next steps
+
+- Label sensitive data with [sensitive data recognition](/speech-to-text/batch/speech-intelligence/sensitive-data-recognition).
+- Look up every class in [Sensitive entity classes](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes).
+- See all parameters in the [Batch API reference](/api-ref/batch/create-a-new-job).

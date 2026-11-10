@@ -1,0 +1,151 @@
+---
+title: Sensitive entity classes
+sidebar_label: Sensitive entity classes
+description: "Entity classes and groups for sensitive data recognition and redaction in Batch transcripts."
+keywords:
+  [
+    speechmatics,
+    batch,
+    redaction,
+    entity classes,
+    pii,
+    phi,
+    pci,
+    gdpr,
+    hipaa,
+  ]
+---
+
+# Sensitive entity classes
+
+[Sensitive data recognition](/speech-to-text/batch/speech-intelligence/sensitive-data-recognition) labels each detected value with one of the entity classes below. [Redaction](/speech-to-text/batch/speech-intelligence/redaction) accepts these entity classes and the groups in [Entity class groups](#entity-class-groups).
+
+Some entity classes have subclasses. For example, `location_city` is a subclass of `location`, and `name_given` is a subclass of `name`. Recognition returns the most specific class. Redacting a general class also redacts its subclasses.
+
+Entity classes have English names, but international equivalents are also detected. For example, `ssn` covers equivalent government identification numbers in other countries.
+
+## Entity class groups
+
+An entity class group covers several entity classes. Regulation groups are a good starting point: choose the one that matches your compliance requirements, then adjust it with specific entity classes. The Groups column in each table below shows which groups include each entity class.
+
+| Group | Covers |
+|---|---|
+| `gdpr` | Personal data under the EU General Data Protection Regulation (GDPR). See [classes](#gdpr-gdpr). |
+| `gdpr_sensitive` | Special categories of personal data under GDPR. See [classes](#gdpr-sensitive-data-gdpr_sensitive). |
+| `hipaa_safe_harbor` | Identifiers under the HIPAA Safe Harbor de-identification method. See [classes](#hipaa-safe-harbor-hipaa_safe_harbor). |
+| `cpra` | Personal information under the California Privacy Rights Act (CPRA). See [classes](#cpra-cpra). |
+| `quebec_privacy_act` | Personal information under the Quebec Privacy Act (Law 25). See [classes](#quebec-privacy-act-quebec_privacy_act). |
+| `appi` | Personal information under Japan's Act on the Protection of Personal Information (APPI). See [classes](#appi-appi). |
+| `appi_sensitive` | Special care-required personal information under APPI. See [classes](#appi-sensitive-data-appi_sensitive). |
+| `health` | All entity classes in [Protected health information (PHI)](#protected-health-information-phi) |
+| `pci` | All entity classes in [Payment card information (PCI)](#payment-card-information-pci) |
+| `pii` | All entity classes in [Personally identifiable information (PII)](#personally-identifiable-information-pii). This is a broad group that includes dates, times, amounts of money, and organization names. |
+
+The `pci` group only covers payment-specific classes. Cardholder names and account numbers fall under `name` and `account_number`, which you can add alongside `pci`.
+
+## Personally identifiable information (PII)
+
+| Entity class | Description | Example | Groups |
+|---|---|---|---|
+| `account_number` | Customer account or membership identification number | Member ID: HZ-5235-001 | `pii`, `hipaa_safe_harbor` |
+| `age` | Numbers associated with an individual's age | 27 years old | `pii`, `gdpr`, `hipaa_safe_harbor`, `quebec_privacy_act`, `appi` |
+| `date` | Specific calendar dates, including days of the week, months, or years | Friday, Dec. 18, 2002 | `pii`, `hipaa_safe_harbor`, `quebec_privacy_act` |
+| `date_interval` | Broader time periods, including date ranges, months, seasons, years, and decades | 5–9 May | `pii`, `hipaa_safe_harbor` |
+| `dob` | Dates of birth | Born March 7, 1961 | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `driver_license` | Driver's permit numbers | DL# 134711-320 | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `duration` | Periods of time, specified as a number and a unit of time | 8 months | `pii` |
+| `email_address` | Email addresses | support@speechmatics.com | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `event` | Names of events or holidays | Olympics | `pii` |
+| `filename` | Names of computer files, including the extension or file path | brad-tax-returns.pdf | `pii` |
+| `gender` | Terms indicating gender identity | female | `pii`, `gdpr`, `gdpr_sensitive`, `cpra`, `appi_sensitive` |
+| `healthcare_number` | Healthcare numbers and health plan beneficiary numbers | Policy No. 5584-486-674-YM | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `ip_address` | IPv4 and IPv6 addresses | 192.168.0.1 | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `language` | Names of natural languages | Korean | `pii`, `gdpr`, `gdpr_sensitive`, `appi_sensitive` |
+| `location` | Any named location; covers the `location_*` classes | Lake Victoria | `pii`, `gdpr`, `hipaa_safe_harbor`, `appi` |
+| `location_address` | Full or partial mailing addresses | 25/300 Adelaide T., Perth WA 6000 | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `location_address_street` | Building number and street name, including unit or floor numbers | 25/300 Adelaide T. | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `location_city` | Municipality names, including villages, towns, and cities | Toronto | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `location_coordinate` | Latitude, longitude, or elevation coordinates | 40.748440, -73.984559 | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `location_country` | Country names | Namibia | `pii`, `gdpr`, `appi` |
+| `location_state` | State, province, territory, or prefecture names | Ontario | `pii`, `gdpr`, `appi` |
+| `location_zip` | Zip codes and postcodes | B2N 3E3 | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `marital_status` | Terms indicating marital status | married | `pii`, `appi_sensitive` |
+| `money` | Names or amounts of currency | $94.50 | `pii` |
+| `name` | Names of individuals, without personal titles; covers `name_given` and `name_family` | Dwayne Johnson | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `name_family` | Family names, often a last name in Western cultures | Johnson | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `name_given` | Given names, often a first or middle name in Western cultures | Dwayne | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `name_medical_professional` | Full names of medical professionals, including titles | Dr. Kay Martinez, MD | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `numerical_pii` | Numerical or alphanumeric PII not covered by other classes, such as order or tracking numbers | — | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `occupation` | Job titles or professions | engineer | `pii`, `quebec_privacy_act`, `appi` |
+| `organization` | Names of organizations or departments | LAPD | `pii`, `quebec_privacy_act`, `appi` |
+| `organization_id` | Organization identification numbers | — | `pii`, `quebec_privacy_act`, `appi` |
+| `organization_medical_facility` | Names of medical facilities, such as hospitals and clinics | Northwest General Hospital | `pii`, `quebec_privacy_act`, `appi` |
+| `origin` | Terms indicating nationality, ethnicity, or provenance | Canadian | `pii`, `gdpr`, `gdpr_sensitive`, `cpra`, `quebec_privacy_act`, `appi_sensitive` |
+| `passport_number` | Passport numbers | PA4568332 | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `password` | Passwords, PINs, access keys, or verification answers | My mother's maiden name is Smith | `pii`, `cpra`, `appi` |
+| `phone_number` | Telephone or fax numbers | 0115 957 1512 | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `physical_attribute` | Distinctive bodily attributes, including terms indicating race | I'm 190cm tall | `pii`, `gdpr`, `gdpr_sensitive`, `cpra`, `appi_sensitive` |
+| `political_affiliation` | Political parties, movements, or ideologies | Republican | `pii`, `gdpr`, `gdpr_sensitive`, `cpra`, `quebec_privacy_act`, `appi_sensitive` |
+| `religion` | Terms indicating religious affiliation | Presbyterian | `pii`, `gdpr`, `gdpr_sensitive`, `cpra`, `quebec_privacy_act`, `appi_sensitive` |
+| `sexuality` | Terms indicating sexual orientation | bisexual | `pii`, `gdpr`, `gdpr_sensitive`, `cpra`, `appi_sensitive` |
+| `ssn` | Social Security Numbers or equivalent government identification numbers | 078-05-1120 | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `ssn_in_aadhaar` | Aadhaar numbers | — | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `time` | Clock times | 10pm EST | `pii` |
+| `url` | Internet addresses | www.speechmatics.com | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act` |
+| `username` | Usernames, login names, or handles | @Speechmatics | `pii`, `gdpr`, `cpra`, `appi` |
+| `vehicle_id` | Vehicle identification numbers and license plates | BIF7547 | `pii`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `appi` |
+| `zodiac_sign` | Names of zodiac signs | Aries | `pii` |
+
+## Protected health information (PHI)
+
+| Entity class | Description | Example | Groups |
+|---|---|---|---|
+| `blood_type` | Blood types | type AB positive | `health`, `gdpr`, `cpra`, `quebec_privacy_act` |
+| `condition` | Medical conditions, diseases, syndromes, and disorders | arrhythmia | `health`, `gdpr`, `cpra`, `quebec_privacy_act`, `appi_sensitive` |
+| `dose` | Prescribed quantity of a medication | 700 mg/day | `health` |
+| `drug` | Medications, vitamins, and supplements | acetaminophen | `health`, `gdpr`, `cpra`, `quebec_privacy_act`, `appi_sensitive` |
+| `injury` | Bodily injuries, including dislocations | sprained wrist | `health`, `gdpr`, `cpra`, `quebec_privacy_act`, `appi_sensitive` |
+| `medical_process` | Treatments, procedures, and tests | CT scan | `health`, `gdpr`, `cpra`, `quebec_privacy_act`, `appi_sensitive` |
+| `statistics` | Medical statistics | 18% of patients | `health`, `quebec_privacy_act` |
+
+## Payment card information (PCI)
+
+| Entity class | Description | Example | Groups |
+|---|---|---|---|
+| `bank_account` | Bank account numbers, including IBAN | Acct. No. 012345-67 | `pci`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `credit_card` | Credit card numbers | 0123 0123 0123 0123 | `pci`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `credit_card_expiration` | Credit card expiration dates | Exp: 02/28 | `pci`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `cvv` | 3- or 4-digit card verification codes | CVV: 080 | `pci`, `gdpr`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` |
+| `routing_number` | Bank routing numbers | 012345678 | `pci` |
+
+## Regulation groups
+
+Each regulation group covers the entity classes below.
+
+### GDPR (`gdpr`)
+
+`age`, `bank_account`, `blood_type`, `condition`, `credit_card_expiration`, `credit_card`, `cvv`, `dob`, `driver_license`, `drug`, `email_address`, `gender`, `healthcare_number`, `injury`, `ip_address`, `language`, `location_address_street`, `location_address`, `location_city`, `location_coordinate`, `location_country`, `location_state`, `location_zip`, `location`, `medical_process`, `name_family`, `name_given`, `name_medical_professional`, `name`, `numerical_pii`, `origin`, `passport_number`, `phone_number`, `physical_attribute`, `political_affiliation`, `religion`, `sexuality`, `ssn_in_aadhaar`, `ssn`, `url`, `username`, `vehicle_id`
+
+### GDPR sensitive data (`gdpr_sensitive`)
+
+`gender`, `language`, `origin`, `physical_attribute`, `political_affiliation`, `religion`, `sexuality`
+
+### HIPAA Safe Harbor (`hipaa_safe_harbor`)
+
+`account_number`, `age`, `bank_account`, `credit_card_expiration`, `credit_card`, `cvv`, `date_interval`, `date`, `dob`, `driver_license`, `email_address`, `healthcare_number`, `ip_address`, `location_address_street`, `location_address`, `location_city`, `location_coordinate`, `location_zip`, `location`, `name_family`, `name_given`, `name_medical_professional`, `name`, `numerical_pii`, `passport_number`, `phone_number`, `ssn_in_aadhaar`, `ssn`, `url`, `vehicle_id`
+
+### CPRA (`cpra`)
+
+`bank_account`, `blood_type`, `condition`, `credit_card_expiration`, `credit_card`, `cvv`, `dob`, `driver_license`, `drug`, `email_address`, `gender`, `healthcare_number`, `injury`, `ip_address`, `location_address_street`, `location_address`, `location_city`, `location_coordinate`, `location_zip`, `medical_process`, `name_family`, `name_given`, `name_medical_professional`, `name`, `numerical_pii`, `origin`, `passport_number`, `password`, `phone_number`, `physical_attribute`, `political_affiliation`, `religion`, `sexuality`, `ssn_in_aadhaar`, `ssn`, `url`, `username`, `vehicle_id`
+
+### Quebec Privacy Act (`quebec_privacy_act`)
+
+`age`, `bank_account`, `blood_type`, `condition`, `credit_card_expiration`, `credit_card`, `cvv`, `date`, `dob`, `driver_license`, `drug`, `email_address`, `healthcare_number`, `injury`, `ip_address`, `location_address_street`, `location_address`, `location_city`, `location_coordinate`, `location_zip`, `medical_process`, `name_family`, `name_given`, `name_medical_professional`, `name`, `numerical_pii`, `occupation`, `organization_id`, `organization_medical_facility`, `organization`, `origin`, `passport_number`, `phone_number`, `political_affiliation`, `religion`, `ssn_in_aadhaar`, `ssn`, `statistics`, `url`
+
+### APPI (`appi`)
+
+`age`, `bank_account`, `credit_card_expiration`, `credit_card`, `cvv`, `dob`, `driver_license`, `email_address`, `healthcare_number`, `ip_address`, `location_address_street`, `location_address`, `location_city`, `location_coordinate`, `location_country`, `location_state`, `location_zip`, `location`, `name_family`, `name_given`, `name_medical_professional`, `name`, `numerical_pii`, `occupation`, `organization_id`, `organization_medical_facility`, `organization`, `passport_number`, `password`, `phone_number`, `ssn_in_aadhaar`, `ssn`, `username`, `vehicle_id`
+
+### APPI sensitive data (`appi_sensitive`)
+
+`condition`, `drug`, `gender`, `injury`, `language`, `marital_status`, `medical_process`, `origin`, `physical_attribute`, `political_affiliation`, `religion`, `sexuality`
