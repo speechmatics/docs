@@ -44,9 +44,14 @@ Below are the complete fields of the configuration object:
 
 The Melia 1 model detects every language it hears automatically, so language hints are optional. To select Melia 1, refer to [Models](/speech-to-text/models).
 
-Hints tell the model which languages to expect in the audio, biasing detection toward them. They are most useful for short clips, audio with heavy accents, or recordings where two languages sound similar, where they make language labeling more reliable.
+Set `language_hints` in the `transcription_config` to the [supported languages](/speech-to-text/languages#transcription-languages) you expect in your audio. Hints have two effects:
 
-Provide hints as a list of [supported languages](/speech-to-text/languages#transcription-languages) to guide detection without restricting it. This config hints that the audio contains English and Arabic:
+- **Language labels are restricted to the hinted languages.** Every word in the transcript is labelled with one of the languages you list.
+- **Transcription is biased toward the hinted languages.** This can improve accuracy, especially for short clips and similar-sounding languages.
+
+Speech in other languages may still be transcribed in some cases, but it is labelled as one of the hinted languages. Only use hints when you know which languages your audio contains.
+
+With one hint, the whole job is labelled as that language. With two or more, labels can switch between the hinted languages. This config hints that the audio contains English and Arabic:
 
 ```json
 {
@@ -59,7 +64,9 @@ Provide hints as a list of [supported languages](/speech-to-text/languages#trans
 }
 ```
 
-The model can still detect and label a language you did not hint, and it labels only the languages it actually hears.
+:::note
+Speechmatics language hints restrict output rather than only biasing it. Unlike hints that make listed languages more likely, they exclude unlisted languages from labelling.
+:::
 
 ## Fetch URL
 
