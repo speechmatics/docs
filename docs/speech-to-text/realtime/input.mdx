@@ -29,9 +29,14 @@ The format must be supplied in the `audio_format` field of the `StartRecognition
 
 Language hints are optional and apply only to the [Melia 1](/speech-to-text/models#melia-1) and [Oak 1](/speech-to-text/models#oak-1) models, which detect supported languages automatically. For the Enhanced and Standard models, set `language` to a [supported language](/speech-to-text/languages) instead.
 
-Hints tell the model which languages to expect in the audio, biasing detection toward them. They are most useful for short utterances, audio with heavy accents, or conversations where two languages sound similar, where they make language labeling more reliable.
+Set `language_hints` in the `StartRecognition` message to the [supported languages](/speech-to-text/languages#transcription-languages) you expect in your audio. Hints have two effects:
 
-Provide hints in the `StartRecognition` message as a list of [supported languages](/speech-to-text/languages#transcription-languages) to guide detection without restricting it. This config hints that the audio contains English and Arabic:
+- **Language labels are restricted to the hinted languages.** Every word in the transcript is labelled with one of the languages you list.
+- **Transcription is biased toward the hinted languages.** This can improve accuracy, especially for short utterances and similar-sounding languages.
+
+Speech in other languages may still be transcribed in some cases, but it is labelled as one of the hinted languages. Only use hints when you know which languages your audio contains.
+
+With one hint, the whole session is labelled as that language. With two or more, labels can switch between the hinted languages. This config hints that the audio contains English and Arabic:
 
 ```json
 {
@@ -52,7 +57,11 @@ Provide hints in the `StartRecognition` message as a list of [supported language
 }
 ```
 
-The model can still detect and label a language you did not hint, and it labels only the languages it actually hears. To render each detected language correctly, refer to the [`LanguageInfo` message](/speech-to-text/realtime/output#languageinfo-message).
+:::note
+Speechmatics language hints restrict output rather than only biasing it. Unlike hints that make listed languages more likely, they exclude unlisted languages from labelling.
+:::
+
+To render each detected language correctly, refer to the [`LanguageInfo` message](/speech-to-text/realtime/output#languageinfo-message).
 
 ## Sending audio
 
