@@ -31,10 +31,10 @@ Language hints are optional and apply only to the [Melia 1](/speech-to-text/mode
 
 Set `language_hints` in the `StartRecognition` message to the [supported languages](/speech-to-text/languages#transcription-languages) you expect in your audio. Hints have two effects:
 
-- **Language labels are restricted to the hinted languages.** Every word in the transcript is labelled with one of the languages you list.
-- **Transcription is biased toward the hinted languages.** This can improve accuracy, especially for short utterances and similar-sounding languages.
+- **Language labels are strictly limited to the hinted languages.** Every word in the transcript is labelled with one of the languages you list. No other language can appear as a label.
+- **Transcription is biased toward the hinted languages.** Speech in other languages is less likely to be transcribed, but it can still appear in the transcript, labelled as one of the hinted languages. Hints can also improve accuracy for short utterances and similar-sounding languages.
 
-Speech in other languages may still be transcribed in some cases, but it is labelled as one of the hinted languages. Only use hints when you know which languages your audio contains.
+Only use hints when you know which languages your audio contains.
 
 With one hint, the whole session is labelled as that language. With two or more, labels can switch between the hinted languages. This config hints that the audio contains English and Arabic:
 
@@ -58,7 +58,7 @@ With one hint, the whole session is labelled as that language. With two or more,
 ```
 
 :::note
-Speechmatics language hints restrict output rather than only biasing it. Unlike hints that make listed languages more likely, they exclude unlisted languages from labelling.
+Hints are strict for labels, not for transcription. With `["en", "fr"]`, no word is ever labelled `de`, but German speech in the audio may still be transcribed and labelled `en` or `fr`.
 :::
 
 To render each detected language correctly, refer to the [`LanguageInfo` message](/speech-to-text/realtime/output#languageinfo-message).
