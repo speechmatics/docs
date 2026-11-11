@@ -247,22 +247,35 @@ For adding new vocabulary, use the [custom dictionary](/speech-to-text/features/
 
 ### Regex
 
-You can use regular expressions (ECMAScript format) in the `from` field by adding forward-slash delimiters:
+You can use regular expressions in the `from` field by adding forward-slash delimiters. Patterns use [RE2 syntax](https://github.com/google/re2/wiki/Syntax):
 
 ```javascript
 // Replace both "Hello" and "hello" with "goodbye"
 {"from": "/^[hH]ello$/", "to": "goodbye"}
 
+// The same, using the case-insensitive flag
+{"from": "/(?i)^hello$/", "to": "goodbye"}
+
 // Add brackets around "cheese" while preserving the original word
 {"from": "/(cheese)/", "to": "[$1]"}
 ```
+
+In `to`, `$1` to `$9` insert a captured group, `$&` inserts the whole match, and `$$` inserts a literal `$`.
+
+Some features from other regex engines aren't supported, and patterns that use them are rejected:
+- Backreferences, such as `(.)\1`
+- Lookahead and lookbehind, such as `(?=...)` and `(?!...)`
+- Possessive quantifiers, such as `a++`
+- In `to`, `` $` ``, `$'`, and groups above `$9`
+
+Patterns match whole characters, so `.` and character classes such as `[^a-z]` match one character of non-English text, not one byte.
 
 Word replacement rules:
 1. Plain word replacements are processed first
 2. If no match is found, regex replacements are tried in the order listed
 3. Once a word matches a replacement, no further replacements are applied to it
 4. Regex replacements are global (all matches are replaced)
-5. Malformed regex patterns will cause the transcription to fail with an error
+5. An invalid or unsupported pattern causes the transcription to fail with an error that names the rule by its position, such as `transcript_filtering_config.replacements[2]`
 
 
 ## Smart formatting
