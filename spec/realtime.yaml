@@ -880,7 +880,7 @@ components:
         language_hints:
           type: array
           description: |
-            The languages expected in the audio, specified as [ISO Language Codes](https://docs.speechmatics.com/speech-to-text/languages). Biases language detection toward these languages without restricting it to them. Only used by the `melia-1` and `oak-1` models, which require `language` to be set to `multi`. See [Language hints](https://docs.speechmatics.com/speech-to-text/realtime/input#language-hints).
+            The languages expected in the audio, specified as [ISO Language Codes](https://docs.speechmatics.com/speech-to-text/languages). Language labels are restricted to these languages, and transcription is biased toward them. Only used by the `melia-1` and `oak-1` models, which require `language` to be set to `multi`. See [Language hints](https://docs.speechmatics.com/speech-to-text/realtime/input#language-hints).
           items:
             type: string
           example: ["en", "ar"]
