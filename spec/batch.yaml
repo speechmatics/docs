@@ -861,12 +861,12 @@ definitions:
           get_speakers:
             type: boolean
             description: >-
-              If true, speaker identifiers will be returned at the end of transcript.
+              If true, speaker identifiers will be returned at the end of transcript. Not supported by Melia 1 and Oak 1.
           speakers:
             type: array
             x-omitempty: true
             description: >-
-              Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided.
+              Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided. Not supported by Melia 1 and Oak 1.
             items:
               $ref: "#/definitions/SpeakersInputItem"
     example:
