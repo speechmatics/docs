@@ -126,5 +126,9 @@
   {
     "source": "/api-ref/management/post-a-new-project",
     "destination": "/api-ref/management/create-a-project"
+  },
+  {
+    "source": "/private/voice-agent-api",
+    "destination": "/speech-to-text/agent-stt"
   }
 ]

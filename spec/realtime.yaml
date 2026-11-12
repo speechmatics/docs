@@ -141,6 +141,7 @@ components:
   messages:
     GetSpeakers:
       summary: Requests any detected speaker identifiers to be returned.
+      description: Not supported by Melia 1 and Oak 1.
       payload:
         $ref: "#/components/schemas/GetSpeakers"
     SpeakersResult:
@@ -1102,6 +1103,7 @@ components:
           type: boolean
           description: >-
             If true, speaker identifiers will be returned at the end of transcript.
+            Not supported by Melia 1 and Oak 1.
         speakers:
           type: array
           description: >-
@@ -1109,7 +1111,7 @@ components:
             When passed, the transcription system will tag spoken words in the transcript
             with the provided speaker labels whenever any of the specified speakers
             is detected in the audio. A maximum of 50 speakers identifiers across all speakers
-            can be provided.
+            can be provided. Not supported by Melia 1 and Oak 1.
           items:
             $ref: "#/components/schemas/SpeakersInputItem"
     AudioFilteringConfig:
