@@ -177,6 +177,11 @@
       "permanent": true
     },
     {
+      "source": "/private/melia-1-realtime",
+      "destination": "/speech-to-text/models#melia-1",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true
