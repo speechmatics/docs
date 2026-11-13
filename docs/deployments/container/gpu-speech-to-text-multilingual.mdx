@@ -6,7 +6,8 @@ keywords: [speechmatics, container, gpu, GPU, NVIDIA, CUDA, melia, melia-1, oak,
 
 import { smVariables } from '/sm-variables';
 import CodeBlock from '@theme/CodeBlock';
-import multilingualGpuSttDockerCompose from './assets/gpu-stt-multilingual-docker-compose.yml?raw';
+import multilingualGpuSttDockerComposeRt from './assets/gpu-stt-multilingual-docker-compose-rt.yml?raw';
+import multilingualGpuSttDockerComposeBatch from './assets/gpu-stt-multilingual-docker-compose-batch.yml?raw';
 
 # GPU Speech to text container (Melia 1 and Oak 1)
 
@@ -105,14 +106,15 @@ Set `model` to `melia-1` or `oak-1` in the transcription config, and set `langua
 Run the transcriber with `SM_INFERENCE_ENDPOINT` set to the gRPC endpoint of the inference server and `SM_ASR_MODE` set to `batch`:
 
 <CodeBlock language="bash">
-  {`docker run --rm -it \
-  -e SM_INFERENCE_ENDPOINT=<server>:<port> \
-  -e SM_ASR_MODE=batch \
-  -v $PWD/license.json:/license.json \
-  -v $PWD/example.wav:/input.audio \
+  {`docker run --rm -it \\
+  -e SM_INFERENCE_ENDPOINT=<server>:<port> \\
+  -e SM_ASR_MODE=batch \\
+  -v $PWD/license.json:/license.json \\
+  -v $PWD/example.wav:/input.audio \\
   speechmaticspublic.azurecr.io/sm-asr-transcriber:${smVariables.latestMultilingualContainerVersion}
 `}
 </CodeBlock>
+
 To accept multiple jobs over an HTTP API without restarting the container between jobs, run the transcriber as a [batch persistent worker](/deployments/container/batch-persistent-worker).
 
 ### Realtime inference
@@ -179,12 +181,18 @@ can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP API
 
 ## Docker compose example
 
-This Docker Compose file will create a Speechmatics Melia 1 and Oak 1 GPU Inference Server:
+This Docker Compose file will create a Speechmatics Melia 1 and Oak 1 GPU Inference Server and connect a transcription worker:
 
 (assumes your `license.json` file is in the current working directory)
 
+Realtime
+
 <CodeBlock language="yaml" title="docker-compose.yml">
-{multilingualGpuSttDockerCompose.replace('{{ CONTAINER_VERSION }}', smVariables.latestMultilingualContainerVersion)}
+{multilingualGpuSttDockerComposeRt.replace('{{ CONTAINER_VERSION }}', smVariables.latestMultilingualContainerVersion)}
 </CodeBlock>
 
-For Realtime, add `SM_STREAMING=true` to the `environment` list.
+Persistant Batch Worker
+
+<CodeBlock language="yaml" title="docker-compose.yml">
+{multilingualGpuSttDockerComposeBatch.replace('{{ CONTAINER_VERSION }}', smVariables.latestMultilingualContainerVersion)}
+</CodeBlock>
