@@ -42,11 +42,14 @@ Below are the complete fields of the configuration object:
 
 ### Language hints
 
-The Melia 1 model detects every language it hears automatically, so language hints are optional. To select Melia 1, refer to [Models](/speech-to-text/models).
+Language hints are optional and apply only to the [Melia 1](/speech-to-text/models#melia-1) and [Oak 1](/speech-to-text/models#oak-1) models, which detect supported languages automatically. For the Enhanced and Standard models, set `language` to a [supported language](/speech-to-text/languages) instead.
 
-Hints tell the model which languages to expect in the audio, biasing detection toward them. They are most useful for short clips, audio with heavy accents, or recordings where two languages sound similar, where they make language labeling more reliable.
+Set `language_hints` in the job config to the [supported languages](/speech-to-text/languages#transcription-languages) you expect in the audio. Hints have two effects:
 
-Provide hints as a list of [supported languages](/speech-to-text/languages#transcription-languages) to guide detection without restricting it. This config hints that the audio contains English and Arabic:
+- **Language labels are restricted to the hinted languages.** Every word in the transcript is labeled with one of the languages you list. With one hint, every word gets that label. With two or more, labels can switch between the hinted languages.
+- **Transcription is biased toward the hinted languages.** This can improve accuracy, especially for short clips and similar-sounding languages. Speech in other languages is less likely to be transcribed, but can still appear in the transcript, labeled as one of the hinted languages.
+
+This config hints that the audio contains English and Arabic:
 
 ```json
 {
@@ -59,7 +62,9 @@ Provide hints as a list of [supported languages](/speech-to-text/languages#trans
 }
 ```
 
-The model can still detect and label a language you did not hint, and it labels only the languages it actually hears.
+:::note
+Hints restrict language labels rather than only biasing detection: the model cannot label a word with a language you did not hint. If your audio may contain languages you cannot predict, omit `language_hints`.
+:::
 
 ## Fetch URL
 
