@@ -6,7 +6,7 @@ networks:
 
 services:
   triton:
-    image: speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:{{ CONTAINER_VERSION }}
+    image: speechmaticspublic.azurecr.io/sm-asr-inference-server:{{ CONTAINER_VERSION }}
     deploy:
       resources:
         reservations:

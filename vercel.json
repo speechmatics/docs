@@ -182,6 +182,11 @@
       "permanent": true
     },
     {
+      "source": "/deployments/container/gpu-speech-to-text-melia-1",
+      "destination": "/deployments/container/gpu-speech-to-text-multilingual",
+      "permanent": true
+    },
+    {
       "source": "/jobsapi",
       "destination": "/api-ref/batch/create-a-new-job",
       "permanent": true

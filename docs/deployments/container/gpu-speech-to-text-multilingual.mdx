@@ -1,16 +1,16 @@
 ---
 toc_max_heading_level: 3
-description: 'Learn about the Speechmatics Melia 1 GPU container system'
-keywords: [speechmatics, container, gpu, GPU, NVIDIA, CUDA, melia, melia-1, SaaS, on-prem]
+description: 'Learn about the Speechmatics Melia 1 and Oak 1 GPU container system'
+keywords: [speechmatics, container, gpu, GPU, NVIDIA, CUDA, melia, melia-1, oak, oak-1, SaaS, on-prem]
 ---
 
 import { smVariables } from '/sm-variables';
 import CodeBlock from '@theme/CodeBlock';
-import melia1GpuSttDockerCompose from './assets/gpu-stt-melia-1-docker-compose.yml?raw';
+import multilingualGpuSttDockerCompose from './assets/gpu-stt-multilingual-docker-compose.yml?raw';
 
-# GPU Speech to text container (Melia 1)
+# GPU Speech to text container (Melia 1 and Oak 1)
 
-Melia 1 is a multilingual, GPU-only model. For an overview, see [Models](/speech-to-text/models#melia-1).
+Melia 1 and Oak 1 are multilingual, GPU-only models. Oak 1 is tuned for healthcare audio. Both models run on the same transcriber and inference server images. For an overview, see [Melia 1](/speech-to-text/models#melia-1) and [Oak 1](/speech-to-text/models#oak-1).
 
 ## Prerequisites
 
@@ -50,7 +50,7 @@ Currently, each GPU Inference Container can only run on a single GPU.
 If a system has more than one GPU, the device must be specified using `CUDA_VISIBLE_DEVICES`
 or selecting the device using the `--gpus` argument. See [Nvidia/CUDA documentation for details](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#cuda-environment-variables).
 
-Pull the Melia 1 inference server image as described in [Accessing images](/deployments/container/accessing-images#melia-1-model), then run it:
+Pull the inference server image as described in [Accessing images](/deployments/container/accessing-images#melia-1-and-oak-1-models), then run it:
 
 <CodeBlock language="bash">
   {`docker run --rm -it \\
@@ -58,7 +58,7 @@ Pull the Melia 1 inference server image as described in [Accessing images](/depl
     --gpus '"device=0"' \\
     -e CUDA_VISIBLE_DEVICES \\
     -p 8001:8001 \\
-    speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:${smVariables.latestMelia1ContainerVersion}
+    speechmaticspublic.azurecr.io/sm-asr-inference-server:${smVariables.latestMultilingualContainerVersion}
 `}
 </CodeBlock>
 
@@ -85,11 +85,24 @@ I0705 08:12:55.598672 1 http_server.cc:400] "Started Metrics Service at 0.0.0.0:
 
 The inference server runs in one of two modes: Batch (the default) or Realtime. A server supports only one mode at a time.
 
-The transcriber offloads inference to the server, so it does not require a GPU. Melia 1 uses a single transcriber image for both modes, rather than the separate `rt-` and `batch-` images of the [Standard and Enhanced GPU container](/deployments/container/gpu-speech-to-text#batch-and-realtime-inference). Set `SM_ASR_MODE` to `batch` or `rt` to select the mode.
+The transcriber offloads inference to the server, so it does not require a GPU. It uses a single image for both modes, rather than the separate `rt-` and `batch-` images of the [Standard and Enhanced GPU container](/deployments/container/gpu-speech-to-text#batch-and-realtime-inference). Set `SM_ASR_MODE` to `batch` or `rt` to select the mode.
+
+### Selecting a model
+
+Set `model` to `melia-1` or `oak-1` in the transcription config, and set `language` to `multi`:
+
+```json
+{
+  "transcription_config": {
+    "model": "oak-1",
+    "language": "multi"
+  }
+}
+```
 
 ### Batch inference
 
-Run the Melia 1 transcriber with `SM_INFERENCE_ENDPOINT` set to the gRPC endpoint of the inference server and `SM_ASR_MODE` set to `batch`:
+Run the transcriber with `SM_INFERENCE_ENDPOINT` set to the gRPC endpoint of the inference server and `SM_ASR_MODE` set to `batch`:
 
 <CodeBlock language="bash">
   {`docker run --rm -it \
@@ -97,7 +110,7 @@ Run the Melia 1 transcriber with `SM_INFERENCE_ENDPOINT` set to the gRPC endpoin
   -e SM_ASR_MODE=batch \
   -v $PWD/license.json:/license.json \
   -v $PWD/example.wav:/input.audio \
-  speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion}
+  speechmaticspublic.azurecr.io/sm-asr-transcriber:${smVariables.latestMultilingualContainerVersion}
 `}
 </CodeBlock>
 To accept multiple jobs over an HTTP API without restarting the container between jobs, run the transcriber as a [batch persistent worker](/deployments/container/batch-persistent-worker).
@@ -113,7 +126,7 @@ To run the inference server in Realtime mode, set `SM_STREAMING=true`:
     -e CUDA_VISIBLE_DEVICES \\
     -e SM_STREAMING=true \\
     -p 8001:8001 \\
-    speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:${smVariables.latestMelia1ContainerVersion}
+    speechmaticspublic.azurecr.io/sm-asr-inference-server:${smVariables.latestMultilingualContainerVersion}
 `}
 </CodeBlock>
 
@@ -136,7 +149,7 @@ I0911 11:04:02.449744 1 http_server.cc:4961] "Started HTTPService at 0.0.0.0:800
 I0911 11:04:02.491582 1 http_server.cc:400] "Started Metrics Service at 0.0.0.0:8002"
 ```
 
-Run the Melia 1 transcriber with `SM_INFERENCE_ENDPOINT` set to the gRPC endpoint of the inference server and `SM_ASR_MODE` set to `rt`:
+Run the transcriber with `SM_INFERENCE_ENDPOINT` set to the gRPC endpoint of the inference server and `SM_ASR_MODE` set to `rt`:
 
 <CodeBlock language="bash">
   {`docker run --rm -it \\
@@ -144,11 +157,11 @@ Run the Melia 1 transcriber with `SM_INFERENCE_ENDPOINT` set to the gRPC endpoin
   -e SM_ASR_MODE=rt \\
   -v $PWD/license.json:/license.json \\
   -p 9000:9000 \\
-  speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion}
+  speechmaticspublic.azurecr.io/sm-asr-transcriber:${smVariables.latestMultilingualContainerVersion}
 `}
 </CodeBlock>
 
-Connect over WebSocket as described in [Realtime transcription](/deployments/container/cpu-speech-to-text#realtime-transcription). In the `StartRecognition` message, set `"model": "melia-1"` and `"language": "multi"`. For the Realtime features Melia 1 supports, refer to [Melia 1 and Oak 1 on Realtime](/speech-to-text/models#melia-1-and-oak-1-on-realtime).
+Connect over WebSocket as described in [Realtime transcription](/deployments/container/cpu-speech-to-text#realtime-transcription), and select the model in the `StartRecognition` message. For the Realtime features both models support, refer to [Melia 1 and Oak 1 on Realtime](/speech-to-text/models#melia-1-and-oak-1-on-realtime).
 
 Realtime inference requires container version 1.13.0 or later.
 
@@ -166,12 +179,12 @@ can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP API
 
 ## Docker compose example
 
-This Docker Compose file will create a Speechmatics Melia 1 GPU Inference Server:
+This Docker Compose file will create a Speechmatics Melia 1 and Oak 1 GPU Inference Server:
 
 (assumes your `license.json` file is in the current working directory)
 
 <CodeBlock language="yaml" title="docker-compose.yml">
-{melia1GpuSttDockerCompose.replace('{{ CONTAINER_VERSION }}', smVariables.latestMelia1ContainerVersion)}
+{multilingualGpuSttDockerCompose.replace('{{ CONTAINER_VERSION }}', smVariables.latestMultilingualContainerVersion)}
 </CodeBlock>
 
 For Realtime, add `SM_STREAMING=true` to the `environment` list.

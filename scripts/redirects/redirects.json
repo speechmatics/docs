@@ -130,5 +130,9 @@
   {
     "source": "/private/melia-1-realtime",
     "destination": "/speech-to-text/models#melia-1"
+  },
+  {
+    "source": "/deployments/container/gpu-speech-to-text-melia-1",
+    "destination": "/deployments/container/gpu-speech-to-text-multilingual"
   }
 ]

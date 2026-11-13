@@ -129,19 +129,19 @@ docker pull speechmaticspublic.azurecr.io/sm-gpu-inference-server-all-lang:${smV
 
 This image contains both models. To load only one of them, see [Running only one model](/deployments/container/gpu-speech-to-text#running-only-one-model). To load only some of the image's languages, see [Loading only selected languages](/deployments/container/gpu-speech-to-text#loading-only-selected-languages).
 
-### Melia 1 model
+### Melia 1 and Oak 1 models
 
-Melia 1 is a multilingual, GPU-only model for Batch and Realtime. The same transcriber and inference server images serve both modes. For an overview, see [Models](/speech-to-text/models#melia-1).
+Melia 1 and Oak 1 are multilingual, GPU-only models for Batch and Realtime. The same transcriber and inference server images serve both models and both modes. For an overview, see [Models](/speech-to-text/models#melia-1).
 
 <CodeBlock language="bash">
-  {`# pulling the Melia 1 transcriber with the ${smVariables.latestMelia1ContainerVersion} tag:
-docker pull speechmaticspublic.azurecr.io/sm-asr-transcriber-melia-1:${smVariables.latestMelia1ContainerVersion}
+  {`# pulling the Melia 1 and Oak 1 transcriber with the ${smVariables.latestMultilingualContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-asr-transcriber:${smVariables.latestMultilingualContainerVersion}
 \0
-# pulling the Melia 1 GPU inference server with the ${smVariables.latestMelia1ContainerVersion} tag:
-docker pull speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:${smVariables.latestMelia1ContainerVersion}`}
+# pulling the Melia 1 and Oak 1 GPU inference server with the ${smVariables.latestMultilingualContainerVersion} tag:
+docker pull speechmaticspublic.azurecr.io/sm-asr-inference-server:${smVariables.latestMultilingualContainerVersion}`}
 </CodeBlock>
 
-See [how to run the Melia 1 GPU container here.](/deployments/container/gpu-speech-to-text-melia-1)
+See [how to run the Melia 1 and Oak 1 GPU container here.](/deployments/container/gpu-speech-to-text-multilingual)
 
 ## Pulling translation GPU image
 
