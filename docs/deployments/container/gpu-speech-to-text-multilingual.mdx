@@ -181,17 +181,17 @@ can be monitored using Triton's inbuilt Prometheus metrics, or the GRPC/HTTP API
 
 ## Docker compose example
 
-This Docker Compose file will create a Speechmatics Melia 1 and Oak 1 GPU Inference Server and connect a transcription worker:
+These Docker Compose files will create a Speechmatics Melia 1 and Oak 1 GPU Inference Server and connect an applicable transcription worker:
 
 (assumes your `license.json` file is in the current working directory)
 
-Realtime
+### Realtime
 
 <CodeBlock language="yaml" title="docker-compose.yml">
 {multilingualGpuSttDockerComposeRt.replace('{{ CONTAINER_VERSION }}', smVariables.latestMultilingualContainerVersion)}
 </CodeBlock>
 
-Persistant Batch Worker
+### Persistant Batch Worker
 
 <CodeBlock language="yaml" title="docker-compose.yml">
 {multilingualGpuSttDockerComposeBatch.replace('{{ CONTAINER_VERSION }}', smVariables.latestMultilingualContainerVersion)}
