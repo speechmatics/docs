@@ -262,12 +262,14 @@ You can use regular expressions in the `from` field by adding forward-slash deli
 
 In `to`, `$1` to `$9` insert a captured group, `$&` inserts the whole match, and `$$` inserts a literal `$`.
 
-Some features from other regex engines aren't supported, and patterns that use them are rejected:
+RE2 doesn't support some features from other regex engines. If a rule uses one, or its pattern is invalid, the request fails before transcription starts with a clear error message.
+
+Unsupported features:
 - Backreferences, such as `(.)\1`
 - Lookahead and lookbehind, such as `(?=...)` and `(?!...)`
 - Possessive quantifiers, such as `a++`
 - Named groups written as `(?<name>...)`
-- `\u` escapes, such as `é`. Write the character itself, or use `\x{e9}`
+- `\u` escapes, such as `\u00e9`. Write the character itself, or use `\x{e9}`
 - A backslash before an ordinary letter, such as `\e`. Escaped punctuation, such as `\.`, still works
 - In `to`, `` $` ``, `$'`, and groups above `$9` when the pattern has more than nine groups
 
@@ -278,7 +280,6 @@ Word replacement rules:
 2. If no match is found, regex replacements are tried in the order listed
 3. Once a word matches a replacement, no further replacements are applied to it
 4. Regex replacements are global (all matches are replaced)
-5. An invalid or unsupported rule causes the transcription to fail with an error that names the rule by its position, counting from 0. For example, `transcript_filtering_config.replacements[2]` is the third rule
 
 
 ## Smart formatting
