@@ -295,9 +295,14 @@ All other characters, including `\`, are inserted as written. Refer to a named g
 
 #### Unsupported syntax
 
-Some syntax from JavaScript and Python isn't supported: lookahead and lookbehind, backreferences, and `\u` escapes. Write named groups as `(?P<name>...)`, and characters as themselves or `\x{e9}`. To keep text after a match without lookahead, capture it and insert it again: `/foo(bar)/` to `X$1`.
+RE2 doesn't support some syntax from other regex engines. The features you're most likely to use from JavaScript or Python are:
 
-If a rule is invalid, uses unsupported syntax, or has an empty pattern (`//`), the request fails before transcription starts, with an error that says which rule is invalid and why.
+- Lookahead and lookbehind, such as `(?=...)` and `(?<!...)`
+- Backreferences, such as `(.)\1`
+- Named groups written as `(?<name>...)`. Use `(?P<name>...)` instead.
+- `\u` escapes, such as `\u00e9`. Use the character itself or `\x{e9}` instead.
+
+If a rule is invalid, uses syntax RE2 doesn't support, or has an empty pattern (`//`), the request fails before transcription starts, with an error that says which rule is invalid and why.
 
 #### How replacement rules are applied
 
