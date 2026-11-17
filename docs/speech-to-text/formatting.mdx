@@ -295,19 +295,7 @@ All other characters, including `\`, are inserted as written. Refer to a named g
 
 #### Unsupported syntax
 
-RE2 doesn't support some features of other regex engines, such as JavaScript and Python. A rule that uses one of these is rejected:
-
-| Not supported | Example | Use instead |
-|---|---|---|
-| Backreferences | `(.)\1` | No equivalent |
-| Lookahead and lookbehind | `(?=...)`, `(?!...)`, `(?<=...)` | For lookahead, capture the text and insert it again: `/foo(bar)/` to `X$1` |
-| Possessive or repeated quantifiers | `a++`, `a**`, `a?+` | A single quantifier, such as `a+` |
-| Named groups without `P` | `(?<name>...)` | `(?P<name>...)` |
-| Escapes RE2 doesn't recognize | `é`, `\e`, `\cA` | The character itself, or its code point: `\x{e9}` |
-| Repeat counts over 1000 | `a{1001}` | A count of 1000 or less |
-| Short POSIX class names | `[[:d:]]` | `[[:digit:]]` or `\d` |
-| Text before or after the match, in `to` | `` $` ``, `$'` | No equivalent |
-| Groups above 9, in `to` | `$10` | Make unused groups non-capturing with `(?:...)` |
+Some syntax from JavaScript and Python isn't supported: lookahead and lookbehind, backreferences, and `\u` escapes. Write named groups as `(?P<name>...)`, and characters as themselves or `\x{e9}`. To keep text after a match without lookahead, capture it and insert it again: `/foo(bar)/` to `X$1`.
 
 #### Errors
 
