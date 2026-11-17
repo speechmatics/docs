@@ -19,6 +19,8 @@ keywords:
 
 # Entity Detection classes
 
+**Available in:** Batch, in Speechmatics SaaS on all [models](/speech-to-text/models). Not available in Realtime, Agent STT, or on-prem deployments.
+
 [Entity Detection](/speech-to-text/features/entity-detection) labels each detected value with one of the entity classes below. [PII Redaction](/speech-to-text/features/pii-redaction) accepts these entity classes and the groups in [Entity class groups](#entity-class-groups).
 
 Some entity classes have subclasses. For example, `location_city` is a subclass of `location`, and `name_given` is a subclass of `name`. Entity Detection returns the most specific class. Redacting a general class also redacts its subclasses.
