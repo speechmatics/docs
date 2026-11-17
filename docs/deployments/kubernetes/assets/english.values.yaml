@@ -1,0 +1,22 @@
+# Disable default enhanced inference server recipes
+inferenceServerEnhancedRecipe1:
+  enabled: false
+
+# Enable custom inference server deployment with just en models
+inferenceServerCustom:
+  enabled: true
+  fullnameOverride: inference-server-en
+ 
+  tritonServer:
+    image:
+      # Repository for the en-only inference server triton container
+      repository: sm-gpu-inference-server-en
+ 
+  inferenceSidecar:
+    enabled: true
+
+    # Configuration for custom model deployments
+    registerFeatures:
+      capacity: 600
+      languages: ["en"]
+      model: ["standard", "enhanced"]

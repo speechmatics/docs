@@ -11,16 +11,38 @@ Speechmatics applications can be deployed on Kubernetes using Helm charts, provi
 
 Using Helm, customers can customize deployments through configurable values, manage upgrades and rollbacks, and integrate Speechmatics applications into existing Kubernetes workflows.
 
-## Quickstart
+## Get started
+
+1. Check the [prerequisites](/deployments/kubernetes/prerequisites): registry access, a license, GPU nodes and an ingress or gateway
+2. [Install the Realtime chart](/deployments/kubernetes/realtime#install) and [validate](/deployments/kubernetes/realtime#validate) that capacity is available
+3. Tune the deployment with the [configuration examples](/deployments/kubernetes/realtime#configuration)
 
 <Grid columns={{initial: "1", md: "2"}} gap="3" mb="5">
   <LinkCard
     direction="column"
+    title="Prerequisites"
+    description="What you need before installing the Helm chart"
+    href="/deployments/kubernetes/prerequisites"
+  />
+  <LinkCard
+    direction="column"
     title="Realtime Kubernetes"
-    description="Kubernetes deployment options for Realtime"
+    description="Install, configure and upgrade Realtime"
     href="/deployments/kubernetes/realtime"
   />
 </Grid>
+
+## How it works
+
+The Realtime Helm chart deploys these components:
+
+- **Proxy service** accepts client WebSocket connections from your gateway or ingress controller
+- **Resource manager** tracks available capacity and assigns each session to a transcriber and an inference server
+- **Transcribers** run the speech recognition pipeline for a session, one deployment per language
+- **Inference servers** run the models on GPUs, shared by many transcribers
+- **Redis** stores the capacity and session state used by the resource manager
+
+Transcribers and inference servers are managed as `SessionGroups`, a custom resource that scales them with demand and protects pods with active sessions from being removed.
 
 ## Supported applications
 

@@ -1,0 +1,35 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: my-gateway
+  namespace: nginx-gateway
+spec:
+  gatewayClassName: nginx
+  listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: speechmatics.example.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: tls-secret
+      allowedRoutes:
+        namespaces:
+          from: All
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: SnippetsPolicy
+metadata:
+  name: graceful-shutdown
+  namespace: nginx-gateway
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: my-gateway
+  snippets:
+    # This prevents nginx worker processes from shutting down for 24h in case of active sessions
+    - context: main
+      value: worker_shutdown_timeout 86400s;
