@@ -1,6 +1,7 @@
 ---
 title: Entity Detection
 sidebar_label: Entity Detection
+sidebar_position: 4
 description: "Find and label personal, health, and payment card information in Batch transcripts."
 keywords:
   [
@@ -18,7 +19,7 @@ keywords:
 
 # Entity Detection
 
-Entity Detection finds sensitive data in a Batch transcript, such as names, dates of birth, health conditions, and credit card numbers. Each value is returned in the JSON transcript as an `entity` result labeled with its [entity class](/speech-to-text/batch/speech-intelligence/entity-detection-classes).
+Entity Detection finds sensitive data in a Batch transcript, such as names, dates of birth, health conditions, and credit card numbers. Each value is returned in the JSON transcript as an `entity` result labeled with its [entity class](/speech-to-text/features/entity-detection-classes).
 
 Entity Detection is available for Batch transcription in Speechmatics SaaS, on all [models](/speech-to-text/models). It is not available in Realtime or on-prem deployments.
 
@@ -67,9 +68,9 @@ For the utterance "Mark was born on the 25th of July 2000.", the JSON transcript
 }
 ```
 
-Each detected value has `type` set to `entity` and an `entity_class`, such as `name_given` or `dob`. Entity Detection returns the most specific class that applies. For the full list, see [Entity Detection classes](/speech-to-text/batch/speech-intelligence/entity-detection-classes).
+Each detected value has `type` set to `entity` and an `entity_class`, such as `name_given` or `dob`. Entity Detection returns the most specific class that applies. For the full list, see [Entity Detection classes](/speech-to-text/features/entity-detection-classes).
 
-To remove the values instead of labeling them, use [PII Redaction](/speech-to-text/batch/speech-intelligence/pii-redaction). You can enable both in the same job.
+To remove the values instead of labeling them, use [PII Redaction](/speech-to-text/features/pii-redaction). You can enable both in the same job.
 
 ## Entity Detection and smart formatting entities
 
@@ -78,7 +79,7 @@ To remove the values instead of labeling them, use [PII Redaction](/speech-to-te
 | | Smart formatting entities | Entity Detection |
 |---|---|---|
 | Configuration | `enable_entities: true` | `enable_entities: true` and `entities_config.detect_advanced_entities: true` |
-| Entity classes | `cardinal`, `date`, `money`, `percentage`, and other [smart formatting classes](/speech-to-text/formatting#smart-formatting-classes) | [Entity Detection classes](/speech-to-text/batch/speech-intelligence/entity-detection-classes), such as `name_given`, `dob`, and `credit_card` |
+| Entity classes | `cardinal`, `date`, `money`, `percentage`, and other [smart formatting classes](/speech-to-text/formatting#smart-formatting-classes) | [Entity Detection classes](/speech-to-text/features/entity-detection-classes), such as `name_given`, `dob`, and `credit_card` |
 | `spoken_form` and `written_form` | Included | Not included |
 | Models | Standard and Enhanced | All models |
 
@@ -105,6 +106,6 @@ For Mandarin, use the Simplified [output locale](/speech-to-text/formatting#outp
 
 ## Next steps
 
-- Remove sensitive data with [PII Redaction](/speech-to-text/batch/speech-intelligence/pii-redaction).
-- Look up every class in [Entity Detection classes](/speech-to-text/batch/speech-intelligence/entity-detection-classes).
+- Remove sensitive data with [PII Redaction](/speech-to-text/features/pii-redaction).
+- Look up every class in [Entity Detection classes](/speech-to-text/features/entity-detection-classes).
 - See all parameters in the [Batch API reference](/api-ref/batch/create-a-new-job).

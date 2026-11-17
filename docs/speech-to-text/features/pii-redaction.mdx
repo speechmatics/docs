@@ -1,6 +1,7 @@
 ---
 title: PII Redaction
 sidebar_label: PII Redaction
+sidebar_position: 5
 description: "Remove personal, health, and payment card information from Batch transcripts."
 keywords:
   [
@@ -57,7 +58,7 @@ Each value in `redaction_config.entity_classes` is either an entity class group 
 - **Data type groups**: `health` (protected health information), `pci` (payment card information), and `pii` (personally identifiable information).
 - **Specific entity classes**: for example `name_given`, `dob`, or `credit_card`. A general class such as `name` or `location` also redacts its subclasses, such as `name_given` or `location_city`.
 
-`pii` is broad. It covers every class in the [PII table](/speech-to-text/batch/speech-intelligence/entity-detection-classes#personally-identifiable-information-pii), including dates, times, amounts of money, and organization names, so it redacts much more than the values that identify a person. Use it only when you want all of these removed.
+`pii` is broad. It covers every class in the [PII table](/speech-to-text/features/entity-detection-classes#personally-identifiable-information-pii), including dates, times, amounts of money, and organization names, so it redacts much more than the values that identify a person. Use it only when you want all of these removed.
 
 For example, this configuration redacts everything covered by GDPR, plus given names and credit card numbers:
 
@@ -76,7 +77,7 @@ For example, this configuration redacts everything covered by GDPR, plus given n
 
 If `enable_redaction` is `true` and `redaction_config.entity_classes` is missing, the job is rejected.
 
-For every entity class and the groups that include it, see [Entity Detection classes](/speech-to-text/batch/speech-intelligence/entity-detection-classes).
+For every entity class and the groups that include it, see [Entity Detection classes](/speech-to-text/features/entity-detection-classes).
 
 ## Redacted output
 
@@ -100,7 +101,7 @@ PII Redaction removes the original values throughout the JSON transcript.
 
 ## Use PII Redaction with Entity Detection
 
-PII Redaction works on its own. To also label each detected value with its entity class, enable [Entity Detection](/speech-to-text/batch/speech-intelligence/entity-detection) in the same job. Redacted values are then returned as `entity` results with an `entity_class`.
+PII Redaction works on its own. To also label each detected value with its entity class, enable [Entity Detection](/speech-to-text/features/entity-detection) in the same job. Redacted values are then returned as `entity` results with an `entity_class`.
 
 If `enable_entities` is `true` in a job with PII Redaction, `entities_config.detect_advanced_entities` must also be `true`. Otherwise, the job is rejected. PII Redaction can't be combined with [smart formatting entities](/speech-to-text/formatting#smart-formatting).
 
@@ -127,6 +128,6 @@ For Mandarin, use the Simplified [output locale](/speech-to-text/formatting#outp
 
 ## Next steps
 
-- Label sensitive data with [Entity Detection](/speech-to-text/batch/speech-intelligence/entity-detection).
-- Look up every class in [Entity Detection classes](/speech-to-text/batch/speech-intelligence/entity-detection-classes).
+- Label sensitive data with [Entity Detection](/speech-to-text/features/entity-detection).
+- Look up every class in [Entity Detection classes](/speech-to-text/features/entity-detection-classes).
 - See all parameters in the [Batch API reference](/api-ref/batch/create-a-new-job).
