@@ -42,10 +42,12 @@ Agent STT is available on SaaS only. Where a row lists Agent STT as a mode, the 
 | [Custom dictionary](/speech-to-text/features/custom-dictionary)                       | Batch, Realtime, Agent STT | SaaS, On-prem |
 | [Diarization](/speech-to-text/features/diarization)                                   | Batch, Realtime, Agent STT[^2] | SaaS, On-prem |
 | [Disfluencies and word replacement](/speech-to-text/formatting#disfluencies)          | Batch, Realtime, Agent STT | SaaS, On-prem |
+| [Entity Detection](/speech-to-text/features/entity-detection)                         | Batch           | SaaS          |
 | [Feature discovery](/speech-to-text/features/feature-discovery)                       | Batch, Realtime | SaaS          |
 | [Fetch URL](/speech-to-text/batch/input#fetch-url)                                    | Batch           | SaaS, On-Prem |
 | [Language identification](/speech-to-text/batch/language-identification)              | Batch           | SaaS          |
 | [Notifications](/speech-to-text/batch/notifications.md)                               | Batch           | SaaS, On-prem |
+| [PII Redaction](/speech-to-text/features/pii-redaction)                               | Batch           | SaaS          |
 | [Punctuation settings](/speech-to-text/formatting#punctuation)                        | Batch, Realtime | SaaS, On-prem |
 | [Sentiment analysis](/speech-to-text/batch/speech-intelligence/sentiment-analysis)    | Batch           | SaaS, On-prem |
 | [Smart formatting](/speech-to-text/formatting#smart-formatting)                       | Batch, Realtime | SaaS, On-prem |

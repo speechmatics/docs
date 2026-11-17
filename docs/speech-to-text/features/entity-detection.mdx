@@ -19,9 +19,14 @@ keywords:
 
 # Entity Detection
 
-**Available in:** Batch, in Speechmatics SaaS on all [models](/speech-to-text/models). Not available in Realtime, Agent STT, or on-prem deployments.
+**Available in:** Batch. Not available in Realtime or Agent STT.
 
-Entity Detection finds sensitive data in a Batch transcript, such as names, dates of birth, health conditions, and credit card numbers. Each value is returned in the JSON transcript as an `entity` result labeled with its [entity class](/speech-to-text/features/entity-detection-classes).
+Entity Detection finds potentially sensitive data in a transcript, such as names, dates of birth, health conditions, and credit card numbers, and labels each value with its [entity class](/speech-to-text/features/entity-detection-classes). For example, use it to:
+
+- Find sensitive data before you store or share a transcript, or redact it automatically with [PII Redaction](/speech-to-text/features/pii-redaction).
+- Extract details such as names, addresses, and account numbers into CRM records or forms.
+- Flag conversations for compliance review, such as calls where a card number was read out.
+- Analyze clinical conversations by the conditions, drugs, and procedures mentioned.
 
 ## Enable Entity Detection
 
@@ -70,7 +75,7 @@ For the utterance "Mark was born on the 25th of July 2000.", the JSON transcript
 
 Each detected value has `type` set to `entity` and an `entity_class`, such as `name_given` or `dob`. Entity Detection returns the most specific class that applies. For the full list, see [Entity Detection classes](/speech-to-text/features/entity-detection-classes).
 
-To remove the values instead of labeling them, use [PII Redaction](/speech-to-text/features/pii-redaction). You can enable both in the same job.
+To redact the values instead of labeling them, use [PII Redaction](/speech-to-text/features/pii-redaction). You can enable both in the same job.
 
 ## Entity Detection and smart formatting entities
 
