@@ -1,0 +1,16 @@
+proxy:
+  ingress:
+    # Disable the default Ingress
+    enabled: false
+
+  httproute:
+    enabled: true
+
+    # Hostname to match
+    hostname: speechmatics.example.com
+
+    # Gateway that accepts traffic for this route
+    parentRefs:
+      - name: my-gateway
+        namespace: nginx-gateway
+        sectionName: https
