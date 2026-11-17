@@ -247,39 +247,79 @@ For adding new vocabulary, use the [custom dictionary](/speech-to-text/features/
 
 ### Regex
 
-You can use regular expressions in the `from` field by adding forward-slash delimiters. Patterns use [RE2 syntax](https://github.com/google/re2/wiki/Syntax):
+To match a pattern instead of an exact word, write `from` as a regular expression between forward slashes. Patterns use [RE2 syntax](https://github.com/google/re2/wiki/Syntax).
+
+Each rule is applied to one word at a time. A pattern can't match across two words or match punctuation marks, and `^` and `$` match the start and end of the word.
+
+These rules show common regex replacements. In JSON, write each backslash twice, so `\d` becomes `\\d`:
 
 ```javascript
-// Replace both "Hello" and "hello" with "goodbye"
-{"from": "/^[hH]ello$/", "to": "goodbye"}
-
-// The same, using the case-insensitive flag
+// Replace "Hello" and "hello" with "goodbye"
 {"from": "/(?i)^hello$/", "to": "goodbye"}
+
+// Replace every digit in a word with "#", so "4921" becomes "####"
+{"from": "/\\d/", "to": "#"}
 
 // Add brackets around "cheese" while preserving the original word
 {"from": "/(cheese)/", "to": "[$1]"}
 ```
 
-In `to`, `$1` to `$9` insert a captured group, `$&` inserts the whole match, and `$$` inserts a literal `$`.
+#### Supported pattern syntax
 
-RE2 doesn't support some features from other regex engines. If a rule uses one, or its pattern is invalid, the request fails before transcription starts with a clear error message.
+The table lists the syntax most useful for word replacement. For the full list, see the [RE2 syntax reference](https://github.com/google/re2/wiki/Syntax).
 
-Unsupported features:
-- Backreferences, such as `(.)\1`
-- Lookahead and lookbehind, such as `(?=...)` and `(?!...)`
-- Possessive quantifiers, such as `a++`
-- Named groups written as `(?<name>...)`
-- `\u` escapes, such as `\u00e9`. Write the character itself, or use `\x{e9}`
-- A backslash before an ordinary letter, such as `\e`. Escaped punctuation, such as `\.`, still works
-- In `to`, `` $` ``, `$'`, and groups above `$9` when the pattern has more than nine groups
+| Syntax | Matches |
+|---|---|
+| `[abc]`, `[^abc]`, `[a-z]` | One character in, or not in, the set or range |
+| `.` | Any one character, including accented and non-Latin characters |
+| `\d`, `\w` | An ASCII digit, or an ASCII letter, digit, or underscore |
+| `\pL`, `\p{Greek}` | Any letter in any language, or a letter in the named script |
+| `^`, `$`, `\b` | The start of the word, the end of the word, or a boundary between ASCII letters and other characters |
+| `*`, `+`, `?`, `{2,4}` | Repeats of the previous item. Counts go up to 1000. Add `?` to match as few as possible, such as `+?` |
+| `cat\|dog` | Either alternative |
+| `(...)`, `(?:...)`, `(?P<name>...)` | A capturing group, a non-capturing group, or a named capturing group |
+| `(?i)` | The rest of the pattern, ignoring case. Flags go inside the pattern: `/hello/i` doesn't end in `/`, so it's treated as a plain word |
+| `\.`, `\Q...\E` | A literal punctuation character, or the literal text between `\Q` and `\E` |
 
-Patterns match whole characters, so `.` and character classes such as `[^a-z]` match one character of non-English text, not one byte.
+#### Replacement syntax
 
-Word replacement rules:
+The `to` field can insert parts of the match:
+
+| Syntax | Inserts |
+|---|---|
+| `$1` to `$9` | The text captured by that group, or nothing if the pattern has no such group |
+| `$&` or `$0` | The whole match |
+| `$$` | A literal `$` |
+
+All other characters, including `\`, are inserted as written. Refer to a named group by its number.
+
+#### Unsupported syntax
+
+RE2 doesn't support some features of other regex engines, such as JavaScript and Python. A rule that uses one of these is rejected:
+
+| Not supported | Example | Use instead |
+|---|---|---|
+| Backreferences | `(.)\1` | No equivalent |
+| Lookahead and lookbehind | `(?=...)`, `(?!...)`, `(?<=...)` | For lookahead, capture the text and insert it again: `/foo(bar)/` to `X$1` |
+| Possessive or repeated quantifiers | `a++`, `a**`, `a?+` | A single quantifier, such as `a+` |
+| Named groups without `P` | `(?<name>...)` | `(?P<name>...)` |
+| Escapes RE2 doesn't recognize | `é`, `\e`, `\cA` | The character itself, or its code point: `\x{e9}` |
+| Repeat counts over 1000 | `a{1001}` | A count of 1000 or less |
+| Short POSIX class names | `[[:d:]]` | `[[:digit:]]` or `\d` |
+| Text before or after the match, in `to` | `` $` ``, `$'` | No equivalent |
+| Groups above 9, in `to` | `$10` | Make unused groups non-capturing with `(?:...)` |
+
+#### Errors
+
+If a rule is invalid, uses unsupported syntax, or has an empty pattern (`//`), the request fails before transcription starts. The error names the rule by its position in `replacements`, counting from 0, and gives the reason without quoting the pattern. For example: `Invalid regex pattern in transcript_filtering_config.replacements[2] - missing )`.
+
+#### How replacement rules are applied
+
+Rules are applied to each word in this order:
 1. Plain word replacements are processed first
 2. If no match is found, regex replacements are tried in the order listed
 3. Once a word matches a replacement, no further replacements are applied to it
-4. Regex replacements are global (all matches are replaced)
+4. A regex replacement replaces every match in the word
 
 
 ## Smart formatting
