@@ -1,0 +1,17 @@
+global:
+  # Enable scaling for all sessiongroups resources
+  sessionGroups:
+    scaling:
+      enabled: true
+
+inferenceServerEnhancedRecipe1:
+  sessionGroups:
+    scaling:
+      # Scale up inference server pods when there are 300 inference tokens remaining
+      scaleOnCapacityLeft: 300
+
+transcribers:
+  sessionGroups:
+    scaling:
+      # Scale up transcriber pods when there is only capacity for 1 more session
+      scaleOnCapacityLeft: 1

@@ -1,0 +1,22 @@
+controller:
+  service:
+    # This is needed to preserve the source IP of the client
+    # See: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+    externalTrafficPolicy: Local
+
+    # This should be set to the IP address used to access services on your cluster
+    loadBalancerIP: $CLUSTER_INGRESS_IP
+
+  config:
+    # This prevents nginx worker process from shutting down for 24h in case of active sessions
+    worker-shutdown-timeout: 86400s
+
+  extraArgs:
+    # Needed to support annotations added by the chart ingresses
+    annotations-prefix: nginx.ingress.kubernetes.io
+
+    # This prevents nginx main process from shutting down for 24h in case of active sessions
+    shutdown-grace-period: 86400
+
+  # Used to prevent nginx pods being terminated for 24h while there are active sessions
+  terminationGracePeriodSeconds: 86400
