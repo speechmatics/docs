@@ -297,8 +297,6 @@ All other characters, including `\`, are inserted as written. Refer to a named g
 
 Some syntax from JavaScript and Python isn't supported: lookahead and lookbehind, backreferences, and `\u` escapes. Write named groups as `(?P<name>...)`, and characters as themselves or `\x{e9}`. To keep text after a match without lookahead, capture it and insert it again: `/foo(bar)/` to `X$1`.
 
-#### Errors
-
 If a rule is invalid, uses unsupported syntax, or has an empty pattern (`//`), the request fails before transcription starts, with an error that says which rule is invalid and why.
 
 #### How replacement rules are applied
