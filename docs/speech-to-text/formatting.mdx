@@ -299,7 +299,7 @@ Some syntax from JavaScript and Python isn't supported: lookahead and lookbehind
 
 #### Errors
 
-If a rule is invalid, uses unsupported syntax, or has an empty pattern (`//`), the request fails before transcription starts. The error names the rule by its position in `replacements`, counting from 0, and gives the reason without quoting the pattern. For example: `Invalid regex pattern in transcript_filtering_config.replacements[2] - missing )`.
+If a rule is invalid, uses unsupported syntax, or has an empty pattern (`//`), the request fails before transcription starts, with an error that says which rule is invalid and why.
 
 #### How replacement rules are applied
 
