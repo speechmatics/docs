@@ -271,9 +271,9 @@ Smart formatting converts spoken numbers, dates, currencies, and other entities 
 
 An *entity* is a spoken value that has a conventional written form, such as a number, date, currency, time, or measurement. Speechmatics detects each entity and converts it from the words as spoken into its written form. For example, the spoken words "nineteen ninety nine" become "1999" in the output.
 
-Smart formatting is applied by default. Set `enable_entities` to `true` to also expose the structure of each entity in the JSON output: the class of entity, and the individual spoken and written words it is made from.
+Smart formatting is applied by default on all models, including Melia 1 and Oak 1. Set `enable_entities` to `true` to also expose the structure of each entity in the JSON output: the class of entity, and the individual spoken and written words it is made from.
 
-Smart formatting entities are available on the Standard and Enhanced models. To detect sensitive data such as names, dates of birth, and card numbers instead, use [sensitive data recognition](/speech-to-text/batch/speech-intelligence/sensitive-data-recognition) or [redaction](/speech-to-text/batch/speech-intelligence/redaction).
+Smart formatting entities are only available on the Standard and Enhanced models. On Melia 1 and Oak 1, the transcript is smart formatted, but `enable_entities` doesn't return smart formatting entities. To detect sensitive data such as names, dates of birth, and card numbers on any model, use [Entity Detection](/speech-to-text/batch/speech-intelligence/entity-detection) or [PII Redaction](/speech-to-text/batch/speech-intelligence/pii-redaction), which use the [Entity Detection classes](/speech-to-text/batch/speech-intelligence/entity-detection-classes).
 
 :::info
 `enable_entities` is not supported on Agent STT.
@@ -367,9 +367,9 @@ When `enable_entities` is `false`, the words appear individually in the output.
 
 
 
-### Entity classes
+### Smart formatting classes
 
-The system applies different formatting rules based on the type of entity detected. The following classes are available:
+The system applies different formatting rules based on the type of entity detected. The following classes are available on the Standard and Enhanced models. Melia 1 and Oak 1 format these values in the transcript but don't return their classes. For the classes Entity Detection returns, see [Entity Detection classes](/speech-to-text/batch/speech-intelligence/entity-detection-classes).
 
 | Entity class | Description | Spoken example | Written example |
 |-------------|-------------|---------------|-----------------|

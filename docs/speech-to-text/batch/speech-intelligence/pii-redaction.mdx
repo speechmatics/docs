@@ -1,6 +1,6 @@
 ---
-title: Redaction
-sidebar_label: Redaction
+title: PII Redaction
+sidebar_label: PII Redaction
 description: "Remove personal, health, and payment card information from Batch transcripts."
 keywords:
   [
@@ -20,15 +20,15 @@ import CodeBlock from '@theme/CodeBlock'
 
 import redactionPythonSample from "./assets/redaction.py"
 
-# Redaction
+# PII Redaction
 
-Redaction removes sensitive data, such as names, dates of birth, health conditions, and credit card numbers, from a Batch transcript. Each redacted value is replaced with a label for its entity class, such as `[name_given]`.
+PII Redaction removes sensitive data, such as names, dates of birth, health conditions, and credit card numbers, from a Batch transcript. Each redacted value is replaced with a label for its entity class, such as `[name_given]`.
 
-Redaction is available for Batch transcription in Speechmatics SaaS, on all [models](/speech-to-text/models). It is not available in Realtime or on-prem deployments.
+PII Redaction is available for Batch transcription in Speechmatics SaaS, on all [models](/speech-to-text/models). It is not available in Realtime or on-prem deployments.
 
-## Enable redaction
+## Enable PII Redaction
 
-To enable redaction, set `enable_redaction` to `true` and list what to redact in `redaction_config.entity_classes`:
+To enable PII Redaction, set `enable_redaction` to `true` and list what to redact in `redaction_config.entity_classes`:
 
 ```json
 {
@@ -43,7 +43,7 @@ To enable redaction, set `enable_redaction` to `true` and list what to redact in
 }
 ```
 
-This Python example submits a job with redaction enabled and prints the redacted results:
+This Python example submits a job with PII Redaction enabled and prints the redacted results:
 
 <CodeBlock language="python">
   {redactionPythonSample}
@@ -57,7 +57,7 @@ Each value in `redaction_config.entity_classes` is either an entity class group 
 - **Data type groups**: `health` (protected health information), `pci` (payment card information), and `pii` (personally identifiable information).
 - **Specific entity classes**: for example `name_given`, `dob`, or `credit_card`. A general class such as `name` or `location` also redacts its subclasses, such as `name_given` or `location_city`.
 
-`pii` is broad. It covers every class in the [PII table](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes#personally-identifiable-information-pii), including dates, times, amounts of money, and organization names, so it redacts much more than the values that identify a person. Use it only when you want all of these removed.
+`pii` is broad. It covers every class in the [PII table](/speech-to-text/batch/speech-intelligence/entity-detection-classes#personally-identifiable-information-pii), including dates, times, amounts of money, and organization names, so it redacts much more than the values that identify a person. Use it only when you want all of these removed.
 
 For example, this configuration redacts everything covered by GDPR, plus given names and credit card numbers:
 
@@ -74,7 +74,9 @@ For example, this configuration redacts everything covered by GDPR, plus given n
 }
 ```
 
-For every entity class and the groups that include it, see [Sensitive entity classes](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes).
+If `enable_redaction` is `true` and `redaction_config.entity_classes` is missing, the job is rejected.
+
+For every entity class and the groups that include it, see [Entity Detection classes](/speech-to-text/batch/speech-intelligence/entity-detection-classes).
 
 ## Redacted output
 
@@ -94,19 +96,19 @@ For the utterance "Mark was born on the 25th of July 2000.", the redacted JSON t
 }
 ```
 
-Redaction removes the original values throughout the JSON transcript.
+PII Redaction removes the original values throughout the JSON transcript.
 
-## Use redaction with sensitive data recognition
+## Use PII Redaction with Entity Detection
 
-Redaction works on its own. To also label each detected value with its entity class, enable [sensitive data recognition](/speech-to-text/batch/speech-intelligence/sensitive-data-recognition) in the same job. Redacted values are then returned as `entity` results with an `entity_class`.
+PII Redaction works on its own. To also label each detected value with its entity class, enable [Entity Detection](/speech-to-text/batch/speech-intelligence/entity-detection) in the same job. Redacted values are then returned as `entity` results with an `entity_class`.
 
-If `enable_entities` is `true` in a job with redaction, `entities_config.detect_advanced_entities` must also be `true`. Otherwise, the job is rejected. Redaction can't be combined with [smart formatting entities](/speech-to-text/formatting#smart-formatting).
+If `enable_entities` is `true` in a job with PII Redaction, `entities_config.detect_advanced_entities` must also be `true`. Otherwise, the job is rejected. PII Redaction can't be combined with [smart formatting entities](/speech-to-text/formatting#smart-formatting).
 
-When redaction is enabled, the transcript has no `spoken_form` or `written_form`.
+When PII Redaction is enabled, the transcript has no `spoken_form` or `written_form`.
 
-## Supported languages for redaction
+## Supported languages for PII Redaction
 
-Redaction supports all [transcription languages](/speech-to-text/languages#transcription-languages), except:
+PII Redaction supports all [transcription languages](/speech-to-text/languages#transcription-languages), except:
 
 - Bashkir
 - Basque
@@ -121,10 +123,10 @@ Redaction supports all [transcription languages](/speech-to-text/languages#trans
 - Uyghur
 - Welsh
 
-For Mandarin, use the Simplified [output locale](/speech-to-text/formatting#output-locale) (`cmn-Hans`, the default). Redaction of Traditional characters (`cmn-Hant`) isn't supported yet.
+For Mandarin, use the Simplified [output locale](/speech-to-text/formatting#output-locale) (`cmn-Hans`, the default). PII Redaction of Traditional characters (`cmn-Hant`) isn't supported yet.
 
 ## Next steps
 
-- Label sensitive data with [sensitive data recognition](/speech-to-text/batch/speech-intelligence/sensitive-data-recognition).
-- Look up every class in [Sensitive entity classes](/speech-to-text/batch/speech-intelligence/sensitive-entity-classes).
+- Label sensitive data with [Entity Detection](/speech-to-text/batch/speech-intelligence/entity-detection).
+- Look up every class in [Entity Detection classes](/speech-to-text/batch/speech-intelligence/entity-detection-classes).
 - See all parameters in the [Batch API reference](/api-ref/batch/create-a-new-job).
