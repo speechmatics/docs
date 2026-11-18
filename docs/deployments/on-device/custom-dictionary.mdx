@@ -25,7 +25,9 @@ Your application passes the custom dictionary in the JSON job config given to `s
 }
 ```
 
-Each entry has a `content` value, the word or phrase as it should appear in the transcript, and optionally `sounds_like`, a list of pronunciations written as they sound. The [custom dictionary](/speech-to-text/features/custom-dictionary) page describes both fields and the limits on what you can add.
+Each entry has a `content` value, the word or phrase as it should appear in the transcript, and optionally `sounds_like`, a list of pronunciations written as they sound. When an entry has `sounds_like`, the SDK pronounces it only from those values, not from the spelling in `content`. The [custom dictionary](/speech-to-text/features/custom-dictionary) page describes both fields and the limits on what you can add.
+
+{/* TODO: confirm with engineering that SaaS on Cloud also ignores the spelling in content when sounds_like is given, and clarify the SaaS custom dictionary page if so. */}
 
 Pass the job config as a string to `sm_transcribe`:
 
@@ -43,7 +45,7 @@ With the reference app, put the job config in a file and pass it with `-j job_co
 
 On-device custom dictionary follows SaaS on Cloud, with these differences:
 
-- **`sounds_like` replaces the spelling.** When an entry has `sounds_like`, the SDK pronounces it only from those values, not from `content`. If none of an entry's `sounds_like` values can be pronounced, the SDK leaves the entry out and logs a warning naming it.
+- **Unpronounceable `sounds_like` entries are dropped.** If none of an entry's `sounds_like` values can be pronounced, the SDK leaves the entry out and logs a warning naming it. SaaS on Cloud pronounces such an entry from its `content` instead.
 - **`sounds_like` must be a non-empty list of strings.** Otherwise `sm_transcribe` returns `SMTranscriptionInvalidJobConfig`.
 - **Control characters are rejected.** A line break or other control character in `content` or `sounds_like` returns `SMTranscriptionInvalidJobConfig`. A tab counts as a space.
 - **Spaces split words.** An ASCII space in `content` splits it into separate words in the transcript. Any other space character, such as a no-break space, keeps it one word.
