@@ -247,7 +247,7 @@ For adding new vocabulary, use the [custom dictionary](/speech-to-text/features/
 
 ### Regex
 
-To match a pattern instead of an exact word, write `from` as a regular expression between forward slashes. Patterns use [RE2 syntax](https://github.com/google/re2/wiki/Syntax).
+To match a pattern instead of an exact word, write `from` as a regular expression between forward slashes. Patterns use [RE2 syntax](https://github.com/google/re2/wiki/Syntax) from container version 17.4.0. Earlier container versions use ECMAScript syntax.
 
 Each rule is applied to one word at a time. A pattern can't match across two words or match punctuation marks, and `^` and `$` match the start and end of the word.
 
