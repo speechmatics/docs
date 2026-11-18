@@ -1,0 +1,366 @@
+---
+title: On-device SDK C API reference
+sidebar_label: C API reference
+description: Look up every function, callback, type and constant in the Speechmatics on-device SDK C API, smapi_managed.h.
+toc_max_heading_level: 3
+---
+
+{/*
+  GENERATED FROM HEADER — regenerate, don't hand-edit.
+  Source: casserole smapi/src/smapi/smapi_managed.h on origin/master at 4f0fdaa67a
+  (header last changed in 8883c93574, 2026-11-17), plus sm_set_custom_dictionary_cache from
+  origin/DEL-35623/10-cd-windows-arm64 (5c56895f13), which is not yet on master.
+  Rules: document every SMAPI_EXPORT function, callback typedef, enum, struct and #define;
+  reword header comments for customers and drop internal references (primary variant, ESL,
+  the SMAPI_MANAGED_EP_ and SMAPI_LICENSE_CHECKING build flags, ORT internals); keep section order.
+*/}
+
+# On-device SDK C API reference
+
+The Speechmatics on-device SDK has a C API, declared in `include/smapi/smapi_managed.h`. You can call it from C or C++. All strings are UTF-8, and every string parameter takes an explicit length in bytes, not counting any trailing NUL.
+
+A typical application calls the functions in this order:
+
+```text
+sm_set_log_handler         optional, but without it the SDK logs nowhere
+sm_set_license_token       once, before creating any engine
+sm_create_engine           one engine per concurrent transcription
+sm_check_error             fails fast if the license or language pack didn't load
+sm_transcribe              blocks until the transcription finishes
+sm_delete_result
+sm_delete_engine
+```
+
+## Functions
+
+The SDK exports the following functions.
+
+### sm_get_version
+
+```c
+SMAPIVersion sm_get_version(void);
+```
+
+Returns the SDK version as an [`SMAPIVersion`](#smapiversion).
+
+### sm_set_log_handler
+
+```c
+void sm_set_log_handler(SMLoggingFxn logging_fn);
+```
+
+Sets the function the SDK calls to report events, for all engines. No handler is set initially, so the SDK logs nothing until you call this. Pass `NULL` to stop logging. See [`SMLoggingFxn`](#smloggingfxn).
+
+### sm_set_internal_log_level
+
+```c
+void sm_set_internal_log_level(int level);
+```
+
+Sets how much the SDK logs, for all engines. Leave it at the default in production.
+
+| `level` | Logging |
+|---|---|
+| `0` | Default: none |
+| `1` | Info |
+| `2` | Debug |
+
+### sm_set_license_token
+
+```c
+void sm_set_license_token(const char *token, size_t token_len);
+```
+
+Sets the license token: the `signedclaimstoken` value from `license.json`. Use this to embed the license in your application, typically obfuscated, rather than shipping `license.json`. See [Set the on-device SDK license](/deployments/on-device/license).
+
+| Parameter | Description |
+|---|---|
+| `token` | The license token. |
+| `token_len` | Length of `token` in bytes. |
+
+The token applies to every engine created after the call. Engines already created are unaffected. Passing `NULL` or a length of `0` clears the token, and the SDK falls back to the `LICENSE_TOKEN` and `SM_LICENSE_FILE` environment variables.
+
+**Thread safety:** not safe to call at the same time as `sm_create_engine`. Call it once, before starting any transcription threads.
+
+### sm_set_custom_dictionary_cache
+
+{/* TODO: from casserole branch DEL-35623/10-cd-windows-arm64, not yet on master. Remove this comment when regenerating from a master that has it. */}
+
+```c
+void sm_set_custom_dictionary_cache(const char *dir, size_t dir_len);
+```
+
+Turns on the cache of compiled custom dictionaries (`additional_vocab`). Once a dictionary is compiled, the SDK keeps it in `dir`, and a later job with the same dictionary uses it instead of compiling it again. See [Custom dictionary on device](/deployments/on-device/custom-dictionary#cache-compiled-custom-dictionaries).
+
+| Parameter | Description |
+|---|---|
+| `dir` | Directory to keep compiled dictionaries in. Created if it doesn't exist. |
+| `dir_len` | Length of `dir` in bytes. |
+
+The cache is off unless you call this, and there is no default directory. Passing `NULL` or a length of `0` turns it off again.
+
+- Choose a directory that only your application uses, and that the process can write to. The SDK doesn't remove it when your application is uninstalled.
+- Any number of engines, threads and processes can share one directory.
+- The cache holds at most 256 MiB and 64 dictionaries, removing the least recently used first.
+- A cache that can't be used, for example because the disk is full, never fails a job. The SDK compiles the dictionary without it and logs a message.
+- Dictionaries cached by one SDK version are not used by another.
+
+The setting applies to engines created after the call. Call it before any `sm_create_engine`.
+
+**Thread safety:** can be called while engines are being created, but which directory those engines use is then unspecified.
+
+### sm_set_custom_dictionary_timeout_secs
+
+```c
+void sm_set_custom_dictionary_timeout_secs(double secs);
+```
+
+Sets how long, in seconds, the custom dictionary compiler can run for one job before the SDK stops it and that job's custom dictionary fails. The default is 300 seconds.
+
+The timeout only stops a compile that has hung, as a normal compile takes far less than the default. Raise it only for a very large word list on a slow device. A value that isn't finite and positive (`0`, negative, NaN or infinity) restores the default.
+
+The setting applies to engines created after the call. Engines already created are unaffected.
+
+**Thread safety:** safe to call at any time.
+
+### sm_create_engine
+
+```c
+void *sm_create_engine(const char *language_pack_path,
+                       size_t language_pack_path_len,
+                       const SMEngineConfigOverride *engine_config_override,
+                       SMAudioDataRequestFxn audio_fn,
+                       SMProcessResultFxn transcript_fn,
+                       SMTranscriptionProgressFxn progress_fn,
+                       bool return_aggregate_results,
+                       void *user_data);
+```
+
+Creates an engine for a language pack and returns an opaque handle to it. An engine transcribes one audio stream at a time, so create one engine for each transcription you want to run at once.
+
+| Parameter | Description |
+|---|---|
+| `language_pack_path`, `language_pack_path_len` | Path to the language pack directory, and its length in bytes. |
+| `engine_config_override` | Engine options that override the language pack's defaults. See [`SMEngineConfigOverride`](#smengineconfigoverride). |
+| `audio_fn` | Called to request audio when streaming. `NULL` if the engine reads audio files. See [`SMAudioDataRequestFxn`](#smaudiodatarequestfxn). |
+| `transcript_fn` | Called with each partial and final result. `NULL` if you don't need incremental results. See [`SMProcessResultFxn`](#smprocessresultfxn). |
+| `progress_fn` | Called with transcription progress, and can cancel the transcription. Can be `NULL`. See [`SMTranscriptionProgressFxn`](#smtranscriptionprogressfxn). |
+| `return_aggregate_results` | `true` to return one complete transcript from `sm_transcribe`. `false` if `transcript_fn` delivers the only output. |
+| `user_data` | Passed unchanged to `audio_fn`, `transcript_fn` and `progress_fn`. |
+
+After creating an engine, always call [`sm_check_error`](#sm_check_error) on it, and transcribe only if it returns `SMEngineOk`. Whether or not it succeeded, call [`sm_delete_engine`](#sm_delete_engine) when you're done with it.
+
+### sm_check_error
+
+```c
+SMEngineStatus sm_check_error(void *engine);
+```
+
+Returns the engine's status as an [`SMEngineStatus`](#smenginestatus). If engine creation failed, for example because of an invalid license, a missing language pack or an unavailable GPU, the status is `SMEngineError` and `detail` says why.
+
+The engine owns `detail`. Don't free it. It stays valid until you call `sm_delete_engine`.
+
+### sm_transcribe
+
+```c
+SMTranscriptionResult sm_transcribe(void *engine,
+                                    const char *audio_path,
+                                    size_t audio_path_len,
+                                    const char *job_config,
+                                    size_t job_config_len);
+```
+
+Transcribes audio with an engine, blocking the calling thread until the transcription succeeds or fails. An engine runs one transcription at a time.
+
+| Parameter | Description |
+|---|---|
+| `engine` | An engine from `sm_create_engine`. |
+| `audio_path`, `audio_path_len` | Path to a raw audio file, and its length in bytes. Pass `NULL` and `0` to take audio from the engine's `audio_fn` instead. |
+| `job_config`, `job_config_len` | JSON job config containing a [`transcription_config`](/api-ref/batch/create-a-new-job), and its length in bytes, up to `MAX_JOB_CONFIG_LEN`. `NULL` is treated as an empty config. |
+
+Audio must be raw 16 kHz, mono, signed 16-bit little-endian PCM.
+
+Returns an [`SMTranscriptionResult`](#smtranscriptionresult). If the engine was created with `return_aggregate_results` set to `true`, `detail` holds the complete JSON transcript. Call [`sm_delete_result`](#sm_delete_result) on the result when you're done with it.
+
+### sm_trigger_end_of_utterance
+
+```c
+void sm_trigger_end_of_utterance(void *engine);
+```
+
+Signals an end of utterance to the engine's running transcription.
+
+**Thread safety:** can be called from any thread while `sm_transcribe` is running on the same engine.
+
+### sm_delete_result
+
+```c
+void sm_delete_result(SMTranscriptionResult *result);
+```
+
+Frees the memory a result owns, including its `detail`. Call it on every result from `sm_transcribe`, and on every result passed to your `transcript_fn`. Don't use the result afterwards.
+
+### sm_delete_engine
+
+```c
+void sm_delete_engine(void *engine);
+```
+
+Deletes an engine and everything it owns, including its status `detail`. Don't use the engine afterwards.
+
+## Callbacks
+
+Your application implements these function types and passes them to the SDK.
+
+### SMAudioDataRequestFxn
+
+```c
+typedef size_t (*SMAudioDataRequestFxn)(void *user_data, char *data, size_t data_len);
+```
+
+Supplies streaming audio. The SDK calls it when `sm_transcribe` is given no audio path.
+
+Write up to `data_len` bytes of raw 16 kHz, mono, signed 16-bit little-endian PCM to `data`, and return how many bytes you wrote. Returning fewer than `data_len` is fine: the SDK calls again for the rest. Returning `0` ends the stream, so if no audio is ready yet, block until it is rather than returning `0`.
+
+### SMProcessResultFxn
+
+```c
+typedef void (*SMProcessResultFxn)(void *user_data, SMTranscriptionResult output, bool is_final);
+```
+
+Receives each result during a transcription. `is_final` is `true` for a final result and `false` for a partial one. Partial results are sent only if the job config sets `enable_partials`.
+
+Call [`sm_delete_result`](#sm_delete_result) on `output` when you're done with it.
+
+### SMTranscriptionProgressFxn
+
+```c
+typedef bool (*SMTranscriptionProgressFxn)(void *user_data, float inTranscriptionProgress);
+```
+
+Reports progress, from `0.0` to `1.0`, and lets you cancel the transcription. Return `false` to cancel, or `true` to continue.
+
+The SDK calls it on the transcription thread. Make sure your implementation is safe to call there.
+
+### SMLoggingFxn
+
+```c
+typedef void (*SMLoggingFxn)(SMLogSeverity severity,
+                             const char *location, size_t location_len,
+                             const char *message, size_t message_len);
+```
+
+Receives the SDK's log events. `severity` is an [`SMLogSeverity`](#smlogseverity), `location` indicates where in the SDK the event occurred, and `message` describes it.
+
+The SDK calls it on the transcription thread. `location` and `message` are valid only during the call. Don't free them.
+
+## Types
+
+The SDK uses the following structs and enums.
+
+### SMEngineConfigOverride
+
+Engine options passed to `sm_create_engine`. Each field overrides the language pack's default. Initialize the struct with zeros, then set the fields you need. Zero is not the default for `chunk_length`, so always set it, to `SMAPI_USE_DEFAULT_CHUNK_LENGTH` unless you need a specific value.
+
+| Field | Type | Description |
+|---|---|---|
+| `model_selection` | [`SMModelSelection`](#smmodelselection) | Which hardware runs the models. See [Use a GPU on device](/deployments/on-device/gpu). |
+| `chunk_length` | `double` | Audio chunk length in seconds. `SMAPI_USE_DEFAULT_CHUNK_LENGTH` uses the language pack's value. |
+| `transcription_mode` | [`SMTranscriptionMode`](#smtranscriptionmode) | The transcription mode. |
+| `enable_multi_threading` | `bool` | Enables multithreading inside the SDK. |
+| `onnx_intra_op_num_threads` | `int32_t` | Threads each model session uses. `0` or less uses the SDK default. |
+| `dml_adapter` | `int32_t` | DirectML adapter index, when `model_selection` is `SMModelSelectionDirectML`. `0` is the system default adapter. Ignored otherwise. |
+| `denormalisation_mode` | [`SMDenormalisationMode`](#smdenormalisationmode) | When inverse text normalization runs. |
+
+### SMModelSelection
+
+Which hardware runs the models. Selecting a value that your platform's SDK doesn't include makes engine creation fail with an `SMEngineError` that says so.
+
+| Value | Hardware |
+|---|---|
+| `SMModelSelectionStandard` (0) | CPU |
+| `SMModelSelectionDirectML` (1) | GPU through DirectML, on Windows |
+| `SMModelSelectionCoreML` (2) | Apple silicon through CoreML, on macOS |
+| `SMModelSelectionCuda` (3) | CUDA. Not available. |
+
+### SMTranscriptionMode
+
+| Value | Mode |
+|---|---|
+| `SMModeDefault` (0) | Default streaming mode. |
+| `SMModeStreaming` (2) | Force streaming mode. |
+| `SMModeLegacyRealtime` (3) | Force legacy realtime mode. |
+
+Value `1` is unused.
+
+{/* TODO: confirm with engineering how SMModeDefault and SMModeStreaming differ for customers, and whether SMModeLegacyRealtime should be documented publicly. */}
+
+### SMDenormalisationMode
+
+When inverse text normalization (ITN) runs. ITN converts spoken forms to written forms, such as "ten dollars" to "$10".
+
+| Value | When ITN runs |
+|---|---|
+| `SMDenormalisationDefault` (0) | The language pack's default. |
+| `SMDenormalisationIncremental` (1) | On each final result as it's produced. Use this when you stream results, as nothing arrives later to correct them. |
+| `SMDenormalisationAtEnd` (2) | Once, over the complete transcript. Gives ITN the whole transcript to work from. |
+
+This is independent of `return_aggregate_results`: an application that streams results can still choose either mode.
+
+### SMTranscriptionResult
+
+```c
+struct SMTranscriptionResult {
+  SMTranscriptionResultStatus status;
+  char *detail;
+  size_t detail_len;
+};
+```
+
+A transcription result. On success, `detail` holds the JSON transcript. On failure, it describes the error. Free it with [`sm_delete_result`](#sm_delete_result).
+
+| `status` value | Meaning |
+|---|---|
+| `SMTranscriptionSuccess` | The transcription succeeded. The only success value. |
+| `SMTranscriptionFailure` | The transcription failed. |
+| `SMTranscriptionInvalidJobConfig` | The job config is invalid. |
+
+### SMEngineStatus
+
+```c
+struct SMEngineStatus {
+  SMEngineStatusCode status;
+  const char *detail;
+  size_t detail_len;
+};
+```
+
+An engine's status, from [`sm_check_error`](#sm_check_error). `status` is `SMEngineOk`, the only success value, or `SMEngineError`. On error, `detail` says why. The engine owns `detail`.
+
+### SMLogSeverity
+
+The severity of a log event passed to [`SMLoggingFxn`](#smloggingfxn): `SMLogError`, `SMLogWarning`, `SMLogInfo` or `SMLogDebug`.
+
+### SMAPIVersion
+
+```c
+struct SMAPIVersion {
+  int32_t major;
+  int32_t minor;
+  int32_t patch;
+  const char *detail;
+  size_t detail_len;
+};
+```
+
+The SDK version, as `major.minor.patch`. For released versions, `detail` is an empty string.
+
+## Constants
+
+The header defines the following constants:
+
+| Constant | Value | Description |
+|---|---|---|
+| `SMAPI_USE_DEFAULT_CHUNK_LENGTH` | `-1` | Set `chunk_length` to this to use the language pack's chunk length. |
+| `MAX_PATH_LEN` | `1024` | Maximum path length, in bytes. |
+| `MAX_JOB_CONFIG_LEN` | `10 * 1024 * 1024` | Maximum job config length, in bytes (10 MiB). |

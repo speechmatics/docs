@@ -30,6 +30,11 @@ export default {
       id: "deployments/on-device/cmake",
     },
     {
+      type: "doc",
+      label: "Custom dictionary",
+      id: "deployments/on-device/custom-dictionary",
+    },
+    {
       type: "category",
       label: "GPU",
       collapsible: true,
@@ -52,6 +57,11 @@ export default {
       type: "doc",
       label: "Reference app options",
       id: "deployments/on-device/reference-app-options",
+    },
+    {
+      type: "doc",
+      label: "C API reference",
+      id: "deployments/on-device/api-reference",
     },
   ],
 } as const;
