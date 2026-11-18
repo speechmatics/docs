@@ -102,7 +102,7 @@ To use hardware acceleration, add `-c` for CoreML on macOS or `-d` for DirectML 
 
 - **Engine error about the license:** check that `SM_LICENSE_FILE` is the full path to your `license.json`, and that the license has not expired.
 - **Wrong or missing ONNX Runtime on Windows:** Windows ships its own `onnxruntime.dll` in `C:\Windows\System32`. Run `reference-managed.exe` from `sdk\bin\`, beside the bundled DLLs, so it loads the SDK's copy.
-- **Chunk length rejected on macOS:** the only chunk length accepted on macOS is `1.32`. Omit `-k`, or set `-k 1.32`.
+- **Chunk length rejected on macOS:** omit `-k`. The reference app then uses the language pack's chunk length.
 - **Garbled or empty transcript:** check that the audio is raw 16 kHz mono PCM, as in [step 4](#4-convert-your-audio).
 - **Non-ASCII characters print incorrectly in PowerShell:** run `chcp 65001` to switch the console to UTF-8.
 
