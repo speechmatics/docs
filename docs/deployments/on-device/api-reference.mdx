@@ -260,12 +260,12 @@ The SDK uses the following structs and enums.
 
 ### SMEngineConfigOverride
 
-Engine options passed to `sm_create_engine`. Each field overrides the language pack's default. Initialize the struct with zeros, then set the fields you need. Zero is not the default for `chunk_length`, so always set it, to `SMAPI_USE_DEFAULT_CHUNK_LENGTH` unless you need a specific value.
+Engine options passed to `sm_create_engine`. Each field overrides the language pack's default. Initialize the struct with zeros, then set the fields you need.
 
 | Field | Type | Description |
 |---|---|---|
 | `model_selection` | [`SMModelSelection`](#smmodelselection) | Which hardware runs the models. See [Use a GPU on device](/deployments/on-device/gpu). |
-| `chunk_length` | `double` | Audio chunk length in seconds. `SMAPI_USE_DEFAULT_CHUNK_LENGTH` uses the language pack's value. |
+| `chunk_length` | `double` | Audio chunk length in seconds. Any value of 0 or less, such as `SMAPI_USE_DEFAULT_CHUNK_LENGTH`, uses the language pack's chunk length. |
 | `transcription_mode` | [`SMTranscriptionMode`](#smtranscriptionmode) | The transcription mode. |
 | `enable_multi_threading` | `bool` | Enables multithreading inside the SDK. |
 | `onnx_intra_op_num_threads` | `int32_t` | Threads each model session uses. `0` or less uses the SDK default. |
@@ -289,11 +289,6 @@ Which hardware runs the models. Selecting a value that your platform's SDK doesn
 |---|---|
 | `SMModeDefault` (0) | Batch mode. The default. |
 | `SMModeStreaming` (2) | Realtime mode. |
-| `SMModeLegacyRealtime` (3) | Legacy realtime mode. |
-
-Value `1` is unused.
-
-{/* TODO: confirm with engineering whether SMModeLegacyRealtime should be documented publicly. */}
 
 ### SMDenormalisationMode
 
