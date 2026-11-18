@@ -1,0 +1,135 @@
+---
+title: Build the example apps
+description: Build the Speechmatics on-device SDK example apps from the source shipped in the SDK archive.
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Build the example apps
+
+The Speechmatics on-device SDK archive includes the source of three example apps, which you can build against the SDK:
+
+| App | Source in the SDK | Shows |
+|---|---|---|
+| `transcribe` | `docs/examples/transcribe.cc` | File mode: one audio file in, one JSON transcript out. Start here. |
+| `transcribe_rt` | `docs/examples/transcribe_rt.cc` | Streaming mode: audio fed at real time, partial and final transcripts printed as they arrive. |
+| `reference-managed` | `share/casserole-1/reference-managed/` | A full command-line app with the options in [Reference app options](/deployments/on-device/reference-app-options). |
+
+{/* TODO: confirm the reference-managed source path (share/casserole-1/reference-managed/) against a released archive. */}
+
+The C API is `include/smapi/smapi_managed.h`. Its comments are the full API reference.
+
+In the commands on this page, `<sdk>` is the directory you extracted the SDK into: the one that contains `bin/`, `include/` and `lib/`.
+
+{/* TODO: when DEL-36417 is released, replace -DSMAPI_INCLUDE_DIR / -DSMAPI_LIB_DIR with -DSpeechmaticsESL_ROOT=<sdk>, add find_package(SpeechmaticsESL) and speechmatics_esl_copy_runtime() for customer projects, and drop the manual Windows DLL copy for CMake builds. */}
+
+## Build tool requirements
+
+To build the example apps, you need:
+
+- CMake 3.26 or later
+- **Linux:** GCC 11+ or Clang 14+
+- **macOS:** the latest Xcode Command Line Tools (`xcode-select --install`)
+- **Windows:** Visual Studio Build Tools 2019 or later, with the Desktop development with C++ workload and the x64 or ARM64 build tools for your target
+
+## Build the getting-started examples
+
+The `transcribe` and `transcribe_rt` examples build with CMake on every platform. On Windows, run these commands from a Developer Command Prompt for your target architecture.
+
+<Tabs groupId="os">
+  <TabItem value="linux-macos" label="Linux / macOS">
+    ```bash
+    # Configure against the extracted SDK, then build both examples
+    cmake -DSMAPI_INCLUDE_DIR=<sdk>/include \
+          -DSMAPI_LIB_DIR=<sdk>/lib \
+          -B build <sdk>/docs/examples
+    cmake --build build
+    ```
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+    ```bat
+    :: Configure against the extracted SDK, then build both examples
+    cmake -DSMAPI_INCLUDE_DIR=<sdk>\include ^
+          -DSMAPI_LIB_DIR=<sdk>\lib ^
+          -B build <sdk>\docs\examples
+    cmake --build build --config Release
+
+    :: Put the SDK's DLLs beside the new executables
+    copy <sdk>\bin\*.dll build\Release\
+    ```
+  </TabItem>
+</Tabs>
+
+On Windows, keep `smapi-managed-1.dll`, `onnxruntime.dll` and, where present, `DirectML.dll` beside each `.exe`. Otherwise Windows can load the `onnxruntime.dll` in `C:\Windows\System32` instead.
+
+### Build the examples on Windows without CMake
+
+Each example is a single source file, so you can also compile it directly from a Developer Command Prompt:
+
+```bat
+:: Compile and link transcribe.cc against the SDK's import library
+cl /nologo /EHsc /std:c++17 /O2 ^
+   /I "<sdk>\include" ^
+   <sdk>\docs\examples\transcribe.cc ^
+   /Fe:transcribe.exe ^
+   /link "<sdk>\lib\smapi-managed-1.lib"
+```
+
+Use `transcribe_rt.cc` and `transcribe_rt.exe` for the streaming example. Then copy the DLLs from `<sdk>\bin\` beside the `.exe`.
+
+## Run the getting-started examples
+
+The examples read the license from the environment. Set `LICENSE_TOKEN` or `SM_LICENSE_FILE` as described in [Set the on-device SDK license](/deployments/on-device/license#set-the-license-with-an-environment-variable).
+
+Both examples take the audio file and the language pack directory as arguments:
+
+```bash
+# Transcribe raw 16 kHz mono PCM audio with the file-mode example
+./build/transcribe example.raw /path/to/langpack
+```
+
+You can set the `LANGUAGE_PACK_ROOT` environment variable instead of passing the language pack directory. On Windows, the executables are in `build\Release\`.
+
+`transcribe_rt` turns on partial transcripts with `enable_partials` in its job config. Partial transcripts are off by default. Its job config also sets `"language": "en"`, so change that in `transcribe_rt.cc` if you use a different language pack.
+
+## Build the reference app
+
+`reference-managed` builds the same way, from its source directory in the SDK. It needs a C++20 compiler.
+
+<Tabs groupId="os">
+  <TabItem value="linux-macos" label="Linux / macOS">
+    ```bash
+    # Configure against the extracted SDK, then build reference-managed
+    cmake -DCMAKE_BUILD_TYPE=Release \
+          -DSMAPI_INCLUDE_DIR=<sdk>/include \
+          -DSMAPI_LIB_DIR=<sdk>/lib \
+          -DENABLE_LINTING=OFF \
+          -B build-reference-managed \
+          <sdk>/share/casserole-1/reference-managed
+    cmake --build build-reference-managed
+    ```
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+    ```bat
+    :: Configure against the extracted SDK, then build reference-managed
+    cmake -DCMAKE_BUILD_TYPE=Release ^
+          -DSMAPI_INCLUDE_DIR=<sdk>\include ^
+          -DSMAPI_LIB_DIR=<sdk>\lib ^
+          -DENABLE_LINTING=OFF ^
+          -B build-reference-managed ^
+          <sdk>\share\casserole-1\reference-managed
+    cmake --build build-reference-managed --config Release
+
+    :: Put the SDK's DLLs beside the new executable
+    copy <sdk>\bin\*.dll build-reference-managed\Release\
+    ```
+  </TabItem>
+</Tabs>
+
+On Linux and macOS, the new binary is `build-reference-managed/reference-managed` and runs in place. On Windows, it is `build-reference-managed\Release\reference-managed.exe`.
+
+## Next steps
+
+- [Reference app options](/deployments/on-device/reference-app-options) lists every `reference-managed` option.
+- [Set the on-device SDK license](/deployments/on-device/license) with `sm_set_license_token()` in your own application.

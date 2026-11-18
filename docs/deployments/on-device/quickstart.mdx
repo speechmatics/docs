@@ -1,0 +1,114 @@
+---
+title: Transcribe a file on device
+sidebar_label: Quickstart
+description: Download the Speechmatics on-device SDK and transcribe your first audio file with the prebuilt reference app.
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Transcribe a file on device
+
+Download the Speechmatics on-device SDK and run its prebuilt reference app, `reference-managed`, to transcribe an audio file. You need a license from Speechmatics and [ffmpeg](https://ffmpeg.org/) to convert your audio.
+
+## 1. Download the SDK and a language pack
+
+From the [Portal](https://portal.speechmatics.com/), download:
+
+- the SDK archive for your platform
+- the language pack for the language of your audio
+
+{/* TODO: link the Portal page for on-device downloads once it exists. */}
+
+## 2. Extract the archives
+
+<Tabs groupId="os">
+  <TabItem value="linux-macos" label="Linux / macOS">
+    ```bash
+    # Extract the SDK and the language pack into separate directories
+    mkdir sdk langpack
+    tar -xzf <sdk-archive>.tgz -C sdk
+    tar -xf <language-pack>.tar -C langpack
+    ```
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+    ```powershell
+    # Extract the SDK and the language pack into separate directories
+    mkdir sdk, langpack
+    tar -xzf <sdk-archive>.tgz -C sdk
+    tar -xf <language-pack>.tar -C langpack
+    ```
+  </TabItem>
+</Tabs>
+
+Extract each new SDK version into an empty directory. Extracting over an older version leaves its files in place.
+
+The language pack directory you pass to the SDK is the one that contains `langpack_manifest.yaml`.
+
+{/* TODO: confirm the language pack's directory layout after extraction (e.g. langpack/<lang>/<hash>/) against a released archive. */}
+
+## 3. Set the license
+
+For this quickstart, put your license token in the `LICENSE_TOKEN` environment variable. The token is the `signedclaimstoken` value from your `license.json`.
+
+<Tabs groupId="os">
+  <TabItem value="linux-macos" label="Linux / macOS">
+    ```bash
+    # Read the token from a file so it stays out of your shell history
+    export LICENSE_TOKEN="$(cat /path/to/license.jwt)"
+    ```
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+    ```powershell
+    # Read the token from a file so it stays out of your shell history
+    $env:LICENSE_TOKEN = (Get-Content -Raw C:\path\to\license.jwt).Trim()
+    ```
+  </TabItem>
+</Tabs>
+
+In your own application, embed the license and pass it with `sm_set_license_token()` instead. See [Set the on-device SDK license](/deployments/on-device/license).
+
+## 4. Convert your audio
+
+The SDK accepts raw 16 kHz, mono, signed 16-bit little-endian PCM with no file header. Convert your audio with ffmpeg:
+
+```bash
+# Convert any format ffmpeg reads to raw 16 kHz mono PCM
+ffmpeg -i example.wav -acodec pcm_s16le -f s16le -ac 1 -ar 16000 example.raw
+```
+
+## 5. Run the reference app
+
+<Tabs groupId="os">
+  <TabItem value="linux-macos" label="Linux / macOS">
+    ```bash
+    # Transcribe on the CPU and print the JSON transcript
+    ./sdk/bin/reference-managed -r "$PWD/langpack/<path-to-manifest-dir>" -f example.raw
+    ```
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+    ```powershell
+    # Transcribe on the CPU and print the JSON transcript
+    .\sdk\bin\reference-managed.exe -r "$PWD\langpack\<path-to-manifest-dir>" -f example.raw
+    ```
+  </TabItem>
+</Tabs>
+
+The transcript prints to stdout as JSON. The language pack path must be absolute.
+
+To use hardware acceleration, add `-c` for CoreML on macOS or `-d` for DirectML on Windows. For all options, see [Reference app options](/deployments/on-device/reference-app-options).
+
+## Troubleshoot the reference app
+
+- **Engine error about the license:** check that `LICENSE_TOKEN` holds only the token, not the whole `license.json`, and that the license has not expired.
+- **Wrong or missing ONNX Runtime on Windows:** Windows ships its own `onnxruntime.dll` in `C:\Windows\System32`. Run `reference-managed.exe` from `sdk\bin\`, beside the bundled DLLs, so it loads the SDK's copy.
+- **Chunk length rejected on macOS:** the only chunk length accepted on macOS is `1.32`. Omit `-k`, or set `-k 1.32`.
+- **Garbled or empty transcript:** check that the audio is raw 16 kHz mono PCM, as in [step 4](#4-convert-your-audio).
+- **Non-ASCII characters print incorrectly in PowerShell:** run `chcp 65001` to switch the console to UTF-8.
+
+{/* TODO: check whether macOS Gatekeeper blocks the downloaded binaries, and add the fix here if so. */}
+
+## Next steps
+
+- [Build the example apps](/deployments/on-device/build-the-examples) from the source in the SDK
+- [Set the on-device SDK license](/deployments/on-device/license) in your own application

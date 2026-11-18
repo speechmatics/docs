@@ -357,3 +357,14 @@ LAPD
 httproute
 listenerset
 crds
+smapi
+DirectML
+CoreML
+onnxruntime
+langpack
+glibc
+ffmpeg
+dml
+EHsc
+nologo
+chcp
