@@ -287,13 +287,13 @@ Which hardware runs the models. Selecting a value that your platform's SDK doesn
 
 | Value | Mode |
 |---|---|
-| `SMModeDefault` (0) | Default streaming mode. |
-| `SMModeStreaming` (2) | Force streaming mode. |
-| `SMModeLegacyRealtime` (3) | Force legacy realtime mode. |
+| `SMModeDefault` (0) | Batch mode. The default. |
+| `SMModeStreaming` (2) | Realtime mode. |
+| `SMModeLegacyRealtime` (3) | Legacy realtime mode. |
 
 Value `1` is unused.
 
-{/* TODO: confirm with engineering how SMModeDefault and SMModeStreaming differ for customers, and whether SMModeLegacyRealtime should be documented publicly. */}
+{/* TODO: confirm with engineering whether SMModeLegacyRealtime should be documented publicly. */}
 
 ### SMDenormalisationMode
 

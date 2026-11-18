@@ -30,7 +30,7 @@ Processing options control how `reference-managed` feeds audio to the SDK and re
 | Option | Description |
 |---|---|
 | `-w, --workers <n>` | Number of jobs to transcribe in parallel. Default `1`. |
-| `-m, --transcription-mode <mode>` | `default` returns a final aggregate transcript. `streaming` returns streamed results only. |
+| `-m, --transcription-mode <mode>` | `default` for batch mode, which returns a final aggregate transcript. `streaming` for realtime mode, which returns streamed results only. |
 | `-x, --stream-audio` | Feed the audio incrementally instead of loading the whole file. |
 | `-t, --throttle` | With `-x`, feed audio at real-time pace. |
 | `-s, --stream-incremental-results` | Return results while transcription is in progress. |

@@ -22,7 +22,9 @@ The C API is `include/smapi/smapi_managed.h`. Its comments are the full API refe
 
 In the commands on this page, `<sdk>` is the directory you extracted the SDK into: the one that contains `bin/`, `include/` and `lib/`.
 
-{/* TODO: when DEL-36417 is released, replace -DSMAPI_INCLUDE_DIR / -DSMAPI_LIB_DIR with -DSpeechmaticsESL_ROOT=<sdk>, add find_package(SpeechmaticsESL) and speechmatics_esl_copy_runtime() for customer projects, and drop the manual Windows DLL copy for CMake builds. */}
+{/* TODO: the CMake commands on this page use find_package(SpeechmaticsESL) from casserole branch DEL-36417/find-package-speechmatics-esl, which is not yet released. Publish only once an SDK version that ships it is available. */}
+
+The example apps find the SDK with `find_package(SpeechmaticsESL)`, the same way as your own project can. See [Use the SDK in a CMake project](/deployments/on-device/cmake).
 
 ## Build tool requirements
 
@@ -41,27 +43,20 @@ The `transcribe` and `transcribe_rt` examples build with CMake on every platform
   <TabItem value="linux-macos" label="Linux / macOS">
     ```bash
     # Configure against the extracted SDK, then build both examples
-    cmake -DSMAPI_INCLUDE_DIR=<sdk>/include \
-          -DSMAPI_LIB_DIR=<sdk>/lib \
-          -B build <sdk>/docs/examples
+    cmake -DSpeechmaticsESL_ROOT=<sdk> -B build <sdk>/docs/examples
     cmake --build build
     ```
   </TabItem>
   <TabItem value="windows" label="Windows">
     ```bat
     :: Configure against the extracted SDK, then build both examples
-    cmake -DSMAPI_INCLUDE_DIR=<sdk>\include ^
-          -DSMAPI_LIB_DIR=<sdk>\lib ^
-          -B build <sdk>\docs\examples
+    cmake -DSpeechmaticsESL_ROOT=<sdk> -B build <sdk>\docs\examples
     cmake --build build --config Release
-
-    :: Put the SDK's DLLs beside the new executables
-    copy <sdk>\bin\*.dll build\Release\
     ```
   </TabItem>
 </Tabs>
 
-On Windows, keep `smapi-managed-1.dll`, `onnxruntime.dll` and, where present, `DirectML.dll` beside each `.exe`. Otherwise Windows can load the `onnxruntime.dll` in `C:\Windows\System32` instead.
+The built examples run in place. On Linux and macOS, their build RPATH points at the SDK's `lib/` directory. On Windows, the build copies `smapi-managed-1.dll`, `onnxruntime.dll` and, where present, `DirectML.dll` beside each `.exe`, so Windows doesn't load a different `onnxruntime.dll`, such as the one in `C:\Windows\System32`. If you move an executable, move those DLLs with it.
 
 ### Build the examples on Windows without CMake
 
@@ -102,9 +97,7 @@ You can set the `LANGUAGE_PACK_ROOT` environment variable instead of passing the
     ```bash
     # Configure against the extracted SDK, then build reference-managed
     cmake -DCMAKE_BUILD_TYPE=Release \
-          -DSMAPI_INCLUDE_DIR=<sdk>/include \
-          -DSMAPI_LIB_DIR=<sdk>/lib \
-          -DENABLE_LINTING=OFF \
+          -DSpeechmaticsESL_ROOT=<sdk> \
           -B build-reference-managed \
           <sdk>/share/casserole-1/reference-managed
     cmake --build build-reference-managed
@@ -114,22 +107,18 @@ You can set the `LANGUAGE_PACK_ROOT` environment variable instead of passing the
     ```bat
     :: Configure against the extracted SDK, then build reference-managed
     cmake -DCMAKE_BUILD_TYPE=Release ^
-          -DSMAPI_INCLUDE_DIR=<sdk>\include ^
-          -DSMAPI_LIB_DIR=<sdk>\lib ^
-          -DENABLE_LINTING=OFF ^
+          -DSpeechmaticsESL_ROOT=<sdk> ^
           -B build-reference-managed ^
           <sdk>\share\casserole-1\reference-managed
     cmake --build build-reference-managed --config Release
-
-    :: Put the SDK's DLLs beside the new executable
-    copy <sdk>\bin\*.dll build-reference-managed\Release\
     ```
   </TabItem>
 </Tabs>
 
-On Linux and macOS, the new binary is `build-reference-managed/reference-managed` and runs in place. On Windows, it is `build-reference-managed\Release\reference-managed.exe`.
+On Linux and macOS, the new binary is `build-reference-managed/reference-managed`. On Windows, it is `build-reference-managed\Release\reference-managed.exe`, with the SDK DLLs copied beside it. Either runs in place.
 
 ## Next steps
 
+- [Use the SDK in a CMake project](/deployments/on-device/cmake) of your own.
 - [Reference app options](/deployments/on-device/reference-app-options) lists every `reference-managed` option.
 - [Set the on-device SDK license](/deployments/on-device/license) with `sm_set_license_token()` in your own application.
