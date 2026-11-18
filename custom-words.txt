@@ -373,3 +373,10 @@ DENABLE
 cstring
 logfile
 DYLD
+cerr
+cout
+denormalisation
+dylib
+langpacks
+libsmapi
+RPATH

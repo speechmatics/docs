@@ -26,6 +26,30 @@ export default {
     },
     {
       type: "doc",
+      label: "CMake projects",
+      id: "deployments/on-device/cmake",
+    },
+    {
+      type: "category",
+      label: "GPU",
+      collapsible: true,
+      collapsed: true,
+      link: { type: "doc", id: "deployments/on-device/gpu/index" },
+      items: [
+        {
+          type: "doc",
+          label: "DirectML",
+          id: "deployments/on-device/gpu/directml",
+        },
+        {
+          type: "doc",
+          label: "CoreML",
+          id: "deployments/on-device/gpu/coreml",
+        },
+      ],
+    },
+    {
+      type: "doc",
       label: "Reference app options",
       id: "deployments/on-device/reference-app-options",
     },
