@@ -198,7 +198,7 @@ If your build system lays the headers and library out differently from the SDK a
 | `SpeechmaticsESL_LIBRARIES` | Variable | `Speechmatics::ESL`. |
 | `SpeechmaticsESL_RUNTIME_DLLS` | Variable | Windows: the DLLs an executable needs beside it. Empty elsewhere. |
 
-Older build scripts that set `SMAPI_INCLUDE_DIR` and `SMAPI_LIB_DIR` still work with `find_package(SpeechmaticsESL)`.
+Older build scripts that set `SMAPI_INCLUDE_DIR` and `SMAPI_LIB_DIR` still work with `find_package(SpeechmaticsESL)`, but only when they use a copy of `FindSpeechmaticsESL.cmake` on `CMAKE_MODULE_PATH`, as in [Keep the find module in your own source tree](#keep-the-find-module-in-your-own-source-tree).
 
 ## Next steps
 

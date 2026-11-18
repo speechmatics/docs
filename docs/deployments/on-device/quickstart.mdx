@@ -49,19 +49,19 @@ The language pack directory you pass to the SDK is the one that contains `langpa
 
 ## 3. Set the license
 
-For this quickstart, put your license token in the `LICENSE_TOKEN` environment variable. The token is the `signedclaimstoken` value from your `license.json`.
+For this quickstart, point the `SM_LICENSE_FILE` environment variable at the `license.json` file Speechmatics gave you. The SDK reads the license token from it.
 
 <Tabs groupId="os">
   <TabItem value="linux-macos" label="Linux / macOS">
     ```bash
-    # Read the token from a file so it stays out of your shell history
-    export LICENSE_TOKEN="$(cat /path/to/license.jwt)"
+    # Tell the SDK where your license file is
+    export SM_LICENSE_FILE=/path/to/license.json
     ```
   </TabItem>
   <TabItem value="windows" label="Windows">
     ```powershell
-    # Read the token from a file so it stays out of your shell history
-    $env:LICENSE_TOKEN = (Get-Content -Raw C:\path\to\license.jwt).Trim()
+    # Tell the SDK where your license file is
+    $env:SM_LICENSE_FILE = "C:\path\to\license.json"
     ```
   </TabItem>
 </Tabs>
@@ -100,7 +100,7 @@ To use hardware acceleration, add `-c` for CoreML on macOS or `-d` for DirectML 
 
 ## Troubleshoot the reference app
 
-- **Engine error about the license:** check that `LICENSE_TOKEN` holds only the token, not the whole `license.json`, and that the license has not expired.
+- **Engine error about the license:** check that `SM_LICENSE_FILE` is the full path to your `license.json`, and that the license has not expired.
 - **Wrong or missing ONNX Runtime on Windows:** Windows ships its own `onnxruntime.dll` in `C:\Windows\System32`. Run `reference-managed.exe` from `sdk\bin\`, beside the bundled DLLs, so it loads the SDK's copy.
 - **Chunk length rejected on macOS:** the only chunk length accepted on macOS is `1.32`. Omit `-k`, or set `-k 1.32`.
 - **Garbled or empty transcript:** check that the audio is raw 16 kHz mono PCM, as in [step 4](#4-convert-your-audio).
