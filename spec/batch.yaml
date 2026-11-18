@@ -804,20 +804,31 @@ definitions:
       enable_entities:
         type: boolean
         description: >-
-          Include additional 'entity' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the 'content' field. The entities contain a 'spoken_form' field, which can be used in place of the corresponding 'word' type results, in case a spoken form is preferred to a written form. They also contain a 'written_form', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as 'one hundred million dollars' and '$100 million').
+          Include additional 'entity' objects in the transcription results, interleaved with the other types of results. With smart formatting entities (e.g. dates, numbers; Standard and Enhanced models only), the concatenation of these words is represented as a single entity with the concatenated written form present in the 'content' field. The entities contain a 'spoken_form' field, which can be used in place of the corresponding 'word' type results, in case a spoken form is preferred to a written form. They also contain a 'written_form', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as 'one hundred million dollars' and '$100 million'). With `entities_config.detect_advanced_entities: true`, Entity Detection is used instead (e.g. names, dates of birth, credit card numbers), and spoken and written forms are not available. On Melia 1 and Oak 1, `enable_entities` is only accepted together with `entities_config.detect_advanced_entities: true`.
       entities_config:
         type: object
         properties:
           detect_advanced_entities:
             type: boolean
             description: >-
-              Must be set together with `enable_entities: true`. When true, advanced entity detection is used instead of the default entity detection: entities such as names, dates of birth and credit card numbers are returned, each with its specific `entity_class` (e.g. 'name_given', 'dob'). When false or omitted, `enable_entities` uses the default entity detection, with entity classes such as `cardinal`, `decimal`, `fraction`, `ordinal`, `percentage`, `span` and `measurement`. Spoken and written forms are not available with advanced entity detection.
+              Must be set together with `enable_entities: true`. When true, Entity Detection is
+              used instead of smart formatting entities: entities such as names, dates of birth
+              and credit card numbers are returned, each with its specific `entity_class`
+              (e.g. 'name_given', 'dob'). When false or omitted, `enable_entities` returns smart
+              formatting entities, with entity classes such as `cardinal`, `decimal`, `fraction`,
+              `ordinal`, `percentage`, `span` and `measurement` (Standard and Enhanced models
+              only). Spoken and written forms are not available with Entity Detection.
         description: >-
-          Configuration for Advanced Entities Detection.
+          Configuration for Entity Detection.
       enable_redaction:
         type: boolean
         description: >-
-          Redact advanced entities throughout the transcript: matching entity values are replaced with a consistent label based on the `entity_class` (e.g. "[name_given]"). Must be set together with `redaction_config.entity_classes`. If `enable_entities` is true, `entities_config.detect_advanced_entities` must also be true (redaction relies on advanced entity detection); if `enable_entities` is false or omitted, `enable_redaction` can be used on its own. Spoken and written forms are not available when redaction is enabled.
+          PII Redaction: redact Entity Detection entities throughout the transcript. Matching entity
+          values are replaced with a consistent label based on the `entity_class` (e.g. "[name_given]").
+          Must be set together with `redaction_config.entity_classes`. If `enable_entities` is true,
+          `entities_config.detect_advanced_entities` must also be true (PII Redaction relies on Entity
+          Detection); if `enable_entities` is false or omitted, `enable_redaction` can be used on its
+          own. Spoken and written forms are not available when redaction is enabled.
       redaction_config:
         type: object
         properties:
@@ -899,9 +910,16 @@ definitions:
                 - cvv
                 - routing_number
             description: >-
-              Categories of advanced entities to redact. Each value is either a group or a specific entity type, and groups and entity types can be mixed. Groups: `pii`, `pci` and `health` (personal, payment card and health information), and the regulation-based groups `gdpr`, `gdpr_sensitive`, `hipaa_safe_harbor`, `cpra`, `quebec_privacy_act`, `appi` and `appi_sensitive`. Specific entity types are matched by their `entity_class` (e.g. `name_given`, `dob`, `credit_card`); a general type such as `name` or `location` also covers its more specific types (e.g. `name_given`, `location_city`).
+              Categories of Entity Detection entities to redact. Each value is either a group or a
+              specific entity type, and groups and entity types can be mixed. Groups: `pii`,
+              `pci` and `health` (personal, payment card and health information), and the
+              regulation-based groups `gdpr`, `gdpr_sensitive`, `hipaa_safe_harbor`, `cpra`,
+              `quebec_privacy_act`, `appi` and `appi_sensitive`. Specific entity types are matched
+              by their `entity_class` (e.g. `name_given`, `dob`, `credit_card`); a general type such
+              as `name` or `location` also covers its more specific types (e.g. `name_given`,
+              `location_city`).
         description: >-
-          Configuration for redaction. Required, and only applied, when `enable_redaction` is true.
+          Configuration for PII Redaction. Required, and only applied, when `enable_redaction` is true.
       max_delay_mode:
         type: string
         enum:
@@ -1663,7 +1681,9 @@ definitions:
       entity_class:
         type: string
         description: >-
-          For 'entity' results only, the class the entity has been formatted as, e.g. 'date', 'money', 'number' with the default entity detection, or the specific advanced entity type (e.g. 'name_given', 'dob') with advanced entity detection or redaction.
+          For 'entity' results only, the class the entity has been formatted as, e.g. 'date',
+          'money', 'number' with smart formatting entities, or the specific Entity Detection class
+          (e.g. 'name_given', 'dob') with Entity Detection or PII Redaction.
       alternatives:
         type: array
         items:
