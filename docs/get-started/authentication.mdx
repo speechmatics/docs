@@ -255,7 +255,7 @@ Note that when starting an Agent STT session in the browser, you must provide th
 | `client_ref` | No             | String of up to 256 characters. When provided, `batch` tokens can only create and retrieve jobs with that reference; without it, they can access any job. **Must** be set when temporary keys are exposed to end-users to prevent accessing another user's data. `client_ref` is ignored when requesting `rt` tokens.
 | `region`     | No             | String: `eu` (default), `usa`, or `au`. Set this for `batch` temporary keys used outside Europe. A `batch` temporary key is valid only in this region, so it must match the [Batch endpoint](#supported-endpoints) you call. If omitted, the temporary key is created for `eu`. Not needed for `rt` temporary keys, which work in every region and ignore this parameter.
 
-The request body must be 1 MiB or smaller. A larger body is rejected with a `413` response, and a `client_ref` longer than 256 characters with a `422` response. The same limits apply to `POST /v1/api_keys`.
+The request body must be 64 KiB or smaller. A larger body is rejected with a `413` response, and a `client_ref` longer than 256 characters with a `422` response. The same limits apply to `POST /v1/api_keys`.
 
 
 ## Next steps
