@@ -1,0 +1,100 @@
+---
+title: Reference app options
+description: Look up the command-line options, input format and package layout of the on-device reference app, reference-managed.
+---
+
+# Reference app options
+
+`reference-managed` is the command-line reference app shipped with the Speechmatics on-device SDK, prebuilt in `bin/` and as source. Run it with `-h` to print every option.
+
+```bash
+# Basic invocation: one language pack, one audio file
+reference-managed -r <language-pack-dir> -f <audio-file>
+```
+
+## Job options
+
+Job options describe one transcription. Repeat `-r` and `-f`, and optionally `-j` and `-o`, to run several jobs in one invocation. If you give `-j` or `-o` for one job, give it for every job.
+
+| Option | Description |
+|---|---|
+| `-r, --language-pack-root <path>` | Absolute path to the language pack directory, the one that contains `langpack_manifest.yaml`. |
+| `-f, --audio-file-path <path>` | Audio file to transcribe. Use `-` with `-x` to read from stdin. |
+| `-j, --job-config-path <path>` | JSON job config containing a [`transcription_config`](/api-ref/batch/create-a-new-job). `{}` is valid. |
+| `-o, --output-json <path>` | File to write the JSON transcript to. Defaults to stdout. |
+
+## Processing options
+
+Processing options control how `reference-managed` feeds audio to the SDK and returns results.
+
+| Option | Description |
+|---|---|
+| `-w, --workers <n>` | Number of jobs to transcribe in parallel. Default `1`. |
+| `-m, --transcription-mode <mode>` | `default` for batch mode, which returns a final aggregate transcript. `streaming` for realtime mode, which returns streamed results only. |
+| `-x, --stream-audio` | Feed the audio incrementally instead of loading the whole file. |
+| `-t, --throttle` | With `-x`, feed audio at real-time pace. |
+| `-s, --stream-incremental-results` | Return results while transcription is in progress. |
+| `--interleave_audio_and_messages` | With `-x`, read audio as base64 lines interleaved with JSON messages. A `ForceEndOfUtterance` message ends the current utterance. |
+
+## Engine options
+
+Engine options tune the SDK's engine.
+
+| Option | Description |
+|---|---|
+| `-k, --chunk-length <seconds>` | Audio chunk length. Omit to use the SDK default. On macOS, omit `-k`. |
+| `--multi-thread` | Enable multithreading inside the SDK. |
+| `--onnx_intra_op_num_threads <n>` | ONNX Runtime intra-op threads per session. `0` uses the SDK default. |
+
+## Hardware acceleration options
+
+`reference-managed` runs on the CPU unless you select a hardware execution provider. Selecting a provider that your platform's SDK doesn't include returns an engine error.
+
+| Option | Description |
+|---|---|
+| `-c, --coreml` | Use CoreML. macOS only. |
+| `-d, --dml` | Use DirectML. Windows only. Never falls back to the CPU: if the adapter is unusable, the app exits with an error. |
+| `-a, --dml-adapter <n>` | With `-d`, the DirectML adapter index. `0` selects the system default adapter. |
+
+## License and logging options
+
+These options set the license and control diagnostic output.
+
+| Option | Description |
+|---|---|
+| `--license-token <token>` | The license token, passed to `sm_set_license_token()`. Overrides `LICENSE_TOKEN` and `SM_LICENSE_FILE`. |
+| `-l, --logfile <path>` | Write the event log to a file. |
+| `-v, --verbose` | Increase the SDK log level. Repeat for more detail. |
+| `-q, --quiet` | Suppress progress and informational output. |
+| `-h, --help` | Print all options and exit. |
+
+`--license-token` exposes the token to other users through the process list and saves it in your shell history. Use it only for local testing. See [Set the on-device SDK license](/deployments/on-device/license).
+
+The `SM_ORT_LOGGING_LEVEL` environment variable sets the ONNX Runtime log level, from `0` (verbose) to `4` (fatal). The default is `3` (error).
+
+## Audio input format
+
+`reference-managed` and the SDK accept raw PCM audio only:
+
+| Property | Value |
+|---|---|
+| Encoding | Signed 16-bit little-endian (`pcm_s16le`) |
+| Sample rate | 16 kHz |
+| Channels | 1 (mono) |
+| Header | None |
+
+## SDK package layout
+
+Each SDK archive extracts to the following directories:
+
+| Directory | Contents |
+|---|---|
+| `bin/` | Prebuilt `reference-managed`. On Windows, also the SDK DLLs, which must sit beside any executable that uses them. |
+| `include/smapi/` | `smapi_managed.h`, the C API header. |
+| `lib/` | The SDK library and bundled ONNX Runtime. On Windows, the `smapi-managed-1.lib` import library. On Linux, libraries are in a `lib/<arch>-linux-gnu/` subdirectory. |
+| `docs/` | Getting-started guide and the `transcribe` and `transcribe_rt` examples. |
+| `share/casserole-1/reference-managed/` | `reference-managed` source and CMake build files. |
+
+The `1` in `smapi-managed-1` is the SDK's major version. On Linux and macOS, the library finds its bundled ONNX Runtime without `LD_LIBRARY_PATH` or `DYLD_LIBRARY_PATH`.
+
+{/* TODO: verify this layout, including the share/ path and the Linux lib/ subdirectory, against a released archive. */}

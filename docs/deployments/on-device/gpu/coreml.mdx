@@ -1,0 +1,69 @@
+---
+title: Transcribe with CoreML
+sidebar_label: CoreML
+description: Run on-device transcription on Apple silicon with the CoreML execution provider.
+---
+
+# Transcribe with CoreML
+
+CoreML runs the Speechmatics on-device SDK's models on Apple silicon, using the Mac's GPU and Neural Engine.
+
+## CoreML requirements
+
+To use CoreML, you need:
+
+- the macOS SDK
+- a Mac with Apple silicon. Intel-based Macs are not supported.
+- macOS 13 Ventura or later
+
+## Enable CoreML in your application
+
+Set `model_selection` to `SMModelSelectionCoreML` in the engine options, and leave the chunk length at its default:
+
+```cpp showLineNumbers
+SMEngineConfigOverride cfg = {};
+cfg.model_selection = SMModelSelectionCoreML;        // run on Apple silicon with CoreML
+cfg.chunk_length = SMAPI_USE_DEFAULT_CHUNK_LENGTH;   // CoreML models run at 1.32 s only
+cfg.transcription_mode = SMModeDefault;
+cfg.denormalisation_mode = SMDenormalisationAtEnd;
+
+void *engine = sm_create_engine(langpack.c_str(), langpack.size(), &cfg,
+                                nullptr, nullptr, nullptr, true, nullptr);
+
+// Fails here, not during transcription, if CoreML can't load the models
+SMEngineStatus status = sm_check_error(engine);
+if (status.status != SMEngineOk) {
+  std::cerr << "CoreML engine error: "
+            << std::string_view(status.detail, status.detail_len) << "\n";
+}
+```
+
+The rest of the engine lifecycle is the same as on the CPU. For a complete program, see [Use the SDK in a CMake project](/deployments/on-device/cmake#create-the-example-project).
+
+## Set the chunk length for CoreML
+
+The CoreML models in current language packs run only at a chunk length of 1.32 seconds. Leave `chunk_length` at `SMAPI_USE_DEFAULT_CHUNK_LENGTH`, which uses that value, or set it to `1.32`. Don't set any other value.
+
+{/* TODO: once the CHANGELOG-managed "Unreleased" entry ships, state that any other value fails to load with an error naming the problem (1.0.x ignores it). */}
+
+## Expect a slow first engine with CoreML
+
+The first time a Mac loads a language pack's CoreML models, CoreML compiles them for that Mac's hardware. Creating the first engine therefore takes noticeably longer than later ones.
+
+To keep this delay away from your users' first transcription, create an engine when your application starts or installs, rather than when the user first asks for a transcript.
+
+{/* TODO: confirm how long the first CoreML load takes for a typical language pack, and whether the compiled model survives reboots and OS updates. */}
+
+## Try CoreML with the reference app
+
+The prebuilt reference app turns on CoreML with `-c`:
+
+```bash
+# Transcribe with CoreML
+./reference-managed -c -r /path/to/langpack -f example.raw
+```
+
+## Troubleshoot CoreML
+
+- **Chunk length rejected:** set `chunk_length` to `SMAPI_USE_DEFAULT_CHUNK_LENGTH` or `1.32`. With the reference app, omit `-k`.
+- **First engine is slow:** this is CoreML compiling the models, as described in [Expect a slow first engine with CoreML](#expect-a-slow-first-engine-with-coreml).

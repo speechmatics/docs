@@ -1,0 +1,48 @@
+---
+title: Set the on-device SDK license
+sidebar_label: License
+description: Embed your license in your application and pass it to the Speechmatics on-device SDK before transcribing.
+---
+
+# Set the on-device SDK license
+
+The Speechmatics on-device SDK needs a license before it transcribes any audio. To get one, speak to [Support](https://support.speechmatics.com).
+
+The SDK validates the license each time your application calls `sm_create_engine`, and again periodically during transcription. Validation works offline.
+
+## Pass the license with sm_set_license_token
+
+Embed the license in your application and pass it with `sm_set_license_token()`. This is the preferred method, because the license stays inside your application rather than being visible on the end user's machine.
+
+The token is the `signedclaimstoken` value from the `license.json` Speechmatics gives you. Call `sm_set_license_token()` once, before creating any engine:
+
+```cpp
+#include <cstring>
+#include <smapi/smapi_managed.h>
+
+// Token compiled into your application, not read from disk
+static const char kLicenseToken[] = "<signedclaimstoken>";
+
+int main() {
+  // Set the license once, before any sm_create_engine call
+  sm_set_license_token(kLicenseToken, std::strlen(kLicenseToken));
+  // ... create engines and transcribe ...
+}
+```
+
+To make the token harder to extract from your binary, store it obfuscated and decode it just before the call.
+
+`sm_set_license_token()` is not safe to call at the same time as `sm_create_engine`. Call it before your application starts any transcription threads. Engines created before the call keep the license they started with.
+
+## Set the license with an environment variable
+
+For evaluation and for running the example apps, the SDK can also read the license from the environment. It checks these variables only when your application has not called `sm_set_license_token()`:
+
+| Variable | Value |
+|---|---|
+| `LICENSE_TOKEN` | The token itself: the `signedclaimstoken` value from `license.json`. |
+| `SM_LICENSE_FILE` | The path to `license.json`. The SDK reads the token from it. |
+
+Either variable exposes the license to anyone with access to the machine. Don't rely on them in an application you ship to end users.
+
+{/* TODO: document license expiry behavior (validFrom / notValidAfter, and what the SDK does after expiry) once confirmed for on-device. */}
