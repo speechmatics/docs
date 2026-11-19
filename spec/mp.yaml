@@ -379,8 +379,9 @@ components:
           description: A display name for the API key (up to 120 characters).
         client_ref:
           type: string
+          maxLength: 256
           nullable: true
-          description: "An end-user reference. For `batch` keys, it restricts the key to jobs created with the same `client_ref`; it is ignored for `rt` keys."
+          description: "An end-user reference of up to 256 characters. For `batch` keys, it restricts the key to jobs created with the same `client_ref`; it is ignored for `rt` keys."
         ttl:
           maximum: 86400
           minimum: 60
