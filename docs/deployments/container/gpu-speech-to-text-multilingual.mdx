@@ -188,11 +188,11 @@ These Docker Compose files will create a Speechmatics Melia 1 and Oak 1 GPU Infe
 ### Realtime
 
 <CodeBlock language="yaml" title="docker-compose.yml">
-{multilingualGpuSttDockerComposeRt.replace('{{ CONTAINER_VERSION }}', smVariables.latestMultilingualContainerVersion)}
+{multilingualGpuSttDockerComposeRt.replaceAll('{{ CONTAINER_VERSION }}', smVariables.latestMultilingualContainerVersion)}
 </CodeBlock>
 
 ### Persistant Batch Worker
 
 <CodeBlock language="yaml" title="docker-compose.yml">
-{multilingualGpuSttDockerComposeBatch.replace('{{ CONTAINER_VERSION }}', smVariables.latestMultilingualContainerVersion)}
+{multilingualGpuSttDockerComposeBatch.replaceAll('{{ CONTAINER_VERSION }}', smVariables.latestMultilingualContainerVersion)}
 </CodeBlock>
