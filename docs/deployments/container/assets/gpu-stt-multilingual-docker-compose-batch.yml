@@ -34,7 +34,7 @@ services:
     volumes:
       - $PWD/license.json:/license.json:ro
   transcriber:
-    image: speechmaticspublic.azurecr.io/sm-transcriber:{{ CONTAINER_VERSION }}
+    image: speechmaticspublic.azurecr.io/sm-asr-transcriber:{{ CONTAINER_VERSION }}
     networks:
       - transcriber
     ports:
