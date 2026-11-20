@@ -1,0 +1,17 @@
+global:
+  transcriber:
+    languages: ["ar", "ba", "be", "bg", "bn", "ca", "cmn", "cmn_en", "cmn_en_ms_ta", "cs", "cy", "da", "de", "el", "en", "en_ms", "en_ta", "eo", "es", "es-bilingual-en", "et", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi", "hr", "hu", "ia", "id", "it", "ja", "ko", "lt", "lv", "mn", "mr", "ms", "mt", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "sw", "ta", "th", "tl", "tr", "ug", "uk", "ur", "vi", "yue"]
+
+# Disable the default enhanced inference server recipe
+inferenceServerEnhancedRecipe1:
+  enabled: false
+
+# Enable the all-language inference server
+inferenceServerAll:
+  enabled: true
+
+  tritonServer:
+    # Raise the GPU memory pool to fit all-language models.
+    # Tune to the GPU you are targeting
+    memoryPool:
+      cudaByteSize: "8000000000"

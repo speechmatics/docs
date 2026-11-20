@@ -1,0 +1,35 @@
+proxy:
+  ingress:
+    enabled: false
+
+  httproute:
+    enabled: true
+    hostname: speechmatics.example.com
+    parentRefs:
+      # Attach the route to the ListenerSet created by the chart
+      - group: gateway.networking.k8s.io
+        kind: ListenerSet
+        name: proxy
+        sectionName: https
+
+  listenerset:
+    enabled: true
+    parentRef:
+      group: gateway.networking.k8s.io
+      kind: Gateway
+      name: my-gateway
+      namespace: nginx-gateway
+    listeners:
+      https:
+        port: 443
+        protocol: HTTPS
+        hostname: speechmatics.example.com
+        tls:
+          mode: Terminate
+          certificateRefs:
+            - group: ""
+              kind: Secret
+              name: tls-secret
+        allowedRoutes:
+          namespaces:
+            from: Same
