@@ -47,7 +47,7 @@ Available Mandarin locales:
 
 ### Output locale for multilingual transcription
 
-With Batch transcription, [Melia 1](/speech-to-text/models#melia-1) can transcribe more than one language in the same job, so `output_locale` also accepts an array of locales, one per language present in the audio:
+[Melia 1](/speech-to-text/models#melia-1) and [Oak 1](/speech-to-text/models#oak-1) can transcribe more than one language in the same job or session, so `output_locale` also accepts an array of locales, one per language present in the audio. This works for both Batch and Realtime:
 
 ```json
 {
@@ -63,8 +63,6 @@ With Batch transcription, [Melia 1](/speech-to-text/models#melia-1) can transcri
 ```
 
 Each locale in the array must belong to a different language. Passing two locales for the same language, for example `en-GB` and `en-US` together, is rejected.
-
-On Realtime, `output_locale` does not yet accept an array. Set a single locale.
 
 ## Profanities
 
@@ -247,22 +245,70 @@ For adding new vocabulary, use the [custom dictionary](/speech-to-text/features/
 
 ### Regex
 
-You can use regular expressions (ECMAScript format) in the `from` field by adding forward-slash delimiters:
+To match a pattern instead of an exact word, write `from` as a regular expression between forward slashes. Patterns use [RE2 syntax](https://github.com/google/re2/wiki/Syntax) from container version 17.4.0. Earlier container versions use ECMAScript syntax.
+
+Each rule is applied to one word at a time. A pattern can't match across two words or match punctuation marks, and `^` and `$` match the start and end of the word.
+
+These rules show common regex replacements. In JSON, write each backslash twice, so `\d` becomes `\\d`:
 
 ```javascript
-// Replace both "Hello" and "hello" with "goodbye"
-{"from": "/^[hH]ello$/", "to": "goodbye"}
+// Replace "Hello" and "hello" with "goodbye"
+{"from": "/(?i)^hello$/", "to": "goodbye"}
+
+// Replace every digit in a word with "#", so "4921" becomes "####"
+{"from": "/\\d/", "to": "#"}
 
 // Add brackets around "cheese" while preserving the original word
 {"from": "/(cheese)/", "to": "[$1]"}
 ```
 
-Word replacement rules:
+#### Supported pattern syntax
+
+The table lists the syntax most useful for word replacement. For the full list, see the [RE2 syntax reference](https://github.com/google/re2/wiki/Syntax).
+
+| Syntax | Matches |
+|---|---|
+| `[abc]`, `[^abc]`, `[a-z]` | One character in, or not in, the set or range |
+| `.` | Any one character, including accented and non-Latin characters |
+| `\d`, `\w` | An ASCII digit, or an ASCII letter, digit, or underscore |
+| `\pL`, `\p{Greek}` | Any letter in any language, or a letter in the named script |
+| `^`, `$`, `\b` | The start of the word, the end of the word, or a boundary between ASCII letters and other characters |
+| `*`, `+`, `?`, `{2,4}` | Repeats of the previous item. Counts go up to 1000. Add `?` to match as few as possible, such as `+?` |
+| `cat\|dog` | Either alternative |
+| `(...)`, `(?:...)`, `(?P<name>...)` | A capturing group, a non-capturing group, or a named capturing group |
+| `(?i)` | The rest of the pattern, ignoring case. Flags go inside the pattern: `/hello/i` doesn't end in `/`, so it's treated as a plain word |
+| `\.`, `\Q...\E` | A literal punctuation character, or the literal text between `\Q` and `\E` |
+
+#### Replacement syntax
+
+The `to` field can insert parts of the match:
+
+| Syntax | Inserts |
+|---|---|
+| `$1` to `$9` | The text captured by that group, or nothing if the pattern has no such group |
+| `$&` or `$0` | The whole match |
+| `$$` | A literal `$` |
+
+All other characters, including `\`, are inserted as written. Refer to a named group by its number.
+
+#### Unsupported syntax
+
+RE2 doesn't support some syntax from other regex engines. The features you're most likely to use from JavaScript or Python are:
+
+- Lookahead and lookbehind, such as `(?=...)` and `(?<!...)`
+- Backreferences, such as `(.)\1`
+- Named groups written as `(?<name>...)`. Use `(?P<name>...)` instead.
+- `\u` escapes, such as `\u00e9`. Use the character itself or `\x{e9}` instead.
+
+If a rule is invalid, uses syntax RE2 doesn't support, or has an empty pattern (`//`), the request fails before transcription starts, with an error that says which rule is invalid and why.
+
+#### How replacement rules are applied
+
+Rules are applied to each word in this order:
 1. Plain word replacements are processed first
 2. If no match is found, regex replacements are tried in the order listed
 3. Once a word matches a replacement, no further replacements are applied to it
-4. Regex replacements are global (all matches are replaced)
-5. Malformed regex patterns will cause the transcription to fail with an error
+4. A regex replacement replaces every match in the word
 
 
 ## Smart formatting
@@ -271,7 +317,9 @@ Smart formatting converts spoken numbers, dates, currencies, and other entities 
 
 An *entity* is a spoken value that has a conventional written form, such as a number, date, currency, time, or measurement. Speechmatics detects each entity and converts it from the words as spoken into its written form. For example, the spoken words "nineteen ninety nine" become "1999" in the output.
 
-Smart formatting is applied by default. Set `enable_entities` to `true` to also expose the structure of each entity in the JSON output: the class of entity, and the individual spoken and written words it is made from.
+Smart formatting is applied by default on all models, including Melia 1 and Oak 1. Set `enable_entities` to `true` to also expose the structure of each entity in the JSON output: the class of entity, and the individual spoken and written words it is made from.
+
+Smart formatting entities are only available on the Standard and Enhanced models. On Melia 1 and Oak 1, the transcript is smart formatted, but `enable_entities` doesn't return smart formatting entities. To detect sensitive data such as names, dates of birth, and card numbers on any model, use [Entity Detection](/speech-to-text/features/entity-detection) or [PII Redaction](/speech-to-text/features/pii-redaction), which use the [Entity Detection classes](/speech-to-text/features/entity-detection-classes).
 
 :::info
 `enable_entities` is not supported on Agent STT.
@@ -365,9 +413,9 @@ When `enable_entities` is `false`, the words appear individually in the output.
 
 
 
-### Entity classes
+### Smart formatting classes
 
-The system applies different formatting rules based on the type of entity detected. The following classes are available:
+The system applies different formatting rules based on the type of entity detected. The following classes are available on the Standard and Enhanced models. Melia 1 and Oak 1 format these values in the transcript but don't return their classes. For the classes Entity Detection returns, see [Entity Detection classes](/speech-to-text/features/entity-detection-classes).
 
 | Entity class | Description | Spoken example | Written example |
 |-------------|-------------|---------------|-----------------|

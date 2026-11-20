@@ -1,0 +1,15 @@
+proxy:
+  httproute:
+    filters:
+      # Pass the gateway-generated request ID to proxy-service
+      - type: RequestHeaderModifier
+        requestHeaderModifier:
+          set:
+            - name: X-Request-Id
+              value: $request_id
+      # Return the request ID in the response, so the client can see it
+      - type: ResponseHeaderModifier
+        responseHeaderModifier:
+          add:
+            - name: Request-Id
+              value: $request_id

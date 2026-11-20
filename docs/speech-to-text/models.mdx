@@ -40,7 +40,7 @@ Melia 1 and Oak 1 feature support differs between Batch and Realtime. For the Re
 On Batch, Melia 1 and Oak 1 match the Enhanced and Standard models for core transcription features, including diarization, word timings, punctuation, notifications, and output locale. They do not yet support the following features, which are available with the Enhanced and Standard models:
 
 - Custom vocabulary and formatting: custom dictionary, find and replace, spoken form output, profanity tagging
-- Output detail: confidence scores, entity detection, audio filtering
+- Output detail: confidence scores, smart formatting entities (`enable_entities` without [Entity Detection](/speech-to-text/features/entity-detection)), audio filtering
 - Speaker identification
 - Speech intelligence: audio events, translation, summarization, chapters, topics, sentiment
 
@@ -117,7 +117,7 @@ The same two properties select Melia 1 in a Realtime `StartRecognition` message:
 Melia 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
 :::
 
-Melia 1 supports [output locale](/speech-to-text/formatting#output-locale). On Batch, `output_locale` also accepts an array of locales, one per language in the audio. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription). On Realtime, `output_locale` does not yet accept an array. Set a single locale.
+Melia 1 supports [output locale](/speech-to-text/formatting#output-locale). On Batch and Realtime, `output_locale` also accepts an array of locales, one per language in the audio. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription).
 
 To configure language hints and read the per-language output, refer to Batch [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output), or Realtime [Input](/speech-to-text/realtime/input#language-hints) and [Output](/speech-to-text/realtime/output#languageinfo-message).
 
@@ -175,7 +175,7 @@ The same two properties select Oak 1 in a Realtime `StartRecognition` message:
 Oak 1 does not support the `auto` language value, which returns an error. Set `language` to `multi`.
 :::
 
-Oak 1 supports [output locale](/speech-to-text/formatting#output-locale). On Batch, `output_locale` also accepts an array of locales, one per language in the audio. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription). On Realtime, `output_locale` does not yet accept an array. Set a single locale.
+Oak 1 supports [output locale](/speech-to-text/formatting#output-locale). On Batch and Realtime, `output_locale` also accepts an array of locales, one per language in the audio. Refer to [Output locale for multilingual transcription](/speech-to-text/formatting#output-locale-for-multilingual-transcription).
 
 To configure language hints and read the per-language output, refer to Batch [Input](/speech-to-text/batch/input#language-hints) and [Output](/speech-to-text/batch/output#multilingual-transcript-output), or Realtime [Input](/speech-to-text/realtime/input#language-hints) and [Output](/speech-to-text/realtime/output#languageinfo-message).
 
@@ -198,21 +198,23 @@ Oak 1 is a standalone model for healthcare audio. It is separate from the [Enhan
 
 ### Melia 1 and Oak 1 on Realtime
 
-Melia 1 and Oak 1 on Realtime support Partials and Finals, channel diarization, word timings, word-level language labeling, output locale, smart formatting, [`ForceEndOfUtterance`](/speech-to-text/realtime/turn-detection#client-side-turn-detection), and [language hints](/speech-to-text/realtime/input#language-hints).
+Melia 1 and Oak 1 on Realtime support Partials and Finals, speaker diarization, channel diarization, word timings, word-level language labeling, output locale, smart formatting, [`ForceEndOfUtterance`](/speech-to-text/realtime/turn-detection#client-side-turn-detection), and [language hints](/speech-to-text/realtime/input#language-hints).
 
 For these models, your client must detect when the speaker has finished, for example using voice activity detection, and send `ForceEndOfUtterance`. The server then returns a final transcript followed by an `EndOfUtterance` message.
 
 They do not yet support the following Realtime features, which are available with the Enhanced and Standard models:
 
 - Automatic silence-based end of utterance detection. Both models reject `end_of_utterance_silence_trigger` in `conversation_config`.
-- Speaker diarization and Speaker identification
+- Speaker identification
 - `max_delay` and `max_delay_mode` latency control.
 - Custom dictionary
-- Entity detection and punctuation overrides
+- Smart formatting entities (`enable_entities`) and punctuation overrides
 - Disfluency removal, profanity tagging, and audio filtering
 - Translation and audio events
 
 Omit unsupported properties from your `transcription_config`.
+
+Speaker diarization with Melia 1 and Oak 1 is available on SaaS only, not in on-prem deployments.
 
 ### Enhanced Medical model {#healthcare-domain}
 

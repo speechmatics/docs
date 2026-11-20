@@ -8,6 +8,10 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { smVariables } from '/sm-variables';
 import CodeBlock from '@theme/CodeBlock';
+import allLanguagesSmallerGpusValues from './assets/all-languages-smaller-gpus.values.yaml?raw';
+import allLanguagesValues from './assets/all-languages.values.yaml?raw';
+import autoscalingValues from './assets/autoscaling.values.yaml?raw';
+import englishValues from './assets/english.values.yaml?raw';
 
 # Realtime
 
@@ -15,14 +19,24 @@ import CodeBlock from '@theme/CodeBlock';
 
 ### Install
 
-Providing the [Prerequisites](/deployments/kubernetes/prerequisites) have been met for the Speechmatics Helm chart, use the command below to install:
+Once the [prerequisites](/deployments/kubernetes/prerequisites) are in place, create a `values.yaml` file with your configuration. It must at least set the hostname that clients connect to:
+
+```yaml
+proxy:
+  ingress:
+    hostname: speechmatics.example.com
+```
+
+This example uses the default `Ingress`. If you use Gateway API, use the `HTTPRoute` values from [Gateway API](/deployments/kubernetes/prerequisites#gateway-api) instead. For more options, see [Configuration](#configuration).
+
+Then install the chart:
 
 <CodeBlock language="bash">
   {`# Install the sm-realtime chart
 helm upgrade --install speechmatics-realtime \\
   oci://speechmaticspublic.azurecr.io/sm-charts/sm-realtime \\
   --version ${smVariables.helmChartVersion} \\
-  --set proxy.ingress.hostname="speechmatics.example.com"`}
+  -f values.yaml`}
 </CodeBlock>
 
 :::note
@@ -33,13 +47,13 @@ helm upgrade --install speechmatics-realtime \\
 
 #### Capacity check
 
-You can confirm whether the transcribers and inference servers are available using:
+With the default values, the chart deploys an English transcriber and an enhanced inference server. You can confirm whether they are available using:
 
 ```bash
 kubectl get sessiongroups
 ```
 
-If the transcribers and inference servers are available, it will show `CAPACITY` meaning that they have successfully registered.
+When the transcribers and inference servers have started and registered, `CAPACITY` shows a non-zero value. Inference servers can take several minutes to load their models.
 
 ```bash
 NAME                                REPLICAS   CAPACITY   USAGE   VERSION   SPEC HASH
@@ -49,6 +63,8 @@ rt-transcriber-en                   1          2          0       1         8392
 
 #### Run a session
 
+Install the Speechmatics CLI with `pip install speechmatics-python`. Make sure the hostname you configured resolves to your ingress or gateway, then run a session:
+
 ```bash
 speechmatics rt transcribe \
   --url wss://speechmatics.example.com/v2 \
@@ -57,6 +73,10 @@ speechmatics rt transcribe \
   --ssl-mode insecure \
   <audio-file>
 ```
+
+`--ssl-mode insecure` skips certificate validation, for example with a self-signed certificate. Remove it once a trusted certificate is in place. `--operating-point` is the CLI option for selecting the model.
+
+To build applications against your deployment, use one of the [Speechmatics SDKs](/integrations-and-sdks/sdks) and set its `url` to your deployment's address, for example `wss://speechmatics.example.com/v2`.
 
 ## Hardware recommendations
 
@@ -71,90 +91,111 @@ All Other Services  | Standard_D*s_v5
 ## Configuration
 
 :::info
-For detailed configuration options, refer to sm-realtime Helm chart README.md
+For all configuration options, refer to the Helm chart README. To view it, run:
+
+<CodeBlock language="bash">
+  {`helm show readme oci://speechmaticspublic.azurecr.io/sm-charts/sm-realtime --version ${smVariables.helmChartVersion}`}
+</CodeBlock>
 :::
 
-See the examples below on how to configure the Helm chart for different deployment scenarios.
+See the examples below on how to configure the Helm chart for different deployment scenarios. To pull images from your own registry, see [Private registry](/deployments/kubernetes/prerequisites#private-registry).
 
 
 <Tabs>
 <TabItem value="all_langs" label="All Languages" default>
 
+Serves every language for both the standard and enhanced models from a single inference server. This requires a GPU with a large amount of memory, such as an L40S or H100.
+
+<CodeBlock language="yaml" title="values.yaml">
+  {allLanguagesValues}
+</CodeBlock>
+
+</TabItem>
+<TabItem value="all_langs_small_gpu" label="All Languages (smaller GPUs)">
+
+For GPUs with less memory, such as a T4, serve all languages from separate inference servers for each recipe.
+
+<CodeBlock language="yaml" title="values.yaml">
+  {allLanguagesSmallerGpusValues}
+</CodeBlock>
+
+</TabItem>
+<TabItem value="en_only" label="English Standard + Enhanced">
+
+<CodeBlock language="yaml" title="values.yaml">
+  {englishValues}
+</CodeBlock>
+
+</TabItem>
+<TabItem value="autoscaling" label="Auto-Scaling">
+
+<CodeBlock language="yaml" title="values.yaml">
+  {autoscalingValues}
+</CodeBlock>
+
+</TabItem>
+<TabItem value="language_subset" label="Language Subset">
+
 ```yaml
 global:
   transcriber:
-    languages: ["ar", "ba", "be", "bg", "bn", "ca", "cmn", "cmn_en", "cmn_en_ms_ta", "cs", "cy", "da", "de", "el", "en", "en_ms", "en_ta", "eo", "es", "es-bilingual-en", "et", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi", "hr", "hu", "ia", "id", "it", "ja", "ko", "lt", "lv", "mn", "mr", "ms", "mt", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "sw", "ta", "th", "tl", "tr", "ug", "uk", "ur", "vi", "yue"]
+    languages: ["en", "tr"]
 
-# Enable all enhanced and standard inference server recipes
 inferenceServerEnhancedRecipe1:
-  enabled: true
-
-inferenceServerEnhancedRecipe2:
-  enabled: true
-
-inferenceServerEnhancedRecipe3:
-  enabled: true
-
-inferenceServerEnhancedRecipe4:
-  enabled: true
-
-inferenceServerStandardAll:
-  enabled: true
-```
-
-</TabItem>
-<TabItem value="en_only" label="English Standard + Enhanced" default>
-
-```yaml
-# Disable default enhanced inference server recipes
-inferenceServerEnhancedRecipe1:
-  enabled: false
-
-# Enable custom inference server deployment with just en models
-inferenceServerCustom:
-  enabled: true
-  fullnameOverride: inference-server-en
- 
   tritonServer:
-    image:
-      # Repository for the en-only inference server triton container
-      repository: sm-gpu-inference-server-en
- 
-  inferenceSidecar:
-    enabled: true
-
-    # Configuration for custom model deployments
-    registerFeatures:
-      capacity: 600
-      languages: ["en"]
-      operatingPoint: ["standard", "enhanced"]
-```
-
-</TabItem>
-<TabItem value="autoscaling" label="Auto-Scaling" default>
-
-```yaml
-global:
-  # Enable scaling for all sessiongroups resources
-  sessionGroups:
-    scaling:
-      enabled: true
-
-inferenceServerEnhancedRecipe1:
-  sessionGroups:
-    scaling:
-      # Scale up inference server pods when there are 300 inference tokens remaining
-      scaleOnCapacityLeft: 300
-
-transcribers:
-  sessionGroups:
-    scaling:
-      # Scale up transcriber pods when there is only capacity for 1 more session
-      scaleOnCapacityLeft: 1
+    # Load only these languages from the inference server image,
+    # to reduce GPU memory usage and startup time
+    languages: ["en", "tr"]
 ```
 
 </TabItem>
 </Tabs>
+
+### Models
+
+[Models](/speech-to-text/models) (previously called operating points) are configured with `model` keys in the Helm chart values, for example `registerFeatures.model` on an inference server. `model` replaces the older `operatingPoint` keys. `operatingPoint` is deprecated but still works as a fallback and accepts the same `standard` and `enhanced` values. It will be removed in the next major version of the chart (2.0.0), so use `model` going forward.
+
+If both are set, `model` takes precedence, but only when it is not empty. Setting `model: ""` does not clear an inherited `operatingPoint`.
+
+### Version selection
+
+When transcribers and inference servers of different versions run side by side, for example during an upgrade, the resource manager only pairs a transcriber with a compatible inference server. Configure the preferred versions with `resourceManager.config.rtWorkersVersionConfig`:
+
+```yaml
+resourceManager:
+  config:
+    rtWorkersVersionConfig:
+      legacy:
+        "1": { v: "17.0.0", compatibility: major }
+        "2": { v: "16.0.0", compatibility: major }
+        "3": { v: "15.0.0", compatibility: major }
+```
+
+- Entries are tried in order
+- `compatibility` is `exact`, `major` (same major version) or `any`
+- `legacy` covers the `standard` and `enhanced` models
+
+The default shown above routes any 17.x, 16.x or 15.x version, preferring 17.x. If you run a version outside this range, add it to `rtWorkersVersionConfig`.
+
+## Upgrade
+
+Helm does not upgrade CustomResourceDefinitions (CRDs). Before you upgrade the chart, update the `sessiongroups` CRD:
+
+<CodeBlock language="bash">
+  {`helm show crds oci://speechmaticspublic.azurecr.io/sm-charts/sm-realtime \\
+  --version ${smVariables.helmChartVersion} | kubectl apply --server-side -f -`}
+</CodeBlock>
+
+Server-side apply avoids the `metadata.annotations: Too long` error that client-side apply returns for this CRD.
+
+Then upgrade the chart with the same `helm upgrade --install` command and values you used to [install](#install) it, with the new `--version`.
+
+To roll back to the previous chart version, run `helm rollback speechmatics-realtime`. This does not roll back the `sessiongroups` CRD.
+
+### Upgrading to 1.5.0
+
+- The default `Ingress` no longer adds a `Request-Id` response header, so `ingress-nginx` no longer needs snippet annotations enabled. To keep the header, see [Request ID](/deployments/kubernetes/prerequisites#request-id)
+- `operatingPoint` values keep working until chart 2.0.0. See [Models](#models) to move to `model`
 
 ## Uninstall
 

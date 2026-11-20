@@ -106,7 +106,7 @@ On detecting an end of utterance, the server sends an  `EndOfUtterance` message,
 
 You can use our `ForceEndOfUtterance` message to manually trigger an end of utterance detection at any point in the conversation. This allows you to integrate your own end of turn detection model with our ASR.
 
-`ForceEndOfUtterance` is supported by Enhanced, Standard, and Melia 1. For Melia 1, your client must detect when the speaker has finished, for example using voice activity detection, and send this message. Omit `conversation_config.end_of_utterance_silence_trigger` from the Melia 1 transcription config.
+`ForceEndOfUtterance` is supported by Enhanced, Standard, Melia 1, and Oak 1. For Melia 1 and Oak 1, your client must detect when the speaker has finished, for example using voice activity detection, and send this message. Omit `conversation_config.end_of_utterance_silence_trigger` from the Melia 1 and Oak 1 transcription config.
 
 The `ForceEndOfUtterance` message is sent to the server to trigger an end of utterance detection:
 

@@ -9,8 +9,25 @@ import { smVariables } from '/sm-variables';
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import gatewayManifest from './assets/gateway.yaml?raw';
+import httprouteValues from './assets/httproute.values.yaml?raw';
+import listenersetValues from './assets/listenerset.values.yaml?raw';
+import ngfValues from './assets/ngf.values.yaml?raw';
+import nginxValues from './assets/nginx.values.yaml?raw';
+import requestIdNgfValues from './assets/request-id-ngf.values.yaml?raw';
 
 # Prerequisites
+
+Before you install the Realtime Helm chart, make sure you have:
+
+| Requirement | |
+|---|---|
+| [Registry access](#access-to-docker-and-helm-registry) | Credentials for the Speechmatics image and chart registry |
+| [Private registry](#private-registry) | Optional. Recommended for closed environments |
+| [Speechmatics license](#speechmatics-license) | A license stored as a secret on the cluster |
+| [GPU drivers](#gpu-drivers) | GPU nodes with the NVIDIA device plugin |
+| [Ingress setup](#ingress-setup) | Gateway API (recommended) or an ingress controller that supports WebSockets |
+| [Request ID](#request-id) | Optional. Headers for tracing sessions |
 
 ## Access to Docker and Helm registry
 
@@ -30,6 +47,8 @@ kubectl create secret docker-registry speechmatics-registry \
   --docker-password=<password>
 ```
 
+The chart uses the `speechmatics-registry` secret by default, through the `global.imagePullSecrets` value.
+
 Using the same credentials, authenticate Helm with the `speechmaticspublic` registry to install the Helm chart:
 
 ```bash
@@ -39,26 +58,56 @@ helm registry login speechmaticspublic.azurecr.io \
   --password <password>
 ```
 
+### Private registry
+
+Instead of pulling from `speechmaticspublic.azurecr.io`, you can mirror the Speechmatics images into a registry you control. We recommend this for closed environments, where the cluster cannot reach external registries, and when you want control over which images are available to the cluster.
+
+Mirror the images under the same repository names and tags, for example `my-registry.example.com/rt-asr-transcriber-en:<version>`. To list the images your configuration uses, render the chart with your values:
+
+<CodeBlock language="bash">
+  {`helm template oci://speechmaticspublic.azurecr.io/sm-charts/sm-realtime \\
+  --version ${smVariables.helmChartVersion} -f values.yaml | grep 'image:' | sort -u`}
+</CodeBlock>
+
+Redis is not published to `speechmaticspublic.azurecr.io`, so also mirror the Docker Hub `redis` image under the same name. The command above lists the Redis image and tag with the other images.
+
+Then set `global.imageRegistry` to your registry. It replaces the registry of every image in the chart, including Redis, and keeps each image's repository and tag:
+
+```yaml
+global:
+  imageRegistry: my-registry.example.com
+  # Secret for your registry, or [] if nodes can pull without one
+  imagePullSecrets:
+    - name: my-registry
+```
+
+You can also host the Helm chart in your registry:
+
+<CodeBlock language="bash">
+  {`helm pull oci://speechmaticspublic.azurecr.io/sm-charts/sm-realtime --version ${smVariables.helmChartVersion}
+helm push sm-realtime-${smVariables.helmChartVersion}.tgz oci://my-registry.example.com/sm-charts`}
+</CodeBlock>
+
 ## Speechmatics license
 
 Please speak to `support@speechmatics.com` if you do not already have a valid Speechmatics license.
 
 The Helm chart requires you to have a valid Speechmatics license stored in a secret called `speechmatics-license`, on the Kubernetes cluster. 
 
-You can add a secret to the cluster with these commands:
+To create the secret from your license file, for example `license.json`:
 
 ```bash
 kubectl create secret generic speechmatics-license \
-  --from-literal=license.json="$(cat $LICENSE_FILE)"
+  --from-file=license.json=./license.json
 ```
 
-Alternatively, you can configure the chart to create the secret for your Speechmatics license secret for you using the following values:
+Alternatively, the chart can create the secret for you. Set `global.licensing.license` to the base64-encoded contents of your license file, for example the output of `base64 < license.json | tr -d '\n'`:
 
 ```yaml
 global:
   licensing:
     createSecret: true
-    license: $B64_ENCODED_LICENSE
+    license: <base64-encoded license>
 ```
 
 ## GPU drivers
@@ -75,71 +124,169 @@ Below is a list of the common cloud providers and their recommended way of deplo
 
 Alternatively, see the [Nvidia Device Plugin](https://github.com/NVIDIA/k8s-device-plugin#deployment-via-helm) docs.
 
-You can validate a node has allocatable GPU resources with:
+You can validate which nodes have allocatable GPU resources with:
 
 ```bash
-kubectl get nodes -o yaml | yq .[].[].status.allocatable | grep nvidia
+kubectl get nodes -o custom-columns='NAME:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu'
 ```
 
-## Nginx ingress controller
+Nodes without GPUs show `<none>`.
 
-When setting up Speechmatics via an ingress controller, it is recommended to use the `ingress-nginx` ingress controller with snippet annotations enabled. You can confirm if your cluster supports Nginx with snippet annotations enabled using the following command:
+## Ingress setup
+
+The Helm chart exposes `proxy-service`, the entry point for Realtime sessions, through either Gateway API or a Kubernetes `Ingress`. Configure one of these. Your gateway or ingress controller must support WebSocket connections.
+
+For new deployments, we recommend [Gateway API](#gateway-api). It is the successor to `Ingress` in Kubernetes, and the `ingress-nginx` controller that the default chart values are written for is retired.
+
+### Gateway API (recommended) {#gateway-api}
+
+To expose `proxy-service` with [Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/), the chart creates an `HTTPRoute`. You need:
+
+- Gateway API CRDs (v1 or later) installed on the cluster
+- A gateway controller, for example [NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/)
+- A `Gateway` resource. The Helm chart does not create the `Gateway`, so you must manage it separately
+
+If you are not already running a gateway controller, follow these steps to set up NGINX Gateway Fabric:
+
+1. Install the Gateway API CRDs:
 
 ```bash
-# The default is false
-kubectl get cm -o yaml -l app.kubernetes.io/instance=nginx | grep allow-snippet-annotations
+kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.8.1" | kubectl apply -f -
 ```
 
-If you are not already running `ingress-nginx`, follow the below steps:
+2. Create an `ngf.values.yaml` file:
+
+<CodeBlock language="yaml" title="ngf.values.yaml">
+  {ngfValues}
+</CodeBlock>
+
+3. Install the NGINX Gateway Fabric chart:
+
+```bash
+helm install ngf oci://ghcr.io/nginx/charts/nginx-gateway-fabric \
+  --version 2.8.1 \
+  --create-namespace -n nginx-gateway \
+  -f ngf.values.yaml
+```
+
+4. Create a `Gateway` with an HTTPS listener, and a `SnippetsPolicy` that lets active sessions finish when nginx reloads or shuts down. The TLS secret must be in the same namespace as the `Gateway`:
+
+<CodeBlock language="yaml" title="gateway.yaml">
+  {gatewayManifest}
+</CodeBlock>
+
+If you use another gateway controller, set `gatewayClassName` to its class.
+
+Disable the default `Ingress` and enable the `HTTPRoute`. Set `parentRefs` to the `Gateway` that serves traffic for the route:
+
+<CodeBlock language="yaml" title="values.yaml">
+  {httprouteValues}
+</CodeBlock>
+
+#### Using a ListenerSet
+
+Instead of declaring the proxy listener on a shared `Gateway`, the chart can create a [`ListenerSet`](https://gateway-api.sigs.k8s.io/geps/gep-1713/) that attaches its own HTTPS listener and TLS configuration to the `Gateway`. This requires a Gateway API version and gateway controller that support `ListenerSet`. `ListenerSet` is in the Gateway API experimental channel, so with the NGINX Gateway Fabric steps above, install the CRDs from `experimental` instead of `standard`.
+
+<CodeBlock language="yaml" title="values.yaml">
+  {listenersetValues}
+</CodeBlock>
+
+TLS secrets referenced by a listener must be in the same namespace as the `ListenerSet`.
+
+#### Preventing session loss during gateway upgrades
+
+Restarting the gateway data plane pods, or reloading their configuration, ends active WebSocket sessions. The NGINX Gateway Fabric steps above handle this. With another gateway controller, configure the data plane to shut down gracefully:
+
+- Set the nginx `worker_shutdown_timeout` directive, or the equivalent for your controller
+- Set a `preStop` lifecycle hook and `terminationGracePeriodSeconds` on the data plane pods to match your maximum session duration
+
+### ingress-nginx {#nginx-ingress-controller}
+
+By default, the Helm chart creates a Kubernetes `Ingress` for `proxy-service` that uses `ingressClassName: nginx`. The default values are written for the [`ingress-nginx`](https://kubernetes.github.io/ingress-nginx/) ingress controller.
+
+:::warning
+`ingress-nginx` is [retired](https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/). Maintenance ended in March 2026, and the project no longer publishes releases, bug fixes or security patches. Existing installations keep working, but for new deployments we recommend [Gateway API](#gateway-api).
+:::
+
+If you are not already running `ingress-nginx`, follow these steps:
 
 1. Create an `nginx.values.yaml` file:
 
-```yaml
-controller:
-  service:
-    # This is needed to preserve the source IP of the client
-    # See: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-    externalTrafficPolicy: Local
-
-    # This should be set to the IP address used to access services on your cluster
-    loadBalancerIP: $CLUSTER_INGRESS_IP
-
-  config:
-    # This prevents nginx worker process from shutting down for 24h in case of active sessions
-    worker-shutdown-timeout: 86400s
-
-  extraArgs:
-    # Needed to support annotations added by the chart ingresses
-    annotations-prefix: nginx.ingress.kubernetes.io
-
-    # This prevents nginx main process from shutting down for 24h in case of active sessions
-    shutdown-grace-period: 86400
- 
-  # Used to prevent nginx pods being terminated for 24h while there are active sessions
-  terminationGracePeriodSeconds: 86400
-
-  # Needed to allow ingresses to add snippet annotations to add necessary headers
-  allowSnippetAnnotations: true
-```
+<CodeBlock language="yaml" title="nginx.values.yaml">
+  {nginxValues}
+</CodeBlock>
 
 2. Install the Nginx chart with:
 
 ```bash
 helm repo add nginx https://kubernetes.github.io/ingress-nginx
-helm install nginx nginx/ingress-nginx --version 4.11.4 -f nginx.values.yaml
+helm install nginx nginx/ingress-nginx --version 4.15.1 -f nginx.values.yaml
 ```
 
-### Using another ingress controller
+### Other ingress controllers {#using-another-ingress-controller}
 
-If you are running another ingress controller, when enabling ingress on the chart, you need to ensure that a `Request-Id` header is passed through. This is used to manage session usage.
+You can use any ingress controller that supports WebSocket connections. Set `proxy.ingress.ingressClassName` to the ingress class of your controller:
 
-In Nginx, it looks like this:
+```yaml
+proxy:
+  ingress:
+    ingressClassName: my-ingress-class
+```
+
+The default `proxy.ingress.annotations` are specific to `ingress-nginx`, so add any annotations your controller needs. The default `proxy.ingress.path` is a regular expression, so enable regular expression path matching on your controller, or set a path that your controller supports.
+
+Sessions do not require any additional request headers. To add a request ID for session tracking, see [Request ID](#request-id).
+
+## Request ID
+
+Each session is tagged with a request ID, which appears in the `proxy-service` logs and helps you trace a session across components:
+
+- If the incoming request has an `X-Request-Id` header, `proxy-service` uses it
+- Otherwise, `proxy-service` generates a random request ID
+
+Request ID headers are optional. To correlate sessions with your ingress or gateway logs, configure the controller to set `X-Request-Id` on the request. To let clients see the ID, for example to quote it when reporting an issue with a session, configure the controller to return it in a `Request-Id` response header.
+
+<Tabs>
+<TabItem value="ngf" label="NGINX Gateway Fabric" default>
+
+Set and return the request ID with `filters` on the `HTTPRoute`:
+
+<CodeBlock language="yaml" title="values.yaml">
+  {requestIdNgfValues}
+</CodeBlock>
+
+The `$request_id` variable is specific to NGINX Gateway Fabric. For other gateway controllers, refer to the controller's documentation.
+
+</TabItem>
+<TabItem value="ingress_nginx" label="ingress-nginx">
+
+Add the `Request-Id` response header with a snippet annotation:
 
 ```yaml
 proxy:
   ingress:
     annotations:
-      # Add headers to all requests coming through this ingress
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      # Add the request ID to the response, so the client can see it
       nginx.ingress.kubernetes.io/configuration-snippet: |+
         more_set_headers "Request-Id: $req_id";
 ```
+
+Snippet annotations must be enabled on `ingress-nginx`, otherwise it rejects the `Ingress`. From controller version 1.12, `configuration-snippet` is also classed as a `Critical` risk annotation, so the annotation risk level must be raised as well. Add the following to `nginx.values.yaml`:
+
+```yaml
+controller:
+  allowSnippetAnnotations: true
+  config:
+    annotations-risk-level: Critical
+```
+
+To check both settings on your cluster, run:
+
+```bash
+# No output means the defaults apply: snippets disabled and risk level High
+kubectl get cm -o yaml -l app.kubernetes.io/instance=nginx | grep -E 'allow-snippet-annotations|annotations-risk-level'
+```
+
+</TabItem>
+</Tabs>

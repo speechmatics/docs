@@ -1,0 +1,19 @@
+global:
+  transcriber:
+    languages: ["ar", "ba", "be", "bg", "bn", "ca", "cmn", "cmn_en", "cmn_en_ms_ta", "cs", "cy", "da", "de", "el", "en", "en_ms", "en_ta", "eo", "es", "es-bilingual-en", "et", "eu", "fa", "fi", "fr", "ga", "gl", "he", "hi", "hr", "hu", "ia", "id", "it", "ja", "ko", "lt", "lv", "mn", "mr", "ms", "mt", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "sw", "ta", "th", "tl", "tr", "ug", "uk", "ur", "vi", "yue"]
+
+# Enable all enhanced and standard inference server recipes
+inferenceServerEnhancedRecipe1:
+  enabled: true
+
+inferenceServerEnhancedRecipe2:
+  enabled: true
+
+inferenceServerEnhancedRecipe3:
+  enabled: true
+
+inferenceServerEnhancedRecipe4:
+  enabled: true
+
+inferenceServerStandardAll:
+  enabled: true

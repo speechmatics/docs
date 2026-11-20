@@ -1,0 +1,13 @@
+nginxGateway:
+  snippets:
+    # Needed for the SnippetsPolicy that keeps sessions alive during upgrades
+    enable: true
+
+nginx:
+  service:
+    # This is needed to preserve the source IP of the client
+    externalTrafficPolicy: Local
+
+  pod:
+    # Used to prevent nginx pods being terminated for 24h while there are active sessions
+    terminationGracePeriodSeconds: 86400
