@@ -6,7 +6,7 @@ networks:
 
 services:
   triton:
-    image: speechmaticspublic.azurecr.io/sm-asr-inference-server-melia-1:{{ CONTAINER_VERSION }}
+    image: speechmaticspublic.azurecr.io/sm-asr-inference-server:{{ CONTAINER_VERSION }}
     deploy:
       resources:
         reservations:
@@ -34,3 +34,16 @@ services:
       - SM_STREAMING=true
     volumes:
       - $PWD/license.json:/license.json:ro
+  transcriber:
+    image: speechmaticspublic.azurecr.io/sm-asr-transcriber:{{ CONTAINER_VERSION }}
+    networks:
+      - transcriber
+    ports:
+      - 9000:9000
+    environment:
+      - SM_INFERENCE_ENDPOINT=triton:8001
+      - SM_MAX_CONCURRENT_CONNECTIONS=1
+      - SM_ASR_MODE=rt
+    volumes:
+      - $PWD/license.json:/license.json:ro
+  
