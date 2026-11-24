@@ -66,7 +66,7 @@ For this quickstart, point the `SM_LICENSE_FILE` environment variable at the `li
   </TabItem>
 </Tabs>
 
-In your own application, embed the license and pass it with `sm_set_license_token()` instead. See [Set the on-device SDK license](/deployments/on-device/license).
+In your own application, embed the license and pass it with `sm_set_license_token()` or in the engine config instead. See [Set the on-device SDK license](/deployments/on-device/license).
 
 ## 4. Convert your audio
 
@@ -100,7 +100,7 @@ To use hardware acceleration, add `-c` for CoreML on macOS or `-d` for DirectML 
 
 ## Troubleshoot the reference app
 
-- **Engine error about the license:** check that `SM_LICENSE_FILE` is the full path to your `license.json`, and that the license has not expired.
+- **Engine error starting `License check failed:`:** check that `SM_LICENSE_FILE` is the full path to your `license.json`, and that the license has not expired.
 - **Wrong or missing ONNX Runtime on Windows:** Windows ships its own `onnxruntime.dll` in `C:\Windows\System32`. Run `reference-managed.exe` from `sdk\bin\`, beside the bundled DLLs, so it loads the SDK's copy.
 - **Chunk length rejected on macOS:** omit `-k`. The reference app then uses the language pack's chunk length.
 - **Garbled or empty transcript:** check that the audio is raw 16 kHz mono PCM, as in [step 4](#4-convert-your-audio).

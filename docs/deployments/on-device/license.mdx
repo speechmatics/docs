@@ -8,7 +8,13 @@ description: Embed your license in your application and pass it to the Speechmat
 
 The Speechmatics on-device SDK needs a license before it transcribes any audio. To get one, speak to [Support](https://support.speechmatics.com).
 
-The SDK validates the license each time your application calls `sm_create_engine`, and again periodically during transcription. Validation works offline.
+The SDK validates the license each time your application calls `sm_create_engine`, before it reads the language pack, and again periodically during transcription. Validation works offline. If the license is missing or invalid, [`sm_check_error`](/deployments/on-device/api-reference#sm_check_error) on the new engine returns `SMEngineError` with a `detail` that starts with `License check failed: `.
+
+Each engine is licensed independently. For each engine, the SDK uses the first license token it finds, in this order:
+
+1. The `license_token` field of the engine's `SMEngineConfigOverride`.
+2. The token set with `sm_set_license_token()`.
+3. The `LICENSE_TOKEN` or `SM_LICENSE_FILE` environment variable.
 
 ## Pass the license with sm_set_license_token
 
@@ -34,9 +40,27 @@ To make the token harder to extract from your binary, store it obfuscated and de
 
 `sm_set_license_token()` is not safe to call at the same time as `sm_create_engine`. Call it before your application starts any transcription threads. Engines created before the call keep the license they started with.
 
+## Pass the license in the engine config
+
+To license one engine without the process-wide setting, set the `license_token` and `license_token_len` fields of the `SMEngineConfigOverride` you pass to `sm_create_engine`. A token here takes precedence over `sm_set_license_token()` for that engine, so engines in one process can run under different licenses:
+
+```cpp
+SMEngineConfigOverride cfg = {};
+// License this engine alone. sm_create_engine copies the token.
+cfg.license_token = kLicenseToken;
+cfg.license_token_len = std::strlen(kLicenseToken);
+
+void *engine = sm_create_engine(langpack.c_str(), langpack.size(), &cfg,
+                                nullptr, nullptr, nullptr, true, nullptr);
+```
+
+The token's memory doesn't need to outlive the call. Setting the field doesn't change the token set with `sm_set_license_token()`.
+
+{/* TODO: license_token in SMEngineConfigOverride is from casserole MR !832 (branch feature/license-check-before-decrypt), not yet in a release. Publish this section only once an SDK version that ships it is available. */}
+
 ## Set the license with an environment variable
 
-For evaluation and for running the example apps, the SDK can also read the license from the environment. It checks these variables only when your application has not called `sm_set_license_token()`:
+For evaluation and for running the example apps, the SDK can also read the license from the environment. It checks these variables only when neither the engine config nor `sm_set_license_token()` supplies a token:
 
 | Variable | Value |
 |---|---|

@@ -9,7 +9,8 @@ toc_max_heading_level: 3
   GENERATED FROM HEADER — regenerate, don't hand-edit.
   Source: casserole smapi/src/smapi/smapi_managed.h on origin/master at 4f0fdaa67a
   (header last changed in 8883c93574, 2026-11-17), plus sm_set_custom_dictionary_cache from
-  origin/DEL-35623/10-cd-windows-arm64 (5c56895f13), which is not yet on master.
+  origin/DEL-35623/10-cd-windows-arm64 (5c56895f13), and SMEngineConfigOverride's license_token /
+  license_token_len from feature/license-check-before-decrypt (poc/casserole !832, 9ea062334d); neither is on master yet.
   Rules: document every SMAPI_EXPORT function, callback typedef, enum, struct and #define;
   reword header comments for customers and drop internal references (primary variant, ESL,
   the SMAPI_MANAGED_EP_ and SMAPI_LICENSE_CHECKING build flags, ORT internals); keep section order.
@@ -23,7 +24,7 @@ A typical application calls the functions in this order:
 
 ```text
 sm_set_log_handler         optional, but without it the SDK logs nowhere
-sm_set_license_token       once, before creating any engine
+sm_set_license_token       once, before creating any engine (or set license_token per engine)
 sm_create_engine           one engine per concurrent transcription
 sm_check_error             fails fast if the license or language pack didn't load
 sm_transcribe              blocks until the transcription finishes
@@ -79,6 +80,8 @@ Sets the license token: the `signedclaimstoken` value from `license.json`. Use t
 | `token_len` | Length of `token` in bytes. |
 
 The token applies to every engine created after the call. Engines already created are unaffected. Passing `NULL` or a length of `0` clears the token, and the SDK falls back to the `LICENSE_TOKEN` and `SM_LICENSE_FILE` environment variables.
+
+A token in the `license_token` field of [`SMEngineConfigOverride`](#smengineconfigoverride) takes precedence over this one for that engine.
 
 **Thread safety:** not safe to call at the same time as `sm_create_engine`. Call it once, before starting any transcription threads.
 
@@ -157,6 +160,8 @@ SMEngineStatus sm_check_error(void *engine);
 ```
 
 Returns the engine's status as an [`SMEngineStatus`](#smenginestatus). If engine creation failed, for example because of an invalid license, a missing language pack or an unavailable GPU, the status is `SMEngineError` and `detail` says why.
+
+`sm_create_engine` checks the license before it reads the language pack. If the license is missing or invalid, `detail` starts with `License check failed: `.
 
 The engine owns `detail`. Don't free it. It stays valid until you call `sm_delete_engine`.
 
@@ -271,6 +276,13 @@ Engine options passed to `sm_create_engine`. Each field overrides the language p
 | `onnx_intra_op_num_threads` | `int32_t` | Threads each model session uses. `0` or less uses the SDK default. |
 | `dml_adapter` | `int32_t` | DirectML adapter index, when `model_selection` is `SMModelSelectionDirectML`. `0` is the system default adapter. Ignored otherwise. |
 | `denormalisation_mode` | [`SMDenormalisationMode`](#smdenormalisationmode) | When inverse text normalization runs. |
+| `license_token`, `license_token_len` | `const char *`, `size_t` | The license token for this engine alone, and its length in bytes. `NULL` or a length of `0`, the default, means no token. |
+
+{/* TODO: license_token / license_token_len are from casserole MR !832 (branch feature/license-check-before-decrypt), not yet on master or in a release. The struct grew, so code built against an earlier header must be recompiled: say so in the release notes. Remove this comment when regenerating from a master that has it. */}
+
+`license_token` is the `signedclaimstoken` value from `license.json`, for the engine being created. It takes precedence over the token set with [`sm_set_license_token`](#sm_set_license_token), which takes precedence over the `LICENSE_TOKEN` and `SM_LICENSE_FILE` environment variables.
+
+`sm_create_engine` copies the token, so its memory doesn't need to outlive the call. The field doesn't change the token set with `sm_set_license_token`, so engines in one process can run under different licenses. See [Set the on-device SDK license](/deployments/on-device/license#pass-the-license-in-the-engine-config).
 
 ### SMModelSelection
 
