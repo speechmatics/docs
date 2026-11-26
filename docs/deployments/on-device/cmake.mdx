@@ -190,13 +190,24 @@ If your build system lays the headers and library out differently from the SDK a
 | Name | Type | Description |
 |---|---|---|
 | `Speechmatics::ESL` | Imported target | The SDK library and its include directory. |
-| `speechmatics_esl_copy_runtime(<target>)` | Command | Windows: copies the SDK DLLs beside `<target>`'s executable after each build. Does nothing on Linux and macOS. |
+| `speechmatics_esl_copy_runtime(<target>)` | Command | Windows: copies the SDK DLLs, and `cd-compiler` with its files if found, beside `<target>`'s executable after each build. Does nothing on Linux and macOS. |
+| `Speechmatics::cd-compiler` | Imported target | `cd-compiler`, the custom dictionary compiler the SDK runs for jobs with `additional_vocab`. Defined only if found. |
 | `SpeechmaticsESL_FOUND` | Variable | True if the SDK was found. |
 | `SpeechmaticsESL_VERSION` | Variable | The full SDK version through the package config, or the major version through the find module alone. |
 | `SpeechmaticsESL_VERSION_MAJOR` | Variable | The SDK's major version: the `1` in `smapi-managed-1`. |
 | `SpeechmaticsESL_INCLUDE_DIRS` | Variable | The SDK include directory. |
 | `SpeechmaticsESL_LIBRARIES` | Variable | `Speechmatics::ESL`. |
 | `SpeechmaticsESL_RUNTIME_DLLS` | Variable | Windows: the DLLs an executable needs beside it. Empty elsewhere. |
+| `SpeechmaticsESL_CD_COMPILER` | Variable | The path to `cd-compiler`, or empty if the SDK has none. |
+
+`find_package` looks for `cd-compiler` whether or not you ask for it. To make a missing `cd-compiler` an error, request the `CdCompiler` component:
+
+```cmake
+# Fail at configure time if the SDK has no cd-compiler
+find_package(SpeechmaticsESL REQUIRED COMPONENTS CdCompiler)
+```
+
+{/* TODO: cd-compiler is not yet in release packages, so requesting CdCompiler fails with them. Confirm the first SDK release that ships it before publishing. */}
 
 Older build scripts that set `SMAPI_INCLUDE_DIR` and `SMAPI_LIB_DIR` still work with `find_package(SpeechmaticsESL)`, but only when they use a copy of `FindSpeechmaticsESL.cmake` on `CMAKE_MODULE_PATH`, as in [Keep the find module in your own source tree](#keep-the-find-module-in-your-own-source-tree).
 
