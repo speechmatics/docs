@@ -5,14 +5,6 @@ description: Look up every function, callback, type and constant in the Speechma
 toc_max_heading_level: 3
 ---
 
-{/*
-  GENERATED FROM HEADER — regenerate, don't hand-edit.
-  Source: the SDK's smapi_managed.h.
-  Rules: document every exported function, callback typedef, enum, struct and #define;
-  reword header comments for customers and drop internal references (other SDK variants,
-  build flags, ONNX Runtime internals); keep section order.
-*/}
-
 # On-device SDK C API reference
 
 The Speechmatics on-device SDK has a C API, declared in `include/smapi/smapi_managed.h`. You can call it from C++, or from C23. From earlier C standards, it needs GCC or Clang: the header declares enums with a fixed underlying type (`enum : uint8_t`), which those compilers accept in C11 as an extension. All strings are UTF-8, and every string parameter takes an explicit length in bytes, not counting any trailing NUL.
