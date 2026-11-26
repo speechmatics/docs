@@ -1,61 +1,49 @@
 ---
 title: Set the on-device SDK license
 sidebar_label: License
-description: Embed your license in your application and set it once for the Speechmatics on-device SDK before creating any engine.
+description: Embed your license in your application and set it for the Speechmatics on-device SDK before creating any engine.
 ---
 
 # Set the on-device SDK license
 
 The Speechmatics on-device SDK needs a license before it transcribes any audio. To get one, speak to [Support](https://support.speechmatics.com).
 
-You set the license once, for the whole SDK. It then applies to every engine your application creates, and it can't be changed until the process restarts. Validation works offline.
+Validation works offline. Each engine takes the license when `sm_create_engine` creates it, from the first of these sources that is set:
 
-The SDK takes the license from the first of these to happen:
+1. The token your application passed to `sm_set_license_token()`.
+2. The `LICENSE_TOKEN` or `SM_LICENSE_FILE` environment variable.
 
-1. Your application calls `sm_set_license_token()`.
-2. Your application calls `sm_create_engine` for the first time. The SDK then reads the `LICENSE_TOKEN` or `SM_LICENSE_FILE` environment variable.
-
-Each `sm_create_engine` call checks the license again before it reads the language pack, and the SDK checks it periodically during transcription. If the license is missing, invalid or has expired, [`sm_check_error`](/deployments/on-device/api-reference#sm_check_error) on the new engine returns `SMEngineError` with a `detail` that starts with `License check failed: `.
-
-{/* TODO: setting the license once per process, and sm_set_license_token's SMLicenseStatus return value, are from casserole MR !832 (branch feature/license-check-before-decrypt), not yet in a release. Until then the released SDK lets sm_set_license_token be called again, returns void, and treats NULL as clearing the token. */}
+The SDK checks the license when `sm_transcribe` starts, and periodically during transcription. If the license is missing, invalid or has expired, `sm_transcribe` returns `SMTranscriptionFailure`, and the result's `detail` says why.
 
 ## Pass the license with sm_set_license_token
 
 Embed the license in your application and pass it with `sm_set_license_token()`. This is the preferred method, because the license stays inside your application rather than being visible on the end user's machine.
 
-The token is the `signedclaimstoken` value from the `license.json` Speechmatics gives you. Call `sm_set_license_token()` once, before creating any engine, and check what it returns:
+The token is the `signedclaimstoken` value from the `license.json` Speechmatics gives you. Call `sm_set_license_token()` once, before creating any engine:
 
 ```cpp
 #include <cstring>
-#include <iostream>
 #include <smapi/smapi_managed.h>
 
 // Token compiled into your application, not read from disk
 static const char kLicenseToken[] = "<signedclaimstoken>";
 
 int main() {
-  // Set the license once, before any sm_create_engine call
-  if (sm_set_license_token(kLicenseToken, std::strlen(kLicenseToken)) != SMLicenseOk) {
-    std::cerr << "license is not valid\n";
-    return 1;
-  }
+  // Set the license before any sm_create_engine call
+  sm_set_license_token(kLicenseToken, std::strlen(kLicenseToken));
   // ... create engines and transcribe ...
 }
 ```
 
 To make the token harder to extract from your binary, store it obfuscated and decode it just before the call.
 
-`sm_set_license_token()` returns an [`SMLicenseStatus`](/deployments/on-device/api-reference#smlicensestatus):
+The token applies to every engine created after the call. Engines that already exist keep the license they were created with. Passing `NULL` or a length of `0` clears the token, so later engines read the environment variables instead.
 
-- `SMLicenseOk`: the license is set and valid.
-- `SMLicenseNotValid`: the license is set but isn't valid. No engine can be created until the process restarts. Engine creation reports why in `sm_check_error`.
-- `SMLicenseAlreadySet`: the license was already set, by an earlier call or by the first `sm_create_engine`. Nothing changed.
-
-You can call `sm_set_license_token()` from any thread, including while another thread calls `sm_create_engine`. Whichever comes first sets the license.
+`sm_set_license_token()` isn't safe to call at the same time as `sm_create_engine`. Call it before your application starts any transcription threads.
 
 ## Set the license with an environment variable
 
-For evaluation and for running the example apps, the SDK can also read the license from the environment. If your application hasn't called `sm_set_license_token()`, the first `sm_create_engine` call reads one of these variables:
+For evaluation and for running the example apps, the SDK can also read the license from the environment. If your application hasn't set a token with `sm_set_license_token()`, `sm_create_engine` reads one of these variables:
 
 | Variable | Value |
 |---|---|

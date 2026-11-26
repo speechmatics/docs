@@ -20,7 +20,7 @@ An on-device deployment has three parts, all available from the [Portal](https:/
 |---|---|
 | Speechmatics on-device SDK | A shared library with a C API, plus prebuilt and source copies of the example apps. One archive per platform. |
 | Language packs | The encrypted models for one language. One archive per language, shared by all platforms. |
-| License | A token that unlocks the SDK. Your application sets it once, before creating any engine, and it applies to every engine. |
+| License | A token that unlocks the SDK. Your application sets it before creating any engine. |
 
 The SDK bundles everything it needs to run the models, including ONNX Runtime. Your application sends audio in and receives transcripts through callbacks.
 

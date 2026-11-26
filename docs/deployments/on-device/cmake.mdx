@@ -78,11 +78,8 @@ int main(int argc, char **argv) {
   const std::string audio = argv[1];
   const std::string langpack = argv[2];
 
-  // Set the license once, before creating any engine. It applies to every engine.
-  if (sm_set_license_token(kLicenseToken, std::strlen(kLicenseToken)) != SMLicenseOk) {
-    std::cerr << "license is not valid\n";
-    return 1;
-  }
+  // Set the license before creating any engine. It applies to every engine created after this call.
+  sm_set_license_token(kLicenseToken, std::strlen(kLicenseToken));
 
   // Run on the CPU with default settings
   SMEngineConfigOverride cfg = {};
@@ -99,7 +96,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  // Fail fast if the license or language pack did not load
+  // Fail fast if the language pack did not load
   SMEngineStatus status = sm_check_error(engine);
   if (status.status != SMEngineOk) {
     std::cerr << "engine error: " << std::string_view(status.detail, status.detail_len) << "\n";

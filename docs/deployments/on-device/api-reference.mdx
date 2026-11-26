@@ -7,14 +7,10 @@ toc_max_heading_level: 3
 
 {/*
   GENERATED FROM HEADER — regenerate, don't hand-edit.
-  Source: casserole smapi/src/smapi/smapi_managed.h on origin/master at 4f0fdaa67a
-  (header last changed in 8883c93574, 2026-11-17), plus sm_set_custom_dictionary_cache from
-  origin/DEL-35623/10-cd-windows-arm64 (5c56895f13), and sm_set_license_token's SMLicenseStatus return value and
-  set-once behavior, and the SMLicenseStatus enum, from feature/license-check-before-decrypt (poc/casserole !832,
-  526d7f1a07); neither is on master yet.
-  Rules: document every SMAPI_EXPORT function, callback typedef, enum, struct and #define;
-  reword header comments for customers and drop internal references (primary variant, ESL,
-  the SMAPI_MANAGED_EP_ and SMAPI_LICENSE_CHECKING build flags, ORT internals); keep section order.
+  Source: the SDK's smapi_managed.h.
+  Rules: document every exported function, callback typedef, enum, struct and #define;
+  reword header comments for customers and drop internal references (other SDK variants,
+  build flags, ONNX Runtime internals); keep section order.
 */}
 
 # On-device SDK C API reference
@@ -25,9 +21,9 @@ A typical application calls the functions in this order:
 
 ```text
 sm_set_log_handler         optional, but without it the SDK logs nowhere
-sm_set_license_token       once per process, before creating any engine
+sm_set_license_token       before creating any engine
 sm_create_engine           one engine per concurrent transcription
-sm_check_error             fails fast if the license or language pack didn't load
+sm_check_error             fails fast if the language pack didn't load
 sm_transcribe              blocks until the transcription finishes
 sm_delete_result
 sm_delete_engine
@@ -70,23 +66,19 @@ Sets how much the SDK logs, for all engines. Leave it at the default in producti
 ### sm_set_license_token
 
 ```c
-SMLicenseStatus sm_set_license_token(const char *token, size_t token_len);
+void sm_set_license_token(const char *token, size_t token_len);
 ```
 
-{/* TODO: the SMLicenseStatus return value and the set-once behavior are from casserole MR !832 (branch feature/license-check-before-decrypt), not yet in a release; released SDKs return void and allow the token to be replaced or cleared. Remove this comment when regenerating from a master that has it. */}
-
-Sets the license for the whole SDK: the `signedclaimstoken` value from `license.json`. Use this to embed the license in your application, typically obfuscated, rather than shipping `license.json`. See [Set the on-device SDK license](/deployments/on-device/license).
+Sets the license token: the `signedclaimstoken` value from `license.json`. Use this to embed the license in your application, typically obfuscated, rather than shipping `license.json`. See [Set the on-device SDK license](/deployments/on-device/license).
 
 | Parameter | Description |
 |---|---|
-| `token` | The license token. `NULL` sets the license from the `LICENSE_TOKEN` or `SM_LICENSE_FILE` environment variable. |
+| `token` | The license token. `NULL` clears the token, so later engines read the `LICENSE_TOKEN` or `SM_LICENSE_FILE` environment variable. |
 | `token_len` | Length of `token` in bytes. `0` is the same as `NULL`. |
 
-Returns an [`SMLicenseStatus`](#smlicensestatus).
+The token applies to every engine created after the call. Engines already created are unaffected. Call it once, before any `sm_create_engine`.
 
-The license is set once per process and applies to every engine. The SDK checks it when you call this function. A later call changes nothing and returns `SMLicenseAlreadySet`, even if the first license wasn't valid, so to use a different license, restart the process. If you don't call this function, the first `sm_create_engine` call sets the license from the environment variables, and a call after that also returns `SMLicenseAlreadySet`.
-
-**Thread safety:** safe to call from any thread, including at the same time as `sm_create_engine`. Whichever comes first sets the license.
+**Thread safety:** not safe to call at the same time as `sm_create_engine`. Call it before starting any transcription threads.
 
 ### sm_set_custom_dictionary_cache
 
@@ -162,9 +154,7 @@ After creating an engine, always call [`sm_check_error`](#sm_check_error) on it,
 SMEngineStatus sm_check_error(void *engine);
 ```
 
-Returns the engine's status as an [`SMEngineStatus`](#smenginestatus). If engine creation failed, for example because of an invalid license, a missing language pack or an unavailable GPU, the status is `SMEngineError` and `detail` says why.
-
-`sm_create_engine` checks the license before it reads the language pack. If the license is missing, invalid or has expired, `detail` starts with `License check failed: `.
+Returns the engine's status as an [`SMEngineStatus`](#smenginestatus). If engine creation failed, for example because of a missing language pack or an unavailable GPU, the status is `SMEngineError` and `detail` says why.
 
 The engine owns `detail`. Don't free it. It stays valid until you call `sm_delete_engine`.
 
@@ -187,6 +177,8 @@ Transcribes audio with an engine, blocking the calling thread until the transcri
 | `job_config`, `job_config_len` | JSON job config containing a [`transcription_config`](/api-ref/batch/create-a-new-job), and its length in bytes, up to `MAX_JOB_CONFIG_LEN`. `NULL` is treated as an empty config. |
 
 Audio must be raw 16 kHz, mono, signed 16-bit little-endian PCM.
+
+The SDK checks the license when the transcription starts and periodically while it runs. If the license is missing, invalid or has expired, the status is `SMTranscriptionFailure` and `detail` says why.
 
 Returns an [`SMTranscriptionResult`](#smtranscriptionresult). If the engine was created with `return_aggregate_results` set to `true`, `detail` holds the complete JSON transcript. Call [`sm_delete_result`](#sm_delete_result) on the result when you're done with it.
 
@@ -339,16 +331,6 @@ struct SMEngineStatus {
 ```
 
 An engine's status, from [`sm_check_error`](#sm_check_error). `status` is `SMEngineOk`, the only success value, or `SMEngineError`. On error, `detail` says why. The engine owns `detail`.
-
-### SMLicenseStatus
-
-What [`sm_set_license_token`](#sm_set_license_token) did.
-
-| Value | Meaning |
-|---|---|
-| `SMLicenseOk` (0) | The license is set and valid. The only success value. |
-| `SMLicenseAlreadySet` (1) | The license was already set, by an earlier call or by `sm_create_engine`. Nothing changed. |
-| `SMLicenseNotValid` (2) | The license is set but isn't valid. No engine can be created in this process. |
 
 ### SMLogSeverity
 
