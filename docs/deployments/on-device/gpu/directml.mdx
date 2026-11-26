@@ -32,7 +32,7 @@ cfg.denormalisation_mode = SMDenormalisationAtEnd;
 void *engine = sm_create_engine(langpack.c_str(), langpack.size(), &cfg,
                                 nullptr, nullptr, nullptr, true, nullptr);
 
-// Fails here, not during transcription, if DirectML can't use the adapter
+// Check for an engine error before transcribing
 SMEngineStatus status = sm_check_error(engine);
 if (status.status != SMEngineOk) {
   std::cerr << "DirectML engine error: "
@@ -63,4 +63,4 @@ The prebuilt reference app turns on DirectML with `-d`, and selects an adapter w
 - **The wrong `onnxruntime.dll` or `DirectML.dll` loads:** Windows can find same-named DLLs elsewhere, such as in `C:\Windows\System32`. Keep the SDK's DLLs beside your executable. With CMake, `speechmatics_esl_copy_runtime` does this for you.
 - **Transcription is slower than on the CPU:** check the log for which adapter ran the models. On machines with several GPUs, the default adapter can be the integrated one.
 
-{/* TODO: confirm whether several processes can use DirectML on the same GPU at once (casserole branch test/mr685-rebased-blob-fallback serializes DirectML session creation across processes). */}
+{/* TODO: confirm whether several processes can use DirectML on the same GPU at once. */}

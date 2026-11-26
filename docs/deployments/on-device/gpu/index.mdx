@@ -15,7 +15,7 @@ Each platform's SDK supports one GPU execution provider:
 | Platform | Execution provider | `model_selection` value | Guide |
 |---|---|---|---|
 | Windows (x86_64, ARM64) | DirectML | `SMModelSelectionDirectML` | [Transcribe with DirectML](/deployments/on-device/gpu/directml) |
-| macOS (Apple silicon) | CoreML | `SMModelSelectionCoreML` | [Transcribe with CoreML](/deployments/on-device/gpu/coreml) |
+| macOS (ARM64, Apple silicon) | CoreML | `SMModelSelectionCoreML` | [Transcribe with CoreML](/deployments/on-device/gpu/coreml) |
 | Linux | None | — | — |
 
 CUDA is not available.
@@ -45,7 +45,7 @@ To run on the CPU when the GPU is unavailable, create a second engine with `SMMo
 
 ## Set the chunk length on the GPU
 
-Leave `chunk_length` at `SMAPI_USE_DEFAULT_CHUNK_LENGTH` unless you have a reason to change it. The SDK then uses the chunk length the language pack's GPU models were built for, which is 1.32 seconds for current language packs. The CPU default is shorter, so don't copy a chunk length from a CPU configuration.
+Leave `chunk_length` at `SMAPI_USE_DEFAULT_CHUNK_LENGTH` unless you have a reason to change it. The SDK then uses the chunk length the language pack's GPU models were built for, which is 1.32 seconds for current language packs.
 
 ## Next steps
 
