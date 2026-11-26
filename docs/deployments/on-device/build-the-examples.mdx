@@ -14,15 +14,11 @@ The Speechmatics on-device SDK archive includes the source of three example apps
 |---|---|---|
 | `transcribe` | `docs/examples/transcribe.cc` | File mode: one audio file in, one JSON transcript out. Start here. |
 | `transcribe_rt` | `docs/examples/transcribe_rt.cc` | Streaming mode: audio fed at real time, partial and final transcripts printed as they arrive. |
-| `reference-managed` | `share/casserole-1/reference-managed/` | A full command-line app with the options in [Reference app options](/deployments/on-device/reference-app-options). |
-
-{/* TODO: confirm the reference-managed source path (share/casserole-1/reference-managed/) against a released archive. */}
+| `reference-managed` | `share/reference-managed/` | A full command-line app with the options in [Reference app options](/deployments/on-device/reference-app-options). |
 
 The C API is `include/smapi/smapi_managed.h`. Its comments are the full API reference.
 
 In the commands on this page, `<sdk>` is the directory you extracted the SDK into: the one that contains `bin/`, `include/` and `lib/`.
-
-{/* TODO: the CMake commands on this page use find_package(SpeechmaticsESL) from casserole branch DEL-36417/find-package-speechmatics-esl, which is not yet released. Publish only once an SDK version that ships it is available. */}
 
 The example apps find the SDK with `find_package(SpeechmaticsESL)`, the same way as your own project can. See [Use the SDK in a CMake project](/deployments/on-device/cmake).
 
@@ -30,7 +26,7 @@ The example apps find the SDK with `find_package(SpeechmaticsESL)`, the same way
 
 To build the example apps, you need:
 
-- CMake 3.26 or later
+- CMake 3.20 or later, or 3.26 or later for `reference-managed`
 - **Linux:** GCC 11+ or Clang 14+
 - **macOS:** the latest Xcode Command Line Tools (`xcode-select --install`)
 - **Windows:** Visual Studio Build Tools 2019 or later, with the Desktop development with C++ workload and the x64 or ARM64 build tools for your target
@@ -56,7 +52,7 @@ The `transcribe` and `transcribe_rt` examples build with CMake on every platform
   </TabItem>
 </Tabs>
 
-The built examples run in place. On Linux and macOS, their build RPATH points at the SDK's `lib/` directory. On Windows, the build copies `smapi-managed-1.dll`, `onnxruntime.dll` and, where present, `DirectML.dll` beside each `.exe`, so Windows doesn't load a different `onnxruntime.dll`, such as the one in `C:\Windows\System32`. If you move an executable, move those DLLs with it.
+The built examples run in place. On Linux and macOS, their build RPATH points at the SDK's `lib/` directory. On Windows, the build copies the SDK DLLs (`smapi-managed-1.dll`, the ONNX Runtime DLLs and `DirectML.dll`) beside each `.exe`, so Windows doesn't load a different `onnxruntime.dll`, such as the one in `C:\Windows\System32`. If you move an executable, move those DLLs with it.
 
 ### Build the examples on Windows without CMake
 
@@ -99,7 +95,7 @@ You can set the `LANGUAGE_PACK_ROOT` environment variable instead of passing the
     cmake -DCMAKE_BUILD_TYPE=Release \
           -DSpeechmaticsESL_ROOT=<sdk> \
           -B build-reference-managed \
-          <sdk>/share/casserole-1/reference-managed
+          <sdk>/share/reference-managed
     cmake --build build-reference-managed
     ```
   </TabItem>
@@ -109,7 +105,7 @@ You can set the `LANGUAGE_PACK_ROOT` environment variable instead of passing the
     cmake -DCMAKE_BUILD_TYPE=Release ^
           -DSpeechmaticsESL_ROOT=<sdk> ^
           -B build-reference-managed ^
-          <sdk>\share\casserole-1\reference-managed
+          <sdk>\share\reference-managed
     cmake --build build-reference-managed --config Release
     ```
   </TabItem>

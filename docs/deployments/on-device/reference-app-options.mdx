@@ -91,10 +91,8 @@ Each SDK archive extracts to the following directories:
 |---|---|
 | `bin/` | Prebuilt `reference-managed`. On Windows, also the SDK DLLs, which must sit beside any executable that uses them. |
 | `include/smapi/` | `smapi_managed.h`, the C API header. |
-| `lib/` | The SDK library and bundled ONNX Runtime. On Windows, the `smapi-managed-1.lib` import library. On Linux, libraries are in a `lib/<arch>-linux-gnu/` subdirectory. |
-| `docs/` | Getting-started guide and the `transcribe` and `transcribe_rt` examples. |
-| `share/casserole-1/reference-managed/` | `reference-managed` source and CMake build files. |
+| `lib/` | On Linux and macOS, the SDK library and bundled ONNX Runtime. On Linux, they're in a `lib/<arch>-linux-gnu/` subdirectory. On Windows, only the `smapi-managed-1.lib` import library. Also `cmake/SpeechmaticsESL/`, the CMake package config. |
+| `docs/` | Getting-started guide, the `transcribe` and `transcribe_rt` examples, and `FindSpeechmaticsESL.cmake`. |
+| `share/reference-managed/` | `reference-managed` source and CMake build files. |
 
 The `1` in `smapi-managed-1` is the SDK's major version. On Linux and macOS, the library finds its bundled ONNX Runtime without `LD_LIBRARY_PATH` or `DYLD_LIBRARY_PATH`.
-
-{/* TODO: verify this layout, including the share/ path and the Linux lib/ subdirectory, against a released archive. */}
