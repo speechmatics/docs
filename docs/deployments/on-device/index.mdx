@@ -47,6 +47,12 @@ Both modes take a JSON job config with the same [`transcription_config`](/api-re
 
 {/* TODO: link a feature availability list for on-device once product confirms it. */}
 
+## Custom dictionary on device
+
+The on-device SDK supports [custom dictionary](/speech-to-text/features/custom-dictionary) (`additional_vocab`) for English only. In any other language, a job with `additional_vocab` is rejected as an invalid job config (`SMTranscriptionInvalidJobConfig`).
+
+{/* TODO: add the first SDK release that includes custom dictionary before publishing. */}
+
 ## Next steps
 
 - [Transcribe a file on device](/deployments/on-device/quickstart) with the prebuilt reference app

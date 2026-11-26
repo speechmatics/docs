@@ -30,11 +30,6 @@ export default {
       id: "deployments/on-device/cmake",
     },
     {
-      type: "doc",
-      label: "Custom dictionary",
-      id: "deployments/on-device/custom-dictionary",
-    },
-    {
       type: "category",
       label: "GPU",
       collapsible: true,

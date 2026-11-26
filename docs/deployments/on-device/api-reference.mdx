@@ -82,13 +82,11 @@ The token applies to every engine created after the call. Engines already create
 
 ### sm_set_custom_dictionary_cache
 
-{/* TODO: from casserole branch DEL-35623/10-cd-windows-arm64, not yet on master. Remove this comment when regenerating from a master that has it. */}
-
 ```c
 void sm_set_custom_dictionary_cache(const char *dir, size_t dir_len);
 ```
 
-Turns on the cache of compiled custom dictionaries (`additional_vocab`). Once a dictionary is compiled, the SDK keeps it in `dir`, and a later job with the same dictionary uses it instead of compiling it again. See [Custom dictionary on device](/deployments/on-device/custom-dictionary#cache-compiled-custom-dictionaries).
+Turns on the cache of compiled custom dictionaries (`additional_vocab`). Once a dictionary is compiled, the SDK keeps it in `dir`, and a later job with the same dictionary uses it instead of compiling it again. See [custom dictionary on device](/deployments/on-device#custom-dictionary-on-device).
 
 | Parameter | Description |
 |---|---|
