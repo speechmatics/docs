@@ -143,7 +143,7 @@ Creates an engine for a language pack and returns an opaque handle to it. An eng
 | `audio_fn` | Called to request audio when streaming. `NULL` if the engine reads audio files. See [`SMAudioDataRequestFxn`](#smaudiodatarequestfxn). |
 | `transcript_fn` | Called with each partial and final result. `NULL` if you don't need incremental results. See [`SMProcessResultFxn`](#smprocessresultfxn). |
 | `progress_fn` | Called with transcription progress, and can cancel the transcription. Can be `NULL`. See [`SMTranscriptionProgressFxn`](#smtranscriptionprogressfxn). |
-| `return_aggregate_results` | `true` to return one complete transcript from `sm_transcribe`. `false` if `transcript_fn` delivers the only output. |
+| `return_aggregate_results` | Ignored. The transcription mode decides whether `sm_transcribe` returns the complete transcript. See [`SMTranscriptionMode`](#smtranscriptionmode). |
 | `user_data` | Passed unchanged to `audio_fn`, `transcript_fn` and `progress_fn`. |
 
 After creating an engine, always call [`sm_check_error`](#sm_check_error) on it, and transcribe only if it returns `SMEngineOk`. Whether or not it succeeded, call [`sm_delete_engine`](#sm_delete_engine) when you're done with it.
@@ -180,7 +180,7 @@ Audio must be raw 16 kHz, mono, signed 16-bit little-endian PCM.
 
 The SDK checks the license when the transcription starts and periodically while it runs. If the license is missing, invalid or has expired, the status is `SMTranscriptionFailure` and `detail` says why.
 
-Returns an [`SMTranscriptionResult`](#smtranscriptionresult). If the engine was created with `return_aggregate_results` set to `true`, `detail` holds the complete JSON transcript. Call [`sm_delete_result`](#sm_delete_result) on the result when you're done with it.
+Returns an [`SMTranscriptionResult`](#smtranscriptionresult). If the engine's transcription mode is `SMModeDefault`, `detail` holds the complete JSON transcript. With `SMModeStreaming`, `detail` is empty and results arrive only through `transcript_fn`. Call [`sm_delete_result`](#sm_delete_result) on the result when you're done with it.
 
 ### sm_trigger_end_of_utterance
 
@@ -287,8 +287,10 @@ Which hardware runs the models. Selecting a value that your platform's SDK doesn
 
 | Value | Mode |
 |---|---|
-| `SMModeDefault` (0) | Batch mode. The default. |
-| `SMModeStreaming` (2) | Realtime mode. |
+| `SMModeDefault` (0) | The default. `sm_transcribe` returns the complete transcript. |
+| `SMModeStreaming` (2) | Results arrive only through `transcript_fn`. `sm_transcribe` returns no transcript. |
+
+Any other value makes engine creation fail with `SMEngineError`.
 
 ### SMDenormalisationMode
 
@@ -300,7 +302,7 @@ When inverse text normalization (ITN) runs. ITN converts spoken forms to written
 | `SMDenormalisationIncremental` (1) | On each final result as it's produced. Use this when you stream results, as nothing arrives later to correct them. |
 | `SMDenormalisationAtEnd` (2) | Once, over the complete transcript. Gives ITN the whole transcript to work from. |
 
-This is independent of `return_aggregate_results`: an application that streams results can still choose either mode.
+This is independent of the transcription mode: an application that streams results can still choose either.
 
 ### SMTranscriptionResult
 

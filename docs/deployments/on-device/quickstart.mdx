@@ -43,9 +43,7 @@ From the [Portal](https://portal.speechmatics.com/), download:
 
 Extract each new SDK version into an empty directory. Extracting over an older version leaves its files in place.
 
-The language pack directory you pass to the SDK is the one that contains `langpack_manifest.yaml`.
-
-{/* TODO: confirm the language pack's directory layout after extraction (e.g. langpack/<lang>/<hash>/) against a released archive. */}
+The language pack extracts to `<language>/<hash>/`, such as `en/<hash>/`. That directory, which contains `langpack_manifest.yaml`, is the one you pass to the SDK.
 
 ## 3. Set the license
 
@@ -83,13 +81,13 @@ ffmpeg -i example.wav -acodec pcm_s16le -f s16le -ac 1 -ar 16000 example.raw
   <TabItem value="linux-macos" label="Linux / macOS">
     ```bash
     # Transcribe on the CPU and print the JSON transcript
-    ./sdk/bin/reference-managed -r "$PWD/langpack/<path-to-manifest-dir>" -f example.raw
+    ./sdk/bin/reference-managed -r "$PWD/langpack/<language>/<hash>" -f example.raw
     ```
   </TabItem>
   <TabItem value="windows" label="Windows">
     ```powershell
     # Transcribe on the CPU and print the JSON transcript
-    .\sdk\bin\reference-managed.exe -r "$PWD\langpack\<path-to-manifest-dir>" -f example.raw
+    .\sdk\bin\reference-managed.exe -r "$PWD\langpack\<language>\<hash>" -f example.raw
     ```
   </TabItem>
 </Tabs>
@@ -101,7 +99,7 @@ To use hardware acceleration, add `-c` for CoreML on macOS or `-d` for DirectML 
 ## Troubleshoot the reference app
 
 - **Transcription fails with a license error:** check that `SM_LICENSE_FILE` is the full path to your `license.json`, and that the license has not expired.
-- **Wrong or missing ONNX Runtime on Windows:** Windows ships its own `onnxruntime.dll` in `C:\Windows\System32`. Run `reference-managed.exe` from `sdk\bin\`, beside the bundled DLLs, so it loads the SDK's copy.
+- **Wrong or missing ONNX Runtime on Windows:** Windows ships its own `onnxruntime.dll` in `C:\Windows\System32`. Keep `reference-managed.exe` in `sdk\bin\`, beside the bundled DLLs, so it loads the SDK's copy.
 - **Chunk length rejected on macOS:** omit `-k`. The reference app then uses the language pack's chunk length.
 - **Garbled or empty transcript:** check that the audio is raw 16 kHz mono PCM, as in [step 4](#4-convert-your-audio).
 - **Non-ASCII characters print incorrectly in PowerShell:** run `chcp 65001` to switch the console to UTF-8.

@@ -30,7 +30,7 @@ Processing options control how `reference-managed` feeds audio to the SDK and re
 | Option | Description |
 |---|---|
 | `-w, --workers <n>` | Number of jobs to transcribe in parallel. Default `1`. |
-| `-m, --transcription-mode <mode>` | `default` for batch mode, which returns a final aggregate transcript. `streaming` for realtime mode, which returns streamed results only. |
+| `-m, --transcription-mode <mode>` | `default` (the default) returns a final aggregate transcript. `streaming` returns streamed results only. |
 | `-x, --stream-audio` | Feed the audio incrementally instead of loading the whole file. |
 | `-t, --throttle` | With `-x`, feed audio at real-time pace. |
 | `-s, --stream-incremental-results` | Return results while transcription is in progress. |
@@ -43,8 +43,10 @@ Engine options tune the SDK's engine.
 | Option | Description |
 |---|---|
 | `-k, --chunk-length <seconds>` | Audio chunk length. Omit to use the SDK default. On macOS, omit `-k`. |
+| `--denormalisation-mode <mode>` | When inverse text normalization runs: `default` (the language pack's default), `incremental` or `at-end`. Defaults to `incremental` with `-s`, otherwise `at-end`. |
 | `--multi-thread` | Enable multithreading inside the SDK. |
 | `--onnx_intra_op_num_threads <n>` | ONNX Runtime intra-op threads per session. `0` uses the SDK default. |
+| `--custom-dictionary-cache-dir <dir>` | Cache compiled custom dictionaries in `<dir>`, which is created if it doesn't exist. Without this option, nothing is cached. |
 
 ## Hardware acceleration options
 
