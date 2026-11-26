@@ -176,7 +176,7 @@ Transcribes audio with an engine, blocking the calling thread until the transcri
 
 Audio must be raw 16 kHz, mono, signed 16-bit little-endian PCM.
 
-The SDK checks the license when the transcription starts and periodically while it runs. If the license is missing, invalid or has expired, the status is `SMTranscriptionFailure` and `detail` says why.
+The SDK checks the license when the transcription starts and periodically while it runs. If the license is missing, invalid or expired, or doesn't allow the job's language or features, the status is `SMTranscriptionFailure` and `detail` says why.
 
 Returns an [`SMTranscriptionResult`](#smtranscriptionresult). If the engine's transcription mode is `SMModeDefault`, `detail` holds the complete JSON transcript. With `SMModeStreaming`, `detail` is empty and results arrive only through `transcript_fn`. Call [`sm_delete_result`](#sm_delete_result) on the result when you're done with it.
 

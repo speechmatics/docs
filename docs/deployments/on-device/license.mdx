@@ -13,7 +13,7 @@ Validation works offline. Each engine takes the license when `sm_create_engine` 
 1. The token your application passed to `sm_set_license_token()`.
 2. The `LICENSE_TOKEN` or `SM_LICENSE_FILE` environment variable.
 
-The SDK checks the license when `sm_transcribe` starts, and periodically during transcription. If the license is missing, invalid or has expired, `sm_transcribe` returns `SMTranscriptionFailure`, and the result's `detail` says why.
+The SDK checks the license when `sm_transcribe` starts, and periodically during transcription. If the license is missing, invalid or expired, or doesn't allow the job's language or features, `sm_transcribe` returns `SMTranscriptionFailure`, and the result's `detail` says why.
 
 ## Pass the license with sm_set_license_token
 
