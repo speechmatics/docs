@@ -49,7 +49,7 @@ Both modes take a JSON job config with the same [`transcription_config`](/api-re
 
 ## Custom dictionary on device
 
-The on-device SDK supports [custom dictionary](/speech-to-text/features/custom-dictionary) (`additional_vocab`) for English only. In any other language, a job with `additional_vocab` is rejected as an invalid job config (`SMTranscriptionInvalidJobConfig`).
+The on-device SDK supports [custom dictionary](/speech-to-text/features/custom-dictionary) (`additional_vocab`) for English only. In any other language, a job with `additional_vocab` is rejected as an invalid job config (`SMTranscriptionInvalidJobConfig`). As in SaaS on Cloud, a job whose `additional_vocab` has more than 20,000 items fails (`SMTranscriptionFailure`).
 
 {/* TODO: add the first SDK release that includes custom dictionary before publishing. */}
 
