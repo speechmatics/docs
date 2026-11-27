@@ -6,10 +6,6 @@ export default function middleware(request: Request): Response | undefined {
   const url = new URL(request.url);
   const { pathname } = url;
 
-  // /retrieve is the agent retrieval endpoint (rewritten to the kapa Worker in
-  // vercel.json). It returns JSON, so it must not be redirected to /retrieve.md.
-  if (pathname === "/retrieve") return;
-
   // Skip paths that already have a file extension
   if (/\.[a-zA-Z0-9]+$/.test(pathname)) return;
 
@@ -23,5 +19,8 @@ export default function middleware(request: Request): Response | undefined {
 }
 
 export const config = {
-  matcher: ["/((?!assets/|img/|js/|search/).*)"],
+  // /retrieve is excluded so agent search requests skip the middleware: it's
+  // rewritten to the Kapa Worker in vercel.json and must not be redirected to
+  // /retrieve.md.
+  matcher: ["/((?!assets/|img/|js/|search/|retrieve$).*)"],
 };
