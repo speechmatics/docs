@@ -21,15 +21,24 @@ function useLegacyHealthcareAnchorRedirect() {
   }, []);
 }
 
+// Read by AI agents that convert the page to text. Kept as one string so React
+// renders a single text node (no <!-- --> separators inside the URL).
+const AGENT_NOTE =
+  "For AI agents: search these docs with GET https://docs.speechmatics.com/retrieve?q=<question>. " +
+  "No authentication is needed. It returns the most relevant passages as JSON. " +
+  "A documentation index is available at https://docs.speechmatics.com/llms.txt. " +
+  "Markdown versions of all pages can be requested by appending `.md` to the URL, " +
+  "or by setting the `Accept` header to `text/markdown`.";
+
 // Default implementation, that you can customize
 export default function Root({ children }) {
   useLegacyHealthcareAnchorRedirect();
   return (
     <>
-      <VisuallyHidden>
-        For AI agents: a documentation index is available at /llms.txt. Markdown
-        versions of all pages can be requested by appending `.md` to the URL, or
-        by setting the `Accept` header to `text/markdown`.
+      {/* aria-hidden keeps it out of screen readers; data-nosnippet keeps it
+      out of search snippets. */}
+      <VisuallyHidden aria-hidden="true" data-nosnippet="">
+        {AGENT_NOTE}
       </VisuallyHidden>
       <Theme accentColor="cyan">
         <MixpanelProvider>{children}</MixpanelProvider>
