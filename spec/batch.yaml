@@ -722,8 +722,12 @@ definitions:
           Request a specialized model based on 'language' but optimized for a particular field, e.g. 'finance' or 'medical'.
       output_locale:
         type: string
+        x-go-type:
+          type: StringOrSlice
+          import:
+            package: "batch-jobs-api-v2/pkg/jsontypes"
         description: >-
-          Language locale to be used when generating the transcription output, normally specified as an ISO language code
+          Language locale to be used when generating the transcription output, normally specified as an ISO language code job-config v3 defines this field as "one of" which is not supported by swagger 2.0, so we had to workaround this with x-go-type
       model:
         type: string
         description: >-
@@ -743,7 +747,11 @@ definitions:
       operating_point:
         $ref: "#/definitions/OperatingPoint"
         description: |-
-          **Deprecated**: Use `model` instead. `operating_point` is left only for backward compatibility.
+          Specify an operating point to use.
+          Operating points change the transcription process in a high level way, such as altering the acoustic model.
+          The default is `standard`.
+            - `standard`:
+            - `enhanced`: transcription will take longer but be more accurate than 'standard'
       additional_vocab:
         type: array
         x-omitempty: true
