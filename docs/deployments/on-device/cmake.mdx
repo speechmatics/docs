@@ -1,0 +1,217 @@
+---
+title: Use the SDK in a CMake project
+sidebar_label: CMake projects
+description: Link the Speechmatics on-device SDK into your own CMake project with find_package and the Speechmatics::ESL target.
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Use the SDK in a CMake project
+
+{/* TODO: add the first SDK version that ships find_package(SpeechmaticsESL) before publishing. */}
+
+The Speechmatics on-device SDK ships a CMake package, so your project can find it with `find_package(SpeechmaticsESL)` and link the imported target `Speechmatics::ESL`. The target carries the library and its include directory.
+
+In the commands on this page, `<sdk>` is the directory you extracted the SDK into: the one that contains `bin/`, `include/` and `lib/`.
+
+## Requirements for a CMake project
+
+To build against the SDK with CMake, you need:
+
+- CMake 3.20 or later
+- a C++17 compiler: GCC 11+ or Clang 14+ on Linux, the Xcode Command Line Tools on macOS, or Visual Studio Build Tools 2019 or later on Windows
+- an extracted SDK, a language pack and a license, as described in [Transcribe a file on device](/deployments/on-device/quickstart)
+
+## Create the example project
+
+This example project builds `my_app`, a command-line program that transcribes one audio file and prints the JSON transcript. It has two files:
+
+```text
+my_app/
+├── CMakeLists.txt
+└── main.cc
+```
+
+### CMakeLists.txt for the example project
+
+The `CMakeLists.txt` finds the SDK, links it and, on Windows, copies its DLLs beside the executable:
+
+```cmake title="CMakeLists.txt"
+cmake_minimum_required(VERSION 3.20)
+project(my_app CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Find the SDK and create the Speechmatics::ESL imported target
+find_package(SpeechmaticsESL REQUIRED)
+
+add_executable(my_app main.cc)
+target_link_libraries(my_app PRIVATE Speechmatics::ESL)
+
+# Windows: copy the SDK DLLs beside my_app.exe after each build.
+# Does nothing on Linux and macOS.
+speechmatics_esl_copy_runtime(my_app)
+```
+
+### main.cc for the example project
+
+`main.cc` sets the license, creates an engine for the language pack, and transcribes the file in one call:
+
+```cpp title="main.cc" showLineNumbers
+#include <cstring>
+#include <iostream>
+#include <string>
+#include <string_view>
+
+#include <smapi/smapi_managed.h>
+
+// Embed your license token. Don't ship it in a file or environment variable.
+static const char kLicenseToken[] = "<signedclaimstoken>";
+
+int main(int argc, char **argv) {
+  if (argc != 3) {
+    std::cerr << "usage: my_app <raw-audio-file> <language-pack-dir>\n";
+    return 2;
+  }
+  const std::string audio = argv[1];
+  const std::string langpack = argv[2];
+
+  // Set the license before creating any engine. It applies to every engine created after this call.
+  sm_set_license_token(kLicenseToken, std::strlen(kLicenseToken));
+
+  // Run on the CPU with default settings
+  SMEngineConfigOverride cfg = {};
+  cfg.model_selection = SMModelSelectionStandard;
+  cfg.chunk_length = SMAPI_USE_DEFAULT_CHUNK_LENGTH;
+  cfg.transcription_mode = SMModeDefault;
+  cfg.denormalisation_mode = SMDenormalisationAtEnd;
+
+  // File mode: no audio callback, one aggregate result
+  void *engine = sm_create_engine(langpack.c_str(), langpack.size(), &cfg,
+                                  nullptr, nullptr, nullptr, true, nullptr);
+  if (engine == nullptr) {
+    std::cerr << "sm_create_engine returned null\n";
+    return 1;
+  }
+
+  // Fail fast if the language pack did not load
+  SMEngineStatus status = sm_check_error(engine);
+  if (status.status != SMEngineOk) {
+    std::cerr << "engine error: " << std::string_view(status.detail, status.detail_len) << "\n";
+    sm_delete_engine(engine);
+    return 1;
+  }
+
+  // Transcribe the whole file and print the JSON transcript
+  SMTranscriptionResult result = sm_transcribe(engine, audio.c_str(), audio.size(), nullptr, 0);
+  int rc = 0;
+  if (result.status == SMTranscriptionSuccess) {
+    std::cout << std::string_view(result.detail, result.detail_len) << "\n";
+  } else {
+    std::cerr << "transcription failed: " << std::string_view(result.detail, result.detail_len) << "\n";
+    rc = 1;
+  }
+
+  sm_delete_result(&result);
+  sm_delete_engine(engine);
+  return rc;
+}
+```
+
+The fourth argument to `sm_transcribe` is a JSON job config, which is empty here. For streaming audio and partial transcripts, start from `docs/examples/transcribe_rt.cc` in the SDK. The comments in `include/smapi/smapi_managed.h` document every function and field.
+
+## Build the example project
+
+Point CMake at the SDK with `SpeechmaticsESL_ROOT`, then build:
+
+<Tabs groupId="os">
+  <TabItem value="linux-macos" label="Linux / macOS">
+    ```bash
+    # Configure against the extracted SDK, then build
+    cmake -DSpeechmaticsESL_ROOT=<sdk> -B build my_app
+    cmake --build build --config Release
+
+    # Transcribe raw 16 kHz mono PCM audio
+    ./build/my_app example.raw /path/to/langpack
+    ```
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+    ```bat
+    :: Configure against the extracted SDK, then build
+    cmake -DSpeechmaticsESL_ROOT=<sdk> -B build my_app
+    cmake --build build --config Release
+
+    :: Transcribe raw 16 kHz mono PCM audio
+    build\Release\my_app.exe example.raw C:\path\to\langpack
+    ```
+  </TabItem>
+</Tabs>
+
+`-DCMAKE_PREFIX_PATH=<sdk>` works in place of `SpeechmaticsESL_ROOT`. Either can also be set as an environment variable.
+
+On Linux and macOS, the built executable runs in place: its build RPATH points at the SDK's `lib/` directory. On Windows, `speechmatics_esl_copy_runtime` puts the SDK DLLs beside the `.exe`, so it loads them rather than a same-named DLL elsewhere on the system, such as the `onnxruntime.dll` in `C:\Windows\System32`.
+
+## Require a minimum SDK version
+
+Pass a version to `find_package` to require it:
+
+```cmake
+# Accept SDK 1.1 or any later 1.x release
+find_package(SpeechmaticsESL 1.1 REQUIRED)
+```
+
+The version check accepts any later version with the same major version. It works only when CMake finds the SDK through its package config, with `SpeechmaticsESL_ROOT` or `CMAKE_PREFIX_PATH`. Through a copy of `FindSpeechmaticsESL.cmake` on your `CMAKE_MODULE_PATH`, only the major version is known, so request the major version alone, such as `find_package(SpeechmaticsESL 1 REQUIRED)`.
+
+## Keep the find module in your own source tree
+
+To find the SDK without its package config, copy `docs/examples/cmake/FindSpeechmaticsESL.cmake` from the SDK into your project and add its directory to the module path:
+
+```cmake
+# Use the copy of FindSpeechmaticsESL.cmake in <project>/cmake/
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+find_package(SpeechmaticsESL REQUIRED)
+```
+
+You still point it at the SDK with `SpeechmaticsESL_ROOT` or `CMAKE_PREFIX_PATH`.
+
+If your build system lays the headers and library out differently from the SDK archive, set these cache variables instead:
+
+| Variable | Value |
+|---|---|
+| `SpeechmaticsESL_INCLUDE_DIR` | The directory that contains `smapi/smapi_managed.h`. |
+| `SpeechmaticsESL_LIBRARY` | The library to link: `libsmapi-managed-1.so`, `libsmapi-managed-1.dylib` or `smapi-managed-1.lib`. |
+
+## CMake package reference
+
+`find_package(SpeechmaticsESL)` provides the following targets, commands and variables.
+
+| Name | Type | Description |
+|---|---|---|
+| `Speechmatics::ESL` | Imported target | The SDK library and its include directory. |
+| `speechmatics_esl_copy_runtime(<target>)` | Command | Windows: copies the SDK DLLs, and `cd-compiler` with its files if found, beside `<target>`'s executable after each build. Does nothing on Linux and macOS. |
+| `Speechmatics::cd-compiler` | Imported target | `cd-compiler`, the custom dictionary compiler the SDK runs for jobs with `additional_vocab`. Defined only if found. |
+| `SpeechmaticsESL_FOUND` | Variable | True if the SDK was found. |
+| `SpeechmaticsESL_VERSION` | Variable | The full SDK version through the package config, or the major version through the find module alone. |
+| `SpeechmaticsESL_VERSION_MAJOR` | Variable | The SDK's major version: the `1` in `smapi-managed-1`. |
+| `SpeechmaticsESL_INCLUDE_DIRS` | Variable | The SDK include directory. |
+| `SpeechmaticsESL_LIBRARIES` | Variable | `Speechmatics::ESL`. |
+| `SpeechmaticsESL_RUNTIME_DLLS` | Variable | Windows: the DLLs an executable needs beside it. Empty elsewhere. |
+| `SpeechmaticsESL_CD_COMPILER` | Variable | The path to `cd-compiler`, or empty if the SDK has none. |
+
+`find_package` looks for `cd-compiler` whether or not you ask for it. To make a missing `cd-compiler` an error, request the `CdCompiler` component:
+
+```cmake
+# Fail at configure time if the SDK has no cd-compiler
+find_package(SpeechmaticsESL REQUIRED COMPONENTS CdCompiler)
+```
+
+{/* TODO: cd-compiler is not yet in release packages, so requesting CdCompiler fails with them. Confirm the first SDK release that ships it before publishing. */}
+
+Older build scripts that set `SMAPI_INCLUDE_DIR` and `SMAPI_LIB_DIR` still work with `find_package(SpeechmaticsESL)`, but only when they use a copy of `FindSpeechmaticsESL.cmake` on `CMAKE_MODULE_PATH`, as in [Keep the find module in your own source tree](#keep-the-find-module-in-your-own-source-tree).
+
+## Next steps
+
+- [Set the on-device SDK license](/deployments/on-device/license) explains why to embed the license in your application.
+- [Reference app options](/deployments/on-device/reference-app-options) lists the audio format and package layout.

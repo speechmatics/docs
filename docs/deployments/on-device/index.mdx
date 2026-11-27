@@ -1,0 +1,62 @@
+---
+title: How on-device deployment works
+sidebar_label: Overview
+description: Learn how the Speechmatics on-device SDK runs speech-to-text inside your own application, with no network connection.
+---
+
+# How on-device deployment works
+
+:::info
+On-device deployment is coming soon. Its feature coverage is currently narrower than SaaS on Cloud and on-prem deployments.
+:::
+
+On-device deployment runs Speechmatics speech-to-text inside your own application, on the end user's machine. Audio never leaves the device, and transcription needs no network connection.
+
+## Components of an on-device deployment
+
+An on-device deployment has three parts, all available from the [Portal](https://portal.speechmatics.com/):
+
+| Component | What it is |
+|---|---|
+| Speechmatics on-device SDK | A shared library with a C API, plus prebuilt and source copies of the example apps. One archive per platform. |
+| Language packs | The encrypted models for one language. One archive per language, shared by all platforms. |
+| License | A token that unlocks the SDK. Your application sets it before creating any engine. |
+
+The SDK bundles everything it needs to run the models, including ONNX Runtime. Your application sends audio in and receives transcripts through callbacks.
+
+## Supported platforms
+
+The Speechmatics on-device SDK is available for the following platforms:
+
+| Platform | Architectures | Minimum OS | Hardware acceleration |
+|---|---|---|---|
+| Linux | x86_64, ARM64 | glibc 2.35 (Ubuntu 22.04, Debian 12) | None (CPU only) |
+| macOS | ARM64 (Apple silicon) | macOS 13 Ventura | CoreML, on macOS 15 Sequoia or later |
+| Windows | x86_64, ARM64 | Windows 11 | DirectML |
+
+Intel-based Macs and Windows 10 are not supported. CUDA is not available.
+
+## Processing modes
+
+The SDK transcribes audio in one of two modes:
+
+- **File mode:** the engine reads a whole audio file and returns one aggregate JSON transcript.
+- **Streaming mode:** your application feeds audio as it arrives, and the engine returns partial and final transcripts as it goes. Use this for a microphone or network audio source.
+
+Both modes take a JSON job config with the same [`transcription_config`](/api-ref/batch/create-a-new-job) object as the other Speechmatics deployments, but not every feature is supported on-device.
+
+{/* TODO: link a feature availability list for on-device once product confirms it. */}
+
+## Custom dictionary on device
+
+The on-device SDK supports [custom dictionary](/speech-to-text/features/custom-dictionary) (`additional_vocab`) for English only. In any other language, a job with `additional_vocab` is rejected as an invalid job config (`SMTranscriptionInvalidJobConfig`). As in SaaS on Cloud, `additional_vocab` can have at most 20,000 entries, and a phrase with spaces counts as one entry. A job with more is also rejected as an invalid job config.
+
+{/* TODO: add the first SDK release that includes custom dictionary before publishing. */}
+
+## Next steps
+
+- [Transcribe a file on device](/deployments/on-device/quickstart) with the prebuilt reference app
+- [Set the SDK license](/deployments/on-device/license) in your application
+- [Build the example apps](/deployments/on-device/build-the-examples) from source
+- [Use the SDK in a CMake project](/deployments/on-device/cmake) of your own
+- [Use a GPU on device](/deployments/on-device/gpu) with DirectML or CoreML

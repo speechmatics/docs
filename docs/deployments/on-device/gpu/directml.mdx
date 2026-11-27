@@ -1,0 +1,66 @@
+---
+title: Transcribe with DirectML
+sidebar_label: DirectML
+description: Run on-device transcription on a Windows GPU with the DirectML execution provider.
+---
+
+# Transcribe with DirectML
+
+DirectML runs the Speechmatics on-device SDK's models on the GPU on Windows. It works with any DirectX 12-capable GPU, including integrated graphics.
+
+## DirectML requirements
+
+To use DirectML, you need:
+
+- the Windows x86_64 or ARM64 SDK
+- Windows 11
+- a DirectX 12-capable GPU with an up-to-date driver
+- `DirectML.dll` beside your executable, alongside `smapi-managed-1.dll` and `onnxruntime.dll`. All three ship in the SDK's `bin\` directory.
+
+## Enable DirectML in your application
+
+Set `model_selection` to `SMModelSelectionDirectML` in the engine options, and choose the GPU with `dml_adapter`:
+
+```cpp showLineNumbers
+SMEngineConfigOverride cfg = {};
+cfg.model_selection = SMModelSelectionDirectML;      // run on the GPU with DirectML
+cfg.dml_adapter = 0;                                 // 0 = the system default GPU
+cfg.chunk_length = SMAPI_USE_DEFAULT_CHUNK_LENGTH;   // the language pack's GPU chunk length
+cfg.transcription_mode = SMModeDefault;
+cfg.denormalisation_mode = SMDenormalisationAtEnd;
+
+void *engine = sm_create_engine(langpack.c_str(), langpack.size(), &cfg,
+                                nullptr, nullptr, nullptr, true, nullptr);
+
+// Check for an engine error before transcribing
+SMEngineStatus status = sm_check_error(engine);
+if (status.status != SMEngineOk) {
+  std::cerr << "DirectML engine error: "
+            << std::string_view(status.detail, status.detail_len) << "\n";
+}
+```
+
+The rest of the engine lifecycle is the same as on the CPU. For a complete program, see [Use the SDK in a CMake project](/deployments/on-device/cmake#create-the-example-project).
+
+## Choose a DirectML adapter
+
+`dml_adapter` is an index into the system's list of graphics adapters, in the order DirectX lists them. `0` is the system default adapter. The SDK doesn't rank GPUs, so on a machine with both integrated and discrete graphics, choose the index of the one you want.
+
+The SDK names the adapter it uses in its log, so set a log handler with `sm_set_log_handler` to see which GPU ran the models. If the index doesn't match a usable adapter, the engine error names it.
+
+## Try DirectML with the reference app
+
+The prebuilt reference app turns on DirectML with `-d`, and selects an adapter with `-a`:
+
+```powershell
+# Transcribe on adapter 1 with DirectML
+.\reference-managed.exe -d -a 1 -r C:\langpacks\en\<hash> -f example.raw
+```
+
+## Troubleshoot DirectML
+
+- **Engine error naming the adapter:** the index is wrong or the GPU doesn't support DirectX 12. Try `dml_adapter = 0`, and update the GPU driver.
+- **The wrong `onnxruntime.dll` or `DirectML.dll` loads:** Windows can find same-named DLLs elsewhere, such as in `C:\Windows\System32`. Keep the SDK's DLLs beside your executable. With CMake, `speechmatics_esl_copy_runtime` does this for you.
+- **Transcription is slower than on the CPU:** check the log for which adapter ran the models. On machines with several GPUs, the default adapter can be the integrated one.
+
+{/* TODO: confirm whether several processes can use DirectML on the same GPU at once. */}

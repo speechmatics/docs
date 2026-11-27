@@ -1,0 +1,53 @@
+---
+title: Use a GPU on device
+sidebar_label: Overview
+description: Run on-device transcription on the GPU with DirectML on Windows or CoreML on macOS.
+---
+
+# Use a GPU on device
+
+The Speechmatics on-device SDK runs on the CPU by default. On Windows and macOS, it can run the models on the GPU instead, through the platform's own machine learning framework.
+
+## GPU support by platform
+
+Each platform's SDK supports one GPU execution provider:
+
+| Platform | Execution provider | `model_selection` value | Guide |
+|---|---|---|---|
+| Windows (x86_64, ARM64) | DirectML | `SMModelSelectionDirectML` | [Transcribe with DirectML](/deployments/on-device/gpu/directml) |
+| macOS (ARM64, Apple silicon) | CoreML | `SMModelSelectionCoreML` | [Transcribe with CoreML](/deployments/on-device/gpu/coreml) |
+| Linux | None | — | — |
+
+CUDA is not available.
+
+## Select the GPU in your application
+
+Your application selects the execution provider with the `model_selection` field of `SMEngineConfigOverride`, which you pass to `sm_create_engine`. The default, `SMModelSelectionStandard`, runs on the CPU.
+
+```cpp
+// Run on the GPU: DirectML on Windows, CoreML on macOS
+SMEngineConfigOverride cfg = {};
+#if defined(_WIN32)
+cfg.model_selection = SMModelSelectionDirectML;
+#elif defined(__APPLE__)
+cfg.model_selection = SMModelSelectionCoreML;
+#endif
+cfg.chunk_length = SMAPI_USE_DEFAULT_CHUNK_LENGTH;  // use the language pack's GPU chunk length
+```
+
+The same language pack works for the CPU and the GPU. It contains models for both, and the SDK loads the ones for the execution provider you select.
+
+## Handle GPU errors
+
+The SDK never falls back to the CPU. If the GPU execution provider can't run, `sm_check_error` on the new engine returns `SMEngineError`, with a message that says why. Selecting a provider that your platform's SDK doesn't include returns an error in the same way.
+
+To run on the CPU when the GPU is unavailable, create a second engine with `SMModelSelectionStandard`.
+
+## Set the chunk length on the GPU
+
+Leave `chunk_length` at `SMAPI_USE_DEFAULT_CHUNK_LENGTH` unless you have a reason to change it. The SDK then uses the chunk length the language pack's GPU models were built for, which is 1.32 seconds for current language packs.
+
+## Next steps
+
+- [Transcribe with DirectML](/deployments/on-device/gpu/directml) on Windows
+- [Transcribe with CoreML](/deployments/on-device/gpu/coreml) on macOS

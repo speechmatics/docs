@@ -1,0 +1,55 @@
+---
+title: Set the on-device SDK license
+sidebar_label: License
+description: Embed your license in your application and set it for the Speechmatics on-device SDK before creating any engine.
+---
+
+# Set the on-device SDK license
+
+The Speechmatics on-device SDK needs a license before it transcribes any audio. To get one, speak to [Support](https://support.speechmatics.com).
+
+Validation works offline. Each engine takes the license when `sm_create_engine` creates it, from the first of these sources that is set:
+
+1. The token your application passed to `sm_set_license_token()`.
+2. The `LICENSE_TOKEN` or `SM_LICENSE_FILE` environment variable.
+
+The SDK checks the license when `sm_transcribe` starts, and periodically during transcription. If the license is missing, invalid or expired, or doesn't allow the job's language or features, `sm_transcribe` returns `SMTranscriptionFailure`, and the result's `detail` says why.
+
+## Pass the license with sm_set_license_token
+
+Embed the license in your application and pass it with `sm_set_license_token()`. This is the preferred method, because the license stays inside your application rather than being visible on the end user's machine.
+
+The token is the `signedclaimstoken` value from the `license.json` Speechmatics gives you. Call `sm_set_license_token()` once, before creating any engine:
+
+```cpp
+#include <cstring>
+#include <smapi/smapi_managed.h>
+
+// Token compiled into your application, not read from disk
+static const char kLicenseToken[] = "<signedclaimstoken>";
+
+int main() {
+  // Set the license before any sm_create_engine call
+  sm_set_license_token(kLicenseToken, std::strlen(kLicenseToken));
+  // ... create engines and transcribe ...
+}
+```
+
+To make the token harder to extract from your binary, store it obfuscated and decode it just before the call.
+
+The token applies to every engine created after the call. Engines that already exist keep the license they were created with. Passing `NULL` or a length of `0` clears the token, so later engines read the environment variables instead.
+
+`sm_set_license_token()` isn't safe to call at the same time as `sm_create_engine`. Call it before your application starts any transcription threads.
+
+## Set the license with an environment variable
+
+For evaluation and for running the example apps, the SDK can also read the license from the environment. If your application hasn't set a token with `sm_set_license_token()`, `sm_create_engine` reads one of these variables:
+
+| Variable | Value |
+|---|---|
+| `LICENSE_TOKEN` | The token itself: the `signedclaimstoken` value from `license.json`. |
+| `SM_LICENSE_FILE` | The path to `license.json`. The SDK reads the token from it. |
+
+Either variable exposes the license to anyone with access to the machine. Don't rely on them in an application you ship to end users.
+
+{/* TODO: document license expiry behavior (validFrom / notValidAfter, and what the SDK does after expiry) once confirmed for on-device. */}
