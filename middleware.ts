@@ -19,5 +19,8 @@ export default function middleware(request: Request): Response | undefined {
 }
 
 export const config = {
-  matcher: ["/((?!assets/|img/|js/|search/).*)"],
+  // /retrieve is excluded so agent search requests skip the middleware: it's
+  // rewritten to the Kapa Worker in vercel.json and must not be redirected to
+  // /retrieve.md.
+  matcher: ["/((?!assets/|img/|js/|search/|retrieve$).*)"],
 };

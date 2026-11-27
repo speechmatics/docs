@@ -15,6 +15,12 @@
       ]
     }
   ],
+  "rewrites": [
+    {
+      "source": "/retrieve",
+      "destination": "https://speechmatics.kapa-retrieval.workers.dev/"
+    }
+  ],
   "redirects": [
     {
       "source": "/speech-to-text/realtime/realtime_diarization",
